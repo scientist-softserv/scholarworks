@@ -115,12 +115,12 @@ fields:
   degree_level:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='degree']"
-    type: String
+    type: Array
   description_note:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='tableofcontents']"
       - "/dim:field[@mdschema='dc'][@element='description'][not(@qualifier)]"
-    type: String
+    type: Array
   department:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='department']"
