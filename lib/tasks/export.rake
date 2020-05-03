@@ -15,8 +15,9 @@ namespace :calstate do
       attribute_names = get_columns(model.attribute_names)
 
       # add these fields to the front of the array so they are first
-      # note: 'id' is also not part of attribute_names
-      column_names = %w[id campus admin_set_id]
+      # note: 'id', embargo & visibility fields are not part of attribute_names
+      column_names = %w[id campus admin_set_id visibility embargo_release_date
+                        visibility_during_embargo visibility_after_embargo]
       column_names.push(*attribute_names)
 
       csv_file = '/home/ec2-user/exported/' +
@@ -26,7 +27,10 @@ namespace :calstate do
         csv << column_names
         model.where(campus: campus).each do |doc|
           begin
-            values = [doc.id.to_s, doc.campus.first.to_s, doc.admin_set_id.to_s]
+            values = [doc.id.to_s, doc.campus.first.to_s, doc.admin_set_id.to_s,
+                      doc.visibility.to_s, doc.embargo_release_date.to_s,
+                      doc.visibility_during_embargo.to_s,
+                      doc.visibility_after_embargo.to_s]
             values.push(*get_attr_values(doc.attributes, attribute_names))
             csv << values
           rescue StandardError => e
@@ -47,7 +51,7 @@ namespace :calstate do
     # also campus & admin_set_id, since we will prepend those
     columns_remove = %w[head tail arkivo_checksum owner access_control_id state
                         representative_id thumbnail_id rendering_ids embargo_id
-                        lease_id campus admin_set_id embargo_terms]
+                        lease_id campus admin_set_id]
     column_names - columns_remove
   end
 
