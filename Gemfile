@@ -86,3 +86,4 @@ gem 'riiif', '~> 1.1'
 gem 'solargraph'
 gem 'colorize'
 gem 'rubyzip'
+gem "ruby-vips", "~> 2.0"
