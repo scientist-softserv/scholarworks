@@ -1,5 +1,3 @@
-require 'mini_magick'
-
 module Hydra
   module Derivatives
     module Processors
@@ -13,7 +11,7 @@ module Hydra
         def process_with_timeout
           Timeout.timeout(timeout) { create_resized_image }
         rescue Timeout::Error
-          raise Hydra::Derivatives::TimeoutError, "Unable to process image derivative\nThe command took longer than #{timeout} seconds to execute"
+          raise Hydra::Derivatives::TimeoutError, "Unable to process pdf derivative\nThe command took longer than #{timeout} seconds to execute"
         end
 
         protected
@@ -57,7 +55,6 @@ module Hydra
 
           def load_and_select_layer
             Vips::Image.new_from_file source_path, page: directives.fetch(:layer, 0)
-            #Vips::Image.pdfload(source_path, page: directives.fetch(:layer, 0))
           end
       end
     end
