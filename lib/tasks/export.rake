@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'csv'
 require 'pp'
 
 namespace :calstate do
@@ -23,7 +24,7 @@ namespace :calstate do
       csv_file = '/home/ec2-user/exported/' +
                  campus + '-' + model_name.downcase + '.csv'
 
-      CSV.open(csv_file, 'wb') do |csv|
+      CSV.open(csv_file, 'wb', { force_quotes: true }) do |csv|
         csv << column_names
         model.where(campus: campus).each do |doc|
           begin
