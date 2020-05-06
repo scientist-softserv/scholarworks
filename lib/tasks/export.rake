@@ -48,15 +48,17 @@ namespace :calstate do
   # Determine the columns to include in the export
   #
   # @param column_names [Array]  all the attribute names from the Fedora model
-  # @return [Array]              only the approved columns
-  #
+  # @return [Array] only the approved columns
   def get_columns(column_names)
     # remove internal fedora fields
-    # also campus & admin_set_id, since we will prepend those
     columns_remove = %w[head tail arkivo_checksum owner access_control_id state
                         representative_id thumbnail_id rendering_ids embargo_id
-                        lease_id source relative_path import_url
-                        campus admin_set_id]
+                        lease_id relative_path import_url]
+    # remove scholarworks utility fields
+    columns_remove += %w[resource_type_thesis resource_type_educationalresource
+                         resource_type_dataset resource_type_publication]
+    # remove columns we want to shift to the front, and will handle separately
+    columns_remove += %w[campus admin_set_id]
     column_names - columns_remove
   end
 
@@ -64,8 +66,7 @@ namespace :calstate do
   #
   # @param attributes [Hash]        all the attributes from the Fedora record
   # @param attribute_names [Array]  the attributes we want to extract
-  # @return [Array]                 extracted values
-  #
+  # @return [Array] extracted values
   def get_attr_values(attributes, attribute_names)
     values = []
     attributes.each do |key, value|
