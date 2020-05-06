@@ -25,8 +25,10 @@ namespace :calstate do
                  campus + '-' + model_name.downcase + '.csv'
 
       CSV.open(csv_file, 'wb', { force_quotes: true }) do |csv|
+        csv.to_io.write "\uFEFF" # this causes excel to treat the file as UTF-8
         csv << column_names
-        model.where(campus: campus).each do |doc|
+        campus_name = Hyrax::CampusService.get_campus_name_from_id(campus)
+        model.where(campus: campus_name).each do |doc|
           begin
             values = [doc.id.to_s, # not in attributes
                       doc.campus.first.to_s, # move to front
