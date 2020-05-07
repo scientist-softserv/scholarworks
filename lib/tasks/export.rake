@@ -6,8 +6,9 @@ require 'pp'
 namespace :calstate do
   desc 'Export metadata csv for a campus'
   task :export, %i[campus] => [:environment] do |_t, args|
-    # error check
+    # campus name
     campus = args[:campus] or raise 'No campus provided.'
+    campus_name = Hyrax::CampusService.get_campus_name_from_id(campus)
 
     %w[Thesis Publication Dataset EducationalResource].each do |model_name|
       model = Kernel.const_get(model_name)
@@ -24,19 +25,18 @@ namespace :calstate do
       csv_file = '/home/ec2-user/exported/' +
                  campus + '-' + model_name.downcase + '.csv'
 
-      CSV.open(csv_file, 'wb', { force_quotes: true }) do |csv|
-        csv.to_io.write "\uFEFF" # this causes excel to treat the file as UTF-8
+      CSV.open(csv_file, 'wb') do |csv|
+        csv.to_io.write "\uFEFF" # BOM forces excel to treat the file as UTF-8
         csv << column_names
-        campus_name = Hyrax::CampusService.get_campus_name_from_id(campus)
         model.where(campus: campus_name).each do |doc|
           begin
-            values = [doc.id.to_s, # not in attributes
-                      doc.campus.first.to_s, # move to front
-                      doc.admin_set_id.to_s, # move to front
-                      doc.visibility.to_s, # not in attributes
-                      doc.embargo_release_date.to_s, # not in attributes
-                      doc.visibility_during_embargo.to_s, # not in attributes
-                      doc.visibility_after_embargo.to_s] # not in attributes
+            values = [prep_value(doc.id), # not in attributes
+                      prep_value(doc.campus.first), # move to front
+                      prep_value(doc.admin_set_id), # move to front
+                      prep_value(doc.visibility), # not in attributes
+                      prep_value(doc.embargo_release_date), # not in attributes
+                      prep_value(doc.visibility_during_embargo), # not in attributes
+                      prep_value(doc.visibility_after_embargo)] # not in attributes
             values.push(*get_attr_values(doc.attributes, attribute_names))
             csv << values
           rescue StandardError => e
@@ -49,8 +49,9 @@ namespace :calstate do
 
   # Determine the columns to include in the export
   #
-  # @param column_names [Array]  all the attribute names from the Fedora model
+  # @param column_names [Array]  all the attribute names from the fedora model
   # @return [Array] only the approved columns
+  #
   def get_columns(column_names)
     # remove internal fedora fields
     columns_remove = %w[head tail arkivo_checksum owner access_control_id state
@@ -66,9 +67,10 @@ namespace :calstate do
 
   # Extract the values from this record
   #
-  # @param attributes [Hash]        all the attributes from the Fedora record
+  # @param attributes [Hash]        all the attributes from the fedora record
   # @param attribute_names [Array]  the attributes we want to extract
   # @return [Array] extracted values
+  #
   def get_attr_values(attributes, attribute_names)
     values = []
     attributes.each do |key, value|
@@ -76,11 +78,21 @@ namespace :calstate do
 
       # if this is a multi-valued field, join them using pipe
       if value.is_a?(ActiveTriples::Relation)
-        values << value.join('|')
+        values << prep_value(value.join('|'))
       else
-        values << value.to_s
+        values << prep_value(value)
       end
     end
     values
+  end
+
+  # convert value to string and append a tab to the end to force excel
+  # to treat the field as text rather than a number or date
+  #
+  # @param value [String]  the value to add
+  # @return [String] the value plus tab at the end
+  #
+  def prep_value(value)
+    value.to_s + "\t"
   end
 end
