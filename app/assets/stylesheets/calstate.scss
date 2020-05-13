@@ -422,6 +422,9 @@ ul.catalog li.document div.csu-document-title {
 .csu-document-title {
     overflow: hidden;
 }
+.list-thumbnail img[src*='downloads'] { 
+    border: 1px solid #ccc;
+}
 
 /* collection */
 
@@ -531,8 +534,3 @@ footer a, footer a:hover, footer a:visited {
     color: #84bef2;
 }
 
-/** accessibility **/
-
-.label-success, td.status span.on {
-    background-color: #346734;
-}
