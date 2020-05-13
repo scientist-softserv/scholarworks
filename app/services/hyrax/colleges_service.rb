@@ -3,8 +3,8 @@ module Hyrax
     mattr_accessor :authority
     self.authority = Qa::Authorities::Local.subauthority_for('colleges')
 
-    def self.select_options(admin_set_name)
-      campus = Hyrax::CampusService.get_campus_from_admin_set(admin_set_name)
+    def self.select_options(controller, form)
+      campus = Hyrax::CampusService.get_campus_from_form(controller, form)
       campus.downcase!.sub!(' ', '_')
       campus_authority = Qa::Authorities::Local.subauthority_for('colleges_' + campus)
 
