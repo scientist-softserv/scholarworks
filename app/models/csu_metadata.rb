@@ -33,7 +33,7 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
-    property :date_submitted, predicate: ::RDF::Vocab::DC.date do |index|
+    property :date_submitted, predicate: ::RDF::Vocab::SCHEMA.Date do |index|
       index.as :stored_searchable, :facetable
     end
 
@@ -41,11 +41,11 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
-    property :description_note, predicate: ::RDF::Vocab::DC.description do |index|
+    property :description_note, predicate: ::RDF::Vocab::SCHEMA.description do |index|
       index.as :stored_searchable, :facetable
     end
 
-    property :doi, predicate: ::RDF::Vocab::DC.identifier, multiple: true
+    property :doi, predicate: ::RDF::Vocab::SCHEMA.identifier, multiple: true
 
     property :extent, predicate: ::RDF::Vocab::DC.extent do |index|
       index.as :stored_searchable, :facetable
@@ -61,9 +61,9 @@ module CsuMetadata
 
     property :identifier_uri, predicate: ::RDF::URI.new('http://purl.org/dc/terms/identifier'), multiple: true
 
-    property :issn, predicate: ::RDF::Vocab::DC.identifier, multiple: true
+    property :issn, predicate: ::RDF::Vocab::SCHEMA.issn, multiple: true
 
-    property :isbn, predicate: ::RDF::Vocab::DC.identifier, multiple: true
+    property :isbn, predicate: ::RDF::Vocab::SCHEMA.isbn, multiple: true
 
     property :is_part_of, predicate: ::RDF::Vocab::DC.relation do |index|
       index.as :stored_searchable, :facetable
@@ -73,13 +73,13 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
-    property :oclcno, predicate: ::RDF::Vocab::DC.identifier, multiple: true
+    property :oclcno, predicate: ::RDF::Vocab::BIBO.oclcnum, multiple: true
 
     property :rights_holder, predicate: ::RDF::Vocab::DC.rightsHolder do |index|
       index.as :stored_searchable, :facetable
     end
 
-    property :rights_note, predicate: ::RDF::Vocab::DC.rights do |index|
+    property :rights_note, predicate: ::RDF::Vocab::DC11.rights do |index|
       index.as :stored_searchable, :facetable
     end
 
