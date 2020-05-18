@@ -199,8 +199,13 @@ def create_new_work(params)
 
   # set visibility
   if params.key?('embargo_release_date')
-    params['visibility_after_embargo'] = 'open'
-    params['visibility_during_embargo'] = 'authenticated'
+    # indefinite embargo, just make it private
+    if params['embargo_release_date'] == '10000-01-01'
+      params['visibility'] = 'restricted'
+    else # regular embargo
+      params['visibility_after_embargo'] = 'open'
+      params['visibility_during_embargo'] = 'authenticated'
+    end
   else
     params['visibility'] = 'open'
   end
