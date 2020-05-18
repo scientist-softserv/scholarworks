@@ -21,7 +21,7 @@ output_level: 'verbose'
 include_thumbnail: false
 
 # Enter University eg, California State University, <name>
-default_university: California State Univeristy Maritime Academy
+default_university: California State University Maritime Academy
 
 # work map from resource_type.
 # values are value_mapped_to_resource_type: Work Type
