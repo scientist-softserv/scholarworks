@@ -27,94 +27,43 @@ default_university: California State University, Fresno
 # values are value_mapped_to_resource_type: Work Type
 type_to_work_map:
   Thesis: Thesis
-  Theses: Thesis
   Dissertation: Thesis
-  Dissertations: Thesis
   Project: Thesis
   Graduate Project: Thesis
   Student Research: Thesis
   Newspaper: Publication
   Journal Issue: Publication
   Poster: Publication
-  Posters: Publication
   Report: Publication
   Preprint: Publication
   Technical Report: Publication
+  Translation: Publication
   Poetry: Publication
   Working Paper: Publication
   Learning Object: EducationalResource
   Text: Publication
   Dataset: Dataset
-  Abstracts: Thesis
   Abstract: Thesis
-  Agendas: Thesis
-  Animations: Thesis
-  Articles: Publication
   Article: Publication
-  Biographical Items: Publication
-  Blogs: Publication
-  Post-print: Publication
-  post-print: Publication
-  Pre-print: Publication
-  Book chapters: Publication
+  Articles: Publication
+  Blog: Publication
   Book Chapter: Publication
-  Book entry: Publication
-  Books: Publication
   Book: Publication
-  Budgets: Publication
-  Catalogs: Publication
-  Conference materials: Publication
-  Conference Papers: Publication
-  Conference papers: Publication
-  Conference proceedings: Publication
   Conference Proceeding: Publication
-  Doctoral Projects: Thesis
-  Documents: Publication
-  Editorial Materials: Publication
-  Correction: Publication
-  Essays: Publication
-  Presentations: Publication
-  Journals: Publication
+  Doctoral Project: Thesis
   Journal: Publication
-  Letters: Publication
   Letter: Publication
-  Interviews: Publication
-  Notes: Publication
-  Other: EducationalResource
-  Magazines: Publication
   Magazine: Publication
-  Memorandums: Publication
-  Minutes: Publication
-  News release: Publication
-  Newsletters: Publication
-  Newspapers: Publication
-  Panels: Publication
-  Plans/Blueprints: Publication
-  Proceedings: Publication
-  Procedures: Publication
-  Poems: Publication
+  News Release: Publication
   Poem: Publication
-  Sports: Publication
-  Speeches: Publication
-  Policies: Publication
-  Reviews: Publication
   Review: Publication
-  Presentations: Publication
-  Presentation: Publication
-  Press releases: Publication
-  Proposals: Publication
-  Reports: Publication
-  Resolutions: Publication
   Slides: Publication
-  Speeches: Publication
-  Social Networking Tool: Publication
-  Transcripts: Publication
-  Translations: Publication
-  Webinars: Publication
-  Image: Publication
-  Moving Image: Publication
+  Presentation: Publication
   Photographic Image: Publication
   Video - Other: Publication
+  Flyer: Publication
+  Interview: Publication
+  Webinar: Publication
 
 DSpace COMMUNITY:
   desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
@@ -136,7 +85,15 @@ DSpace ITEM:
 
 # Dublin Core Field Mapping
 fields:
-  description: # Thesis
+  # Notes following 5/8 meeting w/Fresno
+  # UNCOMMENT for path to 'abstract'
+  # CHANGE xpath to 'description' to add Fresno dc.description
+  # - "/dim:field[@mdschema='dc'][@element='description'][not(@qualifier)]"
+  #abstract:
+  #  xpath:
+  #    - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='abstract']"
+  #  type: Array
+  description:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='abstract']"
     type: Array
@@ -145,7 +102,7 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='advisor'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='advisor']"
     type: Array
-  alternative_title: # Thesis
+  alternative_title:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='title'][@qualifier='alternative']"
     type: Array
@@ -153,19 +110,21 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='citation']"
     type: Array
-  committee_member: # Thesis
+  college:
+    xpath:
+      - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
+  committee_member:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='committeemember']"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='committeeMember']"
     type: Array
   contributor:
     xpath:
-      - "/dim:field[@mdschema='dc'][@element='contributor'][not(@qualifier)]"
+      #- "/dim:field[@mdschema='dc'][@element='contributor'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='Interviewee']"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='Interviewer']"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='Narrator']"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='illustrator']"
-      - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='local']"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='other']"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='photographer']"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='player']"
@@ -191,7 +150,7 @@ fields:
   date_copyright:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='copyright']"
-    type: Array
+    type: String
   date_issued:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='issued']"
@@ -200,11 +159,11 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='updated']"
     type: String
-#  date_published:
-#    xpath:
-#      - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='published']"
-#    type: String
-  date_submitted: # Thesis
+  date_published:
+    xpath:
+      - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='published']"
+    type: String
+  date_submitted:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='submitted']"
@@ -224,6 +183,8 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='tableofcontents']"
       - "/dim:field[@mdschema='dc'][@element='description'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='relation'][@qualifier='hasformatof']"
+      - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='local']"
+      - "/dim:field[@mdschema='dc'][@element='contributor'][not(@qualifier)]"
     type: Array
   department:
     xpath:
@@ -259,7 +220,7 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='identifier'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='other']"
-      - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='lcc']"
+      #- "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='lcc']"
       - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='coursenumber']"
     type: Array
   identifier_uri:
@@ -281,7 +242,7 @@ fields:
     type: Array
   keyword:
     xpath:
-      - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='lcsh']"
+      - "/dim:field[@mdschema='dc'][@element='relation'][@qualifier='journal']"
     type: Array
   language:
     xpath:
@@ -300,8 +261,8 @@ fields:
   publisher:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='publisher'][not(@qualifier)]"
-      - "/dim:field[@mdschema='dc'][@element='issuer'][not(@qualifier)]"
-      - "/dim:field[@mdschema='dc'][@element='relation'][@qualifier='journal']"
+      #- "/dim:field[@mdschema='dc'][@element='issuer'][not(@qualifier)]"
+      #- "/dim:field[@mdschema='dc'][@element='relation'][@qualifier='journal']"
     type: Array
   related_url:
     xpath:
@@ -312,11 +273,6 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='type'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='type'][@qualifier='genre']"
     type: Array
-#  rights_statement:
-#    xpath:
-#      - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
-#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='usage']"
-#    type: Array
   rights_holder:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='holder']"
@@ -331,9 +287,8 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='uri']"
     type: Array
-  sponsor: # Newspaper
+  sponsor:
     xpath:
-    #  - "/dim:field[@mdschema='dc'][@element='sponsor'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='sponsor']"
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
       - "/dim:field[@mdschema='dc'][@element='coverage'][@qualifier='sponsor']"
@@ -343,11 +298,10 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='subject'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='category']"
       - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='classification']"
-      - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='lcc']"
       - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='lcsh']"
       - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='other']"
     type: Array
-  time_period: # Thesis
+  time_period:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='coverage'][@qualifier='temporal']"
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='event']"
