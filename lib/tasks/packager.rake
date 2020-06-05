@@ -35,7 +35,15 @@ namespace :packager do
     sleep(3)
 
     # let's do it!
-    process_package(source_file)
+    if source_file == 'items'
+      Dir.foreach(@input_dir) do |filename|
+        next unless filename.include?('.zip') && filename.include?('ITEM')
+
+        process_package(filename)
+      end
+    else
+      process_package(source_file)
+    end
   end
 end
 
@@ -151,20 +159,11 @@ def create_work_and_files(file_dir, dom)
   if @config['metadata_only']
     @log.info 'Metadata only'
   else
-    begin
-      @log.info 'Getting uploaded files'
-      uploaded_files = get_files_to_upload(file_dir, dom)
+    @log.info 'Getting uploaded files'
+    uploaded_files = get_files_to_upload(file_dir, dom)
 
-      @log.info 'Attaching file(s) to work job...'
-      AttachFilesToWorkJob.perform_now(work, uploaded_files)
-    rescue StandardError => e
-      # if something went wrong while uploading the files
-      # destory the work, since we'll have to process it again later
-      @log.error 'Error attaching files to work'
-      @log.error 'Destroying work'
-      work.destory
-      raise e
-    end
+    @log.info 'Attaching file(s) to work job...'
+    AttachFilesToWorkJob.perform_now(work, uploaded_files)
   end
 
   # record this work in the handle log
@@ -200,8 +199,13 @@ def create_new_work(params)
 
   # set visibility
   if params.key?('embargo_release_date')
-    params['visibility_after_embargo'] = 'open'
-    params['visibility_during_embargo'] = 'authenticated'
+    # indefinite embargo, just make it private
+    if params['embargo_release_date'] == '10000-01-01'
+      params['visibility'] = 'restricted'
+    else # regular embargo
+      params['visibility_after_embargo'] = 'open'
+      params['visibility_during_embargo'] = 'authenticated'
+    end
   else
     params['visibility'] = 'open'
   end
@@ -216,8 +220,19 @@ def create_new_work(params)
 
   @log.info 'Creating a new ' + resource_type + ' with id:' + id
 
+  if @config['type_to_work_map'][resource_type].nil?
+    raise 'No mapping for ' + resource_type
+  end
+
+  model_name = @config['type_to_work_map'][resource_type]
+
+  # student research but with a label that is otherwise Publication
+  if params['degree_level'] || params['advisor']
+    model_name = 'Thesis'
+  end
+
   # create the actual work based on the mapped resource type
-  model = Kernel.const_get(@config['type_to_work_map'][resource_type])
+  model = Kernel.const_get(model_name)
   work = model.new(id: id)
   work.update(params)
   work.apply_depositor_metadata(depositor.user_key)
@@ -308,20 +323,31 @@ def collect_params(dom)
   params = Hash.new { |h, k| h[k] = [] }
 
   @config['fields'].each do |field|
-    next unless field[1].include? 'xpath'
+    field_name = field[0]
+    field_definition = field[1]
 
-    field[1]['xpath'].each do |current_xpath|
+    next unless field_definition.include? 'xpath'
+
+    # definition checks
+    if field_definition['xpath'].nil?
+      raise '"' + field_name + '" defined with empty xpath'
+    end
+    if field_definition['type'].nil?
+      raise '"' + field_name + '" missing type'
+    end
+
+    field_definition['xpath'].each do |current_xpath|
       desc_metadata_prefix = @config['DSpace ITEM']['desc_metadata_prefix']
       namespace = @config['DSpace ITEM']['namespace']
       metadata = dom.xpath(desc_metadata_prefix + current_xpath, namespace)
 
       unless metadata.empty?
-        if field[1]['type'].include? 'Array'
+        if field_definition['type'].include? 'Array'
           metadata.each do |node|
-            params[field[0]] << node.text
+            params[field_name] << node.text.squish
           end
         else
-          params[field[0]] = metadata.text
+          params[field_name] = metadata.text.squish
         end
       end
     end

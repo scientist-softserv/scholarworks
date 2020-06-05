@@ -5,7 +5,7 @@ metadata_file: "mets.xml"
 depositor: kcloud@calstate.edu
 input_dir: /data/exported/
 handle_report: /data/tmp/MAIN_handle_report.txt
-admin_set_id: '000000000'
+admin_set_id: 'ft848r72n'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
 # true - ends processing on error
