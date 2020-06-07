@@ -32,3 +32,11 @@ config/environments/*.local.yml
 
 # mac files
 **.DS_Store
+fits.log
+
+
+*.swp
+*.swo
+examples/*
+examples.zip
+importer.sh
