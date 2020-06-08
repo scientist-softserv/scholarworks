@@ -1,0 +1,2 @@
+class GlacierSnsDownloadRequestsController < ApplicationController
+end

@@ -1,0 +1,2 @@
+class GlacierSnsDownloadRequest < ApplicationRecord
+end
