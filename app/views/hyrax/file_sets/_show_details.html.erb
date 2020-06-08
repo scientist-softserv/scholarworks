@@ -7,6 +7,7 @@
   <dd itemprop="datePublished"><%= @presenter.date_uploaded %></dd>
   <dt><%= t(".date_modified") %></dt>
   <dd itemprop="dateModified"><%= @presenter.date_modified %></dd>
+  <%# added glacier location %>
   <% if current_user.admin? %>
     <dt><%= t(".glacier_location") %></dt>
     <dd itemprop="glacierLocation"><%= @presenter.glacier_date %></dd>

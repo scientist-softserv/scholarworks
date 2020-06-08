@@ -8,6 +8,7 @@
         <th><%= t('.thumbnail') %></th>
         <th><%= t('.title') %></th>
         <th><%= t('.date_uploaded') %></th>
+        <%# added this column header for glacier locations%>
         <% if current_user.admin? %>
           <th><%= t('.glacier_location') %></th>
         <% end %>
