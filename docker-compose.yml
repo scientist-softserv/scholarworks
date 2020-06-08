@@ -1,5 +1,25 @@
 version: '2.1'
 services:
+  web:
+    build: .
+    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG:-master}"
+    env_file:
+      - .env
+      - .env.development
+    volumes:
+      - .:/home/app/webapp
+    # Keep the stdin open, so we can attach to our app container's process
+    # and do things such as byebug, etc:
+    stdin_open: true
+    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
+    tty: true
+    ports:
+      - '3000:3000'
+      - "${DOCKER_PORT}"
+    depends_on:
+      - postgres
+      - redis
+    command: ["/sbin/setuser", "app", "bundle", "exec", "rails", "hydra:server"]
   redis:
     image: 'redis:3.2-alpine'
     command: redis-server
@@ -12,7 +32,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5434:5432"
+      - 5432
     volumes:
       - 'postgres:/var/lib/postgresql/data'
 volumes:
