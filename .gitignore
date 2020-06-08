@@ -41,3 +41,5 @@ examples/*
 examples.zip
 importer.sh
 .solr_wrapper
+
+.env.development
