@@ -88,4 +88,4 @@ gem 'solargraph'
 gem 'colorize'
 gem 'rubyzip'
 gem "ruby-vips", "~> 2.0"
-
+gem 'aws-sdk-glacier'
