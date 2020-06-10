@@ -9,8 +9,12 @@
   <dd itemprop="dateModified"><%= @presenter.date_modified %></dd>
   <%# added glacier location %>
   <% if current_user.admin? %>
-    <dt><%= t(".glacier_location") %></dt>
-    <dd itemprop="glacierLocation"><%= @presenter.glacier_date %></dd>
+    <dt><%= t(".glacier_archives") %></dt>
+    <dd itemprop="glacierLocation">
+      <% @presenter.glacier_locations.each_with_index do |location, index| %>
+        <%= link_to location[:date], Rails.application.routes.url_helpers.glacier_sns_download_requests_path, remote: true, method: :post  %>
+      <% end %>
+    </dd>
   <% end %>
   <dt><%= t(".fixity_check") %></dt>
   <dd><%= @presenter.fixity_check_status %></dd>

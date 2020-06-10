@@ -10,12 +10,11 @@ module Hyrax
       @solr_document = solr_document
     end
 
-    def glacier_location
-      solr_document['glacier_location_tesim']
-    end
-
-    def glacier_date
-      dates = glacier_location.to_a.map { |gl| Date.parse(gl.split("::").first) }
+    def glacier_locations
+      solr_document['glacier_location_tesim'].to_a.map do |id|
+        parts = id.split("::")
+        {date: parts.first, glacier_archive_id: parts.last}
+      end
     end
   end
 end
