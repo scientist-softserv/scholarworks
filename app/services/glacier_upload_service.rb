@@ -26,14 +26,9 @@ class GlacierUploadService < ActiveJob::Base
       account_id: "-",
       vault_name: vault,
       job_parameters: {
+        type: "archive-retrieval",
         archive_id: archive_id,
-        description: "Glacier fetch for #{download_request.user.email}, initiated at #{Time.now.to_s(:db)}"
-      },
-      output_location: {
-        s3:{
-          bucket_name: bucket_name,
-          canned_acl: access_level
-        }
+        description: "Glacier fetch for #{download_request.user.email}, initiated at #{Time.now.to_s(:db)}",
       }
     })
   end

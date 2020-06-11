@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200601235801) do
+ActiveRecord::Schema.define(version: 20200611002343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,6 +128,8 @@ ActiveRecord::Schema.define(version: 20200601235801) do
     t.boolean "is_complete", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "aws_job_identifier"
+    t.text "aws_location"
   end
 
   create_table "hyrax_collection_types", force: :cascade do |t|
