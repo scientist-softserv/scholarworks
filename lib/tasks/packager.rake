@@ -28,6 +28,8 @@ namespace :packager do
     @complete_dir = initialize_directory(File.join(@input_dir, 'complete'))
     @error_dir = initialize_directory(File.join(@input_dir, 'error'))
 
+    @errors = 0 # error counter
+
     @log.info 'Starting rake task packager:aip'.green
     @log.info 'Campus: ' + @config['campus'].yellow
     @log.info 'Loading import package ' + source_file + ' from ' + @input_dir
@@ -67,10 +69,18 @@ def process_package(source_file)
     # process mets file
     process_mets(file_dir)
     File.rename(zip_file, File.join(@complete_dir, source_file))
+
   rescue StandardError => e
+    @log.error e.class.to_s.red
     @log.error e
     File.rename(zip_file, File.join(@error_dir, source_file))
-    raise e if @config['exit_on_error']
+    sleep(3)
+    @errors += 1
+
+    # exit if so configured or we got three errors in a row
+    raise e if @config['exit_on_error'] || @errors >= 3
+  else
+    @errors = 0 # success, so reset the counter
   end
 end
 
@@ -225,11 +235,6 @@ def create_new_work(params)
   end
 
   model_name = @config['type_to_work_map'][resource_type]
-
-  # student research but with a label that is otherwise Publication
-  if params['degree_level'] || params['advisor']
-    model_name = 'Thesis'
-  end
 
   # create the actual work based on the mapped resource type
   model = Kernel.const_get(model_name)
