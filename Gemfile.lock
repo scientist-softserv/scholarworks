@@ -76,9 +76,6 @@ GEM
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-glacier (1.29.0)
-      aws-sdk-core (~> 3, >= 3.71.0)
-      aws-sigv4 (~> 1.1)
     aws-sdk-kms (1.30.0)
       aws-sdk-core (~> 3, >= 3.71.0)
       aws-sigv4 (~> 1.1)
@@ -830,7 +827,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-sdk-glacier
+  aws-sdk-s3
   byebug
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
