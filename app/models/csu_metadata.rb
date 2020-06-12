@@ -59,7 +59,7 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
-    property :identifier_uri, predicate: ::RDF::URI.new('http://purl.org/dc/terms/identifier'), multiple: true
+    property :identifier_uri, predicate: ::RDF::URI.new('http://id.loc.gov/vocabulary/identifiers/uri'), multiple: true
 
     property :issn, predicate: ::RDF::Vocab::SCHEMA.issn, multiple: true
 
@@ -79,11 +79,11 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
-    property :rights_note, predicate: ::RDF::Vocab::DC11.rights do |index|
+    property :rights_note, predicate: ::RDF::Vocab::EBUCore.rightsExpression do |index|
       index.as :stored_searchable, :facetable
     end
 
-    property :rights_uri, predicate: ::RDF::URI.new('http://purl.org/dc/terms/rights'), multiple: true
+    property :rights_uri, predicate: ::RDF::URI.new('http://purl.org/dc/elements/1.1/rights'), multiple: true
 
     property :sponsor, predicate: ::RDF::Vocab::MARCRelators.spn do |index|
       index.as :stored_searchable, :facetable
@@ -105,10 +105,10 @@ module CsuMetadata
   protected
 
   def update_fields
-    raise 'No admin set defined for this item.' if admin_set.nil?
 
     # assign campus name based on admin set
     campus = Hyrax::CampusService.get_campus_from_admin_set(admin_set.title.first.to_s)
     self.campus = [campus]
   end
+
 end
