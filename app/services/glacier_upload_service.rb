@@ -45,7 +45,7 @@ class GlacierUploadService < ActiveJob::Base
   end
 
   def self.key file_set
-    file_set.original_file.id
+    "work/#{file_set.parent.id}/#{file_set.original_file.id}"
   end
 
   def self.validated? file_set
