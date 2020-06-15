@@ -13,16 +13,17 @@ class HandleService < ActiveJob::Base
 
     handle_client = HandleSystem::Client.new(handle_server, hs_admin, private_key)
 
+    # TODO: check with them what the prefix and suffix should be
     prefix = ENV['HS_PREFIX']
-    suffix = resource.id
+    suffix = ENV['HS_SUFFIX']
     handle = prefix + '/' + suffix
 
-    byebug
-    hyrax_url = TODO
-    # TODO find how to retrive this from env
+    #TODO: find how to retrive this from the work
+    hyrax_url = Rails.application.routes.url_helpers.hyrax_thesis_path(resource)
 
     logger.info "Registering #{suffix} to Handle"
     handle_url = handle_client.create(handle, hyrax_url)
-    resource.update(handle: handle_url)
+    resource.handle = handle_url
+    resource.save!
   end
 end
