@@ -7,7 +7,7 @@ class FileSetAttachedEventJob < ContentEventJob
 
   def action
     #this is updated from Hyrax in original commit
-    repo_object.glacier_upload
+    GlacierUploadService.upload(repo_object)
   end
 
   private
