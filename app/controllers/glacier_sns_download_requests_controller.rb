@@ -9,8 +9,14 @@ class GlacierSnsDownloadRequestsController < ApplicationController
   end
 
   def unarchive_complete_sns
+
+    event_type = params["Message"]["Records"].first["eventName"] 
+    s3_key = params["Message"]["Records"].first["s3"]["object"]["key"]
+
+
     # ????? Unsure what the SNS looks like until we get to staging
     request = GlacierSnsDownloadRequest.last
     request.update_attribute(:is_complete, true) # triggers email
+    head 200
   end
 end
