@@ -16,7 +16,11 @@ Rails.application.routes.draw do
   mount Qa::Engine => '/authorities'
   mount Hyrax::Engine, at: '/'
   resources :welcome, only: 'index'
-  resources :glacier_sns_download_requests, only: [:create, :update]
+  resources :glacier_sns_download_requests, only: [:create] do
+    collection do
+      post "unarchive_complete_sns"
+    end
+  end
   root 'hyrax/homepage#index'
   curation_concerns_basic_routes
   concern :exportable, Blacklight::Routes::Exportable.new

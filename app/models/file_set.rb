@@ -5,11 +5,5 @@ class FileSet < ActiveFedora::Base
   end
 
   include ::Hyrax::FileSetBehavior
-
-  after_save :glacier_upload
-
-  def glacier_upload
-    GlacierUploadService.upload(self)
-  end
 end
 

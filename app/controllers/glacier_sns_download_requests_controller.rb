@@ -1,11 +1,20 @@
 class GlacierSnsDownloadRequestsController < ApplicationController
   def create
-    archive_id = params[:glacier_location]
-    download_request = current_user.glacier_sns_download_request.create(glacier_location: archive_id)
+    download_request = current_user.glacier_sns_download_requests.create(s3_key: params[:s3_key])
     if download_request.valid?
-      head :created
+      render json: download_request, status: 201
     else
-      head :unprocessible_entity
+      render json: download_request.errors, status: 422
     end
+  end
+
+  def unarchive_complete_sns
+
+    event_type = params["Message"]["Records"].first["eventName"] 
+    s3_key = params["Message"]["Records"].first["s3"]["object"]["key"]
+
+    request = GlacierSnsDownloadRequest.last
+    request.update_attribute(:is_complete, true) # triggers email
+    head 200
   end
 end

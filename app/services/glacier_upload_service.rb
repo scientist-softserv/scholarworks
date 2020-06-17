@@ -8,64 +8,50 @@ class GlacierUploadService < ActiveJob::Base
   def self.upload(file_set)
     return true unless validated?(file_set)
     file = file_set.original_file
+    s3_key = key(file_set)
 
-    resp = client.upload_archive({
-      account_id: "-",
-      archive_description: timestamp(file_set),
+    resp = client.put_object({
       body: file.content,
-      vault_name: vault
+      bucket: bucket_name,
+      key: s3_key,
+      storage_class: "GLACIER"
     })
-    file_set.update(glacier_location: file_set.glacier_location + ["#{timestamp(file_set)}::#{resp.archive_id}"])
+
+    file_set.update(glacier_location: file_set.glacier_location + [s3_key])
   rescue
     return false
   end
 
-  def self.download(download_request)
-    archive_id = download_request.glacier_identifier
-    client.initiate_job({
-      account_id: "-",
-      vault_name: vault,
-      job_parameters: {
-        archive_id: archive_id,
-        description: "Glacier fetch for #{download_request.user.email}, initiated at #{Time.now.to_s(:db)}"
-      },
-      output_location: {
-        s3:{
-          bucket_name: bucket_name,
-          canned_acl: access_level
-        }
+  def self.download(s3_key)
+    resp = client.restore_object({
+      bucket: bucket_name,
+      key: s3_key,
+      restore_request:{
+        days: 7,
+        glacier_job_parameters: {
+          tier: "Standard", # required, accepts Standard, Bulk, Expedited
+        },
       }
     })
   end
 
   private
   def self.client
-    Aws::Glacier::Client.new
+    Aws::S3::Client.new
   end
 
   def self.bucket_name
-    ENV['GLACIER_UNARCHIVE_S3_BUCKET']
+    ENV['GLACIER_S3_BUCKET']
   end
 
-  def self.access_level
-    ENV['GLACIER_UNARCHIVE_S3_ACCESS']
-  end
-
-  def self.vault
-    ENV['AWS_GLACIER_VAULT']
-  end
-
-  def self.timestamp(file_set)
-    file_set.original_file.create_date.to_s(:db)
+  def self.key file_set
+    "work/#{file_set.parent.id}/#{file_set.original_file.id}"
   end
 
   def self.validated? file_set
     original_file = file_set.original_file
     return false if original_file.nil?
-
-    timestamps = file_set.glacier_location.map{|l| l.split("::")[0]}
-    modified = timestamp(file_set)
-
-    !timestamps.include?(modified)
+    return false if file_set.glacier_location.include? key(file_set)
+    return true
   end
 end
