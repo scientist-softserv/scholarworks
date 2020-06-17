@@ -10,7 +10,7 @@ admin_set_id: 'zk51vg76b'
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
 # true - ends processing on error
 # false - continues processing
-exit_on_error: true
+exit_on_error: false
 
 # output_level: How much will be output to the shell while running
 # quiet - Nothing will be output
@@ -52,6 +52,7 @@ fields:
   description: # Thesis
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='abstract']"
+      - "/dim:field[@mdschema='dc'][@element='description'][not(@qualifier)]"
     type: Array
   advisor:
     xpath:
@@ -107,8 +108,7 @@ fields:
   degree_level:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='degree']"
-      - "/dim:field[@mdschema='dc'][@element='description'][not(@qualifier)]"
-    type: String
+    type: Array
   department:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
@@ -155,8 +155,7 @@ fields:
     type: Array
   language:
     xpath:
-      - "/dim:field[@mdschema='dc'][@element='language'][not(@qualifier)]"
-      - "/dim:field[@mdschema='dc'][@element='language'][@qualifier='iso']"
+      - "/dim:field[@mdschema='dc'][@element='language']"
     type: Array
   provenance:
     xpath:
