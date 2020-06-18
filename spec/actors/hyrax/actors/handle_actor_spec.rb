@@ -2,25 +2,23 @@
 #  `rails generate hyrax:work NtlWork`
 require 'rails_helper'
 
-RSpec.describe Hyrax::Actors::HandleActor do
-  subject(:middleware) do
-    stack = ActionDispatch::MiddlewareStack.new.tap do |middleware|
-      middleware.use described_class
-    end
-    stack.build(terminator)
-  end
-
+RSpec.describe Hyrax::Actors::HandleActor, clean: true do
+  subject(:actor) { described_class.new(terminator) }
   let(:ability) { ::Ability.new(depositor) }
   let(:attributes) { HashWithIndifferentAccess.new }
-  let(:depositor) { create(:user) }
+  let(:depositor) { build(:user) }
   let(:env) { Hyrax::Actors::Environment.new(work, ability, attributes) }
   let(:terminator) { Hyrax::Actors::Terminator.new }
-  let(:work) { create(:thesis) }
+  let(:work) { FactoryBot.create(:thesis, admin_set: AdminSet.create(title: ["San Marcos"])) }
 
   describe '#create' do
-    it 'populates a handle' do
-      expect(subject.create(env)).to be true
-      expect(work.handle).not_to be_nil
+    before do
+      ActiveJob::Base.queue_adapter = :test
+    end
+    it 'enqueues a job' do
+      expect { actor.create(env) }
+          .to have_enqueued_job(HandleRegisterJob)
+                  .with(work)
     end
   end
 end

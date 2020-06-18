@@ -7,5 +7,6 @@ FactoryBot.define do
     creator { ["Work Author"] }
     description { ["Work Description"] }
     resource_type_thesis { ["Abstract"] }
+    # admin_set { [FactoryBot.create(:admin_set)] }
   end
 end
