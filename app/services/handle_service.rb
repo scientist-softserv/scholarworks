@@ -19,7 +19,7 @@ class HandleService < ActiveJob::Base
 
     logger.info "Registering #{suffix} to Handle"
     handle_url = handle_client.create(handle, hyrax_path)
-    resource.handle = handle_url
+    resource.handle = [handle_url]
     resource.save!
   end
 end
