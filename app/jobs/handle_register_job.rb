@@ -1,8 +1,8 @@
-class HandleRegisterJob < ApplicationJob
+class HandleRegisterJob < Hyrax::ApplicationJob
+  include Rails.application.routes.url_helpers
   def perform(resource)
-
-    # TODO: support paths for non-thesis work types
-    path = Rails.application.routes.url_helpers.hyrax_thesis_path(resource)
+    return true if resource.handle.present?
+    path = polymorphic_path(resource)
     HandleService.register(resource, path)
   end
 end

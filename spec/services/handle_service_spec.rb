@@ -34,6 +34,5 @@ RSpec.describe HandleService do
         expect{HandleService.register(resource, hyrax_path)}.to raise_error(HandleSystem::AuthenticationError, "Identity not verified")
       end
     end
-
   end
 end

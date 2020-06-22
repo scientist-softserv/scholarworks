@@ -13,7 +13,6 @@ module Hyrax
 
       def update_handle(env)
         resource = env.curation_concern
-        return resource.handle if resource.handle.present?
         HandleRegisterJob.perform_later(resource)
       end
     end
