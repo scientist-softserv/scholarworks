@@ -21,7 +21,5 @@ class HandleService < ActiveJob::Base
     handle_url = handle_client.create(handle, hyrax_path)
     resource.handle = [handle_url]
     resource.save!
-    rescue
-      raise ArgumentError, "Handle API encountered an error"
   end
 end
