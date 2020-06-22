@@ -17,8 +17,8 @@ RSpec.describe Hyrax::Actors::HandleActor, clean: true do
     end
     it 'enqueues a job' do
       expect { actor.create(env) }
-          .to have_enqueued_job(HandleRegisterJob)
-                  .with(work)
+        .to have_enqueued_job(HandleRegisterJob)
+        .with(work)
     end
   end
 end
