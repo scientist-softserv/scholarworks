@@ -6,13 +6,46 @@ require 'csv'
 namespace :calstate do
   desc 'Metadata fixer'
   task metadata_fixer: :environment do
-    find_duplicates('East Bay')
+    opts = {}
+    opts['campus_name'] = 'Chico'
+    opts['campus_file'] = '/home/ec2-user/import/chico.csv'
+    fix_single_field(opts)
   end
 
-  def print_record(id)
-    Publication.where(id: id).each do |doc|
-      pp doc
+  def get_single_field(doc)
+    doc.department.first.to_s.squish
+  end
+
+  def save_single_field(field)
+    doc.department = [field]
+  end
+
+  def fix_single_field(opts)
+    mapping = field_mapping(opts['campus_file'])
+    x = 0
+    [Thesis, Publication, Dataset, EducationalResource].each do |model|
+      model.where(campus: opts['campus_name']).each do |doc|
+        x += 1
+        field = get_single_field(doc)
+        next if field.nil?
+        next if field == mapping[field]
+        next if mapping[field].nil?
+
+        puts x.to_s + ') ' + field + ' => ' + mapping[field]
+        save_single_field(mapping[field])
+        # doc.save
+      end
     end
+    puts x.to_s + ' total.'
+  end
+
+  def field_mapping(campus_file)
+    mapping = {}
+    csv = CSV.read(campus_file, { headers: true })
+    csv.each do |row|
+      mapping[row['old']] = row['new']
+    end
+    mapping
   end
 
   def find_duplicates(campus)
@@ -30,12 +63,11 @@ namespace :calstate do
     end
   end
 
-  def fix_abstract(campus)
-
-    from_dspace = load_dspace_csv('/home/ec2-user/dspace-data/' + campus + '.csv')
+  def fix_abstract(opts)
+    from_dspace = load_dspace_csv(opts['campus_file'])
 
     [Thesis, Publication, Dataset, EducationalResource].each do |model|
-      model.where(campus: campus).each do |doc|
+      model.where(campus: opts['campus_name']).each do |doc|
         handle = doc.handle.first.to_s
         next unless from_dspace.key?(handle)
 
