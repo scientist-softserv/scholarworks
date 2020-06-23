@@ -10,7 +10,7 @@ admin_set_id: '3b5918567'
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
 # true - ends processing on error
 # false - continues processing
-exit_on_error: true
+exit_on_error: false
 
 # output_level: How much will be output to the shell while running
 # quiet - Nothing will be output
@@ -42,6 +42,18 @@ type_to_work_map:
   Learning Object: EducationalResource
   Text: Publication
   Dataset: Dataset
+  Abstract: Thesis
+  Presentation: Thesis
+  Newsletter: Publication
+  Simulation: Publication
+  Video: Publication
+  Book chapter: Publication
+  Post-print: Publication
+  Other: Publication
+  Student Research: Thesis
+  Student Reserach: Thesis
+  Abstract: Publication
+  Poster Presentation: Thesis
 
 DSpace COMMUNITY:
   desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
@@ -186,7 +198,7 @@ fields:
     type: Array
   license:
     xpath:
-        - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='license']"
+      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='license']"
     type: Array
   provenance:
     xpath:
@@ -212,11 +224,11 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='statementofresponsibility']"
     type: Array
-  rights_uri:
-    xpath:
-      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='uri']"
-      - "/dim:field[@mdschema='dc'][@element='review'][@qualifier='uri']"
-    type: Array
+  # rights_uri:
+  #   xpath:
+  #     - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='uri']"
+  #    - "/dim:field[@mdschema='dc'][@element='review'][@qualifier='uri']"
+  #  type: Array
   sponsor:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='sponsor'][not(@qualifier)]"
