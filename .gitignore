@@ -43,3 +43,4 @@ importer.sh
 .solr_wrapper
 
 .env.development
+.envrc
