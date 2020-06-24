@@ -1,5 +1,5 @@
 class GlacierMailer < ApplicationMailer
-  default from: "dwalker@calstate.edu"
+  default from: "library@calstate.edu"
 
   def unarchive_complete_email user, location
     @user = user
