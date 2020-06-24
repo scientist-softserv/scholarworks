@@ -166,6 +166,9 @@ def create_work_and_files(file_dir, dom)
     AttachFilesToWorkJob.perform_now(work, uploaded_files)
   end
 
+  # Register work in handle
+  HandleRegisterJob.perform_now(work)
+
   # record this work in the handle log
   @handle_report.write("#{params['handle']},#{work.id}\n")
 
