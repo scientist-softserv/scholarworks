@@ -73,6 +73,7 @@ Rails.application.configure do
     enable_starttls_auto: true,
     openssl_verify_mode: 'none'
   }
+  config.active_job.default_url_options = config.action_mailer.default_url_options
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
