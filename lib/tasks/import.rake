@@ -4,7 +4,7 @@ require 'csv'
 require 'pp'
 
 namespace :calstate do
-  desc 'Export metadata csv for a campus'
+  desc 'Import metadata csv for a campus'
   task :import, %i[file] => [:environment] do |_t, args|
     # error check
     source_file = args[:file] or raise 'No import file provided.'
@@ -32,12 +32,12 @@ namespace :calstate do
         result = set_value(doc, key, value)
         task << result unless result.blank?
       end
-      next if tasks.empty?
+      next if task.empty?
 
       puts "\n\n------------------------------"
       puts doc.id + ': ' + doc.title.first.to_s
       task.each do |message|
-        puts "\t" + message
+        puts message
       end
 
       tasks[id] = task
@@ -51,6 +51,8 @@ namespace :calstate do
   # @return [String] a nice shiny, clean value
   #
   def clean_value(value)
+    return value if value.nil?
+
     value.squish
   end
 
@@ -65,6 +67,8 @@ namespace :calstate do
     value = clean_value(value)
     return if field.blank? && value.blank?
 
+    diff = nil # any difference
+
     if field.is_a?(ActiveTriples::Relation)
       field_values = relation_to_array(field)
       values = value.blank? ? [] : value.split('|')
@@ -73,15 +77,16 @@ namespace :calstate do
       return if field_values.sort == values.sort
       return if field_values.join('|').blank? && values.join('|').blank?
 
-      '[' + key + '] will be changed from ' \
-      '[' + field_values.join('|') + '] to ' \
-      '[' + values.join('|') + ']'
+      diff = Diffy::Diff.new(field_values.join('|') + "\n", values.join('|') + "\n")
     else
       return if field == value
 
-      '[' + key + '] will be changed from ' \
-      '[' + field + '] to [' + value + ']'
+      diff = Diffy::Diff.new(field + "\n", value + "\n")
     end
+
+    return nil if diff.to_s.length.zero?
+
+    key + ":\n" + diff.to_s
   end
 
   # Convert active triple relation to array
