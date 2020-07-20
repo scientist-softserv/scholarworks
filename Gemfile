@@ -51,6 +51,7 @@ group :development, :test do
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
   gem 'factory_bot_rails'
+  gem 'dotenv-rails', require: 'dotenv/rails-now'
 end
 
 group :development do
@@ -87,3 +88,4 @@ gem 'solargraph'
 gem 'colorize'
 gem 'rubyzip'
 gem "ruby-vips", "~> 2.0"
+gem 'aws-sdk-s3'

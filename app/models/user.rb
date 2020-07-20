@@ -9,6 +9,8 @@ class User < ApplicationRecord
   include Hyrax::User
   include Hyrax::UserUsageStats
 
+  has_many :glacier_sns_download_requests
+
 
 
   if Blacklight::Utils.needs_attr_accessible?
