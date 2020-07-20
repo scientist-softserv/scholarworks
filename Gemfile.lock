@@ -164,6 +164,7 @@ GEM
       dry-validation (~> 0.12, >= 0.12.2, < 1.0.0)
     connection_pool (2.2.2)
     crass (1.0.6)
+    database_cleaner (1.8.4)
     declarative (0.0.10)
     declarative-option (0.1.0)
     deep_merge (1.2.1)
@@ -285,6 +286,8 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
+    handle-system-rest (0.1.2)
+      httparty (~> 0.18)
     hiredis (0.6.3)
     htmlentities (4.3.4)
     http_logger (0.6.0)
@@ -833,11 +836,13 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   colorize
   config
+  database_cleaner
   devise (>= 4.4.0)
   devise-guests (~> 0.6)
   dotenv-rails
   factory_bot_rails
   fcrepo_wrapper
+  handle-system-rest
   hydra-role-management
   hyrax (= 2.5.1)
   jbuilder (~> 2.5)
