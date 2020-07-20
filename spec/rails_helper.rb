@@ -7,7 +7,8 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
-
+require 'database_cleaner'
+require 'active_fedora/cleaner'
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -55,4 +56,22 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.before(:each) do |example|
+    # Pass `:clean' to destroy objects in fedora/solr and start from scratch
+    ActiveFedora::Cleaner.clean! if example.metadata[:clean]
+    if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
+      DatabaseCleaner.strategy = :truncation
+    else
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.start
+    end
+  end
+  config.after do
+    begin
+      DatabaseCleaner.clean
+    rescue NoMethodError
+      'This can happen which the database is gone, which depends on load order of tests'
+    end
+  end
 end

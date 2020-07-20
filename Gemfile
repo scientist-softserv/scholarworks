@@ -35,6 +35,9 @@ gem 'redis', '~> 3.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'awesome_print'
+gem 'table_print'
+
 # Use sidekiq for background jobs in production
 group :production do
   gem 'sidekiq'
@@ -42,6 +45,7 @@ end
 
 group :test do
   gem 'rspec-sidekiq'
+  gem 'database_cleaner'
 end
 
 group :development, :test do
@@ -88,4 +92,5 @@ gem 'solargraph'
 gem 'colorize'
 gem 'rubyzip'
 gem "ruby-vips", "~> 2.0"
+gem 'handle-system-rest'
 gem 'aws-sdk-s3'
