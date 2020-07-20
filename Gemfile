@@ -35,6 +35,9 @@ gem 'redis', '~> 3.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'awesome_print'
+gem 'table_print'
+
 # Use sidekiq for background jobs in production
 group :production do
   gem 'sidekiq'
