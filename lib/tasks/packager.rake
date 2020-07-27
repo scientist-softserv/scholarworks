@@ -11,13 +11,14 @@ namespace :packager do
   task :aip, %i[campus file] => [:environment] do |_t, args|
 
     # error check
-    @campus = args[:campus] or raise 'No campus provided.'
+    campus = args[:campus] or raise 'No campus provided.'
     source_file = args[:file] or raise 'No zip file provided.'
 
-    # config and logger
-    config_file = 'config/packager/' + @campus + '.yml'
+    # config and loggers
+    config_file = 'config/packager/' + campus + '.yml'
     @config = OpenStruct.new(YAML.load_file(config_file))
     @log = Packager::Log.new(@config['output_level'])
+    @handle_report = File.open(@config['handle_report'], 'w')
 
     raise 'Must set campus name in config' unless @config['campus']
 
@@ -27,6 +28,8 @@ namespace :packager do
     @complete_dir = initialize_directory(File.join(@input_dir, 'complete'))
     @error_dir = initialize_directory(File.join(@input_dir, 'error'))
 
+    @errors = 0 # error counter
+
     @log.info 'Starting rake task packager:aip'.green
     @log.info 'Campus: ' + @config['campus'].yellow
     @log.info 'Loading import package ' + source_file + ' from ' + @input_dir
@@ -34,7 +37,15 @@ namespace :packager do
     sleep(3)
 
     # let's do it!
-    process_package(source_file)
+    if source_file == 'items'
+      Dir.foreach(@input_dir) do |filename|
+        next unless filename.include?('.zip') && filename.include?('ITEM')
+
+        process_package(filename)
+      end
+    else
+      process_package(source_file)
+    end
   end
 end
 
@@ -58,10 +69,18 @@ def process_package(source_file)
     # process mets file
     process_mets(file_dir)
     File.rename(zip_file, File.join(@complete_dir, source_file))
+
   rescue StandardError => e
+    @log.error e.class.to_s.red
     @log.error e
     File.rename(zip_file, File.join(@error_dir, source_file))
-    raise e if @config['exit_on_error']
+    sleep(3)
+    @errors += 1
+
+    # exit if so configured or we got three errors in a row
+    raise e if @config['exit_on_error'] || @errors >= 3
+  else
+    @errors = 0 # success, so reset the counter
   end
 end
 
@@ -147,27 +166,21 @@ def create_work_and_files(file_dir, dom)
   @log.info 'Creating Hyrax work...'
   work = create_new_work(params)
 
-  if @config['metadata_only'] == true
+  if @config['metadata_only']
     @log.info 'Metadata only'
   else
-    begin
-      @log.info 'Getting uploaded files'
-      uploaded_files = get_files_to_upload(file_dir, dom)
+    @log.info 'Getting uploaded files'
+    uploaded_files = get_files_to_upload(file_dir, dom)
 
-      log.info 'Attaching file(s) to work job...'
-      AttachFilesToWorkJob.perform_now(work, uploaded_files)
-    rescue StandardError => e
-      # if something went wrong while uploading the files
-      # destory the work, since we'll have to process it again
-      @log.error 'Error attaching files to work'
-      @log.erro 'Destroying work'
-      work.destory
-      raise e
-    end
+    @log.info 'Attaching file(s) to work job...'
+    AttachFilesToWorkJob.perform_now(work, uploaded_files)
   end
 
+  # Register work in handle
+  HandleRegisterJob.perform_now(work)
+
   # record this work in the handle log
-  handle_report.write("#{params['handle']},#{work.id}\n")
+  @handle_report.write("#{params['handle']},#{work.id}\n")
 
   # record the time it took
   end_time = Time.now.minus_with_coercion(start_time)
@@ -199,8 +212,13 @@ def create_new_work(params)
 
   # set visibility
   if params.key?('embargo_release_date')
-    params['visibility_after_embargo'] = 'open'
-    params['visibility_during_embargo'] = 'authenticated'
+    # indefinite embargo, just make it private
+    if params['embargo_release_date'] == '10000-01-01'
+      params['visibility'] = 'restricted'
+    else # regular embargo
+      params['visibility_after_embargo'] = 'open'
+      params['visibility_during_embargo'] = 'authenticated'
+    end
   else
     params['visibility'] = 'open'
   end
@@ -215,8 +233,14 @@ def create_new_work(params)
 
   @log.info 'Creating a new ' + resource_type + ' with id:' + id
 
+  if @config['type_to_work_map'][resource_type].nil?
+    raise 'No mapping for ' + resource_type
+  end
+
+  model_name = @config['type_to_work_map'][resource_type]
+
   # create the actual work based on the mapped resource type
-  model = Kernel.const_get(@config['type_to_work_map'][resource_type])
+  model = Kernel.const_get(model_name)
   work = model.new(id: id)
   work.update(params)
   work.apply_depositor_metadata(depositor.user_key)
@@ -307,20 +331,31 @@ def collect_params(dom)
   params = Hash.new { |h, k| h[k] = [] }
 
   @config['fields'].each do |field|
-    next unless field[1].include? 'xpath'
+    field_name = field[0]
+    field_definition = field[1]
 
-    field[1]['xpath'].each do |current_xpath|
+    next unless field_definition.include? 'xpath'
+
+    # definition checks
+    if field_definition['xpath'].nil?
+      raise '"' + field_name + '" defined with empty xpath'
+    end
+    if field_definition['type'].nil?
+      raise '"' + field_name + '" missing type'
+    end
+
+    field_definition['xpath'].each do |current_xpath|
       desc_metadata_prefix = @config['DSpace ITEM']['desc_metadata_prefix']
       namespace = @config['DSpace ITEM']['namespace']
       metadata = dom.xpath(desc_metadata_prefix + current_xpath, namespace)
 
       unless metadata.empty?
-        if field[1]['type'].include? 'Array'
+        if field_definition['type'].include? 'Array'
           metadata.each do |node|
-            params[field[0]] << node.text
+            params[field_name] << node.text.squish
           end
         else
-          params[field[0]] = metadata.text
+          params[field_name] = metadata.text.squish
         end
       end
     end
@@ -337,8 +372,4 @@ end
 def initialize_directory(dir)
   Dir.mkdir(dir) unless Dir.exist?(dir)
   dir
-end
-
-def handle_report
-  @handle_report ||= File.open('/data/tmp/MAIN_handle_report.txt', 'w')
 end

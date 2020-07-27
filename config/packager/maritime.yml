@@ -2,11 +2,9 @@
 campus: 'Maritime'
 work_type: "default"
 metadata_file: "mets.xml"
-# metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/dim:xmldata/dim:dim[@dspaceType='ITEM']"
-# item_metadata_prefix: "//dim:dim[@dspaceType='ITEM']"
-# collection_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
 depositor: kcloud@calstate.edu
 input_dir: /data/exported/
+handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: 't435gc96m'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
@@ -23,7 +21,7 @@ output_level: 'verbose'
 include_thumbnail: false
 
 # Enter University eg, California State University, <name>
-default_university: California State Univeristy Maritime Academy
+default_university: California State University Maritime Academy
 
 # work map from resource_type.
 # values are value_mapped_to_resource_type: Work Type
@@ -36,11 +34,8 @@ type_to_work_map:
   Preprint: Publication
   Working Paper: Publication
   Presentation: Publication
-  self assessment:
   Book: Publication
   Dataset: Dataset
-  exam: Publication
-  index: Publication
   Report: Publication
   Student Research: Thesis
   Technical Report: Publication
@@ -50,7 +45,9 @@ type_to_work_map:
   Experiment: Publication
   Graduate Project: Thesis
   Graph: Dataset
-  Poster: Dataset
+  Poster: Thesis
+  Paper: Thesis
+  Project: Thesis
 
 
 DSpace COMMUNITY:
@@ -222,7 +219,7 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='genre'][not(@qualifier)]"
     type: Array
   rights_statement:
-    xpath:
+#    xpath:
 #      - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
 #      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='usage']"
     type: Array

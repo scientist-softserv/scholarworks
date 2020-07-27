@@ -2,11 +2,9 @@
 campus: 'Long Beach'
 work_type: "default"
 metadata_file: "rdf.xml"
-# metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/dim:xmldata/dim:dim[@dspaceType='ITEM']"
-# item_metadata_prefix: "//dim:dim[@dspaceType='ITEM']"
-# collection_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
 depositor: kcloud@calstate.edu
 input_dir: /data/csulb/exported/
+handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: 'rj4304528'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?

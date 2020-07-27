@@ -1,8 +1,10 @@
-# Getting started
+# CSU ScholarWorks
+
+## Getting Started
 
 Install Ruby, Java, Postgres, etc., [prerequisites from Hyrax](https://github.com/samvera/hyrax).
 
-Create a database and user using the development information in `config/database.yml`
+Create a database and user using the development settings in `config/database.yml`
 
 ```
 git clone https://github.com/csuscholarworks/scholarworks.git
@@ -21,8 +23,7 @@ rails hyrax:default_collection_types:create
 rails hyrax:migrate:add_collection_type_and_permissions_to_collections
 ```
 
-Register a new user in Hyrax.
-Make that user an administrator.
+Register a new user in Hyrax. And make that user an administrator.
 
 `rails c`
 ```
@@ -31,16 +32,27 @@ admin.users << User.find_by_user_key('your_admin_users_email@fake.email.org')
 admin.save
 ```
 
-Remove all depositors from the default admin set.
+## Campus-based Submissions
 
-## Campus-based submissions
+First, remove all depositors from the default admin set.  This way users can only deposit into a specific campus admin set and only see that option in the 'relationships' tab when depositing.
 
-Create a new admin set and give it the name 'Stanislaus'. Add the group 'stanislaus' as Depositor. Create a new user 'test@stanislaus.edu'.
+Create a new admin set and give it the name 'Stanislaus'. Add the group 'stanislaus' as depositor. Create a new user 'test@stanislaus.edu'.
 
-That user should now be able to deposit to the Staniaus admin set and all submissions will use Stanislaus controlled vocabularies and have the campus field set to 'Stanislaus'.
+That user should now be able to deposit into the Staniaus admin set, and all submissions will use Stanislaus controlled vocabularies and have the campus field set to 'Stanislaus'.
 
-Other campuses and users can be created in this same way.  See `app\models\ability.rb` for mapping.
+Other campuses and users can be created for dev/test in this same way.  See `app\models\ability.rb` for mapping.
 
+## DSpace Import
+
+The packager:aip rake task performs the basic functions of importing [DSpace AIP packages](https://wiki.lyrasis.org/display/DSDOC5x/DSpace+AIP+Format) into Hyrax.  The rake task takes two arguments: the campus identifier and the name of the AIP package.  Here's an example for Channel Islands:
+
+```
+bundle exec rake packager:aip[channel,COLLECTION@10139-722.zip]
+```
+
+The campus identifier corresponds to the name of the config file in `config/packager`, so in this example `config/packager/channel.yml`.  That includes configurations for where the AIP packages are located, various fixed metadata elements, and a metadata mapping of DSpace fields to those in Hyrax.
+
+The AIP package can be for a single item, or more typically for an entire DSpace collection or community.
 
 # Branching
 
@@ -219,3 +231,45 @@ $ git push origin :hotfix-id                        // deletes the remote branch
 
 ![Git Branching Model](http://f.cl.ly/items/3i1Z3n1T1k392r1A3Q0m/gitflow-model.001.png)  
 *[gitflow-model.src.key](http://cl.ly/3V1b0c2F1H4024173S1M)*
+
+
+## Glacier
+All original files are stored in Glacier when they are ingested.  Since Glacier, and S3 are so tightly integrated, the workflow is little more than pushing the files to an S3 bucket with a Glacier storage type, and then recording the key (filepath) on the fileset.
+
+### Configuring APP
+There is cost associated with storing items in Glacier, so you must have an account setup to handle that.  Several environment variable should be set to configure AWS and S3/Glacier properly:
+
+```
+AWS_REGION=<your region "us-west-2" or whatever>
+AWS_ACCESS_KEY_ID=<access key>
+AWS_SECRET_ACCESS_KEY=<secret key>
+GLACIER_S3_BUCKET=<name of your bucket>
+```
+
+### Configuring AWS
+The application has the ability to email the person who initiates glacier thaws when they are ready.  To accomplish this, there is some configuration in AWS that is necessary.  First we must setup a SNS (simple notification service) message, and then we must setup the S3 bucket to trigger the SNS message when specific actions happen, in our case, when a record is thawed.
+
+#### Create an SNS Topic and subscription
+![sns topic](./public/img/sns-subscription.png)
+
+#### Assign SNS
+From within the S3 bucket, setup your SNS message to fire whenever a file is restored
+
+![assign sns](./public/img/assign_sns.png)
+
+### S3 keys for files
+A common situation that glacier is intended to protect is when an administrator deletes a file set accidentally.  Without Glacier, those original files are deleted as well.  With Glacier, we're able to retrieve those files, and re-ingest them.  Mapping between works -> file sets -> original files -> files in S3/Glacier happens in the path structure of the key for the S3 object.  Keys look like this:
+
+```
+work/<work id>/<file_set id>/files/<file uuid>
+```
+
+You may notice that this is the id of the actual file in active_fedora with the work information appended to the front.
+
+### Thawing records
+Glacier files are always visible in S3, but they are not always accessible.  An administrator with access to the S3 bucket must initiate a retrieval of a file, then wait the several hours until it becomes available.  Part of the retrieval process is to specify how long you want the record to stay thawed out for.  Once that time period is expired, the record goes back into deep freeze and would need to be retrieved again to access.  The default thaw period for the application is 7 days.
+
+#### Thawing Via AWS S3
+You can thaw files from directly within the AWS S3 interface.  This is the only way to retrieve a record that has been deleted from our application.
+
+![glacier thaw](./public/img/glacier-restore.png)

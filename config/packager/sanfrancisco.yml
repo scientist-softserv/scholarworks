@@ -2,12 +2,10 @@
 campus: 'San Francisco'
 work_type: "default"
 metadata_file: "mets.xml"
-# metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/dim:xmldata/dim:dim[@dspaceType='ITEM']"
-# item_metadata_prefix: "//dim:dim[@dspaceType='ITEM']"
-# collection_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
 depositor: kcloud@calstate.edu
-input_dir: /data/exported/
-admin_set_id: '000000000'
+input_dir: ./examples/sanfrancisco
+handle_report: ./MAIN_handle_report.txt
+admin_set_id: "admin_set/default"
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
 # true - ends processing on error
@@ -139,6 +137,7 @@ fields:
   degree_name:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='degree']"
+    type: Array
   #editor:
   #  xpath:
   #    - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='editor']"

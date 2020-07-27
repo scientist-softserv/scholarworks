@@ -131,13 +131,13 @@ Hyrax.config do |config|
   # These must be lambdas that return a Pathname. Can be configured separately
   #  config.upload_path = ->() { Rails.root + 'tmp' + 'uploads' }
   #  config.cache_path = ->() { Rails.root + 'tmp' + 'uploads' + 'cache' }
-  config.upload_path = -> () { '/data/tmp/uploads' }
-  config.cache_path = -> () { '/data/tmp/cache' }
+  config.upload_path = -> () { ENV.fetch('UPLOAD_BASE', '/data') + "/tmp/uploads" }
+  config.cache_path = -> () { ENV.fetch('UPLOAD_BASE', '/data') + "/cache" }
 
   # Location on local file system where derivatives will be stored
   # If you use a multi-server architecture, this MUST be a shared volume
   # config.derivatives_path = Rails.root.join('tmp', 'derivatives')
-  config.derivatives_path = '/data/derivatives'
+  config.derivatives_path = Rails.root.join(ENV['UPLOAD_BASE'] || '/data', "derivatives")
   # config.derivatives_path = Rails.root.join + 'data' + 'derivatives'
 
   # Should schema.org microdata be displayed?
@@ -150,7 +150,7 @@ Hyrax.config do |config|
   # Location on local file system where uploaded files will be staged
   # prior to being ingested into the repository or having derivatives generated.
   # If you use a multi-server architecture, this MUST be a shared volume.
-  config.working_path = '/data/tmp/uploads'
+  config.working_path = -> () { ENV.fetch('UPLOAD_BASE', '/data') + "/tmp/uploads" }
   #config.working_path = Rails.root.join + 'data' + 'tmp' + 'working'
 
   # Should the media display partial render a download link?
@@ -233,3 +233,5 @@ Date::DATE_FORMATS[:standard] = '%m/%d/%Y'
 Qa::Authorities::Local.register_subauthority('subjects', 'Qa::Authorities::Local::TableBasedAuthority')
 Qa::Authorities::Local.register_subauthority('languages', 'Qa::Authorities::Local::TableBasedAuthority')
 Qa::Authorities::Local.register_subauthority('genres', 'Qa::Authorities::Local::TableBasedAuthority')
+
+Hyrax::CurationConcern.actor_factory.use Hyrax::Actors::HandleActor

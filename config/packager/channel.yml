@@ -2,13 +2,10 @@
 campus: "Channel Islands"
 work_type: "default"
 metadata_file: "mets.xml"
-# metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/dim:xmldata/dim:dim[@dspaceType='ITEM']"
-# item_metadata_prefix: "//dim:dim[@dspaceType='ITEM']"
-# collection_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
 depositor: dwalker@calstate.edu
 input_dir: /data/exported/
-metadata_only: true
-admin_set_id: 'mw22v5449'
+handle_report: /data/tmp/MAIN_handle_report.txt
+admin_set_id: 'dr26xx36k'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
 # true - ends processing on error
