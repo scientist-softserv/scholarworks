@@ -1,0 +1,117 @@
+{
+    "workflows": [
+        {
+            "name": "fresno_two_step_mediated_deposit",
+            "label": "Fresno State two-step mediated deposit workflow",
+            "description": "A multi-step workflow for mediated deposit in which all deposits must be approved by reviewers. Reviewers may also send deposits back to the depositor.",
+            "allows_access_grant": false,
+            "actions": [
+                {
+                    "name": "publish",
+                    "from_states": [],
+                    "transition_to": "pending_review",
+                    "notifications": [
+                        {
+                            "notification_type": "email",
+                            "name": "Hyrax::Workflow::PendingReviewNotification",
+                            "to": ["approving"]
+                        }
+                    ],
+                    "methods": [
+                        "Hyrax::Workflow::DeactivateObject"
+                    ]
+                }, {
+                    "name": "request_changes_on_work_object",
+                    "from_states": [{"names": ["deposited", "pending_review"], "roles": ["approving"]}],
+                    "transition_to": "changes_required",
+                    "notifications": [
+                        {
+                            "notification_type": "email",
+                            "name": "Hyrax::Workflow::ChangesRequiredNotification",
+                            "to": ["approving"]
+                        }
+                    ],
+                    "methods": [
+                        "Hyrax::Workflow::DeactivateObject",
+                        "Hyrax::Workflow::GrantEditToDepositor"
+                    ]
+                },{
+                    "name": "request_changes_on_metadata",
+                    "from_states": [{"names": ["deposited", "pending_review_2"], "roles": ["approving"]}],
+                    "transition_to": "changes_required_2",
+                    "notifications": [
+                        {
+                            "notification_type": "email",
+                            "name": "Hyrax::Workflow::ChangesRequiredNotification",
+                            "to": ["approving"]
+                        }
+                    ],
+                    "methods": [
+                        "Hyrax::Workflow::DeactivateObject",
+                        "Hyrax::Workflow::GrantEditToDepositor"
+                    ]
+                },{
+                    "name": "approve_work_object",
+                    "from_states": [{"names": ["pending_review"], "roles": ["approving"]}],
+                    "transition_to": "pending_review_2",
+                    "notifications": [
+                        {
+                            "notification_type": "email",
+                            "name": "Hyrax::Workflow::DepositedNotification",
+                            "to": ["approving"]
+                        }
+                    ],
+                    "methods": [
+                        "Hyrax::Workflow::GrantReadToDepositor",
+                        "Hyrax::Workflow::RevokeEditFromDepositor",
+                        "Hyrax::Workflow::ActivateObject"
+                    ]
+                }, {
+                    "name": "approve_metadata",
+                    "from_states": [{"names": ["pending_review_2"], "roles": ["approving"]}],
+                    "transition_to": "deposited",
+                    "notifications": [
+                        {
+                            "notification_type": "email",
+                            "name": "Hyrax::Workflow::DepositedNotification",
+                            "to": ["approving"]
+                        }
+                    ],
+                    "methods": [
+                        "Hyrax::Workflow::GrantReadToDepositor",
+                        "Hyrax::Workflow::RevokeEditFromDepositor",
+                        "Hyrax::Workflow::ActivateObject"
+                    ]
+                }, {
+                    "name": "request_review_of_work_object",
+                    "from_states": [{"names": ["changes_required"], "roles": ["depositing"]}],
+                    "transition_to": "pending_review",
+                    "notifications": [
+                        {
+                            "notification_type": "email",
+                            "name": "Hyrax::Workflow::PendingReviewNotification",
+                            "to": ["approving"]
+                        }
+                    ]
+                }, {
+                    "name": "request_review_of_metadata",
+                    "from_states": [{"names": ["changes_required_2"], "roles": ["depositing"]}],
+                    "transition_to": "pending_review_2",
+                    "notifications": [
+                        {
+                            "notification_type": "email",
+                            "name": "Hyrax::Workflow::PendingReviewNotification",
+                            "to": ["approving"]
+                        }
+                    ]
+                }, {
+                    "name": "comment_only",
+                    "from_states": [
+                        { "names": ["pending_review", "pending_review_2", "deposited"], "roles": ["approving"] },
+                        { "names": ["changes_required", "changes_required_2"], "roles": ["depositing"] }
+                    ]
+                }
+            ]
+        }
+    ]
+}
