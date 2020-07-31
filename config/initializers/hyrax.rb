@@ -132,7 +132,7 @@ Hyrax.config do |config|
   #  config.upload_path = ->() { Rails.root + 'tmp' + 'uploads' }
   #  config.cache_path = ->() { Rails.root + 'tmp' + 'uploads' + 'cache' }
   config.upload_path = -> () { ENV.fetch('UPLOAD_BASE', '/data') + "/tmp/uploads" }
-  config.cache_path = -> () { ENV.fetch('UPLOAD_BASE', '/data') + "/cache" }
+  config.cache_path = -> () { ENV.fetch('UPLOAD_BASE', '/data') + "/tmp/cache" }
 
   # Location on local file system where derivatives will be stored
   # If you use a multi-server architecture, this MUST be a shared volume
