@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 class SolrDocument
   include Blacklight::Solr::Document
+  include BlacklightOaiProvider::SolrDocument
+
   include Blacklight::Gallery::OpenseadragonSolrDocument
 
   # Adds Hyrax behaviors to the SolrDocument.
@@ -121,4 +123,24 @@ class SolrDocument
   def granting_institution
     self[Solrizer.solr_name('granting_institution')]
   end
+
+  # blacklight_oai_provider mapping
+  field_semantics.merge!(
+    contributor: ['contributor_tesim', 'advisor_tesim','committee_member_tesim','editor_tesim'],
+    coverage: ['coverage_tesim', 'time_period_tesim', 'geographical_area_tesim'],
+    creator: ['creator_tesim', 'author_tesim'],
+    date: ['date_tesim','date_copyright_tesim'],
+    description: ['description_tesim', 'abstract_tesim', 'publication_status_tesim', 'bibliographic_citation_tesim'],
+    format: 'format',
+    identifier: ['identifier_tesim', 'doi_tesim', 'isbn_tesim', 'issn_tesim'],
+    language: 'language_tesim',
+    publisher: ['publisher_tesim','sponsor_tesim', 'college_tesim', 'department_tesim', 'granting_institution_tesim'],
+    relation: 'relation_tesim',
+    rights: ['rights_tesim', 'rights_statement_tesim', 'rights_note_tesim', 'rights_holder_tesim', 'rights_uri_tesim', 'license_tesim'],
+    source: 'source_tesim',
+    subject: ['subject_tesim', 'keyword_tesim'],
+    title: ['title_tesim', 'alternative_title_tesim'],
+    type: ['type_tesim', 'resource_type_thesis_tesim', 'resource_type_publication_tesim', 'resource_type_educational_resource_tesim', 'resource_type_dataset_tesim']
+  )
+
 end
