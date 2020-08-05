@@ -363,9 +363,8 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
-  end
 
-  config.oai = {
+    config.oai = {
       provider: {
         repository_name: 'ScholarWorks OAI-PMH',
         repository_url: 'http://ec2-18-237-132-228.us-west-2.compute.amazonaws.com/catalog/oai',
@@ -381,6 +380,8 @@ class CatalogController < ApplicationController
       }
     }
 
+    # End configure_blacklight
+  end
 
   # disable the bookmark control from displaying in gallery view
   # Hyrax doesn't show any of the default controls on the list view, so
