@@ -94,3 +94,4 @@ gem 'rubyzip'
 gem "ruby-vips", "~> 2.0"
 gem 'handle-system-rest'
 gem 'aws-sdk-s3'
+gem 'blacklight_oai_provider'
