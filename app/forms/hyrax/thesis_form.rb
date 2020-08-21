@@ -20,12 +20,12 @@ module Hyrax
     self.required_fields -= [:rights_statement, :keyword, :alternative_title, :date_issued]
 
     def primary_terms
-      [:creator, :title, :description, :resource_type_thesis]
+      [:creator, :title, :description, :resource_type_thesis, :rights_statement]
     end
 
     def secondary_terms
       [:alternative_title, :advisor, :committee_member, :publisher, :college, :department, :degree_level, :degree_name,
-       :date_issued, :subject, :language, :rights_statement, :rights_holder, :rights_uri, :rights_note,
+       :date_issued, :subject, :language, :rights_holder, :rights_uri, :rights_note,
        :time_period, :geographical_area, :doi, :isbn, :issn, :oclcno, :identifier, :identifier_uri,
        :granting_institution, :bibliographic_citation, :description_note]
     end
