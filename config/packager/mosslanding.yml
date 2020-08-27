@@ -1,0 +1,94 @@
+
+campus: 'Moss Landing'
+work_type: "default"
+metadata_file: "DC Record.xml"
+depositor: admin@calstate.edu
+input_dir: /data/exported/ml
+handle_report: /data/tmp/MAIN_handle_report.txt
+admin_set_id: "vt150j246"
+
+# exit_on_error: when an AIP package encounters an error should the import process end or continue?
+# true - ends processing on error
+# false - continues processing
+exit_on_error: true
+
+# output_level: How much will be output to the shell while running
+# quiet - Nothing will be output
+# minimal - a running progress bar will be output
+# verbose - running progress text will be output
+output_level: 'verbose'
+
+include_thumbnail: false
+
+# Enter University eg, California State University, <name>
+default_university: San Francisco State Universit
+
+# work map from resource_type.
+# values are value_mapped_to_resource_type: Work Type
+type_to_work_map:
+  Thesis: Thesis
+  Text: Thesis
+  Dissertation: Thesis
+  #Project: Thesis
+  #Graduate Project: Thesis
+  #Student Research: Thesis
+  #Newspaper: Publication
+  #Journal Issue: Publication
+  Article: Publication
+  #Poster: Publication
+  #Report: Publication
+  #Preprint: Publication
+  #Technical Report: Publication
+  #Working Paper: Publication
+  Musical Score: Thesis
+  #Learning Object: EducationalResource
+  #Text: Publication
+  Dataset: Dataset
+  Other: Publication
+
+
+Thesis:
+  desc_metadata_prefix: "//oai_dc:dc"
+  namespace:
+    oai_dc: http://www.openarchives.org/OAI/2.0/oai_dc/
+    dc: http://purl.org/dc/elements/1.1/
+
+fields:
+
+  title:
+    xpath:
+      - "/dc:title"
+    type: Array
+  creator:
+    xpath:
+      - "/dc:creator"
+      - "/dc:contributor"
+    type: Array
+  subject:
+    xpath:
+      - "/dc:subject"
+    type: Array
+  resource_type:
+    xpath:
+      - "/dc:type"
+    type: Array
+  identifier:
+    xpath:
+      - "/dc:identifier"
+    type: Array
+  publisher:
+    xpath:
+      - "/dc:publisher"
+    type: Array
+  language:
+    xpath:
+      - "/dc:language"
+    type: Array
+  extent: # (Default) Newspaper
+    xpath:
+      - "/dc:format"
+    type: Array
+  description: # Thesis
+    xpath:
+      - "/dc:description"
+    type: Array
