@@ -121,4 +121,8 @@ class SolrDocument
   def granting_institution
     self[Solrizer.solr_name('granting_institution')]
   end
+
+  def rights_holder
+    self[Solrizer.solr_name('rights_holder')]
+  end
 end
