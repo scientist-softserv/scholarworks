@@ -20,7 +20,7 @@ class Thesis < ActiveFedora::Base
     index.as :stored_searchable, :facetable
   end
 
-  property :degree_level, predicate: ::RDF::Vocab::DC.educationLevel do |index|
+  property :degree_level, predicate: ::RDF::Vocab::DC.educationLevel, multiple: false do |index|
     index.as :stored_searchable, :facetable
   end
 
