@@ -8,7 +8,6 @@ require 'zip'
 
 namespace :ml_packager do
   desc 'Migrate Landing moss packages to Hyrax'
-  #task :thesis, %i[campus] => [:environment] do |_t, args|
   task :ml, %i[campus type] => [:environment] do |_t, args|
 
     # error check
@@ -21,8 +20,10 @@ namespace :ml_packager do
     @config = OpenStruct.new(YAML.load_file(config_file))
     @log = Packager::Log.new(@config['output_level'])
     @handle_report = File.open(@config['handle_report'], 'w')
-    @log.info " type " + @type
-    
+    @log.info " Work type " + @type
+
+    raise 'Must set metadata_file in the config' unless @config['metadata_file']
+    raise 'Must set data_file in the config' unless @config['data_file']
     raise 'Must set campus name in config' unless @config['campus']
     
     # set working directories
@@ -39,11 +40,10 @@ namespace :ml_packager do
     @log.info 'Loading import package from ' + @input_dir
 
     #sleep(3)
- 
     Dir.each_child(@input_dir) do  |dirname|
+      @log.info "process " + dirname
       processDir(dirname)
     end
-   
   end
 end
 
@@ -76,35 +76,34 @@ def processDir(path)
     end
 
     sleep(3)
+    metadata_file = ""
     validMetadata = false
-    metadata_file = File.join(@input_dir + '/' + path, @config['metadata_file'])
-    if (File.exist?(metadata_file))
-      validMetadata = true
-    else
-      metadata_file = File.join(@input_dir + '/' + path, @config['metadata_file'].gsub(" ", "_"))
+    metadata_files = @config['metadata_file'].split("|")
+    metadata_files.each do |name|
+      metadata_file = File.join(@input_dir + '/' + path, name)
       if (File.exist?(metadata_file))
         validMetadata = true
-      else
-        metadata_file = File.join(@input_dir + '/' + path, "DC datastream.xml")
-        if (File.exist?(metadata_file))
-          validMetadata = true
-        end
+        break
       end
     end
-                                           
+    
     done_dir = File.join(@error_dir, path)  
     if (validMetadata)
       # we still need to check for PDF file
       data_file = nil
-      Dir.glob(@input_dir + "/" + path + "/*.pdf") do |filename|
-        p "file name #{filename}"
-        data_file = filename
+      data_files = @config['data_file'].split("|")
+      data_files.each do |fileExt|
+        Dir.glob(@input_dir + "/" + path + "/*." + fileExt) do |filename|
+          data_file = filename
+          break
+        end
+        break if !data_file.nil?
       end
-      
+
       if !data_file.nil?
         begin
-          p "processing dir #{path}"
-          #  p "metadata_file #{metadata_file}"
+          @log.info "Using metatadata file " + metadata_file
+          @log.info "Using data file " + data_file
           process_metadata(path, metadata_file, data_file)
           done_dir = File.join(@complete_dir, path)
         rescue StandardError => e

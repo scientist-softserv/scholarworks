@@ -1,7 +1,9 @@
 
 campus: 'Moss Landing'
 work_type: "default"
-metadata_file: "DC Record.xml"
+metadata_file: "DC Record.xml|DC_Record.xml|DC datastream.xml"
+#metadata_file: "DC Record.xml"
+data_file: "pdf|rtf|xlsx|zip"
 depositor: admin@calstate.edu
 input_dir: /data/exported/ml
 handle_report: /data/tmp/MAIN_handle_report.txt
