@@ -8,12 +8,16 @@ require 'zip'
 
 namespace :ml_packager do
   desc 'Migrate Landing moss packages to Hyrax'
-  task :ml, %i[campus type] => [:environment] do |_t, args|
+  task :ml, %i[campus type visibility] => [:environment] do |_t, args|
 
     # error check
     campus = args[:campus] or raise 'No campus provided.'
     #source_file = args[:file] or raise 'No zip file provided.'
     @type = args[:type]
+    @visibility = args[:visibility]
+    if @visibility.nil?
+      @visibility = 'open'
+    end
 
     # config and loggers
     config_file = 'config/packager/' + campus + '.yml'
@@ -21,6 +25,7 @@ namespace :ml_packager do
     @log = Packager::Log.new(@config['output_level'])
     @handle_report = File.open(@config['handle_report'], 'w')
     @log.info " Work type " + @type
+    @log.info " Visibility " + @visibility
 
     raise 'Must set metadata_file in the config' unless @config['metadata_file']
     raise 'Must set data_file in the config' unless @config['data_file']
@@ -206,17 +211,7 @@ def ml_create_new_work(params)
   end
 
   # set visibility
-  if params.key?('embargo_release_date')
-    # indefinite embargo, just make it private
-    if params['embargo_release_date'] == '10000-01-01'
-      params['visibility'] = 'restricted'
-    else # regular embargo
-      params['visibility_after_embargo'] = 'open'
-      params['visibility_during_embargo'] = 'authenticated'
-    end
-  else
-    params['visibility'] = 'open'
-  end
+  params['visibility'] = @visibility
 
   # set admin set to deposit into
   unless @config['admin_set_id'].nil?
