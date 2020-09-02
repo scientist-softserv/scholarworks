@@ -9,28 +9,24 @@ require 'zip'
 namespace :ml_packager do
   desc 'Migrate Landing moss packages to Hyrax'
   task :ml, %i[campus type visibility] => [:environment] do |_t, args|
-
     # error check
     campus = args[:campus] or raise 'No campus provided.'
-    #source_file = args[:file] or raise 'No zip file provided.'
+    # source_file = args[:file] or raise 'No zip file provided.'
     @type = args[:type]
-    @visibility = args[:visibility]
-    if @visibility.nil?
-      @visibility = 'open'
-    end
+    @visibility = args[:visibility] ||= 'open'
 
     # config and loggers
     config_file = 'config/packager/' + campus + '.yml'
     @config = OpenStruct.new(YAML.load_file(config_file))
     @log = Packager::Log.new(@config['output_level'])
     @handle_report = File.open(@config['handle_report'], 'w')
-    @log.info " Work type " + @type
-    @log.info " Visibility " + @visibility
+    @log.info ' Work type ' + @type
+    @log.info ' Visibility ' + @visibility
 
     raise 'Must set metadata_file in the config' unless @config['metadata_file']
     raise 'Must set data_file in the config' unless @config['data_file']
     raise 'Must set campus name in config' unless @config['campus']
-    
+
     # set working directories
     @input_dir = @config['input_dir']
     @complete_dir = initialize_directory(@input_dir + '_complete')
@@ -38,88 +34,85 @@ namespace :ml_packager do
     @log.info 'input dir ' + @input_dir
     @log.info 'complete dir ' + @complete_dir
     @log.info 'error_dir ' + @error_dir
-    @errors = 0 # error counter
 
     @log.info 'Starting rake task packager:ml'.green
     @log.info 'Campus: ' + @config['campus'].yellow
     @log.info 'Loading import package from ' + @input_dir
 
-    #sleep(3)
-    Dir.each_child(@input_dir) do  |dirname|
-      @log.info "process " + dirname
-      processDir(dirname)
+    Dir.each_child(@input_dir) do |dirname|
+      @log.info 'process ' + dirname
+      process_dir(dirname)
     end
   end
 end
 
-def cleanup(sourcePath, destPath)
+def cleanup(source_path, dest_path)
   # create directories if needed
-  curPath = ""      
-  paths = destPath.split("/")
-  paths.each do |dirName| 
-    next if dirName.nil? || dirName.empty?
-    curPath = curPath + "/" + dirName
-    #p "creating [#{curPath}]"
-    Dir.mkdir(curPath) unless Dir.exist?(curPath)
+  cur_path = ''
+  paths = dest_path.split('/')
+  paths.each do |dirname|
+    next if dirname.nil? || dirname.empty?
+
+    cur_path = cur_path + '/' + dirname
+    Dir.mkdir(cur_path) unless Dir.exist?(cur_path)
   end
 
   # now move files over to new dest directory
-  Dir.glob(File.join(@input_dir + "/" + sourcePath, '*')).each {|f| FileUtils.mv(f, destPath)}
+  Dir.glob(File.join(@input_dir + '/' + source_path, '*')).each { |f| FileUtils.mv(f, dest_path) }
 
   # now remove the source dir
-  delete_dir = File.join(@input_dir, sourcePath)
-  if File.exist?(delete_dir)
-    Dir.delete delete_dir
-  end
+  delete_dir = File.join(@input_dir, source_path)
+  Dir.delete delete_dir if File.exist?(delete_dir)
 end
 
-def processDir(path)
-  if File.directory?(File.join(@input_dir, path))
-    # process subdirectories
-    Dir.each_child(File.join(@input_dir, path)) do  |subDir|
-      processDir(path + "/" + subDir)
-    end
+def process_dir(path)
+  return unless File.directory?(File.join(@input_dir, path))
 
-    sleep(3)
-    metadata_file = ""
-    validMetadata = false
-    metadata_files = @config['metadata_file'].split("|")
-    metadata_files.each do |name|
-      metadata_file = File.join(@input_dir + '/' + path, name)
-      if (File.exist?(metadata_file))
-        validMetadata = true
+  # process subdirectories
+  Dir.each_child(File.join(@input_dir, path)) do |subdir|
+    process_dir(path + '/' + subdir)
+  end
+
+  sleep(3)
+  metadata_file = ''
+  valid_metadata = false
+  metadata_files = @config['metadata_file'].split('|')
+  metadata_files.each do |name|
+    metadata_file = File.join(@input_dir + '/' + path, name)
+    if File.exist?(metadata_file)
+      valid_metadata = true
+      break
+    end
+  end
+
+  done_dir = File.join(@error_dir, path)
+  if valid_metadata
+    # we still need to check for PDF file
+    data_file = nil
+    data_files = @config['data_file'].split('|')
+    data_files.each do |fileext|
+      Dir.glob(@input_dir + '/' + path + '/*.' + fileext) do |filename|
+        data_file = filename
         break
       end
+      break unless data_file.nil?
     end
-    
-    done_dir = File.join(@error_dir, path)  
-    if (validMetadata)
-      # we still need to check for PDF file
-      data_file = nil
-      data_files = @config['data_file'].split("|")
-      data_files.each do |fileExt|
-        Dir.glob(@input_dir + "/" + path + "/*." + fileExt) do |filename|
-          data_file = filename
-          break
-        end
-        break if !data_file.nil?
-      end
 
-      if !data_file.nil?
-        begin
-          @log.info "Using metatadata file " + metadata_file
-          @log.info "Using data file " + data_file
-          process_metadata(path, metadata_file, data_file)
-          done_dir = File.join(@complete_dir, path)
-        rescue StandardError => e
-          @log.error e.class.to_s.red
-          @log.error e
-        end
-      end
+    return if data_file.nil?
+
+    begin
+      @log.info 'Using metatadata file ' + metadata_file
+      @log.info 'Using data file ' + data_file
+      process_metadata(path, metadata_file, data_file)
+      done_dir = File.join(@complete_dir, path)
+    rescue StandardError => e
+      @log.error e.class.to_s.red
+      @log.error e
     end
-    cleanup(path, done_dir)
-  end #if File.directory?(File.join(@input_dir, path))
-end # processDir
+
+  end
+  cleanup(path, done_dir)
+end
 
 # Process the DC Record file in a directory
 # creates new work(s) based on content
@@ -127,16 +120,16 @@ end # processDir
 # @param dirname [String] the directory of the extracted package
 # @raise RuntimeError if no METS file found
 #
-def process_metadata(dirname, metadata_file, data_file)
+def process_metadata(dir_name, metadata_file, data_file)
   @log.info 'Processing metadata file'
-  @log.info "metadata file " + metadata_file
-  
+  @log.info 'metadata file ' + metadata_file
+
   # make sure we actually have a mets file
-  raise 'No metadata file found in ' + dirname unless File.exist?(metadata_file)
-  
+  raise 'No metadata file found in ' + dir_name unless File.exist?(metadata_file)
+
   # parse it
   dom = Nokogiri::XML(File.open(metadata_file))
-  
+
   # determine the type of object
   # if this is a dspace item, create a new work
   # otherwise process the items from this community/collection
@@ -157,13 +150,10 @@ def ml_create_work_and_files(dom, data_file)
   # data mapper
   params = ml_collect_params(dom)
   pp params if @debug
-  
-  #let hardcode the handle for now
-  #@log.info 'Handle: ' + params['handle'][0]
-  
+
   @log.info 'Creating Hyrax work...'
   work = ml_create_new_work(params)
-  
+
   if @config['metadata_only']
     @log.info 'Metadata only'
   else
@@ -173,12 +163,6 @@ def ml_create_work_and_files(dom, data_file)
     @log.info 'Attaching file(s) to work job...'
     AttachFilesToWorkJob.perform_now(work, uploaded_files)
   end
-
-  # Register work in handle
-  #HandleRegisterJob.perform_now(work)
-
-  # record this work in the handle log
-  #@handle_report.write("#{params['handle']},#{work.id}\n")
 
   # record the time it took
   end_time = Time.now.minus_with_coercion(start_time)
@@ -203,32 +187,23 @@ def ml_create_new_work(params)
   id = Noid::Rails::Service.new.minter.mint
 
   # set resource type
-  resource_type = 'Thesis'
-  #unless params['resource_type'].first.nil?
-  unless @type.nil?
-    resource_type = @type
-    #resource_type = params['resource_type'].first
-  end
+  resource_type = @type || 'Thesis'
 
   # set visibility
   params['visibility'] = @visibility
 
   # set admin set to deposit into
-  unless @config['admin_set_id'].nil?
-    params['admin_set_id'] = @config['admin_set_id']
-  end
+  params['admin_set_id'] = @config['admin_set_id'] unless @config['admin_set_id'].nil?
 
   # set campus
   params['campus'] = [@config['campus']]
 
   @log.info 'Creating a new ' + resource_type + ' with id:' + id
 
-  if @config['type_to_work_map'][resource_type].nil?
-    raise 'No mapping for ' + resource_type
-  end
+  raise 'No mapping for ' + resource_type if @config['type_to_work_map'][resource_type].nil?
 
   model_name = @config['type_to_work_map'][resource_type]
-  
+
   # create the actual work based on the mapped resource type
   model = Kernel.const_get(model_name)
   work = model.new(id: id)
@@ -246,20 +221,13 @@ end
 # @param dom [Nokogiri::XML::Document] DOMDocument of METS file
 # @return [Array<Hyrax::UploadedFile>]
 #
-def ml_get_files_to_upload(pdfFile)
+def ml_get_files_to_upload(pdf_file)
   @log.info 'Figuring out which files to upload'
 
   uploaded_files = []
 
-  #upload pdf file
-  #pdfFile = File.join(@input_dir, file_dir, "OBJ datastream.pdf")
-  uploaded_file = ml_upload_file(pdfFile)
+  uploaded_file = ml_upload_file(pdf_file)
   uploaded_files.push(uploaded_file) unless uploaded_file.nil?
- 
-  #upload thumbnail
-  #thumbnailFile = File.join(@input_dir, "thumbnail/Thumbnail.jpg")
-  #uploaded_file = ml_upload_file(thumbnailFile)
-  #uploaded_files.push(uploaded_file) unless uploaded_file.nil?
 
   uploaded_files
 end
@@ -275,10 +243,9 @@ end
 # :rn Hyrax::UploadedFile
 #
 def ml_upload_file(filename)
-  @log.info "uploading filename " + filename
-  if !File.file?(filename) 
-    return
-  end
+  @log.info 'uploading filename ' + filename
+
+  return unless File.file?(filename)
 
   @log.info 'Uploading file ' + filename
   file = File.open(filename)
@@ -297,7 +264,6 @@ end
 # @return Hash
 #
 def ml_collect_params(dom)
-  #title = dom.xpath('//dc:title', 'dc' => 'http://purl.org/dc/elements/1.1/')
   params = Hash.new { |h, k| h[k] = [] }
   @config['fields'].each do |field|
     field_name = field[0]
@@ -305,12 +271,8 @@ def ml_collect_params(dom)
     next unless field_definition.include? 'xpath'
 
     # definition checks
-    if field_definition['xpath'].nil?
-      raise '"' + field_name + '" defined with empty xpath'
-    end
-    if field_definition['type'].nil?
-      raise '"' + field_name + '" missing type'
-    end
+    raise '"' + field_name + '" defined with empty xpath' if field_definition['xpath'].nil?
+    raise '"' + field_name + '" missing type' if field_definition['type'].nil?
 
     field_definition['xpath'].each do |current_xpath|
       desc_metadata_prefix = @config['Thesis']['desc_metadata_prefix']
@@ -327,7 +289,7 @@ def ml_collect_params(dom)
       end
     end
   end
-  #title = dom.xpath("//title")
+
   params
 end
 
