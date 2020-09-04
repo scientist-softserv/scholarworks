@@ -143,7 +143,7 @@ end
 # @param dom [Nokogiri::XML::Document] DOMDocument of METS file
 #
 def ml_create_work_and_files(dom, data_file)
-  @log.info 'Ingesting moss landing thesis'
+  @log.info 'Ingesting moss landing ' + @type
 
   start_time = DateTime.now
 
@@ -258,12 +258,40 @@ def ml_upload_file(filename)
   uploaded_file
 end
 
+def process_creator(data, params)
+  ignore_tag = '(translator)'
+  creator_tags = {
+    '(creator)' => 'creator',
+    '(author)' => 'creator',
+    '(editor)' => 'editor',
+    '(publisher)' => 'publisher',
+    '(home campus)' => 'granting_institution',
+    '(thesis advisor)' => 'advisor',
+    '(thesis committee member)' => 'committee_member' }
+  data_lc = data.downcase
+  return if data_lc.end_with? ignore_tag
+
+  creator_tags.each do |key, value|
+    next unless data_lc.end_with key
+
+    new_data = data[0, data.length - key.length].strip
+    params[value] << new_data unless new_data.empty? || new_data == ','
+    return nil
+  end
+
+  # default to creator if no ending tag is found
+  params['creator'] << data
+end
+
 # Extract data from XML based on config data mapping
 #
 # @param dom [Nokogiri::XML::Document] DOMDocument of METS file
 # @return Hash
 #
 def ml_collect_params(dom)
+  desc_metadata_prefix = @config['Thesis']['desc_metadata_prefix']
+  namespace = @config['Thesis']['namespace']
+
   params = Hash.new { |h, k| h[k] = [] }
   @config['fields'].each do |field|
     field_name = field[0]
@@ -275,13 +303,21 @@ def ml_collect_params(dom)
     raise '"' + field_name + '" missing type' if field_definition['type'].nil?
 
     field_definition['xpath'].each do |current_xpath|
-      desc_metadata_prefix = @config['Thesis']['desc_metadata_prefix']
-      namespace = @config['Thesis']['namespace']
       metadata = dom.xpath(desc_metadata_prefix + current_xpath, namespace)
       unless metadata.empty?
         if field_definition['type'].include? 'Array'
           metadata.each do |node|
-            params[field_name] << node.text.squish
+            node_text = node.text.squish
+            # ignore empty data or resource_type of value 'text'
+            next if node_text.nil?
+            next if node_text.empty?
+            next if field_name == 'resource_type' && node_text.casecmp('TEXT').zero?
+
+            if field_name == 'creator'
+              process_creator(node_text, params)
+            else
+              params[field_name] << node_text
+            end
           end
         else
           params[field_name] = metadata.text.squish
