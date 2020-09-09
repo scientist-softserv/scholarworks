@@ -1,11 +1,11 @@
 terms:
-  - id: http://rightsstatements.org/vocab/InC/1.0/
+  - id: http://rightsstatements.org/vocab/InC/1.0/?creator
     term: "In Copyright - Owned by creator"
     active: true
-  - id: http://rightsstatements.org/vocab/InC/1.0/
+  - id: http://rightsstatements.org/vocab/InC/1.0/?institution
     term: "In Copyright - Owned by institution"
     active: true
-  - id: http://rightsstatements.org/vocab/InC/1.0/
+  - id: http://rightsstatements.org/vocab/InC/1.0/?third-party
     term: "In Copyright - Owned by a third party"
     active: true
   - id: http://rightsstatements.org/vocab/InC-OW-EU/1.0/

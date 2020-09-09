@@ -123,6 +123,10 @@ class SolrDocument
     self[Solrizer.solr_name('granting_institution')]
   end
 
+  def rights_holder
+    self[Solrizer.solr_name('rights_holder')]
+  end
+
   # blacklight_oai_provider mapping
   field_semantics.merge!(
     contributor: ['contributor_tesim', 'advisor_tesim','committee_member_tesim','editor_tesim'],
