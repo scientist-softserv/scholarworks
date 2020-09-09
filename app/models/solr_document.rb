@@ -8,7 +8,6 @@ class SolrDocument
   # Adds Hyrax behaviors to the SolrDocument.
   include Hyrax::SolrDocumentBehavior
 
-
   # self.unique_key = 'id'
 
   # Email uses the semantic field mappings below to generate the body of an email.
@@ -132,7 +131,7 @@ class SolrDocument
     date: ['date_tesim','date_copyright_tesim'],
     description: ['description_tesim', 'abstract_tesim', 'publication_status_tesim', 'bibliographic_citation_tesim'],
     format: 'format',
-    identifier: ['identifier_tesim', 'doi_tesim', 'isbn_tesim', 'issn_tesim'],
+    identifier: ['handle_tesim', 'identifier_tesim', 'doi_tesim', 'isbn_tesim', 'issn_tesim'],
     language: 'language_tesim',
     publisher: ['publisher_tesim','sponsor_tesim', 'college_tesim', 'department_tesim', 'granting_institution_tesim'],
     relation: 'relation_tesim',
@@ -140,7 +139,6 @@ class SolrDocument
     source: 'source_tesim',
     subject: ['subject_tesim', 'keyword_tesim'],
     title: ['title_tesim', 'alternative_title_tesim'],
-    type: ['type_tesim', 'resource_type_thesis_tesim', 'resource_type_publication_tesim', 'resource_type_educational_resource_tesim', 'resource_type_dataset_tesim']
+    type: ['type_tesim']
   )
-
 end
