@@ -272,7 +272,7 @@ def process_creator(data, params)
   return if data_lc.end_with? ignore_tag
 
   creator_tags.each do |key, value|
-    next unless data_lc.end_with key
+    next unless data_lc.end_with? key
 
     new_data = data[0, data.length - key.length].strip
     params[value] << new_data unless new_data.empty? || new_data == ','
