@@ -95,22 +95,21 @@ def process_dir(path)
         data_file = filename
         break
       end
-      break unless data_file.nil?
+      next if data_file.nil?
+
+      begin
+        @log.info 'Using metatadata file ' + metadata_file
+        @log.info 'Using data file ' + data_file
+        process_metadata(path, metadata_file, data_file)
+        done_dir = File.join(@complete_dir, path)
+      rescue StandardError => e
+        @log.error e.class.to_s.red
+        @log.error e
+      end
+      break
     end
-
-    return if data_file.nil?
-
-    begin
-      @log.info 'Using metatadata file ' + metadata_file
-      @log.info 'Using data file ' + data_file
-      process_metadata(path, metadata_file, data_file)
-      done_dir = File.join(@complete_dir, path)
-    rescue StandardError => e
-      @log.error e.class.to_s.red
-      @log.error e
-    end
-
   end
+
   cleanup(path, done_dir)
 end
 
