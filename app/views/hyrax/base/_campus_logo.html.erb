@@ -1,4 +1,4 @@
-<% campus = defined?(presenter.campus) ? presenter.campus.first : "" %>
+<% campus = (defined?(presenter.campus) && presenter.campus.present?) ? presenter.campus.first : "" %>
 
 <div class="csu-campus-info">
   <div class="csu-campus-logo">

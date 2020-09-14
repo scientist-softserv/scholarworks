@@ -3,6 +3,7 @@
 class Thesis < ActiveFedora::Base
   include ::Hyrax::WorkBehavior
   include ::CsuMetadata
+
   before_create :update_fields
 
   self.indexer = ThesisIndexer

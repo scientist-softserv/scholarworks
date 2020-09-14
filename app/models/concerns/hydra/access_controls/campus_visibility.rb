@@ -32,8 +32,8 @@ module Hydra
       end
 
       def read_groups_include_campus?
-        read_groups.any? do |read_group|
-          campus.any? do |campus_name|
+        read_groups&.any? do |read_group|
+          campus&.any? do |campus_name|
             read_group == Hyrax::CampusService.get_campus_slug_from_name(campus_name)
           end
         end
