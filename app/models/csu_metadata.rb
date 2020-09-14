@@ -108,6 +108,12 @@ module CsuMetadata
     handle.map{ |url| url.split('/')[-1]}
   end
 
+  def assign_campus(admin_set_title)
+    # assign campus name based on admin set
+    campus = Hyrax::CampusService.get_campus_from_admin_set(admin_set_title)
+    self.campus = [campus]
+  end
+
   protected
 
   def update_fields
@@ -115,11 +121,4 @@ module CsuMetadata
 
     assign_campus(admin_set.title.first.to_s)
   end
-
-  def assign_campus(admin_set_title)
-    # assign campus name based on admin set
-    campus = Hyrax::CampusService.get_campus_from_admin_set(admin_set_title)
-    self.campus = [campus]
-  end
-
 end
