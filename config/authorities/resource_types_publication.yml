@@ -1,14 +1,20 @@
 terms:
+  - id: Abstract
+    term: Abstract
   - id: Article
     term: Article
   - id: Book
     term: Book
   - id: Book Chapter
     term: Book Chapter
-  - id: Conference Proceeding
-    term: Conference Proceeding
+  - id: Book Review
+    term: Book Review
   - id: Conference Poster
     term: Conference Poster
+  - id: Conference Proceeding
+    term: Conference Proceeding
+  - id: Journal
+    term: Journal
   - id: Presentation
     term: Presentation
   - id: Research Paper

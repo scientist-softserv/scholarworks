@@ -1,0 +1,47 @@
+<%# imported from Hyrax 2.5.1 to add glacier location %>
+<h2><%= t(".file_details") %></h2>
+<dl class="dl-horizontal file-show-term file-show-details">
+  <dt><%= t(".depositor") %></dt>
+  <dd itemprop="accountablePerson" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><%= link_to_profile @presenter.depositor %></span></dd>
+  <dt><%= t(".date_uploaded") %></dt>
+  <dd itemprop="datePublished"><%= @presenter.date_uploaded %></dd>
+  <dt><%= t(".date_modified") %></dt>
+  <dd itemprop="dateModified"><%= @presenter.date_modified %></dd>
+  <%# added glacier location %>
+  <% if current_user&.admin? %>
+    <dt><%= t(".glacier_archives") %></dt>
+    <dd itemprop="glacierLocation">
+      <% @presenter.glacier_locations.each_with_index do |location, index| %>
+        <%= link_to location[:human_readable], Rails.application.routes.url_helpers.glacier_sns_download_requests_path(s3_key: location[:s3_key]), remote: true, method: :post, id: "glacier_download_button_#{index}" %>
+	<span style="display: none; color: green" class="glacier_download_succes" id="glacier_location_success_<%= index %>">Success!</span>
+	<span style="display: none; color: red" class="glacier_download_error"  id="glacier_location_error_<%= index %>">Error.</span>
+        <br />
+	<script>
+          $(document).ready(function(){
+            $("#glacier_download_button_<%= index %>").on("ajax:success", function(event){
+	      $("#glacier_location_success_<%= index %>").show()
+            }).on("ajax:error", function(event){
+	      $("#glacier_location_error_<%= index %>").show()
+            })            
+          })
+
+          $("#glacier_download_button_<%= index %>").click(function(event) {
+            $("#glacier_location_success_<%= index %>").hide()
+            $("#glacier_location_error_<%= index %>").hide()
+          })
+
+	</script>
+      <% end %>
+    </dd>
+  <% end %>
+  <dt><%= t(".fixity_check") %></dt>
+  <dd><%= @presenter.fixity_check_status %></dd>
+  <dt><%= t(".characterization") %></dt>
+  <dd>
+    <% if @presenter.characterized? %>
+      <%= render 'show_characterization_details' %>
+    <% else %>
+      <%= t(".not_yet_characterized") %>
+    <% end %>
+  </dd>
+</dl>

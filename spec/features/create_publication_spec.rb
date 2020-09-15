@@ -18,7 +18,7 @@ RSpec.feature 'Create a Publication', js: false do
       login_as user
     end
 
-    scenario do
+    xscenario do
       visit '/dashboard'
       click_link "Works"
       click_link "Add new work"

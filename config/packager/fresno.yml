@@ -2,7 +2,7 @@
 campus: 'Fresno'
 work_type: "default"
 metadata_file: "mets.xml"
-depositor: dwalker@calstate.edu
+depositor: kcloud@calstate.edu
 input_dir: /data/exported/
 handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: 'v118rd525'
@@ -10,7 +10,7 @@ admin_set_id: 'v118rd525'
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
 # true - ends processing on error
 # false - continues processing
-exit_on_error: true
+exit_on_error: false
 
 # output_level: How much will be output to the shell while running
 # quiet - Nothing will be output
@@ -60,6 +60,7 @@ type_to_work_map:
   Slides: Publication
   Presentation: Publication
   Photographic Image: Publication
+  Image: Publication
   Video - Other: Publication
   Flyer: Publication
   Interview: Publication
@@ -113,6 +114,7 @@ fields:
   college:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
+    type: Array
   committee_member:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='committeemember']"
@@ -150,7 +152,7 @@ fields:
   date_copyright:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='copyright']"
-    type: String
+    type: Array
   date_issued:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='issued']"
@@ -159,10 +161,10 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='updated']"
     type: String
-  date_published:
-    xpath:
-      - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='published']"
-    type: String
+  # date_published:
+  #  xpath:
+  #    - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='published']"
+  #  type: String
   date_submitted:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][not(@qualifier)]"

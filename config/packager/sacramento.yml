@@ -39,22 +39,10 @@ type_to_work_map:
   Preprint: Publication
   Technical Report: Publication
   Working Paper: Publication
-  # painting: CreativeWork
-  # ephemera: CreativeWork
-  # textiles: CreativeWork
-  # Empirical Research: CreativeWork
-  # Award Materials: CreativeWork
-  # photograph: CreativeWork
-  # Mixed Media: CreativeWork
-  # Other: CreativeWork
-  # Creative Works: CreativeWork
-  # Image: CreativeWork
-  # Learning Object: Thesis
-  # Post-print: Publication
-  # Presentation: Thesis
-  # Recording, oral: CreativeWork
-  # Text: Newspaper
-  # Table: Newspaper
+  Other: Thesis
+  Abstract: Publication
+  Dataset: Dataset
+  Text: Publication
 
 DSpace COMMUNITY:
   desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
@@ -206,11 +194,11 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='type'][@qualifier='genre']"
       - "/dim:field[@mdschema='dc'][@element='genre'][not(@qualifier)]"
     type: Array
-  rights_statement:
-    xpath:
+#  rights_statement:
+#    xpath:
 #      - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
 #      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='usage']"
-    type: Array
+#    type: Array
   rights_note:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
