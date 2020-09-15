@@ -92,5 +92,6 @@ gem 'solargraph'
 gem 'colorize'
 gem 'rubyzip'
 gem "ruby-vips", "~> 2.0"
+gem 'diffy'
 gem 'handle-system-rest'
 gem 'aws-sdk-s3'
