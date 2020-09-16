@@ -8,7 +8,7 @@ namespace :calstate do
   task :export, %i[campus] => [:environment] do |_t, args|
     # campus name
     campus = args[:campus] or raise 'No campus provided.'
-    campus_name = Hyrax::CampusService.get_campus_name_from_slug(campus)
+    campus_name = Hyrax::CampusService.get_campus_name_from_id(campus)
 
     %w[Thesis Publication Dataset EducationalResource].each do |model_name|
       model = Kernel.const_get(model_name)
