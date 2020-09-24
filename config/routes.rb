@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   concern :oai_provider, BlacklightOaiProvider::Routes.new
 
-
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
   mount Blacklight::Engine => '/'
 
@@ -9,10 +8,8 @@ Rails.application.routes.draw do
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
     concerns :oai_provider
-
     concerns :searchable
   end
-
 
   devise_for :users
   mount Hydra::RoleManagement::Engine => '/'
@@ -32,7 +29,7 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
 
   # For development use, uncomment and set gems to env
-  #mount Sidekiq::Web => '/sidekiq'
+  # mount Sidekiq::Web => '/sidekiq'
 
   # For production use (block) of sidekiq webapp
   authenticate :user, lambda { |u| u.admin? } do
@@ -41,7 +38,6 @@ Rails.application.routes.draw do
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
     concerns :oai_provider
-
     concerns :exportable
   end
 
