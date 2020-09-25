@@ -1,2 +1,1 @@
-User-agent: * 
-Disallow: /
+Sitemap: https://scholarworks.calstate.edu/sitemap.xml
