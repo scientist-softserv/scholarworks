@@ -4,10 +4,57 @@ module Hyrax
   #
   module CampusService
 
+    #
+    # @return [Hash] short name to campus name map
+    #
+    def self.campuses
+      { bakersfield: 'Bakersfield',
+        chancellor: 'Chancellor',
+        channel: 'Channel Islands',
+        chico: 'Chico',
+        dominguez: 'Dominguez Hills',
+        eastbay: 'East Bay',
+        fresno: 'Fresno',
+        fullerton: 'Fullerton',
+        humboldt: 'Humboldt',
+        longbeach: 'Long Beach',
+        losangeles: 'Los Angeles',
+        maritime: 'Maritime',
+        monterey: 'Monterey Bay',
+        mosslanding: 'Moss Landing',
+        northridge: 'Northridge',
+        pomona: 'Pomona',
+        sacramento: 'Sacramento',
+        sanbernardino: 'San Bernardino',
+        sandiego: 'San Diego',
+        sanfrancisco: 'San Francisco',
+        sanjose: 'San Jose',
+        slo: 'San Luis Obispo',
+        sanmarcos: 'San Marcos',
+        sonoma: 'Sonoma',
+        stanislaus: 'Stanislaus' }
+    end
+
+    #
+    # Get campus name from short code
+    #
+    # @param [String] campus_id short campus code, e.g., 'losangeles'
+    #
+    # @return [String] the campus name, e.g., 'Los Angeles'
+    #
+    def self.get_campus_name_from_id(campus_id)
+      key = campus_id.to_sym
+      raise 'Could not find campus name for id: ' + id unless campuses.key?(key)
+
+      campuses[key]
+    end
+
+    #
     # Extract campus name from a form
     #
     # @param controller [ApplicationController] the current controller
     # @param form [Hyrax::Forms::WorkForm]      the current work form
+    #
     # @return [String] the campus name
     #
     def self.get_campus_from_form(controller, form)
@@ -23,9 +70,11 @@ module Hyrax
       get_campus_from_admin_set(campus)
     end
 
+    #
     # Extract campus name from Admin set
     #
     # @param admin_set_name [String] the admin sets public name
+    #
     # @return [String] the campus name
     #
     def self.get_campus_from_admin_set(admin_set_name)

@@ -78,8 +78,13 @@ The AIP package can be for a single item, or more typically for an entire DSpace
       <td>Accepts merges from Features/Issues and Hotfixes</td>
     </tr>
     <tr>
-      <td>Features/Issues</td>
-      <td>topic-*</td>
+      <td>Features</td>
+      <td>feature-*</td>
+      <td>Always branch off HEAD of Working</td>
+    </tr>
+    <tr>
+      <td>Issues</td>
+      <td>bug-*</td>
       <td>Always branch off HEAD of Working</td>
     </tr>
     <tr>
@@ -247,15 +252,7 @@ GLACIER_S3_BUCKET=<name of your bucket>
 ```
 
 ### Configuring AWS
-The application has the ability to email the person who initiates glacier thaws when they are ready.  To accomplish this, there is some configuration in AWS that is necessary.  First we must setup a SNS (simple notification service) message, and then we must setup the S3 bucket to trigger the SNS message when specific actions happen, in our case, when a record is thawed.
-
-#### Create an SNS Topic and subscription
-![sns topic](./public/img/sns-subscription.png)
-
-#### Assign SNS
-From within the S3 bucket, setup your SNS message to fire whenever a file is restored
-
-![assign sns](./public/img/assign_sns.png)
+The application has the ability to email the person who initiates glacier thaws when they are ready.  To accomplish this, there is some configuration in AWS that is necessary.  First we must setup a SNS (simple notification service) message, and then we must setup the S3 bucket to trigger the SNS message when specific actions happen, in our case, when a record is thawed: [Create an SNS Topic and subscription](./public/img/sns-subscription.png). From within the S3 bucket, [setup your SNS message](./public/img/assign_sns.png) to fire whenever a file is restored.
 
 ### S3 keys for files
 A common situation that glacier is intended to protect is when an administrator deletes a file set accidentally.  Without Glacier, those original files are deleted as well.  With Glacier, we're able to retrieve those files, and re-ingest them.  Mapping between works -> file sets -> original files -> files in S3/Glacier happens in the path structure of the key for the S3 object.  Keys look like this:
@@ -270,6 +267,4 @@ You may notice that this is the id of the actual file in active_fedora with the 
 Glacier files are always visible in S3, but they are not always accessible.  An administrator with access to the S3 bucket must initiate a retrieval of a file, then wait the several hours until it becomes available.  Part of the retrieval process is to specify how long you want the record to stay thawed out for.  Once that time period is expired, the record goes back into deep freeze and would need to be retrieved again to access.  The default thaw period for the application is 7 days.
 
 #### Thawing Via AWS S3
-You can thaw files from directly within the AWS S3 interface.  This is the only way to retrieve a record that has been deleted from our application.
-
-![glacier thaw](./public/img/glacier-restore.png)
+You can [thaw file](./public/img/glacier-restore.png) from directly within the AWS S3 interface.  This is the only way to retrieve a record that has been deleted from our application.

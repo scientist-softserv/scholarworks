@@ -10,7 +10,7 @@ admin_set_id: 'zc77sq08x'
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
 # true - ends processing on error
 # false - continues processing
-exit_on_error: true
+exit_on_error: false
 
 # output_level: How much will be output to the shell while running
 # quiet - Nothing will be output
@@ -128,7 +128,7 @@ fields:
   date_copyright:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='copyright']"
-    type: String
+    type: Array
   date_created:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='created']"
@@ -157,7 +157,7 @@ fields:
   degree_level:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='degree']"
-    type: Array
+    type: String
   #General description mapping
   #description:
   #  xpath:
@@ -242,10 +242,10 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='language'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='language'][@qualifier='iso']"
     type: Array
-  license:
-    xpath:
-      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='license']"
-    type: Array
+#  license:
+#    xpath:
+#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='license']"
+#    type: Array
   provenance:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='provenance']"
