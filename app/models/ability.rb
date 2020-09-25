@@ -7,29 +7,8 @@ class Ability
 
   # Define any customized permissions here.
   def custom_permissions
-
-    campus = "bakersfield" if current_user.email.include?("bakersfield.edu")
-    campus = "chancellor" if current_user.email.include?("calstate.edu")
-    campus = "channel" if current_user.email.include?("ci.edu")
-    campus = "chico" if current_user.email.include?("chico.edu")
-    campus = "dominguez" if current_user.email.include?("dh.edu")
-    campus = "eastbay" if current_user.email.include?("eb.edu")
-    campus = "fresno" if current_user.email.include?("fresno.edu")
-    campus = "fullerton" if current_user.email.include?("fullerton.edu")
-    campus = "humboldt" if current_user.email.include?("humboldt.edu")
-    campus = "longbeach" if current_user.email.include?("lb.edu")
-    campus = "losangeles" if current_user.email.include?("la.edu")
-    campus = "maritime" if current_user.email.include?("maritime.edu")
-    campus = "mlml" if current_user.email.include?("mlml.edu")
-    campus = "northridge" if current_user.email.include?("northridge.edu")
-    campus = "pomona" if current_user.email.include?("bronco.edu")
-    campus = "sacramento" if current_user.email.include?("sacramento.edu")
-    campus = "sanfrancisco" if current_user.email.include?("sf.edu")
-    campus = "sanmarcos" if current_user.email.include?("sanmarcos.edu")
-    campus = "sonoma" if current_user.email.include?("sonoma.edu")
-    campus = "stanislaus" if current_user.email.include?("stanislaus.edu")
-
-    user_groups.push(campus)
+    campus = current_user_campus
+    user_groups.push(campus) if campus.present?
 
     # admin
     if current_user.admin?
@@ -41,5 +20,18 @@ class Ability
     # if user_groups.include? 'special_group'
     #   can [:create], ActiveFedora::Base
     # end
+  end
+
+  private
+
+  def current_user_campus
+    campus = nil
+    Hyrax::CampusService::CAMPUSES.each do |campus_info|
+      if current_user.email.end_with?(*campus_info[:email_domains])
+        campus = campus_info[:slug]
+        break
+      end
+    end
+    campus
   end
 end
