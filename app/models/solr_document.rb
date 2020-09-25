@@ -143,6 +143,7 @@ class SolrDocument
     source: 'source_tesim',
     subject: ['subject_tesim', 'keyword_tesim'],
     title: ['title_tesim', 'alternative_title_tesim'],
-    type: ['type_tesim']
+    type: ['resource_type_tesim'],
+    campus: ['campus_tesim']
   )
 end

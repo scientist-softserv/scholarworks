@@ -366,15 +366,15 @@ class CatalogController < ApplicationController
 
     config.oai = {
       provider: {
-        repository_name: 'ScholarWorks OAI-PMH',
-        repository_url: 'http://ec2-18-237-132-228.us-west-2.compute.amazonaws.com/catalog/oai',
+        repository_url: 'http://' + ENV['SCHOLARWORKS_HOST'] + '/catalog/oai',
+        repository_name: 'CSU ScholarWorks',
         record_prefix: 'oai:scholarworks',
         admin_email: 'library@calstate.edu',
         sample_id: '101010'
       },
       document: {
-        limit: 25,            # number of records returned with each request, default: 15
-        set_fields: [        # ability to define ListSets, optional, default: nil
+        limit: 25, # number of records returned with each request, default: 15
+        set_fields: [ # ability to define ListSets, optional, default: nil
           { label: 'campus', solr_field: 'campus_tesim' }
         ]
       }
