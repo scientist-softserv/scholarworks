@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
-require 'pp'
-require 'csv'
+require 'calstate/metadata'
 
 namespace :calstate do
-  desc 'Metadata fixer'
-  task reset: :environment do
-    remove_items('San Francisco')
-  end
+  desc 'Delete all records for specified campus'
+  task :reset, %i[campus] => [:environment] do |_t, args|
+    # campus name
+    campus_id = args[:campus] or raise 'No campus provided.'
+    campus_name = Hyrax::CampusService.get_campus_name_from_id(campus_id)
 
-  def remove_items(campus)
-    [Thesis, Publication, Dataset, EducationalResource].each do |model|
-      model.where(campus: campus).each.each do |doc|
+    CalState::Metadata::Models.new.all.each do |model|
+      model.where(campus: campus_name).each.each do |doc|
         title = doc.title.first.to_s
         campus = doc.campus.first.to_s
         puts campus + ': ' + title

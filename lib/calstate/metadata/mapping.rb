@@ -16,19 +16,6 @@ module CalState
       end
 
       #
-      # The models defined in ScholarWorks
-      #
-      # @return [Array]  of model classes
-      #
-      def models
-        final = []
-        model_names.each do |model_name|
-          final.append Kernel.const_get(model_name)
-        end
-        final
-      end
-
-      #
       # Base url for Hyrax
       #
       # @return [String]
