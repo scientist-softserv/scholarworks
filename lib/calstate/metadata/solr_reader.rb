@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'httparty'
-require 'nokogiri'
 
 module CalState
   module Metadata
@@ -13,29 +12,22 @@ module CalState
       #
       # New SolrReader
       #
-      # @param [String] hyrax_url  url of the Hyrax instance
-      # @param [String] solr_url   url to solr server, with path to core
-      # @param [Hash] mapping      url slug to model mapping
-      #
-      def initialize(hyrax_url, solr_url)
-        @hyrax_url = hyrax_url
-        @solr_url = solr_url + '/select'
-        @mapping = url_mapping
+      def initialize
+        @solr_url = ENV['SOLR_URL'] + '/select'
       end
 
       #
-      # Solr query to retrieve all open, un-supressed records
+      # Solr query to retrieve all open, unsuppressed records
       #
       # @return [String] Solr query
       #
       def query
-        models = []
-        @mapping.each do |_, model|
-          models.push 'has_model_ssim:' + model
+        models_query = []
+        model_names.each do |model|
+          models_query.push 'has_model_ssim:' + model
         end
-        query = '(' + models.join(' OR ') + ') '
-        query += 'AND suppressed_bsi:false AND visibility_ssi:open'
-        query
+        '(' + models_query.join(' OR ') + ') ' \
+          'AND suppressed_bsi:false AND visibility_ssi:open'
       end
 
       #
@@ -56,66 +48,46 @@ module CalState
       end
 
       #
-      # Build a (Google) sitemap
-      #
-      # @param [String] file_path  path to file
-      #
-      # @return [Integer] size of file
-      #
-      def build_sitemap(file_path)
-        results = fetch_all
-        builder = Nokogiri::XML::Builder.new do |xml|
-          xml.urlset('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9') {
-            results.each do |doc|
-              xml.url {
-                xml.loc get_url(doc)
-                xml.lastmod doc['system_modified_dtsi']
-                xml.changefreq 'yearly'
-              }
-            end
-          }
-        end
-        File.write(file_path, builder.to_xml)
-      end
-
-      #
       # Fetch all metadata records from the repository
       #
-      # @param [Integer] rows  [optional] number of records per batch (default: 1,000)
+      # @return [Array] of Solr documents
       #
-      # @return [Array<JSON>] of JSON document
-      #
-      def fetch_all(rows = 1000)
+      def fetch_all
         start = 0
-        total = 0
         results = []
 
         loop do
-          response = HTTParty.get(@solr_url, query: params(start, rows))
-          json = response.parsed_response
-          total = json['response']['numFound']
-
-          json['response']['docs'].each do |doc|
-            start += 1
-            results.push doc
+          results_batch = fetch_batch(start)
+          results_batch.records.each do |result|
+            results << result
           end
 
-          break if total <= start
+          start = results_batch.pointer
+          break if results_batch.total <= start
         end
 
         results
       end
 
       #
-      # Construct full URL to the metadata record
+      # Fetch a batch of records
       #
-      # @param [JSON] doc  metadata record
+      # @param [Integer] start  [optional] starting record number
+      # @param [Integer] rows   [optional] number of rows to fetch
       #
-      # @return [String] full URL
+      # @return [SolrResults]
       #
-      def get_url(doc)
-        type = @mapping.key(doc['has_model_ssim'].first).to_s
-        @hyrax_url + '/concern/' + type + '/' + doc['id']
+      def fetch_batch(start = 0, rows = 1000)
+        response = HTTParty.get(@solr_url, query: params(start, rows))
+        json = response.parsed_response
+        total = json['response']['numFound']
+        results = SolrResults.new(start, total)
+
+        json['response']['docs'].each do |doc|
+          results.records.push doc
+        end
+
+        results
       end
     end
   end
