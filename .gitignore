@@ -12,35 +12,24 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-
 /node_modules
 /yarn-error.log
-
 .byebug_history
-
-# /.ebextensions/*
-# /.elasticbeanstalk/*
-
-config/settings.local.yml
-config/settings/*.local.yml
-config/environments/*.local.yml
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+fits.log
 
 # mac files
 **.DS_Store
-fits.log
 
-
+# notch8 files
 *.swp
 *.swo
 examples/*
 examples.zip
 importer.sh
 .solr_wrapper
-
 .env.development
 .envrc
+
+# rubymine
+.generators
+.idea
