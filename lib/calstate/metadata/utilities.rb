@@ -5,16 +5,7 @@ module CalState
     #
     # Shared metadata mapping functions
     #
-    module Mapping
-      #
-      # The names of the models defined in ScholarWorks
-      #
-      # @return [Array]  of model class names
-      #
-      def model_names
-        %w[Thesis Publication Dataset EducationalResource]
-      end
-
+    module Utilities
       #
       # Base url for Hyrax
       #
@@ -34,6 +25,21 @@ module CalState
       def get_url(doc)
         model_path = doc['has_model_ssim'].first.underscore.pluralize
         hyrax_url + '/concern/' + model_path + '/' + doc['id']
+      end
+
+      #
+      # Convert an ActiveFedora relation field into array
+      #
+      # @param [ActiveFedora::Base] field
+      #
+      # @return [Array<String>]
+      #
+      def field_to_array(field)
+        final = []
+        field.each do |value|
+          final << value.to_s
+        end
+        final
       end
     end
   end

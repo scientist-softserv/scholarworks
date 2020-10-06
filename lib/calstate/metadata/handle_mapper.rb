@@ -6,7 +6,7 @@ module CalState
     # Shared metadata mapping functions
     #
     class HandleMapper
-      include Mapping
+      include Utilities
       #
       # New HandleMapper
       #
@@ -60,4 +60,3 @@ module CalState
     end
   end
 end
-
