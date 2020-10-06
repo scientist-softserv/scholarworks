@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'metadata/utilities'
+require_relative 'metadata/dspace'
 require_relative 'metadata/handle_mapper'
 require_relative 'metadata/sitemap'
 require_relative 'metadata/solr_reader'
