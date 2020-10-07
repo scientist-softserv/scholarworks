@@ -32,7 +32,7 @@ namespace :calstate do
     p "Input file: #{input_file}"
     p "Model types: #{model_types}"
     metadata = load_csv_file(input_file)
-    raise "No metadata to replace" if metadata.empty?
+    raise 'No metadata to replace' if metadata.empty?
 
     replace_metadata(campus_name, model_types, metadata)
   end
