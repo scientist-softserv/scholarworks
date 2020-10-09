@@ -6,13 +6,26 @@ require 'pp'
 namespace :calstate do
   desc 'Metadata fixer'
   task metadata_fixer: :environment do
+    sanfrancisco_visibility
+  end
 
+  def sanfrancisco_visibility
+    csv_file = '/home/ec2-user/data/exported/sanfrancisco_thesis.csv'
+    query = {
+      visibility: 'private',
+      embargo_release_date: nil
+    }
+
+    csv = CalState::Metadata::Csv::Reader.new(csv_file)
+    csv.query(query).each do |row|
+      puts 'Final: ' + row['title']
+    end
   end
 
   def dspace_example
     file = '/home/ec2-user/data/dspace/sacramento.csv'
     field_mapping = {
-        title: 'dc.title'
+      title: 'dc.title'
     }
     dspace = CalState::Metadata::Dspace.new(file, field_mapping)
     CalState::Metadata.models.each do |model|

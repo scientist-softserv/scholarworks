@@ -7,6 +7,7 @@ module CalState
     #
     class HandleMapper
       include Utilities
+
       #
       # New HandleMapper
       #

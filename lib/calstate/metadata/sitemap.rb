@@ -9,6 +9,7 @@ module CalState
     #
     class Sitemap
       include Utilities
+
       #
       # New Sitemap
       #

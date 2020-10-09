@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'pp'
+require 'calstate/metadata'
 
 namespace :calstate do
   desc 'Create a rewrite map of handles to hyrax ids'
