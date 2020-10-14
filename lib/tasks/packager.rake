@@ -244,20 +244,20 @@ def create_new_work(params)
   work = model.new(id: id)
   work.update(params)
   work.apply_depositor_metadata(depositor.user_key)
-  work = add_managers(work)
+  work = add_managers(work, @config['admin_set_id'])
   work.save
 
   work
 end
 
-def add_managers(work)
-  permission = Hyrax::PermissionTemplate.find_by!(source_id: @config['admin_set_id'])
+def add_managers(work, admin_set_id)
+  permission = Hyrax::PermissionTemplate.find_by!(source_id: admin_set_id)
   return work if permission.nil?
 
   managers = permission.agent_ids_for(agent_type: 'user',  access: 'manage');
   return work if managers.nil?
 
-  work.edit_users += managers
+  work.edit_users = managers
   work.edit_users = work.edit_users.dup
   work
 end
