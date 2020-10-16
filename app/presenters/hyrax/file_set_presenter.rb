@@ -107,5 +107,9 @@ module Hyrax
                                           presenter_class: WorkShowPresenter,
                                           presenter_args: current_ability).first
       end
+
+      def permission_badge_class
+        CampusPermissionBadge
+      end
   end
 end

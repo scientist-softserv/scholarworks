@@ -25,19 +25,16 @@ module Hydra
         original_value = super
         return original_value unless original_value == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
 
-        if read_groups_include_campus?
+        result = if read_groups_include_campus?
           Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS
         else
           original_value
         end
+        result
       end
 
       def read_groups_include_campus?
-        read_groups&.any? do |read_group|
-          campus&.any? do |campus_name|
-            read_group == Hyrax::CampusService.get_campus_slug_from_name(campus_name)
-          end
-        end
+        (read_groups & Hyrax::CampusService.all_campus_slugs).any?
       end
     end
   end
