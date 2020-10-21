@@ -30,7 +30,6 @@ type_to_work_map:
   Animation: Publication
   Article: Publication
   Book: Publication
-  Book chapter: Publication
   Book review: Publication
   Conference paper or proceedings: Publication
   Conference program: Publication
@@ -59,6 +58,15 @@ type_to_work_map:
   Bulletin: Publication
   Learning object: EducationalResource
   Tutorial: EducationalResource
+  Technical Report: Publication
+  Agenda: Publication
+  Web page: Publication
+  Report: Publication
+  Conference proceedings: Publication
+  # first pass
+  # Book chapter: Publication
+  # second pass
+  Book chapter: Thesis
 
 DSpace COMMUNITY:
   desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
