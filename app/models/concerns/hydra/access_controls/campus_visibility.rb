@@ -9,34 +9,32 @@ module Hydra
       end
 
       def visibility=(value)
-        super
-      rescue ArgumentError => error
-        raise error unless value.to_s == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS
-        raise(RuntimeError, 'No campus is set on this work') if campus.blank?
-        visibility_will_change! unless visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS
-        campus_slugs = campus.to_a.map { |campus_name| Hyrax::CampusService.get_campus_slug_from_name(campus_name) }
-        remove_groups = represented_visibility - campus_slugs # read from object's campus value
+        if value.to_s == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS
+          raise RuntimeError, 'No campus is set on this work' if campus.blank?
+          visibility_will_change! unless visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS
+          campus_slugs = campus.to_a.map { |campus_name| Hyrax::CampusService.get_campus_slug_from_name(campus_name) }
+          remove_groups = represented_visibility - campus_slugs # read from object's campus value
 
-        set_read_groups(campus_slugs, remove_groups)
+          set_read_groups(campus_slugs, remove_groups)
+        else
+          super
+        end
       end
 
       def visibility
         original_value = super
         return original_value unless original_value == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
 
-        if read_groups_include_campus?
+        result = if read_groups_include_campus?
           Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS
         else
           original_value
         end
+        result
       end
 
       def read_groups_include_campus?
-        read_groups&.any? do |read_group|
-          campus&.any? do |campus_name|
-            read_group == Hyrax::CampusService.get_campus_slug_from_name(campus_name)
-          end
-        end
+        (read_groups & Hyrax::CampusService.all_campus_slugs).any?
       end
     end
   end
