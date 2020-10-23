@@ -1,4 +1,3 @@
-
 module Hydra::AccessControls
   module Visibility
     extend ActiveSupport::Concern
