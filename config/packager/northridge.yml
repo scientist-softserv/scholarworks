@@ -59,7 +59,6 @@ type_to_work_map:
   Learning object: EducationalResource
   Tutorial: EducationalResource
   Technical Report: Publication
-  Agenda: Publication
   Web page: Publication
   Report: Publication
   Conference proceedings: Publication
