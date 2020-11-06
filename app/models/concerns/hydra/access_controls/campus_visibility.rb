@@ -23,6 +23,7 @@ module Hydra
 
       def visibility
         original_value = super
+        return original_value if self.is_a?(SolrDocument) && %w[AdminSet Collection].include?(self['has_model_ssim'].first)
         return original_value unless original_value == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
 
         result = if read_groups_include_campus?
