@@ -1,8 +1,136 @@
+# frozen_string_literal: true
 module Hyrax
 
   # Provides essential methods for getting the normalized campus name
   #
   module CampusService
+    CAMPUSES = [
+      {
+        name: 'Bakersfield',
+        slug: 'bakersfield',
+        email_domains: ['bakersfield.edu']
+      },
+      {
+        name: 'Chancellor',
+        slug: 'chancellor',
+        email_domains: ['calstate.edu']
+      },
+      {
+        name: 'Channel Islands',
+        slug: 'channel',
+        email_domains: ['ci.edu']
+      },
+      {
+        name: 'Chico',
+        slug: 'chico',
+        email_domains: ['chico.edu']
+      },
+      {
+        name: 'Dominguez Hills',
+        slug: 'dominguez',
+        email_domains: ['dh.edu']
+      },
+      {
+        name: 'East Bay',
+        slug: 'eastbay',
+        email_domains: ['eb.edu']
+      },
+      {
+        name: 'Fresno',
+        slug: 'fresno',
+        email_domains: ['fresno.edu']
+      },
+      {
+        name: 'Fullerton',
+        slug: 'fullerton',
+        email_domains: ['fullerton.edu']
+      },
+      {
+        name: 'Humboldt',
+        slug: 'humboldt',
+        email_domains: ['humboldt.edu']
+      },
+      {
+        name: 'Long Beach',
+        slug: 'longbeach',
+        email_domains: ['lb.edu']
+      },
+      {
+        name: 'Los Angeles',
+        slug: 'losangeles',
+        email_domains: ['la.edu']
+      },
+      {
+        name: 'Maritime',
+        slug: 'maritime',
+        email_domains: ['csum.edu']
+      },
+      {
+        name: 'Monterey Bay',
+        slug: 'monterey',
+        email_domains: ['csumb.edu']
+      },
+      {
+        name: 'Moss Landing',
+        slug: 'mlml',
+        email_domains: ['mlml.edu']
+      },
+      {
+        name: 'Northridge',
+        slug: 'northridge',
+        email_domains: ['csun.edu']
+      },
+      {
+        name: 'Pomona',
+        slug: 'pomona',
+        email_domains: ['cpp.edu']
+      },
+      {
+        name: 'Sacramento',
+        slug: 'sacramento',
+        email_domains: ['sacramento.edu']
+      },
+      {
+        name: 'San Bernardino',
+        slug: 'sacramento',
+        email_domains: ['sacramento.edu']
+      },
+      {
+        name: 'San Francisco',
+        slug: 'sanfrancisco',
+        email_domains: ['sf.edu']
+      },
+      {
+        name: 'San Jose',
+        slug: 'sanjose',
+        email_domains: ['sjsu.edu']
+      },
+      {
+        name: 'San Diego',
+        slug: 'sandiego',
+        email_domains: ['sdsu.edu']
+      },
+      {
+        name: 'San Luis Obispo',
+        slug: 'sanluisobisbo',
+        email_domains: ['calpoly.edu']
+      },
+      {
+        name: 'San Marcos',
+        slug: 'sanmarcos',
+        email_domains: ['sanmarcos.edu']
+      },
+      {
+        name: 'Sonoma',
+        slug: 'sonoma',
+        email_domains: ['sonoma.edu']
+      },
+      {
+        name: 'Stanislaus',
+        slug: 'stanislaus',
+        email_domains: ['stanislaus.edu']
+      }
+    ].freeze
 
     #
     # @return [Hash] short name to campus name map
@@ -78,19 +206,27 @@ module Hyrax
     # @return [String] the campus name
     #
     def self.get_campus_from_admin_set(admin_set_name)
-      campuses = ['Bakersfield', 'Chancellor', 'Channel Islands', 'Chico',
-                  'Dominguez Hills', 'East Bay', 'Fresno', 'Fullerton',
-                  'Humboldt', 'Long Beach', 'Los Angeles', 'Maritime',
-                  'Monterey Bay', 'Moss Landing', 'Northridge', 'Pomona',
-                  'Sacramento', 'San Bernardino', 'San Diego',
-                  'San Francisco', 'San Jose', 'San Luis Obispo',
-                  'San Marcos', 'Sonoma', 'Stanislaus']
-
-      campuses.each do |campus|
-        return campus.to_s if admin_set_name.to_s.include?(campus.to_s)
+      result = CAMPUSES.find do |campus|
+        admin_set_name.include?(campus[:name])
       end
 
-      raise 'No campus admin set found'
+      raise 'No campus admin set found' unless result.present?
+
+      result[:name]
+    end
+
+    def self.get_campus_slug_from_name(campus_name)
+      CAMPUSES.select do |campus|
+        campus[:name].downcase == campus_name.downcase
+      end.first&.fetch(:slug)
+    end
+
+    def self.all_campus_slugs
+      CAMPUSES.map { |campus| campus[:slug] }
+    end
+
+    def self.all_campus_names
+      CAMPUSES.map { |campus| campus[:name] }
     end
   end
 end

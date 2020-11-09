@@ -7,6 +7,8 @@ class Ability
 
   # Define any customized permissions here.
   def custom_permissions
+    campus = current_user_campus
+    user_groups.push(campus) if campus.present?
 
     campus = "bakersfield" if current_user.campus == "csub"
     campus = "chancellor" if current_user.campus == "co"
@@ -46,5 +48,18 @@ class Ability
     # if user_groups.include? 'special_group'
     #   can [:create], ActiveFedora::Base
     # end
+  end
+
+  private
+
+  def current_user_campus
+    campus = nil
+    Hyrax::CampusService::CAMPUSES.each do |campus_info|
+      if current_user.email.end_with?(*campus_info[:email_domains])
+        campus = campus_info[:slug]
+        break
+      end
+    end
+    campus
   end
 end

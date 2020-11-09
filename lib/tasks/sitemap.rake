@@ -5,8 +5,6 @@ require 'calstate/metadata'
 namespace :calstate do
   desc 'Sitemap generator'
   task sitemap: :environment do
-    hyrax_url = 'https://' + ENV['SCHOLARWORKS_HOST']
-    client = CalState::Metadata::SolrReader.new(hyrax_url, ENV['SOLR_URL'])
-    client.build_sitemap('public/sitemap.xml')
+    CalState::Metadata::Sitemap.new('public/sitemap').run
   end
 end
