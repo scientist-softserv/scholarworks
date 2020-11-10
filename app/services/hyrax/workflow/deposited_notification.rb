@@ -5,13 +5,17 @@ module Hyrax
       private
 
       def subject
-        'Deposit has been approved'
+        'Your submission has been posted'
       end
 
       def message
-        "#{title} (#{link_to work_id, document_path}) was approved by " \
-          "#{user.name} (#{user.email})" +
-          comment
+        text = "#{title} (#{link_to work_id, document_path}) was approved by " \
+          "#{user.name} (#{user.email})"
+        unless document.handle.to_s.empty?
+          text += ' and has been assigned a permanent URL: ' +
+            document.handle.to_s + "\n\n"
+        end
+        text + comment
       end
 
       def users_to_notify
@@ -20,4 +24,4 @@ module Hyrax
       end
     end
   end
-end
+ end
