@@ -6,12 +6,12 @@ module Hyrax
       private
 
       def subject
-        'Deposit needs review'
+        'Your submission has been received'
       end
 
       def message
-        "#{title} (#{link_to work_id, document_path}) was deposited by " \
-          "#{user.name} (#{user.email}) and is awaiting approval " +
+        "#{title} (#{link_to work_id, document_path}) was submitted by " \
+          "#{user.name} (#{user.email}) and is awaiting approval.\n\n" +
           comment
       end
 
