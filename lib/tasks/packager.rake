@@ -210,6 +210,9 @@ def create_new_work(params)
     resource_type = params['resource_type'].first
   end
 
+  # set campus
+  params['campus'] = [@config['campus']]
+
   # set visibility
   if params.key?('embargo_release_date')
     # indefinite embargo, just make it private
@@ -227,9 +230,6 @@ def create_new_work(params)
   unless @config['admin_set_id'].nil?
     params['admin_set_id'] = @config['admin_set_id']
   end
-
-  # set campus
-  params['campus'] = [@config['campus']]
 
   @log.info 'Creating a new ' + resource_type + ' with id:' + id
 
