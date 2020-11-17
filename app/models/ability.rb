@@ -1,13 +1,16 @@
 class Ability
   include Hydra::Ability
-
   include Hyrax::Ability
 
   self.ability_logic += [:everyone_can_create_curation_concerns]
 
   # Define any customized permissions here.
   def custom_permissions
-    campus = current_user_campus
+    campus = if ENV['AUTHENTICATION_TYPE'] == 'shibboleth'
+               Hyrax::CampusService.get_shib_user_campus(current_user)
+             else
+               Hyrax::CampusService.get_demo_user_campus(current_user)
+             end
     user_groups.push(campus) if campus.present?
 
     # admin
@@ -20,18 +23,5 @@ class Ability
     # if user_groups.include? 'special_group'
     #   can [:create], ActiveFedora::Base
     # end
-  end
-
-  private
-
-  def current_user_campus
-    campus = nil
-    Hyrax::CampusService::CAMPUSES.each do |campus_info|
-      if current_user.email.end_with?(*campus_info[:email_domains])
-        campus = campus_info[:slug]
-        break
-      end
-    end
-    campus
   end
 end
