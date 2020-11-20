@@ -1,24 +1,22 @@
+# frozen_string_literal: true
+
 # Usage
-# bundle exec rake calstate:update_manager["pc289j04q","San Francisco","thesis|dataset"]
-#
-# admin_set_id and campus are required fields where model_type is optional. All four
-# models (Thesis, Publication, Dataset, EducationalResource] will be used if model_type
-# is not provided and model_type is not case sensitive.
-# It will find all current users with manage access and update to the work.
-#
+# bundle exec rake calstate:update_managers[losangeles]
+# bundle exec rake calstate:update_managers[sacramento,6d56zz11h]
 
 namespace :calstate do
   desc 'Update managers to work'
-  task :update_managers, %i[admin_set_id campus model_type] => [:environment] do |_t, args|
-    admin_set_id = args[:admin_set_id] or raise 'No admin set ID provided'
-    campus_name = args[:campus] or raise 'No campus name provided'
-    model_str = args[:model_type]
+  task :update_managers, %i[campus record] => [:environment] do |_t, args|
+    campus = args[:campus] or raise 'No campus provided'
+    record = args[:record] ||= 'all'
 
-    model_types = get_model_types(model_str)
-    p "Model types: #{model_types}"
+    campus_name = Hyrax::CampusService.get_campus_name_from_id(campus)
+    query = record == 'all' ? { campus: campus_name } : { id: record }
 
-    model_types.each do |model|
-      model.where(campus: campus_name).each do |work|
+    CalState::Metadata.models.each do |model|
+      model.where(query).each do |work|
+        admin_set_id = work.admin_set_id
+        puts "Updating work #{work.id} in adminset #{admin_set_id}"
         work = add_managers(work, admin_set_id)
         work.save
       end
