@@ -6,6 +6,7 @@ require 'pp'
 namespace :calstate do
   desc 'Metadata fixer'
   task metadata_fixer: :environment do
+
   end
 
   def dspace_example
@@ -22,6 +23,15 @@ namespace :calstate do
         puts dspace.records[handle][:title]
       end
     end
+  end
+
+  def attach_file_example
+    depositor = User.find_by_user_key('some@user.edu')
+    work = Publication.find('000000000')
+    work.apply_depositor_metadata(depositor.user_key)
+    file = File.open('/home/ec2-user/some-file.mp4')
+    uploaded_file = Hyrax::UploadedFile.create(file: file)
+    AttachFilesToWorkJob.perform_now(work, [uploaded_file])
   end
 
   def fix_abstract(opts)

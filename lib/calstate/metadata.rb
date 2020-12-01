@@ -23,7 +23,7 @@ module CalState
         thesis: 'Thesis',
         publication: 'Publication',
         dataset: 'Dataset',
-        education_resource: 'EducationalResource'
+        educational_resource: 'EducationalResource'
       }
     end
 
