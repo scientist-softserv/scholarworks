@@ -123,13 +123,13 @@ module CalState
       def query(include_suppressed = false)
         models_query = []
         Metadata.model_names.each do |model|
-          models_query.push 'has_model_ssim:' + model
+          models_query.push model
         end
 
-        query = models_query.join(' OR ')
+        query = 'has_model_ssim:(' + models_query.join(' OR ') + ')'
 
         if include_suppressed == false
-          "(#{query}) AND suppressed_bsi:false AND visibility_ssi:open"
+          query + ' AND suppressed_bsi:false AND visibility_ssi:open'
         else
           query
         end
@@ -146,7 +146,7 @@ module CalState
       #
       def params(query, start = 0, rows = 1000)
         {
-          q: query,
+          fq: query,
           start: start,
           rows: rows,
           wt: 'json'

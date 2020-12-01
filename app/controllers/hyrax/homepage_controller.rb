@@ -6,6 +6,7 @@ class Hyrax::HomepageController < ApplicationController
   include Blacklight::SearchContext
   include Blacklight::SearchHelper
   include Blacklight::AccessControls::Catalog
+  include ActionView::Helpers::NumberHelper
 
   # The search builder for finding recent documents
   # Override of Blacklight::RequestBuilders
@@ -44,6 +45,7 @@ class Hyrax::HomepageController < ApplicationController
     (@solr_response, @recent_documents) = search_results(q: '', sort: sort_field, rows: 10)
     # total number of documents
     @total = (@recent_documents.first) ? @recent_documents.first.response.response["numFound"] : 0
+    @total = number_with_delimiter(@total)
   rescue Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest
     @solr_response = []
     @recent_documents = []
