@@ -46,7 +46,7 @@ module CalState
       csv.each do |row|
         x += 1
         unless @visibility_options.include? row['visibility']
-          raise 'Row ' + x + ' of ' + csv_file +
+          raise 'Row ' + x.to_s + ' of ' + csv_file +
                 ' contains invalid visibility option: ' + row['visibility']
         end
         rows << row

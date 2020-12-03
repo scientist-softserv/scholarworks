@@ -254,7 +254,7 @@ def add_managers(work, admin_set_id)
   permission = Hyrax::PermissionTemplate.find_by!(source_id: admin_set_id)
   return work if permission.nil?
 
-  managers = permission.agent_ids_for(agent_type: 'user',  access: 'manage');
+  managers = permission.agent_ids_for(agent_type: 'user',  access: 'manage')
   return work if managers.nil?
 
   work.edit_users = managers
