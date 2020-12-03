@@ -22,8 +22,10 @@ namespace :calstate do
 
     viz = CalState::Visibility.new
     model = CalState::Metadata.get_model_from_slug(model_type)
+    x = 1
 
     viz.get_csv(input_file).each do |row|
+      x += 1
       puts "Processing work ID #{row['id']}"
       model.where(id: row['id']).each do |work|
         if update == 'work'
@@ -31,6 +33,10 @@ namespace :calstate do
           work.save
         else
           viz.set_file_visibility(work, row['visibility'])
+          if CalState::Metadata.should_throttle(x, 5)
+            puts 'shhhh sleeping . . . . '
+            sleep(180)
+          end
         end
       end
     end
