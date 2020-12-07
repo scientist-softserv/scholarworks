@@ -1,6 +1,6 @@
 GIT
-  remote: https://github.com/CottageLabs/willow_sword.git
-  revision: 838fe5e75ed74ff9cddf46d03660d4c1e6e2cd64
+  remote: https://github.com/tilthouse/willow_sword.git
+  revision: ccda334070b81330feee03c01d120580b74c3c56
   branch: scholarworks
   specs:
     willow_sword (0.2.0)
