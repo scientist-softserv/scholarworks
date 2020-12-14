@@ -276,7 +276,8 @@ Devise.setup do |config|
       :first_name => 'givenName',
       :last_name => 'sn',
       :affiliation => 'unscoped-affiliation',
-      :campus => 'calstateEduPersonOrg'
+      :campus => 'calstateEduPersonOrg',
+      :department => 'departmentNumber'
     }
   }
 
