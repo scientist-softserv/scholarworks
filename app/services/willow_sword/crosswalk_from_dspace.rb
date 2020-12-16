@@ -1,6 +1,7 @@
 module WillowSword
   class CrosswalkFromDspace
     attr_reader :dc, :metadata, :model, :mapped_metadata, :files_metadata, :terms, :translated_terms, :singular
+
     def initialize(src_file, headers)
       @src_file = src_file
       @headers = headers
@@ -33,7 +34,7 @@ module WillowSword
     end
 
     def singular
-      %w(rights email)
+      %w(rights degree_level)
     end
 
     def map_xml
@@ -42,32 +43,35 @@ module WillowSword
       assign_model if @metadata.any?
     end
 
-    CONFIG = {
-      title: {
-        element: 'DISS_title'
-      },
-      email: {
-        element: 'DISS_email',
-        single_value: true
-      },
-    }
-
     def parse_dc
       return @metadata unless @src_file.present?
       return @metadata unless File.exist? @src_file
-      f = File.open(@src_file)
-      @doc = Nokogiri::XML(f)
-      # doc = Nokogiri::XML(@xml_metadata)
-      @doc.remove_namespaces!
-      CONFIG.each do |target_attr, config_values|
-        values = []
-        @doc.xpath("//#{CONFIG[target_attr][:element]}").each do |element|
-          values << element.text if element.text.present?
-          values = values.first if values.present? && CONFIG[target_attr][:single_value]
-          @metadata[target_attr] = values unless values.blank?
+
+      # transform the incoming xml data into a standard xml format
+      # that can then be simply imported into a new record
+      sword_doc = Nokogiri::XML(File.read(@src_file))
+      xslt_file = File.join(Rails.root, 'config', 'sword', 'sword.xslt')
+      xslt = Nokogiri::XSLT(File.read(xslt_file))
+      doc = xslt.transform(sword_doc)
+
+      @metadata[:visibility] = 'open'
+
+      doc.xpath('//field').each do |field|
+        next unless field.text.present?
+
+        field_name = field.attr('name').to_sym
+        is_singular = singular.include?(field_name.to_s)
+
+        if @metadata.key?(field_name) && !is_singular
+          @metadata[field_name] << field.text
+        else
+          @metadata[field_name] = if is_singular
+                                    field.text
+                                  else
+                                    [field.text]
+                                  end
         end
       end
-      f.close
     end
 
     def assign_model
@@ -81,4 +85,3 @@ module WillowSword
 
   end
 end
-

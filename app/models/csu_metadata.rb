@@ -1,5 +1,21 @@
-# Generated via
-#  `rails generate hyrax:work FacultyWork`
+
+# All models inherit from Hyrax::BasicMetadata, which includes:
+#   creator           RDF::Vocab::DC11.creator
+#   keyword	          RDF::Vocab::DC11.relation
+#   rights_statement  RDF::Vocab::EDM.rights
+#   contributor	      RDF::Vocab::DC11.contributor
+#   description	      RDF::Vocab::DC11.description
+#   license	          RDF::Vocab::DC.rights
+#   publisher	        RDF::Vocab::DC11.publisher
+#   date_created	    RDF::Vocab::DC.created
+#   subject	          RDF::Vocab::DC11.subject
+#   language	        RDF::Vocab::DC11.language
+#   identifier	      RDF::Vocab::DC.identifier
+#   based_near	      RDF::Vocab::FOAF.based_near
+#   related_url	      RDF::RDFS.seeAlso
+#   source	          RDF::Vocab::DC.source
+#   resource_type	    RDF::Vocab::DC.type
+
 module CsuMetadata
   extend ActiveSupport::Concern
 
