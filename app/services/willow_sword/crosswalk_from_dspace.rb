@@ -54,6 +54,8 @@ module WillowSword
       xslt = Nokogiri::XSLT(File.read(xslt_file))
       doc = xslt.transform(sword_doc)
 
+      @metadata[:visibility] = 'open'
+
       doc.xpath('//field').each do |field|
         next unless field.text.present?
 
@@ -63,11 +65,11 @@ module WillowSword
         if @metadata.key?(field_name) && !is_singular
           @metadata[field_name] << field.text
         else
-          if is_singular
-            @metadata[field_name] = field.text
-          else
-            @metadata[field_name] = [field.text]
-          end
+          @metadata[field_name] = if is_singular
+                                    field.text
+                                  else
+                                    [field.text]
+                                  end
         end
       end
     end
