@@ -8,159 +8,189 @@ module Hyrax
       {
         name: 'Bakersfield',
         slug: 'bakersfield',
-        email_domains: ['bakersfield.edu']
+        demo_email: ['bakersfield.edu'],
+        org: 'csub'
       },
       {
         name: 'Chancellor',
         slug: 'chancellor',
-        email_domains: ['calstate.edu']
+        demo_email: ['calstate.edu'],
+        org: 'co'
       },
       {
         name: 'Channel Islands',
         slug: 'channel',
-        email_domains: ['ci.edu']
+        demo_email: ['ci.edu'],
+        org: 'csuci'
       },
       {
         name: 'Chico',
         slug: 'chico',
-        email_domains: ['chico.edu']
+        demo_email: ['chico.edu'],
+        org: 'csuchico'
       },
       {
         name: 'Dominguez Hills',
         slug: 'dominguez',
-        email_domains: ['dh.edu']
+        demo_email: ['dh.edu'],
+        org: 'csudh'
       },
       {
         name: 'East Bay',
         slug: 'eastbay',
-        email_domains: ['eb.edu']
+        demo_email: ['eb.edu'],
+        org: 'csueastbay'
       },
       {
         name: 'Fresno',
         slug: 'fresno',
-        email_domains: ['fresno.edu']
+        demo_email: ['fresno.edu'],
+        org: 'csufresno'
       },
       {
         name: 'Fullerton',
         slug: 'fullerton',
-        email_domains: ['fullerton.edu']
+        demo_email: ['fullerton.edu'],
+        org: 'fullerton'
       },
       {
         name: 'Humboldt',
         slug: 'humboldt',
-        email_domains: ['humboldt.edu']
+        demo_email: ['humboldt.edu'],
+        org: 'humboldt'
       },
       {
         name: 'Long Beach',
         slug: 'longbeach',
-        email_domains: ['lb.edu']
+        demo_email: ['lb.edu'],
+        org: 'csulb'
       },
       {
         name: 'Los Angeles',
         slug: 'losangeles',
-        email_domains: ['la.edu']
+        demo_email: ['la.edu'],
+        org: 'calstatela'
       },
       {
         name: 'Maritime',
         slug: 'maritime',
-        email_domains: ['csum.edu']
+        demo_email: ['csum.edu'],
+        org: 'csum'
       },
       {
         name: 'Monterey Bay',
         slug: 'monterey',
-        email_domains: ['csumb.edu']
+        demo_email: ['csumb.edu'],
+        org: 'csumb'
       },
       {
         name: 'Moss Landing',
         slug: 'mlml',
-        email_domains: ['mlml.edu']
+        demo_email: ['mlml.edu'],
+        org: 'mlml'
       },
       {
         name: 'Northridge',
         slug: 'northridge',
-        email_domains: ['csun.edu']
+        demo_email: ['csun.edu'],
+        org: 'csun'
       },
       {
         name: 'Pomona',
         slug: 'pomona',
-        email_domains: ['cpp.edu']
+        demo_email: ['cpp.edu'],
+        org: 'csupomona'
       },
       {
         name: 'Sacramento',
         slug: 'sacramento',
-        email_domains: ['sacramento.edu']
+        demo_email: ['sacramento.edu'],
+        org: 'csus'
       },
       {
         name: 'San Bernardino',
-        slug: 'sacramento',
-        email_domains: ['sacramento.edu']
-      },
-      {
-        name: 'San Francisco',
-        slug: 'sanfrancisco',
-        email_domains: ['sf.edu']
-      },
-      {
-        name: 'San Jose',
-        slug: 'sanjose',
-        email_domains: ['sjsu.edu']
+        slug: 'sanbernardino',
+        demo_email: ['sacramento.edu'],
+        org: 'csusb'
       },
       {
         name: 'San Diego',
         slug: 'sandiego',
-        email_domains: ['sdsu.edu']
+        demo_email: ['sdsu.edu'],
+        org: 'sdsu'
+      },
+      {
+        name: 'San Francisco',
+        slug: 'sanfrancisco',
+        demo_email: ['sf.edu'],
+        org: 'sfsu'
+      },
+      {
+        name: 'San Jose',
+        slug: 'sanjose',
+        demo_email: ['sjsu.edu'],
+        org: 'sjsu'
       },
       {
         name: 'San Luis Obispo',
         slug: 'sanluisobisbo',
-        email_domains: ['calpoly.edu']
+        demo_email: ['calpoly.edu'],
+        org: 'calpoly'
       },
       {
         name: 'San Marcos',
         slug: 'sanmarcos',
-        email_domains: ['sanmarcos.edu']
+        demo_email: ['sanmarcos.edu'],
+        org: 'csusm'
       },
       {
         name: 'Sonoma',
         slug: 'sonoma',
-        email_domains: ['sonoma.edu']
+        demo_email: ['sonoma.edu'],
+        org: 'sonoma'
       },
       {
         name: 'Stanislaus',
         slug: 'stanislaus',
-        email_domains: ['stanislaus.edu']
+        demo_email: ['stanislaus.edu'],
+        org: 'csustan'
       }
     ].freeze
 
     #
-    # @return [Hash] short name to campus name map
+    # Get campus slug from current shibboleth user
     #
-    def self.campuses
-      { bakersfield: 'Bakersfield',
-        chancellor: 'Chancellor',
-        channel: 'Channel Islands',
-        chico: 'Chico',
-        dominguez: 'Dominguez Hills',
-        eastbay: 'East Bay',
-        fresno: 'Fresno',
-        fullerton: 'Fullerton',
-        humboldt: 'Humboldt',
-        longbeach: 'Long Beach',
-        losangeles: 'Los Angeles',
-        maritime: 'Maritime',
-        monterey: 'Monterey Bay',
-        mosslanding: 'Moss Landing',
-        northridge: 'Northridge',
-        pomona: 'Pomona',
-        sacramento: 'Sacramento',
-        sanbernardino: 'San Bernardino',
-        sandiego: 'San Diego',
-        sanfrancisco: 'San Francisco',
-        sanjose: 'San Jose',
-        slo: 'San Luis Obispo',
-        sanmarcos: 'San Marcos',
-        sonoma: 'Sonoma',
-        stanislaus: 'Stanislaus' }
+    # @param [User] campus
+    #
+    # @return [String] the campus slug
+    #
+    def self.get_shib_user_campus(user)
+      campus = nil
+      CAMPUSES.each do |campus_info|
+        if user.campus == campus_info[:org]
+          campus = campus_info[:slug]
+          break
+        end
+      end
+      campus
+    end
+
+    #
+    # Get campus slug from current demo user
+    #
+    # @param [User] campus
+    #
+    # @return [String] the campus slug
+    #
+    def self.get_demo_user_campus(user)
+      campus = nil
+      CAMPUSES.each do |campus_info|
+        if user.email.end_with?(*campus_info[:demo_email])
+          campus = campus_info[:slug]
+          break
+        end
+      end
+      campus
     end
 
     #
@@ -171,10 +201,13 @@ module Hyrax
     # @return [String] the campus name, e.g., 'Los Angeles'
     #
     def self.get_campus_name_from_id(campus_id)
-      key = campus_id.to_sym
-      raise 'Could not find campus name for id: ' + id unless campuses.key?(key)
+      result = CAMPUSES.find do |campus|
+        campus[:slug] == campus_id
+      end
 
-      campuses[key]
+      raise 'Could not find campus name for ' + campus_id unless result.present?
+
+      result[:name]
     end
 
     #
@@ -199,7 +232,7 @@ module Hyrax
     end
 
     #
-    # Extract campus name from Admin set
+    # Extract campus name from Admin set name
     #
     # @param admin_set_name [String] the admin sets public name
     #
@@ -215,6 +248,13 @@ module Hyrax
       result[:name]
     end
 
+    #
+    # Get campus slug from campus name
+    #
+    # @param campus_name [String] the campus name
+    #
+    # @return [String] the campus slug
+    #
     def self.get_campus_slug_from_name(campus_name)
       CAMPUSES.select do |campus|
         campus[:name].downcase == campus_name.downcase

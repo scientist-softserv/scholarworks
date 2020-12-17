@@ -208,7 +208,7 @@ def ml_create_new_work(params)
   work = model.new(id: id)
   work.update(params)
   work.apply_depositor_metadata(depositor.user_key)
-  work = add_managers(work)
+  work = add_managers(work, @config['admin_set_id'])
   work.save
 
   work
