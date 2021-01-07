@@ -29,10 +29,10 @@ namespace :calstate do
       puts "Processing work ID #{row['id']}"
       model.where(id: row['id']).each do |work|
         if update == 'work'
-          work.visibility = row['visibility']
+          work.visibility = row['work_visibility']
           work.save
         else
-          viz.set_file_visibility(work, row['visibility'])
+          viz.set_file_visibility(work, row['work_visibility'], row['file_visibility'])
           if CalState::Metadata.should_throttle(x, 5)
             puts 'shhhh sleeping . . . . '
             sleep(180)
