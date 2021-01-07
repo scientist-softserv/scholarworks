@@ -63,6 +63,8 @@ en:
       campus:
         note_html: Restrict access to campus
         text: Campus
+      open:
+        warning_html: ""
   simple_form:
     hints:
       defaults:

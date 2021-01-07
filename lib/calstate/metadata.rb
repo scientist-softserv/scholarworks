@@ -23,7 +23,7 @@ module CalState
         thesis: 'Thesis',
         publication: 'Publication',
         dataset: 'Dataset',
-        education_resource: 'EducationalResource'
+        educational_resource: 'EducationalResource'
       }
     end
 
@@ -75,6 +75,22 @@ module CalState
       end
 
       Kernel.const_get(model_mapping[key])
+    end
+
+    #
+    # Whether we should throttle
+    #
+    # @return [Boolean]  yes if weekday 9-5
+    #
+    def self.should_throttle(position, batch = 5)
+      day = Date.today.strftime('%A')
+
+      # just keep on truckin' over the weekend
+      return false if %w[Saturday Sunday].include? day
+
+      # otherwise throttle 9-5 weekdays
+      hour = Time.now.getlocal('-08:00').hour
+      (position % batch).zero? && (hour >= 9 && hour <= 17)
     end
   end
 end
