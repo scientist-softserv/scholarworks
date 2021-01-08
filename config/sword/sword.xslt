@@ -427,125 +427,127 @@
 
   <!-- NORTHRIDGE ETD SYSTEM -->
   <xsl:template name="northridge">
+    <xsl:for-each select="//epdcx:statement">
 
-    <!-- contributor -->
-    <xsl:if test="./@epdcx:attributeName='advisor'">
-      <field name="contributor">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- contributor -->
+      <xsl:if test="./@epdcx:attributeName='advisor'">
+        <field name="contributor">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- committee member -->
-    <xsl:if test="./@epdcx:attributeName='committeeMember'">
-      <field name="committee_member">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- committee member -->
+      <xsl:if test="./@epdcx:attributeName='committeeMember'">
+        <field name="committee_member">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- copyright date -->
-    <xsl:if test="./@epdcx:attributeName='copyrightDate'">
-      <field name="date_copyright">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- copyright date -->
+      <xsl:if test="./@epdcx:attributeName='copyrightDate'">
+        <field name="date_copyright">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- degree name -->
-    <xsl:if test="./@epdcx:attributeName='degree'">
-      <field name="degree_name">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- degree name -->
+      <xsl:if test="./@epdcx:attributeName='degree'">
+        <field name="degree_name">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- description note -->
-    <xsl:if test="./@epdcx:attributeName='description'">
-      <field name="description_note">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- description note -->
+      <xsl:if test="./@epdcx:attributeName='description'">
+        <field name="description_note">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- extent -->
-    <xsl:if test="./@epdcx:attributeName='extent'">
-      <field name="extent">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- extent -->
+      <xsl:if test="./@epdcx:attributeName='extent'">
+        <field name="extent">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- rights uri -->
-    <xsl:if test="./@epdcx:attributeName='rightsURI'">
-      <field name="rights_uri">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- rights uri -->
+      <xsl:if test="./@epdcx:attributeName='rightsURI'">
+        <field name="rights_uri">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- license -->
-    <xsl:if test="./@epdcx:attributeName='rightsLicense'">
-      <field name="license">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- license -->
+      <xsl:if test="./@epdcx:attributeName='rightsLicense'">
+        <field name="license">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- subject -->
-    <xsl:if test="./@epdcx:attributeName='subjectGeneral'">
-      <field name="subject">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- subject -->
+      <xsl:if test="./@epdcx:attributeName='subjectGeneral'">
+        <field name="subject">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- keyword -->
-    <xsl:if test="./@epdcx:attributeName='subjectKeywords'">
-      <field name="keyword">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- keyword -->
+      <xsl:if test="./@epdcx:attributeName='subjectKeywords'">
+        <field name="keyword">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- department -->
-    <xsl:if test="./@epdcx:attributeName='department'">
-      <field name="department">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- department -->
+      <xsl:if test="./@epdcx:attributeName='department'">
+        <field name="department">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- resource type -->
-    <xsl:if test="./@epdcx:attributeName='type'">
-      <field name="resource_type">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- resource type -->
+      <xsl:if test="./@epdcx:attributeName='type'">
+        <field name="resource_type">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- statement of responsibility -->
-    <xsl:if test="./@epdcx:attributeName='statementOfResponsibility'">
-      <field name="statement_of_responsibility">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- statement of responsibility -->
+      <xsl:if test="./@epdcx:attributeName='statementOfResponsibility'">
+        <field name="statement_of_responsibility">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- language -->
-    <xsl:if test="./@epdcx:attributeName='recordLanguage'">
-      <field name="language">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- language -->
+      <xsl:if test="./@epdcx:attributeName='recordLanguage'">
+        <field name="language">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- embargo until -->
-    <xsl:if test="./@epdcx:attributeName='embargoLift' or ./@epdcx:attributeName='embargountil'">
-      <field name="embargo_until">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- embargo until -->
+      <xsl:if test="./@epdcx:attributeName='embargoLift' or ./@epdcx:attributeName='embargountil'">
+        <field name="embargo_until">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- embargo terms -->
-    <xsl:if test="./@epdcx:attributeName='embargoterms'">
-      <field name="embargo_terms">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- embargo terms -->
+      <xsl:if test="./@epdcx:attributeName='embargoterms'">
+        <field name="embargo_terms">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
 
-    <!-- publisher -->
-    <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/publisher'">
-      <field name="publisher">
-        <xsl:value-of select="epdcx:valueString" />
-      </field>
-    </xsl:if>
+      <!-- publisher -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/publisher'">
+        <field name="publisher">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+    </for-each>
   </xsl:template>
 
   <!-- PROQUEST ETD ADMINISTRATOR -->
