@@ -13,22 +13,22 @@ module CalState
     # Set visibility on files
     #
     # @param [ActiveFedora::Base] work   ScholarWorks work
-    # @param [String] visibility         visibility option
+    # @param [String] work_visibility    visibility for work
+    # @param [String] file_visibility    visibility for file
     #
     # @return [FalseClass]
     #
-    def set_file_visibility(work, visibility)
+    def set_file_visibility(work, work_visibility, file_visibility)
       # this is ugly, but couldn't find a more efficient way to do this,
       # especially for campus visibility which behaves differently
-      original_visibility = work.visibility
 
-      # set work to new visibility and have files inherit from that
-      work.visibility = visibility
+      # set work to new visibility so files can inherit from that
+      work.visibility = file_visibility
       work.save
       InheritPermissionsJob.perform_now(work)
 
-      # set work back to original visibility
-      work.visibility = original_visibility
+      # set work to specified visibility
+      work.visibility = work_visibility
       work.save
     end
 
@@ -45,9 +45,9 @@ module CalState
       csv = CSV.read(csv_file, headers: true)
       csv.each do |row|
         x += 1
-        unless @visibility_options.include? row['visibility']
-          raise 'Row ' + x + ' of ' + csv_file +
-                ' contains invalid visibility option: ' + row['visibility']
+        unless @visibility_options.include? row['work_visibility']
+          raise 'Row ' + x.to_s + ' of ' + csv_file +
+                ' contains invalid visibility option: ' + row['work_visibility']
         end
         rows << row
       end

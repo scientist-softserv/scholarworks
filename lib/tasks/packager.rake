@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
+require 'calstate/metadata'
 require 'colorize'
-require 'rubygems'
 require 'time'
 require 'yaml'
 require 'zip'
@@ -38,10 +38,18 @@ namespace :packager do
 
     # let's do it!
     if source_file == 'items'
+      x = 1
       Dir.foreach(@input_dir) do |filename|
         next unless filename.include?('.zip') && filename.include?('ITEM')
 
         process_package(filename)
+
+        # throttle during the day
+        x += 1
+        if CalState::Metadata.should_throttle(x, 3)
+          puts 'shhhh sleeping . . . . '
+          sleep(300)
+        end
       end
     else
       process_package(source_file)
@@ -226,6 +234,8 @@ def create_new_work(params)
     params['visibility'] = 'open'
   end
 
+  params['visibility'] = 'campus'
+
   # set admin set to deposit into
   unless @config['admin_set_id'].nil?
     params['admin_set_id'] = @config['admin_set_id']
@@ -254,7 +264,7 @@ def add_managers(work, admin_set_id)
   permission = Hyrax::PermissionTemplate.find_by!(source_id: admin_set_id)
   return work if permission.nil?
 
-  managers = permission.agent_ids_for(agent_type: 'user',  access: 'manage');
+  managers = permission.agent_ids_for(agent_type: 'user',  access: 'manage')
   return work if managers.nil?
 
   work.edit_users = managers
