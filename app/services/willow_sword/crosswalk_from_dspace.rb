@@ -60,15 +60,16 @@ module WillowSword
         next unless field.text.present?
 
         field_name = field.attr('name').to_sym
+        field_value = field.text.squish
         is_singular = singular.include?(field_name.to_s)
 
         if @metadata.key?(field_name) && !is_singular
-          @metadata[field_name] << field.text
+          @metadata[field_name] << field_value
         else
           @metadata[field_name] = if is_singular
-                                    field.text
+                                    field_value
                                   else
-                                    [field.text]
+                                    [field_value]
                                   end
         end
       end
