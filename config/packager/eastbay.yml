@@ -2,9 +2,8 @@
 campus: 'East Bay'
 work_type: "default"
 metadata_file: "mets.xml"
-depositor: dwalker@calstate.edu
+depositor: kcloud@calstate.edu
 input_dir: /data/exported/
-handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: 'cr56n096b'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
@@ -36,24 +35,6 @@ type_to_work_map:
   Musical Score: Thesis
   Other: Publication
   Plan: Publication
-
-DSpace COMMUNITY:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace COLLECTION:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace ITEM:
-  desc_metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/xmlns:xmlData/dim:dim[@dspaceType='ITEM']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
 
 # Dublin Core Field Mapping
 fields:

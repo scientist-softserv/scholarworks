@@ -2,9 +2,8 @@
 campus: "Channel Islands"
 work_type: "default"
 metadata_file: "mets.xml"
-depositor: dwalker@calstate.edu
+depositor: kcloud@calstate.edu
 input_dir: /data/exported/
-handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: 'dr26xx36k'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
@@ -40,24 +39,6 @@ type_to_work_map:
   Periodical: Publication
   Report: Publication
   Other: Thesis
-
-DSpace COMMUNITY:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace COLLECTION:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace ITEM:
-  desc_metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/xmlns:xmlData/dim:dim[@dspaceType='ITEM']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
 
 # Dublin Core Field Mapping
 fields:
@@ -124,10 +105,6 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='degree']"
     type: Array
-  #degree_name:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='degree']"
-  #  type: Array
   department:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
@@ -162,10 +139,6 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='uri']"
     type: Array
-  #identifier:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='identifier'][not(@qualifier)]"
-  #  type: Array
   issn:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='issn']"
@@ -206,11 +179,6 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='type'][@qualifier='genre']"
       - "/dim:field[@mdschema='dc'][@element='genre'][not(@qualifier)]"
     type: Array
-#  rights_statement:
-#    xpath:
-#      - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
-#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='usage']"
-#    type: Array
   rights_note:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"

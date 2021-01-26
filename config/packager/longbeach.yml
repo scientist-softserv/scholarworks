@@ -4,7 +4,6 @@ work_type: "default"
 metadata_file: "rdf.xml"
 depositor: kcloud@calstate.edu
 input_dir: /data/csulb/exported/
-handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: 'rj4304528'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
@@ -61,24 +60,6 @@ type_to_work_map:
   # Post-print: Publication
   # Presentation: Thesis
   # Recording, oral: CreativeWork
-
-#DSpace COMMUNITY:
-#  desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
-#  namespace:
-#    xmlns: http://www.loc.gov/METS/
-#    dim: http://www.dspace.org/xmlns/dspace/dim
-
-#DSpace COLLECTION:
-#  desc_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
-#  namespace:
-#    xmlns: http://www.loc.gov/METS/
-#    dim: http://www.dspace.org/xmlns/dspace/dim
-
-Symposia ITEM:
-  desc_metadata_prefix: "//rdf:Description"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
 
 # Dublin Core Field Mapping
 fields:

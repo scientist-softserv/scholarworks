@@ -4,7 +4,6 @@ work_type: "default"
 metadata_file: "mets.xml"
 depositor: kcloud@calstate.edu
 input_dir: /data/exported/
-handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: 'rr171x20k'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
@@ -45,24 +44,6 @@ type_to_work_map:
   #Dataset: Dataset
   #Other: Publication
 
-DSpace COMMUNITY:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace COLLECTION:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace ITEM:
-  desc_metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/xmlns:xmlData/dim:dim[@dspaceType='ITEM']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
 # Dublin Core Field Mapping
 fields:
   description: # Thesis
@@ -76,23 +57,10 @@ fields:
       #- "/dim:field[@mdschema='dc'][@element='advisor'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='advisor']"
     type: Array
-  #alternative_title: # Thesis
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='title'][@qualifier='alternative']"
-  #  type: Array
-  #bibliographic_citation:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='citation']"
-  #  type: Array
   committee_member: # Thesis
     xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='committeemember']"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='committeeMember']"
     type: Array
-  #contributor:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='contributor'][not(@qualifier)]"
-  #  type: Array
   college:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
@@ -100,7 +68,6 @@ fields:
   creator:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='author']"
-  #    - "/dim:field[@mdschema='dc'][@element='creator'][not(@qualifier)]"
     type: Array
   date_available:
     xpath:
@@ -132,25 +99,14 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='available']"
     type: String
-  #General description mapping
-  #description:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='description'][not(@qualifier)]"
-  #  type: Array
   department:
     xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='department']"
-    #  - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='csuciauthor']"
     type: Array
   degree_name:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='other']"
     type: Array
-  #editor:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='editor']"
-  #  type: Array
   embargo_release_date:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='embargountil']"
@@ -159,103 +115,32 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='embargoterms']"
     type: String
-  #extent: # (Default) Newspaper
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='format'][@qualifier='extent']"
-  #  type: Array
-  #format:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='format']"
-  #  type: Array
-  #geographical_area: # Thesis
-#    xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='coverage'][@qualifier='spatial']"
-#    type: Array
   handle: # Thesis
     xpath:
       - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='uri']"
     type: Array
-  #identifier:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='identifier'][not(@qualifier)]"
-  #    - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='isbn']"
-  #    - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='issn']"
-  #    - "/dim:field[@mdschema='dc'][@element='identifier'][@qualifier='other']"
-  #    - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='lcc']"
-  #  type: Array
   is_part_of: # (Default) Newspaper
     xpath:
       - "/dim:field[@mdschema='dc'][@element='relation'][@qualifier='ispartofseries']"
     type: Array
-  #keyword:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='lcsh']"
-  #  type: Array
   language:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='language'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='language'][@qualifier='iso']"
     type: Array
-  #license: # (Default) Newspaper
-  #  xpath:
-#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='license']"
-  #  type: Array
   provenance:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='provenance']"
       - "/dim:field[@mdschema='dc'][@element='provenance'][not(@qualifier)]"
     type: Array
-  #publisher:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='publisher'][not(@qualifier)]"
-  #  type: Array
-#  related_url: # (Default) Newspaper
-#    xpath:
-#      - "/dim:field[@mdschema='dc'][@element='relation'][@qualifier='uri']"
-#    type: Array
   resource_type:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='type'][not(@qualifier)]"
-    #  - "/dim:field[@mdschema='dc'][@element='type'][@qualifier='genre']"
-    #  - "/dim:field[@mdschema='dc'][@element='genre'][not(@qualifier)]"
     type: Array
-  #rights_note:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
-  #    - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='statementofresponsibility']"
-  #    - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='usage']"
-  #    - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='license']"
-  #  type: Array
-#  rights_statement:
-#    xpath:
-#      - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
-#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='usage']"
-#    type: Array
-#  rights_uri:
-#    xpath:
-#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='uri']"
-#    type: Array
-  #source:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='source'][not(@qualifier)]"
-  #    - "/dim:field[@mdschema='dc'][@element='source'][@qualifier='type']"
-  #    - "/dim:field[@mdschema='dc'][@element='source'][@qualifier='uri']"
-  #    - "/dim:field[@mdschema='dc'][@element='subject'][@qualifier='lcc']"
-  #  type: Array
-  #sponsor: # Newspaper
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='sponsor'][not(@qualifier)]"
-  #    - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='sponsor']"
-  #    - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
-  #  type: Array
   subject:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='subject'][not(@qualifier)]"
     type: Array
-  #time_period: # Thesis
-    #xpath:
-    #  - "/dim:field[@mdschema='dc'][@element='coverage'][@qualifier='temporal']"
-    #type: Array
   title:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='title'][not(@qualifier)]"
