@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module CalState
+  #
+  # Set visibility on files
+  #
   class Visibility
     #
     # New Visibility object
