@@ -19,7 +19,7 @@ namespace :calstate do
     CalState::Metadata.models.each do |model|
       model.where(query).each do |work|
         puts "Updating work #{work.id}"
-        work = Packager.add_manager_group(work, campus)
+        work = CalState::Packager.add_manager_group(work, campus)
         work.save
       end
     end
