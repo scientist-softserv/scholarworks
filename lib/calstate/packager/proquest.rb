@@ -23,7 +23,7 @@ module CalState
       #
       # Process all items
       #
-      # @param [String] input_dir  input directory
+      # @param input_dir [String]  input directory
       #
       def process_items(input_dir)
 
@@ -75,7 +75,7 @@ module CalState
       #
       # Extract missing attributes from Proquest XML
       #
-      # @param [String] sword_mets_file  path to sword mets file
+      # @param sword_mets_file [String]  path to sword mets file
       #
       # @return [Hash]
       #
@@ -121,8 +121,8 @@ module CalState
       #
       # Unzip the original SWORD package
       #
-      # @param [Nokogiri::XML::Document] dom  xml file
-      # @param [String] unpacked_dir          path of unpacked item directory
+      # @param dom [Nokogiri::XML::Document]  xml file
+      # @param unpacked_dir [String]          path of unpacked item directory
       #
       # @return [String|Nil] path to sword directory, or nil if it didn't work
       #
@@ -143,7 +143,7 @@ module CalState
       # File containing native Proquest XML document
       # Sometimes it's buried in mets.xml, sometimes in a separate file
       #
-      # @param [String] sword_dir  item's unpacked sword directory
+      # @param sword_dir [String]  item's unpacked sword directory
       #
       # @return [String] file containing native Proquest XML
       #
@@ -161,7 +161,7 @@ module CalState
       #
       # Format the name element as last, first middle
       #
-      # @param [Nokogiri::XML::Element] name  the DISS_name node
+      # @param name [Nokogiri::XML::Element]  the DISS_name node
       #
       # @return [String] name formatted as "last, first middle"
       #
@@ -176,8 +176,8 @@ module CalState
       #
       # Unzip a package
       #
-      # @param [String] zip_file    path to zip file
-      # @param [String] output_dir  path to directory to unzip it into
+      # @param zip_file [String]    path to zip file
+      # @param output_dir [String]  path to directory to unzip it into
       #
       # @return [Boolean]  true if successful, false if not
       #

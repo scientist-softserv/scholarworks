@@ -52,7 +52,8 @@ module CalState
     #
     # Get slug for model name
     #
-    # @param [String] model_name
+    # @param model_name [String]  the model name
+    #
     # @return [String]
     #
     def self.get_slug(model_name)
@@ -66,19 +67,22 @@ module CalState
     #
     # Model for given slug
     #
+    # @param slug [String]  the model slug
+    #
     # @return [ActiveFedora::Base]
     #
     def self.get_model_from_slug(slug)
       key = slug.to_sym
-      unless model_mapping.key?(key)
-        raise 'No model defined for ' + slug
-      end
+      raise 'No model defined for ' + slug unless model_mapping.key?(key)
 
       Kernel.const_get(model_mapping[key])
     end
 
     #
     # Whether we should throttle
+    #
+    # @param position [Integer]  current position in the queue
+    # @param batch [Integer]     how many records to process before pause
     #
     # @return [Boolean]  yes if weekday 9-5
     #

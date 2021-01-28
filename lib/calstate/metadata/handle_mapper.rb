@@ -11,7 +11,7 @@ module CalState
       #
       # New HandleMapper
       #
-      # @param [String] path  file path to put files
+      # @param path [String]  file path to put files
       #
       def initialize(path)
         @path = path
@@ -31,7 +31,7 @@ module CalState
       #
       # Write the mapping to the appropriate campus file
       #
-      # @param [JSON] doc  solr record
+      # @param doc [JSON]  solr record
       #
       def write_to_file(doc)
         handle = doc['handle_tesim']&.first.to_s
@@ -51,8 +51,8 @@ module CalState
       #
       # Rewrite rule suitable for dspace apache
       #
-      # @param [String] handle  full handle url
-      # @param [String] url     full url to record in hyrax
+      # @param handle [String]  full handle url
+      # @param url [String]     full url to record in hyrax
       #
       def get_rewrite_rule(handle, url)
         handle = handle.sub('http://hdl.handle.net/', '')

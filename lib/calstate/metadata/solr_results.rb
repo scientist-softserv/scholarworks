@@ -18,9 +18,9 @@ module CalState
       #
       # New SolrResults
       #
-      # @param [Integer] start  starting record number
-      # @param [Integer] total  number of records
-      # @param [Array] records  [optional] array of json documents
+      # @param start [Integer]  starting record number
+      # @param total [Integer]  number of records
+      # @param records [Array]  [optional] array of json documents
       #
       def initialize(start, total, records = [])
         @start = start

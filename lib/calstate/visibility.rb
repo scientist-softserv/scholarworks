@@ -15,9 +15,9 @@ module CalState
     #
     # Set visibility on files
     #
-    # @param [ActiveFedora::Base] work   ScholarWorks work
-    # @param [String] work_visibility    visibility for work
-    # @param [String] file_visibility    visibility for file
+    # @param work [ActiveFedora::Base]   Fedora work
+    # @param work_visibility [String]    visibility for work
+    # @param file_visibility [String]    visibility for file
     #
     # @return [FalseClass]
     #
@@ -38,7 +38,7 @@ module CalState
     #
     # Load input spreadsheet and verify visibility settings
     #
-    # @param [String] csv_file  path to csv file
+    # @param csv_file [String]  path to csv file
     #
     # @return [Array]
     #

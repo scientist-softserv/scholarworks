@@ -13,8 +13,8 @@ module CalState
     #
     # Add the manager group to the work
     #
-    # @param [ActiveRecord::Base] work  Fedora record
-    # @param [String] campus      Campus slug
+    # @param work [ActiveRecord::Base]  Fedora record
+    # @param campus [String]            campus slug
     #
     # @return [ActiveRecord::Base]
     #
@@ -27,8 +27,8 @@ module CalState
     #
     # Add individual managers to the work
     #
-    # @param [ActiveRecord::Base] work  Fedora record
-    # @param [String] admin_set_id      Admin set identifier
+    # @param work [ActiveRecord::Base]  Fedora record
+    # @param admin_set_id [String]      admin set identifier
     #
     # @return [ActiveRecord::Base]
     #

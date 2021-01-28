@@ -12,8 +12,8 @@ module CalState
         #
         # New simple metadata fixer
         #
-        # @param [String] campus_name  campus full name
-        # @param [String] model        [optional] model to limit to
+        # @param campus_name [String]  campus full name
+        # @param model [String]        [optional] model to limit to
         #
         def initialize(campus_name, model = '')
           @campus_name = campus_name
@@ -27,7 +27,7 @@ module CalState
         #
         # Update records with supplied spreadsheet
         #
-        # @param [String] csv_file  path to csv file
+        # @param csv_file [String]  path to csv file
         #
         def replace_metadata(csv_file)
           # get metadata file
@@ -73,7 +73,7 @@ module CalState
         #
         # Load the input spreadsheet
         #
-        # @param [String] csv_file  path to csv file
+        # @param csv_file [String]  path to csv file
         #
         # @return [Array]
         #

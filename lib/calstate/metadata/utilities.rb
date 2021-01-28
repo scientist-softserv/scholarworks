@@ -18,7 +18,7 @@ module CalState
       #
       # Construct full URL to a record
       #
-      # @param [JSON] doc  solr record
+      # @param doc [JSON]  solr record
       #
       # @return [String] full URL
       #
@@ -30,7 +30,7 @@ module CalState
       #
       # Convert an ActiveFedora relation field into array
       #
-      # @param [ActiveFedora::Base] field
+      # @param field [ActiveFedora::Base]
       #
       # @return [Array<String>]
       #
