@@ -15,9 +15,9 @@ module CalState
       #
       # New Islandora packager
       #
-      # @param [String] campus      campus slug
-      # @param [String] type        work type (e.g., Thesis)
-      # @param [String] visibility  visibility to set
+      # @param campus [String]      campus slug
+      # @param type [String]        work type (e.g., Thesis)
+      # @param visibility [String]  visibility to set
       #
       def initialize(campus, type, visibility)
         @campus = campus
@@ -65,8 +65,8 @@ module CalState
       #
       # Directory clean-up
       #
-      # @param [String] source_path  input directory path
-      # @param [String] dest_path    destination directory path
+      # @param source_path [String]  input directory path
+      # @param dest_path [String]    destination directory path
       #
       def cleanup(source_path, dest_path)
         # create directories if needed
@@ -93,7 +93,7 @@ module CalState
       #
       # Process all files in a directory
       #
-      # @param [String] path  path to directory
+      # @param path [String]  path to directory
       #
       def process_dir(path)
         return unless File.directory?(File.join(@input_dir, path))
@@ -149,9 +149,9 @@ module CalState
       # Process the DC Record file in a directory
       # creates new work(s) based on content
       #
-      # @param [String] dir_name       the directory of the extracted package
-      # @param [String] metadata_file  location of metadata file
-      # @param [String] data_file      the file to upload
+      # @param dir_name [String]       the directory of the extracted package
+      # @param metadata_file [String]  location of metadata file
+      # @param data_file [String]      the file to upload
       #
       # @raise RuntimeError if no METS file found
       #
@@ -177,8 +177,8 @@ module CalState
       #
       # Create new work and attach any files
       #
-      # @param [Nokogiri::XML::Document] dom  DOMDocument of METS file
-      # @param [String] data_file             the file to upload
+      # @param dom [Nokogiri::XML::Document]  DOMDocument of METS file
+      # @param data_file [String]             the file to upload
       #
       def create_work_and_files(dom, data_file)
         @log.info 'Ingesting ' + @type
@@ -215,7 +215,7 @@ module CalState
       #
       # Create a new Hyrax work
       #
-      # @param [Hash] params  the field/xpath mapper
+      # @param params [Hash]  the field/xpath mapper
       #
       # @return [ActiveFedora::Base] the work
       #
@@ -263,7 +263,7 @@ module CalState
       # extracts file info for bitstream (optionally also thumnail) from METS and
       # creates UploadedFile objects for each
       #
-      # @param [String] pdf_file  file to upload
+      # @param pdf_file [String]  file to upload
       #
       # @return [Array<Hyrax::UploadedFile>]
       #
@@ -281,7 +281,7 @@ module CalState
       # Upload file to Hyrax
       # uses the original file name instead of name given by aip package
       #
-      # @param [String] filename  the file working directory
+      # @param filename [String]  the file working directory
       #
       # @return Hyrax::UploadedFile
       #
@@ -304,8 +304,8 @@ module CalState
       #
       # Map creator notes to field type
       #
-      # @param [String] data  creator field value
-      # @param [Hash] params  work parameters
+      # @param data [String]  creator field value
+      # @param params [Hash]  work parameters
       #
       def process_creator(data, params)
         ignore_tag = '(translator)'
@@ -335,7 +335,8 @@ module CalState
       #
       # Extract data from XML based on config data mapping
       #
-      # @param dom [Nokogiri::XML::Document] DOMDocument of METS file
+      # @param dom [Nokogiri::XML::Document]  DOMDocument of METS file
+      #
       # @return Hash
       #
       def collect_params(dom)
@@ -392,7 +393,7 @@ module CalState
       # Create a directory
       # only if it doesn't already exist
       #
-      # @param [String] dir
+      # @param dir [String]
       #
       # @return [String] the new directory
       #

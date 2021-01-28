@@ -15,7 +15,7 @@ module CalState
       #
       # New DSpace packager
       #
-      # @param [String] campus  campus slug
+      # @param campus [String]  campus slug
       #
       def initialize(campus)
         # config and loggers
@@ -65,7 +65,7 @@ module CalState
       # unzips the package and processes its contents
       # moves processed zip files to 'complete' or 'error' dirs
       #
-      # @param [String] source_file  the .zip file to process
+      # @param source_file [String]  the .zip file to process
       #
       def process_package(source_file)
         @log.info "\n\nProcessing " + source_file
@@ -102,7 +102,7 @@ module CalState
       # Extract a .zip file
       # extracted files go to the @output directory
       #
-      # @param [String] zip_file  the full path of the zip file
+      # @param zip_file [String]  the full path of the zip file
       #
       # @return [String|nil] the full path of the directory created, nil if not found
       #
@@ -133,7 +133,7 @@ module CalState
       # Process the METS file in a directory
       # creates new work(s) based on content
       #
-      # @param [String] file_dir  the directory of the extracted package
+      # @param file_dir [String]  the directory of the extracted package
       #
       # @raise RuntimeError if no METS file found
       #
@@ -168,8 +168,8 @@ module CalState
       #
       # Create new work and attach any files
       #
-      # @param [String] file_dir  the file working directory
-      # @param [Nokogiri::XML::Document] dom DOMDocument of METS file
+      # @param file_dir [String]              the file working directory
+      # @param dom [Nokogiri::XML::Document]  DOMDocument of METS file
       #
       def create_work_and_files(file_dir, dom)
         @log.info 'Ingesting DSpace item'
@@ -208,7 +208,7 @@ module CalState
       #
       # Create a new Hyrax work
       #
-      # @param [Hash] params  the field/xpath mapper
+      # @param params [Hash]  the field/xpath mapper
       #
       # @return [ActiveFedora::Base] the work
       #
@@ -275,7 +275,7 @@ module CalState
       # extracts file info for bitstream (optionally also thumnail) from METS and
       # creates UploadedFile objects for each
       #
-      # @param [Nokogiri::XML::Document] dom  DOMDocument of METS file
+      # @param dom [Nokogiri::XML::Document]  DOMDocument of METS file
       #
       # @return [Array<Hyrax::UploadedFile>]
       #
@@ -324,10 +324,10 @@ module CalState
       # Upload file to Hyrax
       # uses the original file name instead of name given by aip package
       #
-      # @param [String] file_dir       the file working directory
-      # @param [String] orig_filename  the original file name
-      # @param [String] aip_filename   the name given by DSpace AIP export
-      # @param [String] type           whether 'thumbnail' or 'bitstream'
+      # @param file_dir [String]       the file working directory
+      # @param orig_filename [String]  the original file name
+      # @param aip_filename [String]   the name given by DSpace AIP export
+      # @param type [String]           whether 'thumbnail' or 'bitstream'
       #
       # @return Hyrax::UploadedFile
       #
@@ -350,7 +350,7 @@ module CalState
       #
       # Extract data from XML based on config data mapping
       #
-      # @param [Nokogiri::XML::Document] dom  DOMDocument of METS file
+      # @param dom [Nokogiri::XML::Document]  DOMDocument of METS file
       #
       # @return Hash
       #
@@ -398,7 +398,7 @@ module CalState
       # Create a directory
       # only if it doesn't already exist
       #
-      # @param [String] dir
+      # @param dir [String]
       #
       # @return [String] the new directory
       #

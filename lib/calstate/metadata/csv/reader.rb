@@ -17,7 +17,7 @@ module CalState
         #
         # New CSV Reader
         #
-        # @param [String] csv_file  path to csv file
+        # @param csv_file [String]  path to csv file
         #
         def initialize(csv_file)
           options = { headers: true, encoding: 'bom|utf-8' }
@@ -28,7 +28,7 @@ module CalState
         #
         # Get a subset of records
         #
-        # @param [Hash] args  field: value
+        # @param args [Hash]  field: value
         #
         # @return [Array]
         #
@@ -49,7 +49,7 @@ module CalState
         #
         # Get all records, with cleaned values
         #
-        # @param [CSV] csv  CSV object
+        # @param csv [CSV]  CSV object
         # @return [Array]
         #
         def load_records(csv)

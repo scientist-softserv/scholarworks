@@ -43,7 +43,7 @@ module CalState
       #
       # Find duplicate records
       #
-      # @param [String] field  [optional] the solr field key
+      # @param field [String]  [optional] the solr field key
       #
       def find_duplicates(field = 'handle_tesim')
         handles = {}
@@ -70,7 +70,7 @@ module CalState
       #
       # Fetch metadata records from the repository
       #
-      # @param [String] solr_query  solr query
+      # @param solr_query [String]  solr query
       #
       # @return [Array] of solr documents
       #
@@ -94,9 +94,9 @@ module CalState
       #
       # Fetch a batch of records
       #
-      # @param [String] query   solr query
-      # @param [Integer] start  [optional] starting record number
-      # @param [Integer] rows   [optional] number of rows to fetch
+      # @param query [String]   solr query
+      # @param start [Integer]  [optional] starting record number
+      # @param rows [Integer]   [optional] number of rows to fetch
       #
       # @return [SolrResults]
       #
@@ -116,7 +116,7 @@ module CalState
       #
       # Solr query to retrieve all open, unsuppressed records
       #
-      # @param [Boolean] include_suppressed  [optional] include suppressed records?
+      # @param include_suppressed [Boolean]  [optional] include suppressed records?
       #
       # @return [String] Solr query
       #
@@ -138,9 +138,9 @@ module CalState
       #
       # Solr parameters for paging
       #
-      # @param [String] query   solr query
-      # @param [Integer] start  starting record position (default: 0)
-      # @param [Integer] rows   number of rows to return (default: 1,000)
+      # @param query [String]   solr query
+      # @param start [Integer]  starting record position (default: 0)
+      # @param rows [Integer]   number of rows to return (default: 1,000)
       #
       # @return [Hash] parameters, with query and wt: json
       #
