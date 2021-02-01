@@ -1,14 +1,15 @@
-# Usage
-# bundle exec rake calstate:work_report[campus]
-# bundle exec rake calstate:work_report["San Francisco"]
-#
-#
+# frozen_string_literal: true
+
+require 'calstate/metadata'
 require 'csv'
+
+# Usage:
+# bundle exec rake calstate:work_report[/home/ec2-user/data/works.csv]
 
 namespace :calstate do
   desc 'Work and file count report'
   task :work_report, %i[file] => [:environment] do |_t, args|
-    export_file = args[:file] or raise 'Please provide a location for export CSV file.'
+    export_file = args[:file] or raise 'Please provide path for export file.'
 
     CSV.open(export_file, 'wb') do |csv|
       csv << %w[ID handle campus files]
@@ -20,9 +21,9 @@ namespace :calstate do
               doc.handle.first.to_s,
               doc.campus.first.to_s
             ]
-            file_names = ''
+            file_names = String.new
             doc.file_sets.each do |file|
-              file_names.concat('|') if !file_names.to_s.empty?
+              file_names.concat('|') unless file_names.to_s.empty?
               file_names.concat(file.title.first.to_s)
             end
             values.push(file_names)
