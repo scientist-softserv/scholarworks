@@ -13,7 +13,7 @@ module CalState
     end
 
     #
-    # Set visibility on files
+    # Set visibility on work and files
     #
     # @param work [ActiveFedora::Base]   Fedora work
     # @param work_visibility [String]    visibility for work
@@ -21,18 +21,24 @@ module CalState
     #
     # @return [FalseClass]
     #
-    def set_file_visibility(work, work_visibility, file_visibility)
+    def set_visibility(work, work_visibility, file_visibility)
       # this is ugly, but couldn't find a more efficient way to do this,
       # especially for campus visibility which behaves differently
 
-      # set work to new visibility so files can inherit from that
-      work.visibility = file_visibility
-      work.save
-      InheritPermissionsJob.perform_now(work)
+      if work_visibility != file_visibility
+        # set work to file visibility so files can inherit from that
+        work.visibility = file_visibility
+        work.save
+        InheritPermissionsJob.perform_now(work)
 
-      # set work to specified visibility
-      work.visibility = work_visibility
-      work.save
+        # then set work to work visibility
+        work.visibility = work_visibility
+        work.save
+      else
+        work.visibility = work_visibility
+        work.save
+        InheritPermissionsJob.perform_now(work)
+      end
     end
 
     #
