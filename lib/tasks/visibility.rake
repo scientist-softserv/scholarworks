@@ -3,8 +3,8 @@
 require 'calstate/visibility'
 
 # Usage
-# bundle exec rake calstate:update_visibility[/path/to/file.csv,file,thesis]
-# bundle exec rake calstate:update_visibility[/path/to/file.csv,work,thesis]
+# bundle exec rake calstate:visibility[/path/to/file.csv,file,thesis]
+# bundle exec rake calstate:visibility[/path/to/file.csv,work,thesis]
 #
 # work_file is used to indicate either the visibility change applies to the work or file
 # model can be either Thesis,Publication,EducationalResource,DataSet.
@@ -15,7 +15,7 @@ require 'calstate/visibility'
 #
 namespace :calstate do
   desc 'Update visibility of all attached files to work'
-  task :update_visibility, %i[input_file update model_type] => [:environment] do |_t, args|
+  task :visibility, %i[input_file update model_type] => [:environment] do |_t, args|
     input_file = args[:input_file] or raise 'No input file provided.'
     update = args[:update] ||= 'work'
     model_type = args[:model_type] ||= 'thesis'

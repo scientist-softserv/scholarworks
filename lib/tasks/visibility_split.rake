@@ -3,12 +3,12 @@
 require 'calstate/metadata'
 
 # Usage
-# bundle exec rake calstate:split_visibility
-# bundle exec rake calstate:split_visibility[sacramento]
+# bundle exec rake calstate:visibility_split
+# bundle exec rake calstate:visibility_split[sacramento]
 
 namespace :calstate do
   desc 'Make record public but keep files restricted'
-  task :split_visibility, %i[campus] => [:environment] do |_t, args|
+  task :visibility_split, %i[campus] => [:environment] do |_t, args|
     campus = args[:campus] ||= nil
     name = if campus.nil?
              nil
