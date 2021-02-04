@@ -70,8 +70,8 @@ module CalState
                           prep_value(doc.visibility_after_embargo)] # not in attributes
                 values.push(*get_attr_values(doc.attributes, attribute_names))
                 csv << values
-              rescue StandardError => e
-                raise e
+              rescue ActiveFedora::ConstraintError => e
+                puts e.message
               end
             end
           end

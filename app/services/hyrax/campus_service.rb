@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-module Hyrax
 
+module Hyrax
+  #
   # Provides essential methods for getting the normalized campus name
   #
   module CampusService
@@ -261,10 +262,20 @@ module Hyrax
       end.first&.fetch(:slug)
     end
 
+    #
+    # All campus slugs
+    #
+    # @return [Array]
+    #
     def self.all_campus_slugs
       CAMPUSES.map { |campus| campus[:slug] }
     end
 
+    #
+    # All campus names
+    #
+    # @return [Array]
+    #
     def self.all_campus_names
       CAMPUSES.map { |campus| campus[:name] }
     end

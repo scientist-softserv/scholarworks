@@ -5,9 +5,10 @@ require 'calstate/visibility'
 # Usage
 # bundle exec rake calstate:visibility[/path/to/file.csv,thesis]
 #
-# input file should have
-# where visibility can be "open", "authenticated", or "restricted"
-#
+# input file should have three columns with headers for:
+#   id, work_visibility, file_visibility
+# use internal visibility name, e.g.: 'open' instead of 'public'
+
 namespace :calstate do
   desc 'Update visibility of all attached files to work'
   task :visibility, %i[input_file update model_type] => [:environment] do |_t, args|
@@ -23,7 +24,7 @@ namespace :calstate do
       puts "Processing work ID #{row['id']}"
       model.where(id: row['id']).each do |work|
         viz.set_visibility(work, row['work_visibility'], row['file_visibility'])
-        if CalState::Metadata.should_throttle(x, 5)
+        if (x % 5).zero?
           puts 'shhhh sleeping . . . . '
           sleep(180)
         end
