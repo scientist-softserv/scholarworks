@@ -2,7 +2,7 @@
 
 module CalState
   #
-  # Set visibility on files
+  # Set visibility on works and files
   #
   class Visibility
     #
@@ -44,26 +44,41 @@ module CalState
     #
     # Load input spreadsheet and verify visibility settings
     #
-    # @param csv_file [String]  path to csv file
+    # @param file [String]  path to csv file
     #
     # @return [Array]
     #
-    def get_csv(csv_file)
+    def get_csv(file)
       x = 0
       rows = []
-      csv = CSV.read(csv_file, headers: true)
+      csv = CSV.read(file, headers: true)
       csv.each do |row|
         x += 1
-        unless @visibility_options.include? row['work_visibility']
-          raise 'Row ' + x.to_s + ' of ' + csv_file +
-                ' contains invalid visibility option: ' + row['work_visibility']
+        raise csv_error(file, x, 'lacks ID.') if row['id'].empty?
+
+        [row['work_visibility'], row['file_visibility']].each do |visibility|
+          unless @visibility_options.include? visibility
+            raise csv_error(file, x, 'invalid visibility option: ' + visibility)
+          end
         end
+
         rows << row
       end
       rows
     end
 
     private
+
+    #
+    # Throw CSV error
+    #
+    # @param file [String]     file name
+    # @param row [Integer]     row number
+    # @param message [String]  error message
+    #
+    def csv_error(file, row, message)
+      raise 'Row ' + row.to_s + ' of ' + file + ' contains ' + message
+    end
 
     #
     # Get the visibility option from AccessControls
