@@ -1,4 +1,27 @@
 <style>
+  .creator {
+    display: flex;
+    align-items: center;
+  }
+  .label_input_div {
+    margin-left: 1px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .label_field {
+    flex: 0 0 30%;
+    max-width: 30%;
+  }
+  .input_field {
+    flex: 0 0 70%;
+    max-width: 70%;
+  }
+  .creator_divider {
+    margin: 0 auto 10px auto;
+    height: 1px;
+    max-width: 50%;
+    background-image: radial-gradient(#e4ebef,gray);
+  }
   .creator_row {
     margin-left: 1px;
   }
@@ -10,14 +33,11 @@
   }
   .creator_remove {
     color: #d9534f;
-    margin: 25px 0 0 -30px;
+    #margin: 25px 0 0 -30px;
     text-decoration: underline;
   }
   .d_none {
     display: none;
-  }
-  .creator_name_label {
-    margin-right:4px;
   }
 </style>
 
@@ -83,9 +103,16 @@
         console.log('removing the item creator_cnt ' + creator_cnt);
         if (creator_cnt == 1) {
           $('.creator_remove').addClass('d_none').attr('aria-hidden', 'true');
+          $('.creator_divider').remove();
+        }
+        else {
+          if ($('#creator_divider' + id).length) {
+            $('#creator_divider' + id).remove();
+          }
         }
         $('#creator_warning').addClass('d_none').attr('aria-hidden', 'true');
       }
+
     }
     toggle_submit(invalid_creator());
   }
@@ -102,32 +129,48 @@
       console.log('in add model type ' + model_type);
       $('#creator_divs')
         .append(
+          "<div id='creator_divider" + cur_creator_num + "' class='row creator_divider'><div class='creator_divider'></div></div>" +
           "<div id='creator_div" + cur_creator_num + "' class='row creator'>" +
-                "  <div class='col-xs-3'>" +
-                "    <label for='creator_name" + cur_creator_num + "'><span class='sr-only'>author </span>Name</label>" +
-                "    <span class='label label-info required-tag'>required</span>" +
-                "    <input type='text' name='" + model_type + "[creator][]' id='creator_name" + cur_creator_num + "' value='' class='string multi_value required creator_name combined_creator form-control multi-text-field multi_value' />" +
-                "  </div>" +
-                "  <div class='col-xs-3'>" +
-                "    <input type='hidden' name='" + model_type + "[creator_email][]' id='creator_email" + cur_creator_num + "' value='' />" +
-                "    <label for='creator_email_tmp" + cur_creator_num + "'><span class='sr-only'>author </span>Email</label>" +
-                "    <input type='email' name='" + model_type + "[creator_email_tmp][]' id='creator_email_tmp" + cur_creator_num + "' value='' class='creator_email combined_creator form-control multi-text-field multi_value' />" +
-                "  </div>" +
-                "  <div class='col-xs-2'>" +
-                "    <input type='hidden' name='" + model_type + "[creator_orcid][]' id='creator_orcid" + cur_creator_num + "' value='' />" +
-                "    <label for='creator_orcid_tmp" + cur_creator_num + "'><span class='sr-only'>author </span>ORCID</label>" +
-                "    <input type='text' name='" + model_type + "[creator_orcid_tmp][]' id='creator_orcid_tmp" + cur_creator_num + "' value='' class='creator_orcid combined_creator form-control multi-text-field multi_value' />" +
-                "    <span id='orcid_error" + cur_creator_num + "' class='orcid_error error text-danger error text-danger d_none' role='alert' aria-hidden='true'>must be a string of 19 characters, e.g., '0000-0000-0000-0000'</span>" +
-                "  </div>" +
-                "  <div class='col-xs-2 creator_remove_div'>" +
-                "    <span class='input-group-btn field-controls'>" +
-                "    <button id='" + cur_creator_num + "' type='button' class='btn btn-link remove creator_remove' aria-hidden='false'>" +
-                "      <span class='glyphicon glyphicon-remove'></span>" +
-                "      <span class='controls-remove-text'>Remove</span>" +
-                "      <span class='sr-only'>author</span>" +
-                "    </button>" +
-                "  </div>" +
-                "</div>");
+          "  <div class='col-xs-6'>" +
+          "    <div class='label_input_div'>" +
+          "      <label for='creator_name" + cur_creator_num + "' class='label_field'>" +
+          "        <span class='sr-only'>author </span>Name" +
+          "        <span class='label label-info required-tag'>required</span>" +
+          "      </label>" +
+          "        <input type='text' name='" + model_type + "[creator][]' id='creator_name" + cur_creator_num + "' value='' class='string multi_value required creator_name combined_creator multi-text-field multi_value input_field' />" +
+          "    </div>" +
+          "    <div class='label_input_div'>" +
+          "      <input type='hidden' name='" + model_type + "[creator_email][]' id='creator_email" + cur_creator_num + "' value='' />" +
+          "      <label for='creator_email_tmp" + cur_creator_num + "' class='label_field'>" +
+          "        <span class='sr-only'>author </span>Email" +
+          "      </label>" +
+          "      <input type='email' name='" + model_type + "[creator_email_tmp][]' id='creator_email_tmp" + cur_creator_num + "' value='' class='creator_email combined_creator multi-text-field multi_value input_field' />" +
+          "    </div>" +
+          "    <div class='label_input_div'>" +
+          "      <input type='hidden' name='" + model_type + "[creator_orcid][]' id='creator_orcid" + cur_creator_num + "' value='' />" +
+          "      <label for='creator_orcid_tmp" + cur_creator_num + "' class='label_field'>" +
+          "        <span class='sr-only'>author </span>ORCID" +
+          "      </label>" +
+          "      <input type='text' name='" + model_type + "[creator_orcid_tmp][]' id='creator_orcid_tmp" + cur_creator_num + "' value='' class='creator_orcid combined_creator multi-text-field multi_value input_field' />" +
+          "      <span id='orcid_error" + cur_creator_num + "' class='orcid_error error text-danger error text-danger combined_creator d_none' role='alert' aria-hidden='true'>must be a string of 19 characters, e.g., '0000-0000-0000-0000'</span>" +
+          "    </div>" +
+          "  <div class='col-sm'>" +
+          "    <span class='input-group-btn field-controls'>" +
+          "    <button id='" + cur_creator_num + "' type='button' class='btn btn-link remove creator_remove' aria-hidden='false'>" +
+          "      <span class='glyphicon glyphicon-remove'></span>" +
+          "      <span class='controls-remove-text'>Remove</span>" +
+          "      <span class='sr-only'>author</span>" +
+          "    </button>" +
+          "  </div>" +
+          "    <div class='label_input_div'>" +
+          "      <input type='hidden' name='" + model_type + "[creator_institution][]' id='creator_institution" + cur_creator_num + "' value='' />" +
+          "      <label for='creator_institution_tmp" + cur_creator_num + "' class='label_field'>" +
+          "        <span class='sr-only'>author </span>Institution" +
+          "      </label>" +
+          "      <input type='text' name='" + model_type + "[creator_institution_tmp][]' id='creator_institution_tmp" + cur_creator_num + "' value='' class='creator_institution combined_creator multi-text-field multi_value input_field' />" +
+          "    </div>" +
+          "  </div>" +
+          "</div>");
       $('.creator_remove').on('click', creator_remove);
       $('.creator_name').on('change', creator_name_change);
       $('.creator_orcid').on('focusout', invalid_orcid);    // comment this to test server ORCID validation
@@ -171,6 +214,17 @@
       let orcid = $('#creator_orcid' + $(this).prop('id').substring(17));
       if (orcid.length) {
         orcid.val(value);
+      }
+    })
+    $('.creator_institution').each(function (i) {
+      let value = $.trim($(this).val());
+      if (value == '') {
+        console.log('found an empty ' + $(this).prop('id'));
+        value = '|||';
+      }
+      let institution = $('#creator_institution' + $(this).prop('id').substring(23));
+      if (institution.length) {
+        institution.val(value);
       }
     })
   }
@@ -223,6 +277,7 @@
 <div id="creator_content" class="publication_creator form-group multi_value required managed">
   <% creator_email = f.object.creator_email %>
   <% creator_orcid = f.object.creator_orcid %>
+  <% creator_institution = f.object.creator_institution %>
   <span id="creator_email_label" class="sr-only">author email</span>
   <%= hidden_field_tag "model_type", model_type %>
 
@@ -233,49 +288,66 @@
 
   <div id="creator_divs" aria-live="polite">
     <% f.object.creator.each_with_index do |creator_name, index| %>
+      <% if index > 0 %>
+        <% divider_id = "creator_divider#{index}" %>
+        <div id=<%= divider_id %> class="row creator_divider"><div class="creator_divider"></div></div>
+      <% end %>
       <% div_id = "creator_div#{index}" %>
       <div id=<%= div_id %> class="row creator">
-        <div class="col-xs-3">
-          <label for=<%= "creator_name#{index}" %>>
-            <span class="sr-only">author </span>
-            Name
-            </span>
-          </label>
-          <span class="label label-info required-tag">required</span>
-          <%= text_field_tag "#{model_type}[creator][]", creator_name,
-                              id: "creator_name#{index}",
-                              class: "string multi_value required creator_name combined_creator form-control multi-text-field multi_value"
-          %>
-        </div>
-        <div class="col-xs-3">
-          <%= hidden_field_tag "#{model_type}[creator_email][]", creator_email[index], id: "creator_email#{index}" %>
-          <label for=<%= "creator_email_tmp#{index}" %>>
-            <span class="sr-only">author </span>
-             Email
-                </span>
-          </label>
-          <%= email_field_tag "#{model_type}[creator_email_tmp][]", creator_email[index],
-                               id: "creator_email_tmp#{index}",
-                               class: "creator_email combined_creator form-control multi-text-field multi_value"
-          %>
-        </div>
-        <div class="col-xs-2">
-          <%= hidden_field_tag "#{model_type}[creator_orcid][]", creator_orcid[index], id: "creator_orcid#{index}" %>
-          <label for=<%= "creator_orcid_tmp#{index}" %>>
-            <span class="sr-only">author </span>
-            ORCID
-            </span>
-          </label>
-          <%= text_field_tag "#{model_type}[creator_orcid_tmp][]", creator_orcid[index],
-                              id: "creator_orcid_tmp#{index}",
-                              class: "creator_orcid combined_creator form-control multi-text-field multi_value"
-          %>
-          <span id=<%= "orcid_error#{index}" %> class="orcid_error error text-danger d_none" role="alert" aria-hidden="true">
+        <div class="col-xs-6">
+          <div class="label_input_div">
+            <label for=<%= "creator_name#{index}" %> class="label_field">
+              <span class="sr-only">author </span>
+              Name
+              <span class="label label-info required-tag">required</span>
+              </span>
+            </label>
+            <%= text_field_tag "#{model_type}[creator][]", creator_name,
+                                id: "creator_name#{index}",
+                                class: "string multi_value required creator_name combined_creator multi-text-field multi_value input_field"
+            %>
+          </div>
+          <div class="label_input_div">
+            <%= hidden_field_tag "#{model_type}[creator_email][]", creator_email[index], id: "creator_email#{index}" %>
+            <label for=<%= "creator_email_tmp#{index}" %> class="label_field">
+              <span class="sr-only">author </span>
+               Email
+              </span>
+            </label>
+            <%= email_field_tag "#{model_type}[creator_email_tmp][]", creator_email[index],
+                                id: "creator_email_tmp#{index}",
+                                class: "creator_email combined_creator multi-text-field multi_value input_field"
+            %>
+          </div>
+          <div class="label_input_div">
+            <%= hidden_field_tag "#{model_type}[creator_institution][]", creator_institution[index], id: "creator_institution#{index}" %>
+            <label for=<%= "creator_institution_tmp#{index}" %> class="label_field">
+              <span class="sr-only">author </span>
+              Institution
+              </span>
+            </label>
+            <%= text_field_tag "#{model_type}[creator_institution_tmp][]", creator_institution[index],
+                               id: "creator_institution_tmp#{index}",
+                               class: "creator_institution combined_creator multi-text-field multi_value input_field"
+            %>
+          </div>
+          <div class="label_input_div">
+            <%= hidden_field_tag "#{model_type}[creator_orcid][]", creator_orcid[index], id: "creator_orcid#{index}" %>
+            <label for=<%= "creator_orcid_tmp#{index}" %> class="label_field">
+              <span class="sr-only">author </span>
+              ORCID
+              </span>
+            </label>
+            <%= text_field_tag "#{model_type}[creator_orcid_tmp][]", creator_orcid[index],
+                               id: "creator_orcid_tmp#{index}",
+                               class: "creator_orcid combined_creator multi-text-field multi_value input_field"
+            %>
+            <span id=<%= "orcid_error#{index}" %> class="orcid_error error text-danger combined_creator d_none" role="alert" aria-hidden="true">
             must be a string of 19 characters, e.g., '0000-0000-0000-0000'
-          </span>
+            </span>
+          </div>
         </div>
-
-        <div class="col-xs-2">
+        <div class="col-sm">
           <span class="input-group-btn field-controls">
             <button id=<%= index %> type="button" class="btn btn-link remove creator_remove" data-element-id=<%= index %> aria-hidden="false">
               <span class="glyphicon glyphicon-remove"></span>

@@ -22,7 +22,8 @@ module Hyrax
       if options[:render_as].to_s == 'creator'
         creator_email = assign_creator_info(send(:creator_email), values.size)
         creator_orcid = assign_creator_info(send(:creator_orcid), values.size)
-        extra_values = [creator_email, creator_orcid]
+        creator_institution = assign_creator_info(send(:creator_institution), values.size)
+        extra_values = [creator_email, creator_orcid, creator_institution]
         creator_renderer = Hyrax::Renderers::CreatorAttributeRenderer.new(field, values, extra_values, options)
         if options[:html_dl]
           creator_renderer.render_dl_row

@@ -110,6 +110,10 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    property :creator_institution, predicate: ::RDF::Vocab::VCARD.org, multiple: true do |index|
+      index.as :stored_searchable
+    end
+
     validates_with CreatorOrcidValidator
     
     def creator_email
@@ -134,8 +138,25 @@ module CsuMetadata
 
       return OrderedStringHelper.deserialize(super)
     end
-    
+
     def creator_orcid= values
+      full_sanitizer = Rails::Html::FullSanitizer.new
+      sanitized_values = Array.new(values.size, '')
+      values.each_with_index do |v, i|
+        if (v != '|||')
+          sanitized_values[i] = full_sanitizer.sanitize(v)
+        end
+      end
+      super OrderedStringHelper.serialize(sanitized_values)
+    end
+
+    def creator_institution
+      return [] if super.nil?
+
+      return OrderedStringHelper.deserialize(super)
+    end
+
+    def creator_institution= values
       full_sanitizer = Rails::Html::FullSanitizer.new
       sanitized_values = Array.new(values.size, '')
       values.each_with_index do |v, i|
