@@ -11,7 +11,7 @@ gem 'rails', '~> 5.1.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-#gem 'puma', '~> 3.7'
+# gem 'puma', '~> 3.7'
 # Use Passenger as the app server
 gem 'passenger',">= 5.0.25", require: "phusion_passenger/rack_handler"
 # Use SCSS for stylesheets
@@ -96,3 +96,4 @@ gem 'diffy'
 gem 'handle-system-rest'
 gem 'aws-sdk-s3'
 gem 'blacklight_oai_provider'
+gem 'willow_sword', github: 'csuscholarworks/willow_sword', branch: 'scholarworks'
