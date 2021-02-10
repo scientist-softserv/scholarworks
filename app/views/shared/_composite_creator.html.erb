@@ -234,6 +234,7 @@
   }
 
   $(function() {
+    $('#creator_content').addClass($('#model_type').val() + '_creator');
     $('.creator').each(function () {
       creator_cnt++;
     })
@@ -274,7 +275,7 @@
   });
 </script>
 
-<div id="creator_content" class="publication_creator form-group multi_value required managed">
+<div id="creator_content" class="form-group multi_value required managed">
   <% creator_email = f.object.creator_email %>
   <% creator_orcid = f.object.creator_orcid %>
   <% creator_institution = f.object.creator_institution %>
