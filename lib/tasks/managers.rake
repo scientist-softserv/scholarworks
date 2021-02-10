@@ -3,12 +3,12 @@
 require 'calstate/packager'
 
 # Usage
-# bundle exec rake calstate:update_managers[losangeles]
-# bundle exec rake calstate:update_managers[sacramento,6d56zz11h]
+# bundle exec rake calstate:managers[losangeles]
+# bundle exec rake calstate:managers[sacramento,6d56zz11h]
 
 namespace :calstate do
   desc 'Update managers to work'
-  task :update_managers, %i[campus record] => [:environment] do |_t, args|
+  task :managers, %i[campus record] => [:environment] do |_t, args|
     # error check
     campus = args[:campus] or raise 'No campus provided'
     record = args[:record] ||= 'all'
