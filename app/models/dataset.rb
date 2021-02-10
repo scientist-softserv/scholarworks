@@ -14,11 +14,11 @@ class Dataset < ActiveFedora::Base
   self.human_readable_type = 'Research Data'
 
   property :investigator, predicate: ::RDF::Vocab::MARCRelators.org do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   property :resource_type_dataset, predicate: ::RDF::Vocab::DC.type do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   # This must be included at the end, because it finalizes the metadata

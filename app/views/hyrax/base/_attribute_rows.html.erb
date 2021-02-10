@@ -1,33 +1,64 @@
+<!-- resource type -->
+<%= presenter.attribute_to_html(:resource_type, render_as: :faceted, html_dl: true) %>
+
+<!-- authors -->
 <%= presenter.attribute_to_html(:creator, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:contributor, render_as: :faceted, html_dl: true) %>
-<%= presenter.attribute_to_html(:resource_type, render_as: :faceted, html_dl: true) %>
-<%= presenter.attribute_to_html(:campus, render_as: :faceted, html_dl: true) %>
-<%= presenter.attribute_to_html(:college, html_dl: true) %>
-<%= presenter.attribute_to_html(:department, html_dl: true) %>
-<%= presenter.attribute_to_html(:degree_level, html_dl: true) %>
-<%= presenter.attribute_to_html(:degree_name, html_dl: true) %>
-<%= presenter.attribute_to_html(:publisher, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:editor, html_dl: true) %>
+<%= presenter.attribute_to_html(:investigator, html_dl: true) %>
 <%= presenter.attribute_to_html(:sponsor, html_dl: true) %>
 <%= presenter.attribute_to_html(:advisor, html_dl: true) %>
 <%= presenter.attribute_to_html(:committee_member, html_dl: true) %>
+
+<!-- institution -->
+<%= presenter.attribute_to_html(:campus, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:college, html_dl: true) %>
+<%= presenter.attribute_to_html(:department, html_dl: true) %>
+<%= presenter.attribute_to_html(:publisher, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:granting_institution, render_as: :faceted, html_dl: true) %>
+
+<!-- degree information -->
+<%= presenter.attribute_to_html(:degree_level, html_dl: true) %>
+<%= presenter.attribute_to_html(:degree_name, html_dl: true) %>
+
+<!-- subjects -->
 <%= presenter.attribute_to_html(:subject, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:keyword, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:geographical_area, html_dl: true) %>
 <%= presenter.attribute_to_html(:time_period, html_dl: true) %>
 <%= presenter.attribute_to_html(:based_near, render_as: :faceted, html_dl: true) %>
+
+<!-- parent information -->
+<%= presenter.attribute_to_html(:source, html_dl: true) %>
 <%= presenter.attribute_to_html(:related_url, render_as: :external_link, html_dl: true) %>
+<%= presenter.attribute_to_html(:is_part_of, html_dl: true) %>
+
+<!-- date information -->
 <%= presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim', html_dl: true) %>
 <%= presenter.attribute_to_html(:date_available, html_dl: true) %>
 <%= presenter.attribute_to_html(:date_copyright, html_dl: true) %>
 <%= presenter.attribute_to_html(:date_issued, html_dl: true) %>
 <%= presenter.attribute_to_html(:date_submitted, html_dl: true) %>
-<%= presenter.attribute_to_html(:source, html_dl: true) %>
+<%= presenter.attribute_to_html(:date_accessioned, html_dl: true) %>
+<%#  presenter.attribute_to_html(:embargo_terms, html_dl: true) %>
+
+<!-- identifiers -->
 <%= presenter.attribute_to_html(:handle, html_dl: true) %>
 <%= presenter.attribute_to_html(:identifier, render_as: :linked, search_field: 'identifier_tesim', html_dl: true) %>
-<%= presenter.attribute_to_html(:language, render_as: :faceted, html_dl: true) %>
-<%= presenter.attribute_to_html(:rights_access, html_dl: true) %>
+<%= presenter.attribute_to_html(:doi, html_dl: true) %>
+<%= presenter.attribute_to_html(:issn, html_dl: true) %>
+<%= presenter.attribute_to_html(:isbn, html_dl: true) %>
+<%= presenter.attribute_to_html(:oclcno, html_dl: true) %>
+
+<!-- rights info -->
+<%= presenter.attribute_to_html(:license, html_dl: true) %>
 <%= presenter.attribute_to_html(:rights_holder, html_dl: true) %>
+<%= presenter.attribute_to_html(:rights_note, html_dl: true) %>
+<%= presenter.attribute_to_html(:rights_uri, html_dl: true) %>
+
+<!-- misc -->
+<%= presenter.attribute_to_html(:provenance, html_dl: true) %>
+<%= presenter.attribute_to_html(:language, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:alternative_title, html_dl: true) %>
 <%= presenter.attribute_to_html(:statement_of_responsibility, html_dl: true) %>
 <%= presenter.attribute_to_html(:publication_status, html_dl: true) %>
-<%= presenter.attribute_to_html(:editor, html_dl: true) %>

@@ -2,9 +2,6 @@
 #  `rails generate hyrax:work EducationalResource`
 module Hyrax
   class EducationalResourcePresenter < Hyrax::WorkShowPresenter
-    delegate :date_submitted, :handle, :campus, :college, :department,
-             :abstract, :geographical_area, :time_period, :date_available, :date_copyright,
-             :date_issued, :sponsor, :alternative_title, :statement_of_responsibility, to: :solr_document
-
+    include CalState::PresenterBehavior
   end
 end

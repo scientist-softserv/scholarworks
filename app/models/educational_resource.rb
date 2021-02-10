@@ -15,7 +15,7 @@ class EducationalResource < ActiveFedora::Base
   self.human_readable_type = 'Educational Resource'
 
   property :resource_type_educational_resource, predicate: ::RDF::Vocab::DC.type do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   # This must be included at the end, because it finalizes the metadata
