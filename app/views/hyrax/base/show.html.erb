@@ -57,11 +57,15 @@
             <!-- description -->
 
             <div class="csu-item-description">
-              <% @presenter.abstract.each do |abstract| %>
-                <p class="work_description"><%= iconify_auto_link(abstract) %></p>
+              <% unless @presenter.abstract.nil? %>
+                <% @presenter.abstract.each do |abstract| %>
+                  <p class="work_description"><%= iconify_auto_link(abstract) %></p>
+                <% end %>
               <% end %>
-              <% @presenter.description.each do |description| %>
-                <p class="work_description"><%= iconify_auto_link(description) %></p>
+              <% unless @presenter.description.nil? %>
+                <% @presenter.description.each do |description| %>
+                  <p class="work_description"><%= iconify_auto_link(description) %></p>
+                <% end %>
               <% end %>
             </div>
 
