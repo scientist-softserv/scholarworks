@@ -8,9 +8,16 @@
   <xsl:template match="/">
     <record>
       <xsl:call-template name="standard" />
+      <xsl:call-template name="embargos" />
+      <xsl:call-template name="authors" />
+      <xsl:call-template name="subjects" />
+      <xsl:call-template name="dates" />
+      <xsl:call-template name="identifiers" />
+      <xsl:call-template name="rights" />
+      <xsl:call-template name="descriptions" />
       <xsl:call-template name="relations" />
+      <xsl:call-template name="theses" />
       <xsl:call-template name="proquest" />
-      <xsl:call-template name="northridge" />
     </record>
   </xsl:template>
 
@@ -20,105 +27,85 @@
 
       <!-- title -->
       <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/title'">
-        <field name ="title">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- abstract -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/terms/abstract'">
-        <field name ="abstract">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- creator -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/creator'">
-        <field name ="creator">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- identifier -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/identifier'">
-        <field name ="identifier">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- language -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/language' and ./@epdcx:vesURI='http://purl.org/dc/terms/RFC3066'">
-        <field name ="language">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- geographical area -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/coverage' and ./@epdcx:vesURI='http://purl.org/dc/terms/spatial'">
-        <field name ="geographical_area">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- resource type -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/type' and ./@epdcx:vesURI='http://purl.org/eprint/terms/Type'">
-        <field name ="resource_type">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- date issued -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/terms/available'">
-        <field name ="date_issued">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- rights holder -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/eprint/terms/copyrightHolder'">
-        <field name ="rights_holder">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- citation -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/eprint/terms/bibliographicCitation'">
-        <field name ="citation">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- subject -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/subject'">
-        <field name ="subject">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- subject -->
-      <xsl:if test="./@epdcx:attributeName='subjectLCC'">
-        <field name ="subject">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- subject -->
-      <xsl:if test="./@epdcx:attributeName='subjectLCSH'">
-        <field name ="subject">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- resource type -->
-      <xsl:if test="./@epdcx:attributeName='typeGenre'">
-        <field name ="resource_type">
+        <field name="title">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- alternate title -->
       <xsl:if test="./@epdcx:attributeName='dcTitleAlternate'">
-        <field name ="alternative_title">
+        <field name="alternative_title">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- resource type -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/type' and ./@epdcx:vesURI='http://purl.org/eprint/terms/Type'">
+        <field name="resource_type">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+      <xsl:if test="./@epdcx:attributeName='type'">
+        <field name="resource_type">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+      <xsl:if test="./@epdcx:attributeName='typeGenre'">
+        <field name="resource_type">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- language -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/language' and ./@epdcx:vesURI='http://purl.org/dc/terms/RFC3066'">
+        <field name="language">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+      <xsl:if test="./@epdcx:attributeName='recordLanguage'">
+        <field name="language">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- citation -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/eprint/terms/bibliographicCitation'">
+        <field name="citation">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+    </xsl:for-each>
+  </xsl:template>
+
+  <!-- EMBARGO FIELDS -->
+  <xsl:template name="embargos">
+    <xsl:for-each select="//epdcx:statement">
+
+      <!-- embargo until -->
+      <xsl:if test="./@epdcx:attributeName='embargoLift' or ./@epdcx:attributeName='embargountil'">
+        <field name="embargo_until">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- embargo terms -->
+      <xsl:if test="./@epdcx:attributeName='embargoterms'">
+        <field name="embargo_terms">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+    </xsl:for-each>
+  </xsl:template>
+
+  <!-- AUTHOR FIELDS -->
+  <xsl:template name="authors">
+    <xsl:for-each select="//epdcx:statement">
+
+      <!-- creator -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/creator'">
+        <field name="creator">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -165,13 +152,6 @@
         </field>
       </xsl:if>
 
-      <!-- editor -->
-      <xsl:if test="./@epdcx:attributeName='dcContributorEditor'">
-        <field name="editor">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
       <!-- contributor -->
       <xsl:if test="./@epdcx:attributeName='contributor'">
         <field name="contributor">
@@ -186,23 +166,51 @@
         </field>
       </xsl:if>
 
-      <!-- date created -->
-      <xsl:if test="./@epdcx:attributeName='dcDateCreated'">
-        <field name="date_created">
+      <!-- editor -->
+      <xsl:if test="./@epdcx:attributeName='dcContributorEditor'">
+        <field name="editor">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
-      <!-- date issued -->
-      <xsl:if test="./@epdcx:attributeName='dcDatePublished'">
-        <field name="date_issued">
+      <!-- statement of responsibility -->
+      <xsl:if test="./@epdcx:attributeName='statementOfResponsibility'">
+        <field name="statement_of_responsibility">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
-      <!-- degree name -->
-      <xsl:if test="./@epdcx:attributeName='dcDegree'">
-        <field name="degree_name">
+      <!-- publisher -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/publisher'">
+        <field name="publisher">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+    </xsl:for-each>
+  </xsl:template>
+
+  <!-- SUBJECT FIELDS -->
+  <xsl:template name="subjects">
+    <xsl:for-each select="//epdcx:statement">
+
+      <!-- subject -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/subject'">
+        <field name="subject">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- subject -->
+      <xsl:if test="./@epdcx:attributeName='subjectLCC'">
+        <field name="subject">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- subject -->
+      <xsl:if test="./@epdcx:attributeName='subjectLCSH'">
+        <field name="subject">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -214,6 +222,72 @@
         </field>
       </xsl:if>
 
+      <!-- subject -->
+      <xsl:if test="./@epdcx:attributeName='subjectGeneral'">
+        <field name="subject">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- keyword -->
+      <xsl:if test="./@epdcx:attributeName='subjectKeywords'">
+        <field name="keyword">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- geographical area -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/coverage' and ./@epdcx:vesURI='http://purl.org/dc/terms/spatial'">
+        <field name="geographical_area">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+      <xsl:if test="./@epdcx:attributeName='dcCoverageSpatial'">
+        <field name="geographical_area">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+    </xsl:for-each>
+  </xsl:template>
+
+  <!-- DATE FIELDS -->
+  <xsl:template name="dates">
+    <xsl:for-each select="//epdcx:statement">
+
+      <!-- date created -->
+      <xsl:if test="./@epdcx:attributeName='dcDateCreated'">
+        <field name="date_created">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- date issued -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/terms/available'">
+        <field name="date_issued">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+      <xsl:if test="./@epdcx:attributeName='dcDatePublished'">
+        <field name="date_issued">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- copyright date -->
+      <xsl:if test="./@epdcx:attributeName='copyrightDate'">
+        <field name="date_copyright">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+    </xsl:for-each>
+  </xsl:template>
+
+  <!-- IDENTIFIER FIELDS -->
+  <xsl:template name="identifiers">
+    <xsl:for-each select="//epdcx:statement">
+
       <!-- isbn -->
       <xsl:if test="./@epdcx:attributeName='dcIdentifierIsbn'">
         <field name="isbn">
@@ -222,50 +296,55 @@
       </xsl:if>
 
       <!-- identifier -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/identifier'">
+        <field name="identifier">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
       <xsl:if test="./@epdcx:attributeName='dcIdentifierOther'">
         <field name="identifier">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
-      <!-- geographical area -->
-      <xsl:if test="./@epdcx:attributeName='dcCoverageSpatial'">
-        <field name="geographical_area">
+    </xsl:for-each>
+  </xsl:template>
+
+  <!-- RIGHTS FIELDS -->
+  <xsl:template name="rights">
+    <xsl:for-each select="//epdcx:statement">
+
+      <!-- rights holder -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/eprint/terms/copyrightHolder'">
+        <field name="rights_holder">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
-      <!-- course description -->
-      <xsl:if test="./@epdcx:attributeName='dcCourseDescription'">
-        <field name="description_note" modifier="course_description">
+      <!-- rights uri -->
+      <xsl:if test="./@epdcx:attributeName='rightsURI'">
+        <field name="rights_uri">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
-      <!-- course number -->
-      <xsl:if test="./@epdcx:attributeName='dcCourseNumber'">
-        <field name="description_note" modifier="course_number">
+      <!-- license -->
+      <xsl:if test="./@epdcx:attributeName='rightsLicense'">
+        <field name="license">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
-      <!-- course textbook -->
-      <xsl:if test="./@epdcx:attributeName='dcCourseTextbook'">
-        <field name="description_note" modifier="course_textbook">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
 
-      <!-- course uri -->
-      <xsl:if test="./@epdcx:attributeName='dcCourseUri'">
-        <field name="identifier_uri" modifier="course_uri">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
+  <!-- DESCRIPTION FIELDS -->
+  <xsl:template name="descriptions">
+    <xsl:for-each select="//epdcx:statement">
 
-      <!-- course faculty -->
-      <xsl:if test="./@epdcx:attributeName='dcCourseFaculty'">
-        <field name="description_note" modifier="course_faculty">
+      <!-- abstract -->
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/terms/abstract'">
+        <field name="description">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -290,10 +369,25 @@
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
+
+      <!-- description note -->
+      <xsl:if test="./@epdcx:attributeName='description'">
+        <field name="description_note">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- extent -->
+      <xsl:if test="./@epdcx:attributeName='extent'">
+        <field name="extent">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
     </xsl:for-each>
   </xsl:template>
 
-  <!-- RELATIONS FIELDS -->
+  <!-- RELATION FIELDS -->
   <xsl:template name="relations">
     <xsl:for-each select="//epdcx:statement">
 
@@ -422,16 +516,17 @@
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
+
     </xsl:for-each>
   </xsl:template>
 
-  <!-- NORTHRIDGE ETD SYSTEM -->
-  <xsl:template name="northridge">
+  <!-- THESIS FIELDS -->
+  <xsl:template name="theses">
     <xsl:for-each select="//epdcx:statement">
 
-      <!-- contributor -->
+      <!-- advisor -->
       <xsl:if test="./@epdcx:attributeName='advisor'">
-        <field name="contributor">
+        <field name="advisor">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -443,9 +538,37 @@
         </field>
       </xsl:if>
 
-      <!-- copyright date -->
-      <xsl:if test="./@epdcx:attributeName='copyrightDate'">
-        <field name="date_copyright">
+      <!-- course description -->
+      <xsl:if test="./@epdcx:attributeName='dcCourseDescription'">
+        <field name="description_note" modifier="course_description">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- course number -->
+      <xsl:if test="./@epdcx:attributeName='dcCourseNumber'">
+        <field name="description_note" modifier="course_number">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- course textbook -->
+      <xsl:if test="./@epdcx:attributeName='dcCourseTextbook'">
+        <field name="description_note" modifier="course_textbook">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- course uri -->
+      <xsl:if test="./@epdcx:attributeName='dcCourseUri'">
+        <field name="identifier_uri" modifier="course_uri">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
+      <!-- course faculty -->
+      <xsl:if test="./@epdcx:attributeName='dcCourseFaculty'">
+        <field name="description_note" modifier="course_faculty">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -456,45 +579,8 @@
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
-
-      <!-- description note -->
-      <xsl:if test="./@epdcx:attributeName='description'">
-        <field name="description_note">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- extent -->
-      <xsl:if test="./@epdcx:attributeName='extent'">
-        <field name="extent">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- rights uri -->
-      <xsl:if test="./@epdcx:attributeName='rightsURI'">
-        <field name="rights_uri">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- license -->
-      <xsl:if test="./@epdcx:attributeName='rightsLicense'">
-        <field name="license">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- subject -->
-      <xsl:if test="./@epdcx:attributeName='subjectGeneral'">
-        <field name="subject">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- keyword -->
-      <xsl:if test="./@epdcx:attributeName='subjectKeywords'">
-        <field name="keyword">
+      <xsl:if test="./@epdcx:attributeName='dcDegree'">
+        <field name="degree_name">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -506,47 +592,6 @@
         </field>
       </xsl:if>
 
-      <!-- resource type -->
-      <xsl:if test="./@epdcx:attributeName='type'">
-        <field name="resource_type">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- statement of responsibility -->
-      <xsl:if test="./@epdcx:attributeName='statementOfResponsibility'">
-        <field name="statement_of_responsibility">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- language -->
-      <xsl:if test="./@epdcx:attributeName='recordLanguage'">
-        <field name="language">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- embargo until -->
-      <xsl:if test="./@epdcx:attributeName='embargoLift' or ./@epdcx:attributeName='embargountil'">
-        <field name="embargo_until">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- embargo terms -->
-      <xsl:if test="./@epdcx:attributeName='embargoterms'">
-        <field name="embargo_terms">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- publisher -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/publisher'">
-        <field name="publisher">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
     </for-each>
   </xsl:template>
 
@@ -619,6 +664,7 @@
           <xsl:with-param name="pSlitter">, </xsl:with-param>
         </xsl:cal-template>
       </xsl:for-each>
+
     </xsl:for-each>
   </xsl:template>
 
