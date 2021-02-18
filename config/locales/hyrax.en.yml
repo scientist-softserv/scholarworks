@@ -134,3 +134,5 @@ en:
         rights_statement: Rights Statement
         rights_note: Rights Note
         rights_uri: Rights URI
+  sword:
+    treatment: "The package has been deposited into ScholarWorks. Each file has been unpacked and provided with a unique identifier. The metadata in the manifest has been extracted and attached to the item, which has been provided with an identifier leading to an HTML splash page."

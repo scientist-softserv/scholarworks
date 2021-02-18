@@ -4,7 +4,6 @@ work_type: "default"
 metadata_file: "mets.xml"
 depositor: kcloud@calstate.edu
 input_dir: /data/exported/
-handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: 'jh343s28d'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
@@ -29,24 +28,6 @@ type_to_work_map:
   Thesis: Thesis
   Dissertation: Thesis
   Graduate Project: Thesis
-
-DSpace COMMUNITY:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace COLLECTION:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace ITEM:
-  desc_metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/xmlns:xmlData/dim:dim[@dspaceType='ITEM']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
 
 # Dublin Core Field Mapping
 fields:
@@ -180,10 +161,6 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='language'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='language'][@qualifier='iso']"
     type: Array
-#  license: # (Default) Newspaper
-#    xpath:
-#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='license']"
-#    type: Array
   provenance:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='provenance']"
@@ -204,11 +181,6 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='genre'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='format'][not(@qualifier)]"
     type: Array
-#  rights_statement:
-#    xpath:
-#      - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
-#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='usage']"
-#    type: Array
   rights_note:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
@@ -221,7 +193,6 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='sponsor'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='sponsor']"
-   #  - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
     type: Array
   subject:
     xpath:

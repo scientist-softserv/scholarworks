@@ -14,7 +14,7 @@ module CalState
         # If this is a multi-valued field,
         #
         # @param value
-        # @param [Boolean] join  [optional] If this is a multi-valued field,
+        # @param join [Boolean]  [optional] If this is a multi-valued field,
         #                        join them using pipe, otherwise return first
         #
         def get_value(value, join = false)
@@ -33,7 +33,7 @@ module CalState
         # Ensure that any value we extract doesn't have illegal characters
         # including any we supplied in the export to trick excel
         #
-        # @param [String] value the value to clean
+        # @param value[String]  the value to clean
         #
         # @return [String|nil] a nice shiny, clean value
         #
@@ -62,7 +62,7 @@ module CalState
         #
         # Get the model from the standard file name
         #
-        # @param [String] file_name  the complete name of the metadata file
+        # @param file_name [String]  the complete name of the metadata file
         #
         # @return [ActiveFedora::Base]
         #
@@ -77,8 +77,8 @@ module CalState
         #
         # Get the model from the standard file name
         #
-        # @param [String] campus_slug
-        # @param [String] model_name
+        # @param campus_slug [String]  campus identifier
+        # @param model_name [String]   model name
         #
         # @return [String]
         #

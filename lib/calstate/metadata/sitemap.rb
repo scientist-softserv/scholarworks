@@ -13,7 +13,7 @@ module CalState
       #
       # New Sitemap
       #
-      # @param [String] path  path to location of sitemap files
+      # @param path [String]  path to location of sitemap files
       #
       def initialize(path)
         @path = path
@@ -36,7 +36,7 @@ module CalState
       #
       # Write out batches of sitemap files
       #
-      # @param [Array] batches  groups of Solr docs
+      # @param batches [Array]  groups of Solr docs
       #
       # @return [Array] list of sitemap files
       #
@@ -68,7 +68,7 @@ module CalState
       #
       # Write out master sitemap file
       #
-      # @param [Array] files  list of sitemap files
+      # @param files [Array]  list of sitemap files
       #
       def write_master_sitemap_file(files)
         builder = Nokogiri::XML::Builder.new do |xml|

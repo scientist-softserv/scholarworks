@@ -4,7 +4,6 @@ work_type: "default"
 metadata_file: "mets.xml"
 depositor: kcloud@calstate.edu
 input_dir: /data/exported/
-handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: '3b5918567'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
@@ -54,24 +53,6 @@ type_to_work_map:
   Student Reserach: Thesis
   Abstract: Publication
   Poster Presentation: Thesis
-
-DSpace COMMUNITY:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace COLLECTION:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace ITEM:
-  desc_metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/xmlns:xmlData/dim:dim[@dspaceType='ITEM']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
 
 # Dublin Core Field Mapping
 fields:
@@ -224,11 +205,6 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='statementofresponsibility']"
     type: Array
-  # rights_uri:
-  #   xpath:
-  #     - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='uri']"
-  #    - "/dim:field[@mdschema='dc'][@element='review'][@qualifier='uri']"
-  #  type: Array
   sponsor:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='sponsor'][not(@qualifier)]"
