@@ -12,6 +12,13 @@ module CalState
     # Dspace migration
     #
     class Dspace
+
+      #
+      # Optional time to sleep between each package run
+      #
+      # @return [String]
+      attr_accessor :throttle
+
       #
       # New DSpace packager
       #
@@ -32,11 +39,12 @@ module CalState
         @complete_dir = initialize_directory(File.join(@input_dir, 'complete'))
         @error_dir = initialize_directory(File.join(@input_dir, 'error'))
 
+        @throttle = 0
+        @throttle_always = 600 # time to sleep for built-in throttling
         @errors = 0 # error counter
 
         @log.info 'Starting rake task packager:aip'.green
         @log.info 'Campus: ' + @config['campus'].yellow
-
       end
 
       #
@@ -50,12 +58,13 @@ module CalState
           next unless filename.include?('.zip') && filename.include?('ITEM')
 
           process_package(filename)
+          sleep @throttle unless @throttle.zero?
 
           # throttle during the day
           x += 1
           if CalState::Metadata.should_throttle(x, 3)
             @log.info 'shhhh sleeping . . . . '
-            sleep(300)
+            sleep @throttle_always
           end
         end
       end
@@ -82,21 +91,37 @@ module CalState
           process_mets(file_dir)
           File.rename(zip_file, File.join(@complete_dir, source_file))
 
-        rescue StandardError => e
-          @log.error e.class.to_s.red
-          @log.error e
-          File.rename(zip_file, File.join(@error_dir, source_file))
-          sleep(3)
-          @errors += 1
+        rescue Net::ReadTimeout => e
+          process_error(e, zip_file, source_file)
+          sleep @throttle_always
 
-          # exit if so configured or we got three errors in a row
-          raise e if @config['exit_on_error'] || @errors >= 3
+        rescue StandardError => e
+          process_error(e, zip_file, source_file)
+          sleep 60
+
         else
           @errors = 0 # success, so reset the counter
         end
       end
 
       protected
+
+      #
+      # Log error and optionally exit
+      #
+      # @param error [StandardError]
+      # @param zip_file [String]      full path to .zip file to process
+      # @param source_file [String]   just the .zip file name
+      #
+      def process_error(error, zip_file, source_file)
+        @log.error error.class.to_s.red
+        @log.error error
+        File.rename(zip_file, File.join(@error_dir, source_file))
+        @errors += 1
+
+        # exit if so configured or we got three errors in a row
+        raise error if @config['exit_on_error'] || @errors >= 3
+      end
 
       #
       # Extract a .zip file
