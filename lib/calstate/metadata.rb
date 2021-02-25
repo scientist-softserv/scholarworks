@@ -3,6 +3,7 @@
 require_relative 'metadata/utilities'
 require_relative 'metadata/csv'
 require_relative 'metadata/dspace'
+require_relative 'metadata/fixer'
 require_relative 'metadata/handle_mapper'
 require_relative 'metadata/sitemap'
 require_relative 'metadata/solr_reader'
@@ -87,14 +88,13 @@ module CalState
     # @return [Boolean]  yes if weekday 9-5
     #
     def self.should_throttle(position, batch = 5)
-      day = Date.today.strftime('%A')
+      now = Time.now.getlocal('-08:00')
 
       # just keep on truckin' over the weekend
-      return false if %w[Saturday Sunday].include? day
+      return false if now.saturday? || now.sunday?
 
       # otherwise throttle 9-5 weekdays
-      hour = Time.now.getlocal('-08:00').hour
-      (position % batch).zero? && (hour >= 9 && hour <= 17)
+      (position % batch).zero? && (now.hour >= 9 && now.hour <= 17)
     end
   end
 end
