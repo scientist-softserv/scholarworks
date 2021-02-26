@@ -136,6 +136,60 @@ module CsuMetadata
     property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
       index.as :stored_searchable
     end
+    validates_with CreatorOrcidValidator
+
+    
+    def creator_email
+      return [] if super.nil?
+      
+      return OrderedStringHelper.deserialize(super)
+    end
+
+    def creator_email= values
+      full_sanitizer = Rails::Html::FullSanitizer.new
+      sanitized_values = Array.new(values.size, '')
+      values.each_with_index do |v, i|
+        if (v != '|||')
+          sanitized_values[i] = full_sanitizer.sanitize(v)
+        end
+      end
+      super OrderedStringHelper.serialize(sanitized_values)
+    end
+
+    def creator_orcid
+      return [] if super.nil?
+
+      return OrderedStringHelper.deserialize(super)
+    end
+
+    def creator_orcid= values
+      full_sanitizer = Rails::Html::FullSanitizer.new
+      sanitized_values = Array.new(values.size, '')
+      values.each_with_index do |v, i|
+        if (v != '|||')
+          sanitized_values[i] = full_sanitizer.sanitize(v)
+        end
+      end
+      super OrderedStringHelper.serialize(sanitized_values)
+    end
+
+    def creator_institution
+      return [] if super.nil?
+
+      return OrderedStringHelper.deserialize(super)
+    end
+
+    def creator_institution= values
+      full_sanitizer = Rails::Html::FullSanitizer.new
+      sanitized_values = Array.new(values.size, '')
+      values.each_with_index do |v, i|
+        if (v != '|||')
+          sanitized_values[i] = full_sanitizer.sanitize(v)
+        end
+      end
+      super OrderedStringHelper.serialize(sanitized_values)
+    end
+
   end
 
   def handle_suffix
@@ -157,4 +211,5 @@ module CsuMetadata
 
     assign_campus(admin_set.title.first.to_s)
   end
+
 end
