@@ -16,7 +16,7 @@ module CalState
       #
       # Optional time to sleep between each package run
       #
-      # @return [String]
+      # @return [Integer]
       attr_accessor :throttle
 
       #

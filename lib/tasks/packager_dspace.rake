@@ -16,7 +16,7 @@ namespace :packager do
     throttle = args[:throttle] or 0
 
     packager = CalState::Packager::Dspace.new(campus)
-    packager.throttle = throttle
+    packager.throttle = throttle.to_i
 
     if source_file == 'items'
       packager.process_items
