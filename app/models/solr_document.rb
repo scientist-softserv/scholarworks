@@ -27,18 +27,26 @@ class SolrDocument
 
   # Do content negotiation for AF models.
 
-  use_extension( Hydra::ContentNegotiation )
+  use_extension(Hydra::ContentNegotiation)
 
-  def date_submitted
-    self[Solrizer.solr_name('date_submitted')]
+  def abstract
+    self[Solrizer.solr_name('abstract')]
   end
 
-  def handle
-    self[Solrizer.solr_name('handle')]
+  def alternative_title
+    self[Solrizer.solr_name('alternative_title')]
   end
 
-  def handle_suffix
-    self[Solrizer.solr_name('handle_suffix')]
+  def advisor
+    self[Solrizer.solr_name('advisor')]
+  end
+
+  def alternative_title
+    self[Solrizer.solr_name('alternative_title')]
+  end
+
+  def bibliographic_citation
+    self[Solrizer.solr_name('bibliographic_citation')]
   end
 
   def campus
@@ -49,36 +57,12 @@ class SolrDocument
     self[Solrizer.solr_name('college')]
   end
 
-  def department
-    self[Solrizer.solr_name('department')]
-  end
-
-  def degree_level
-    self[Solrizer.solr_name('degree_level')]
-  end
-
-  def degree_name
-    self[Solrizer.solr_name('degree_name')]
-  end
-
-  def abstract
-    self[Solrizer.solr_name('abstract')]
-  end
-
-  def advisor
-    self[Solrizer.solr_name('advisor')]
-  end
-
   def committee_member
     self[Solrizer.solr_name('committee_member')]
   end
 
-  def geographical_area
-    self[Solrizer.solr_name('geographical_area')]
-  end
-
-  def time_period
-    self[Solrizer.solr_name('time_period')]
+  def date_accessioned
+    self[Solrizer.solr_name('date_accessioned')]
   end
 
   def date_available
@@ -93,41 +77,122 @@ class SolrDocument
     self[Solrizer.solr_name('date_issued')]
   end
 
-  def sponsor
-    self[Solrizer.solr_name('sponsor')]
+  def date_submitted
+    self[Solrizer.solr_name('date_submitted')]
   end
 
-  def rights_access
-    self[Solrizer.solr_name('rights_access')]
+  def degree_level
+    self[Solrizer.solr_name('degree_level')]
   end
 
-  def alternative_title
-    self[Solrizer.solr_name('alternative_title')]
+  def degree_name
+    self[Solrizer.solr_name('degree_name')]
   end
 
-  def statement_of_responsibility
-    self[Solrizer.solr_name('statement_of_responsibility')]
+  def department
+    self[Solrizer.solr_name('department')]
   end
 
-  def publication_status
-    self[Solrizer.solr_name('publication_status')]
+  def description_note
+    self[Solrizer.solr_name('description_note')]
+  end
+
+  def doi
+    self[Solrizer.solr_name('doi')]
   end
 
   def editor
     self[Solrizer.solr_name('editor')]
   end
 
-  def bibliographic_citation
-    self[Solrizer.solr_name('bibliographic_citation')]
+  def embargo_terms
+    self[Solrizer.solr_name('embargo_terms')]
+  end
+
+  def extent
+    self[Solrizer.solr_name('extent')]
+  end
+
+  def geographical_area
+    self[Solrizer.solr_name('geographical_area')]
   end
 
   def granting_institution
     self[Solrizer.solr_name('granting_institution')]
   end
 
+  def handle
+    self[Solrizer.solr_name('handle')]
+  end
+
+  def handle_suffix
+    self[Solrizer.solr_name('handle_suffix')]
+  end
+
+  def identifier_uri
+    self[Solrizer.solr_name('identifier_uri')]
+  end
+
+  def investigator
+    self[Solrizer.solr_name('investigator')]
+  end
+
+  def issn
+    self[Solrizer.solr_name('issn')]
+  end
+
+  def isbn
+    self[Solrizer.solr_name('isbn')]
+  end
+
+  def is_part_of
+    self[Solrizer.solr_name('is_part_of')]
+  end
+
+  def license
+    self[Solrizer.solr_name('license')]
+  end
+
+  def oclcno
+    self[Solrizer.solr_name('oclcno')]
+  end
+
+  def provenance
+    self[Solrizer.solr_name('provenance')]
+  end
+
+  def publication_status
+    self[Solrizer.solr_name('publication_status')]
+  end
+
+  def rights_access
+    self[Solrizer.solr_name('rights_access')]
+  end
+
   def rights_holder
     self[Solrizer.solr_name('rights_holder')]
   end
+
+  def rights_note
+    self[Solrizer.solr_name('rights_note')]
+  end
+
+  def rights_uri
+    self[Solrizer.solr_name('rights_uri')]
+  end
+
+  def sponsor
+    self[Solrizer.solr_name('sponsor')]
+  end
+
+  def statement_of_responsibility
+    self[Solrizer.solr_name('statement_of_responsibility')]
+  end
+
+  def time_period
+    self[Solrizer.solr_name('time_period')]
+  end
+
 
   # blacklight_oai_provider mapping
   field_semantics.merge!(

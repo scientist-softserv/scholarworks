@@ -22,11 +22,11 @@ module CsuMetadata
   included do
 
     property :abstract, predicate: ::RDF::Vocab::DC.abstract do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
     property :alternative_title, predicate: ::RDF::Vocab::DC.alternative do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
     property :campus, predicate: ::RDF::Vocab::DC.publisher do |index|
@@ -58,70 +58,90 @@ module CsuMetadata
     end
 
     property :description_note, predicate: ::RDF::Vocab::SCHEMA.description do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
-    property :doi, predicate: ::RDF::Vocab::SCHEMA.identifier, multiple: true
+    property :doi, predicate: ::RDF::Vocab::SCHEMA.identifier do |index|
+      index.as :stored_searchable
+    end
 
     property :extent, predicate: ::RDF::Vocab::DC.extent do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
     property :geographical_area, predicate: ::RDF::Vocab::DC.spatial do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
     property :handle, predicate: ::RDF::Vocab::PREMIS.ContentLocation do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
-    property :identifier_uri, predicate: ::RDF::URI.new('http://id.loc.gov/vocabulary/identifiers/uri'), multiple: true
+    property :identifier_uri, predicate: ::RDF::URI.new('http://id.loc.gov/vocabulary/identifiers/uri') do |index|
+      index.as :stored_searchable
+    end
 
-    property :issn, predicate: ::RDF::Vocab::SCHEMA.issn, multiple: true
+    property :issn, predicate: ::RDF::Vocab::SCHEMA.issn do |index|
+      index.as :stored_searchable
+    end
 
-    property :isbn, predicate: ::RDF::Vocab::SCHEMA.isbn, multiple: true
+    property :isbn, predicate: ::RDF::Vocab::SCHEMA.isbn do |index|
+      index.as :stored_searchable
+    end
 
     property :is_part_of, predicate: ::RDF::Vocab::DC.relation do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
     property :license, predicate: ::RDF::Vocab::DC.license do |index|
       index.as :stored_searchable, :facetable
     end
 
-    property :oclcno, predicate: ::RDF::Vocab::BIBO.oclcnum, multiple: true
+    property :oclcno, predicate: ::RDF::Vocab::BIBO.oclcnum do |index|
+      index.as :stored_searchable
+    end
 
     property :rights_holder, predicate: ::RDF::Vocab::DC.rightsHolder do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
     property :rights_note, predicate: ::RDF::Vocab::EBUCore.rightsExpression do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
-    property :rights_uri, predicate: ::RDF::URI.new('http://purl.org/dc/elements/1.1/rights'), multiple: true
+    property :rights_uri, predicate: ::RDF::URI.new('http://purl.org/dc/elements/1.1/rights') do |index|
+      index.as :stored_searchable
+    end
 
     property :sponsor, predicate: ::RDF::Vocab::MARCRelators.spn do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
     property :statement_of_responsibility, predicate: ::RDF::Vocab::MARCRelators.rpy do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
     property :time_period, predicate: ::RDF::Vocab::DC.temporal do |index|
       index.as :stored_searchable, :facetable
     end
 
-    property :provenance, predicate: ::RDF::Vocab::DC.provenance
-    property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false
-    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false
+    property :provenance, predicate: ::RDF::Vocab::DC.provenance do |index|
+      index.as :stored_searchable
+    end
+
+    property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false do |index|
+      index.as :stored_searchable
+    end
+
+    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
+      index.as :stored_searchable
+    end
   end
 
   def handle_suffix
     return nil if handle.blank?
 
-    handle.map{ |url| url.split('/')[-1]}
+    handle.map { |url| url.split('/')[-1] }
   end
 
   def assign_campus(admin_set_title)
