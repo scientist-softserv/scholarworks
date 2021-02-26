@@ -134,7 +134,7 @@
           "  <div class='col-xs-6'>" +
           "    <div class='label_input_div'>" +
           "      <label for='creator_name" + cur_creator_num + "' class='label_field'>" +
-          "        <span class='sr-only'>author </span>Name" +
+          "        <span class='sr-only'>creator </span>Name" +
           "        <span class='label label-info required-tag'>required</span>" +
           "      </label>" +
           "        <input type='text' name='" + model_type + "[creator][]' id='creator_name" + cur_creator_num + "' value='' class='string multi_value required creator_name combined_creator multi-text-field multi_value input_field' />" +
@@ -142,14 +142,14 @@
           "    <div class='label_input_div'>" +
           "      <input type='hidden' name='" + model_type + "[creator_email][]' id='creator_email" + cur_creator_num + "' value='' />" +
           "      <label for='creator_email_tmp" + cur_creator_num + "' class='label_field'>" +
-          "        <span class='sr-only'>author </span>Email" +
+          "        <span class='sr-only'>creator </span>Email" +
           "      </label>" +
           "      <input type='email' name='" + model_type + "[creator_email_tmp][]' id='creator_email_tmp" + cur_creator_num + "' value='' class='creator_email combined_creator multi-text-field multi_value input_field' />" +
           "    </div>" +
           "    <div class='label_input_div'>" +
           "      <input type='hidden' name='" + model_type + "[creator_orcid][]' id='creator_orcid" + cur_creator_num + "' value='' />" +
           "      <label for='creator_orcid_tmp" + cur_creator_num + "' class='label_field'>" +
-          "        <span class='sr-only'>author </span>ORCID" +
+          "        <span class='sr-only'>creator </span>ORCID" +
           "      </label>" +
           "      <input type='text' name='" + model_type + "[creator_orcid_tmp][]' id='creator_orcid_tmp" + cur_creator_num + "' value='' class='creator_orcid combined_creator multi-text-field multi_value input_field' />" +
           "      <span id='orcid_error" + cur_creator_num + "' class='orcid_error error text-danger error text-danger combined_creator d_none' role='alert' aria-hidden='true'>must be a string of 19 characters, e.g., '0000-0000-0000-0000'</span>" +
@@ -159,13 +159,13 @@
           "    <button id='" + cur_creator_num + "' type='button' class='btn btn-link remove creator_remove' aria-hidden='false'>" +
           "      <span class='glyphicon glyphicon-remove'></span>" +
           "      <span class='controls-remove-text'>Remove</span>" +
-          "      <span class='sr-only'>author</span>" +
+          "      <span class='sr-only'>creator</span>" +
           "    </button>" +
           "  </div>" +
           "    <div class='label_input_div'>" +
           "      <input type='hidden' name='" + model_type + "[creator_institution][]' id='creator_institution" + cur_creator_num + "' value='' />" +
           "      <label for='creator_institution_tmp" + cur_creator_num + "' class='label_field'>" +
-          "        <span class='sr-only'>author </span>Institution" +
+          "        <span class='sr-only'>creator </span>Institution" +
           "      </label>" +
           "      <input type='text' name='" + model_type + "[creator_institution_tmp][]' id='creator_institution_tmp" + cur_creator_num + "' value='' class='creator_institution combined_creator multi-text-field multi_value input_field' />" +
           "    </div>" +
@@ -279,13 +279,13 @@
   <% creator_email = f.object.creator_email %>
   <% creator_orcid = f.object.creator_orcid %>
   <% creator_institution = f.object.creator_institution %>
-  <span id="creator_email_label" class="sr-only">author email</span>
+  <span id="creator_email_label" class="sr-only">creator email</span>
   <%= hidden_field_tag "model_type", model_type %>
 
-  <label id="creator_label" class="control-label">Author <span class="label label-info required-tag">required</span></label>
-  <span id="empty_author" class="help-block d_none">Your work must have an author.</span>
+  <label id="creator_label" class="control-label"><%= t('simple_form.labels.defaults.creator') %> <span class="label label-info required-tag">required</span></label>
+  <span id="empty_author" class="help-block d_none">Your work must have a creator.</span>
 
-  <p class="help-block">The person or organization who created the work.  Personal names should be entered with the last name first (e.g. Smith, John E., or Smith, Mary E. Junior, Associated Students of San Francisco State University).  If there are multiple authors, use the .Add another Creator. option for each additional author.</p>
+  <p class="help-block"><%= t('simple_form.hints.defaults.creator') %></p>
 
   <div id="creator_divs" aria-live="polite">
     <% f.object.creator.each_with_index do |creator_name, index| %>
@@ -298,7 +298,7 @@
         <div class="col-xs-6">
           <div class="label_input_div">
             <label for=<%= "creator_name#{index}" %> class="label_field">
-              <span class="sr-only">author </span>
+              <span class="sr-only">creator </span>
               Name
               <span class="label label-info required-tag">required</span>
               </span>
@@ -311,7 +311,7 @@
           <div class="label_input_div">
             <%= hidden_field_tag "#{model_type}[creator_email][]", creator_email[index], id: "creator_email#{index}" %>
             <label for=<%= "creator_email_tmp#{index}" %> class="label_field">
-              <span class="sr-only">author </span>
+              <span class="sr-only">creator </span>
                Email
               </span>
             </label>
@@ -323,7 +323,7 @@
           <div class="label_input_div">
             <%= hidden_field_tag "#{model_type}[creator_institution][]", creator_institution[index], id: "creator_institution#{index}" %>
             <label for=<%= "creator_institution_tmp#{index}" %> class="label_field">
-              <span class="sr-only">author </span>
+              <span class="sr-only">creator </span>
               Institution
               </span>
             </label>
@@ -335,7 +335,7 @@
           <div class="label_input_div">
             <%= hidden_field_tag "#{model_type}[creator_orcid][]", creator_orcid[index], id: "creator_orcid#{index}" %>
             <label for=<%= "creator_orcid_tmp#{index}" %> class="label_field">
-              <span class="sr-only">author </span>
+              <span class="sr-only">creator </span>
               ORCID
               </span>
             </label>
@@ -353,7 +353,7 @@
             <button id=<%= index %> type="button" class="btn btn-link remove creator_remove" data-element-id=<%= index %> aria-hidden="false">
               <span class="glyphicon glyphicon-remove"></span>
               <span class="controls-remove-text">Remove</span>
-              <span class="sr-only">author <%=creator_name%> </span>
+              <span class="sr-only">creator <%=creator_name%> </span>
             </button>
           </span>
         </div>
@@ -368,7 +368,7 @@
     <div id="creator_add_div" class="row creator_row">
       <button id="creator_add_btn" type="button" class="btn btn-link add">
         <span class="glyphicon glyphicon-plus"></span>
-        <span class="controls-add-text">Add another Author</span>
+        <span class="controls-add-text">Add another Creator</span>
       </button>
     </div>
   </div>
