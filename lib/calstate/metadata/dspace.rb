@@ -12,9 +12,9 @@ module CalState
       #
       # New DSpace metadata file reader
       #
-      # @param [String] csv_file      path to dspace csv file
-      # @param [Hash] field_map       hyrax_field: dspace_field mapping
-      # @param [String] handle_field  [optional] dspace field containing handle
+      # @param csv_file [String]      path to dspace csv file
+      # @param field_map [Hash]       hyrax_field: dspace_field mapping
+      # @param handle_field [String]  [optional] dspace field containing handle
       #
       # @return [Hash] as handle => values
       #
@@ -34,8 +34,8 @@ module CalState
       #
       # Extract all values from a dspace field without regard to language
       #
-      # @param [Array] row      row of item values
-      # @param [String] field   dspace field name
+      # @param row [Array]      row of item values
+      # @param field [String]   dspace field name
       #
       # @return [Array]
       #
@@ -50,8 +50,8 @@ module CalState
       #
       # Extract a single value from dspace field without regard to language
       #
-      # @param [Array] row      row of item values
-      # @param [String] field   dspace field name
+      # @param row [Array]     row of item values
+      # @param field [String]  dspace field name
       #
       # @return [String]
       #

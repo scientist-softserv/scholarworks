@@ -1,13 +1,11 @@
 
 campus: 'Moss Landing'
-work_type: "default"
-metadata_file: "DC Record.xml|DC_Record.xml|DC datastream.xml"
-#metadata_file: "DC Record.xml"
-data_file: "pdf|rtf|xlsx|zip|dat"
-depositor: admin@calstate.edu
-input_dir: /data/exported/ml
-handle_report: /data/tmp/MAIN_handle_report.txt
-admin_set_id: "vt150j246"
+subpathwork_type: "default"
+metadata_file: "DC Record.xml"
+data_file: "pdf"
+depositor: kcloud@calstate.edu
+input_dir: /data/exported/islandora/mosslanding
+admin_set_id: '3t945q76s'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
 # true - ends processing on error
@@ -23,74 +21,110 @@ output_level: 'verbose'
 include_thumbnail: false
 
 # Enter University eg, California State University, <name>
-default_university: San Francisco State Universit
+default_university: Moss Landing Marine Laboratories
 
 # work map from resource_type.
 # values are value_mapped_to_resource_type: Work Type
 type_to_work_map:
   Thesis: Thesis
-  Text: Thesis
   Dissertation: Thesis
-  #Project: Thesis
-  #Graduate Project: Thesis
-  #Student Research: Thesis
-  #Newspaper: Publication
-  #Journal Issue: Publication
+  Project: Thesis
+  Graduate Project: Thesis
+  Student Research: Thesis
+  Newspaper: Publication
+  Journal Issue: Publication
   Article: Publication
-  #Poster: Publication
-  #Report: Publication
-  #Preprint: Publication
-  #Technical Report: Publication
-  #Working Paper: Publication
-  Musical Score: Thesis
-  #Learning Object: EducationalResource
-  #Text: Publication
-  Dataset: Dataset
-  Other: Publication
+  Poster: Publication
+  Report: Publication
+  Preprint: Publication
+  Technical Report: Publication
+  Working Paper: Publication
+  painting: CreativeWork
+  ephemera: CreativeWork
+  textiles: CreativeWork
+  Empirical Research: CreativeWork
+  Award Materials: CreativeWork
+  photograph: CreativeWork
+  Mixed Media: CreativeWork
+  Other: CreativeWork
+  Creative Works: CreativeWork
+  Image: CreativeWork
+  Text: Publication
+  Publication: Publication
+  Abstract: Publication
+  Periodical: Publication
+  Journal: Publication
+  journal: Publication
+  Text, newsletter: Publication
+  TechPub: Publication
+  Text, Text, Newsletter: Publication
+  MovingImage: CreativeWork
+  StillImage: CreativeWork
+  Buildings: CreativeWork
+  ~: CreativeWork
+  # Learning Object: Thesis
+  # Post-print: Publication
+  # Presentation: Thesis
+  # Recording, oral: CreativeWork
 
-
-Thesis:
+Islandora ITEM:
   desc_metadata_prefix: "//oai_dc:dc"
   namespace:
-    oai_dc: http://www.openarchives.org/OAI/2.0/oai_dc/
-    dc: http://purl.org/dc/elements/1.1/
+    xmlns: http://www.openarchives.org/OAI/2.0/oai_dc/
 
+# Dublin Core Field Mapping
 fields:
-
-  title:
+  abstract:
     xpath:
-      - "/dc:title"
+      - "/dc.description[@qualifier='abstract']"
+    type: Array
+  advisor:
+    xpath:
+      - "/dc:contributor[contains(.,'Thesis advisor')]"
+    type: Array
+  alternative_title:
+    xpath:
+      - "/dc.title[@qualifier='alternative']"
+    type: Array
+  committee_member:
+    xpath:
+      - "/dc:contributor[contains(.,'Thesis committee member')]"
+    type: Array
+  contributor:
+    xpath:
+      - "/dc:contributor[not(contains(.,'Thesis advisor'))][not(contains(.,'Thesis committee member'))]"
     type: Array
   creator:
     xpath:
       - "/dc:creator"
-      - "/dc:contributor"
     type: Array
-  subject:
+  date_issued:
     xpath:
-      - "/dc:subject"
+      - "/dc:date"
     type: Array
-  resource_type:
+  description:
     xpath:
-      - "/dc:type"
+      - "/dc:description"
     type: Array
   identifier:
     xpath:
       - "/dc:identifier"
     type: Array
-  publisher:
-    xpath:
-      - "/dc:publisher"
-    type: Array
   language:
     xpath:
       - "/dc:language"
     type: Array
-  extent: # (Default) Newspaper
+  resource_type:
     xpath:
-      - "/dc:format"
+      - "/dc:type"
+      #- "/dc:genre"
+      #- "/dim:field[@mdschema='dc'][@element='genre'][not(@qualifier)]"
     type: Array
-  description: # Thesis
+  subject:
     xpath:
-      - "/dc:description"
+      - "/dc:subject"
+    type: Array
+  title:
+    xpath:
+      - "/dc:title"
     type: Array

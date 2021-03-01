@@ -18,7 +18,7 @@ class Publication < ActiveFedora::Base
   self.human_readable_type = 'Publication'
 
   property :editor, predicate: ::RDF::Vocab::MARCRelators.edt do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   property :publication_status, predicate: ::RDF::Vocab::BIBO.status, multiple: false do |index|
@@ -26,7 +26,7 @@ class Publication < ActiveFedora::Base
   end
 
   property :resource_type_publication, predicate: ::RDF::Vocab::DC.type do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   # This must be included at the end, because it finalizes the metadata

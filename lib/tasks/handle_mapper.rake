@@ -2,6 +2,9 @@
 
 require 'calstate/metadata'
 
+# Usage:
+# bundle exec rake calstate:handles
+
 namespace :calstate do
   desc 'Create a rewrite map of handles to hyrax ids'
   task handles: :environment do

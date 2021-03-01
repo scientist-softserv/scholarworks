@@ -15,7 +15,7 @@ module CalState
         #
         # Update records for a given model
         #
-        # @param [String] csv_file  path to csv file
+        # @param csv_file [String]  path to csv file
         #
         def update_records(csv_file)
           tasks = {}
@@ -57,9 +57,9 @@ module CalState
         #
         # Compare the value in the Fedora document
         #
-        # @param [ActiveFedora::Base] doc the fedora document
-        # @param [String] key         the field name
-        # @param [String] value       the value to compare
+        # @param doc [ActiveFedora::Base]  the fedora document
+        # @param key [String]              the field name
+        # @param value [String]            the value to compare
         #
         def compare_value(doc, key, value)
           doc_field = doc[key]

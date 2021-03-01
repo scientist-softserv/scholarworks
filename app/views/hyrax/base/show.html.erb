@@ -55,13 +55,20 @@
           <div class="col-md-9">
 
             <!-- description -->
-
             <div class="csu-item-description">
-              <%= render 'work_description', presenter: @presenter %>
+              <% unless @presenter.abstract.nil? %>
+                <% @presenter.abstract.each do |abstract| %>
+                  <p class="work_description"><%= iconify_auto_link(abstract) %></p>
+                <% end %>
+              <% end %>
+              <% unless @presenter.description.nil? %>
+                <% @presenter.description.each do |description| %>
+                  <p class="work_description"><%= iconify_auto_link(description) %></p>
+                <% end %>
+              <% end %>
             </div>
 
             <!-- other metadata -->
-
             <div class="csu-item-metadata">
               <%= render 'metadata', presenter: @presenter %>
             </div>
@@ -79,7 +86,6 @@
         </div>
 
         <!-- files -->
-
         <div class="csu-item-files">
           <%= render 'items', presenter: @presenter %>
         </div>
@@ -90,4 +96,8 @@
       <%# = render 'user_activity', presenter: @presenter %>
     </div>
   </div>
+</div>
+
+<div class="csu-copyright-note">
+  Items in ScholarWorks are protected by copyright, with all rights reserved, unless otherwise indicated.
 </div>

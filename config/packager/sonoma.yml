@@ -4,7 +4,6 @@ work_type: "default"
 metadata_file: "mets.xml"
 depositor: kcloud@calstate.edu
 input_dir: /data/exported/
-handle_report: /data/tmp/MAIN_handle_report.txt
 admin_set_id: 'dz010q04x'
 
 # exit_on_error: when an AIP package encounters an error should the import process end or continue?
@@ -53,24 +52,6 @@ type_to_work_map:
   Working paper: Publication
   Working Paper: Publication
 
-DSpace COMMUNITY:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COMMUNITY']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace COLLECTION:
-  desc_metadata_prefix: "//dim:dim[@dspaceType='COLLECTION']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
-DSpace ITEM:
-  desc_metadata_prefix: "//xmlns:mdWrap[@OTHERMDTYPE='DIM']/xmlns:xmlData/dim:dim[@dspaceType='ITEM']"
-  namespace:
-    xmlns: http://www.loc.gov/METS/
-    dim: http://www.dspace.org/xmlns/dspace/dim
-
 # Dublin Core Field Mapping
 fields:
   abstract: # Thesis
@@ -79,11 +60,6 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='abstract']"
       - "/dim:field[@mdschema='dc'][@element='note'][not(@qualifier)]"
     type: Array
-  #advisor: removed for publications
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='advisor'][not(@qualifier)]"
-  #    - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='advisor']"
-  #  type: Array
   alternative_title: # Thesis
     xpath:
       - "/dim:field[@mdschema='dc'][@element='title'][@qualifier='alternative']"
@@ -136,23 +112,9 @@ fields:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='date'][@qualifier='available']"
     type: String
-  #General description mapping
-  #description:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='description'][not(@qualifier)]"
-  #  type: Array
-  #degree_name:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='degree']"
-  #  type: String
-  #degree_level:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='degree']"
-  #  type: String
   department:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='contributor'][@qualifier='department']"
-#      - "/dim:field[@mdschema='dc'][@element='description'][@qualifier='sponsorship']"
     type: Array
   editor:
     xpath:
@@ -223,25 +185,10 @@ fields:
       - "/dim:field[@mdschema='dc'][@element='type'][@qualifier='genre']"
       - "/dim:field[@mdschema='dc'][@element='genre'][not(@qualifier)]"
     type: Array
-  #rights_holder:
-    #xpath:
-    #  - "/dim:field[@mdschema='dc'][@element='rights][@qualifier='holder']"
-    #type: Array
-  rights_note:
-    xpath:
-#      - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
-#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='usage']"
-    type: Array
   rights_note:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
-#      - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='holder']"
     type: Array
-  #rights_statement:
-  #  xpath:
-  #    - "/dim:field[@mdschema='dc'][@element='rights'][not(@qualifier)]"
-  #    - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='usage']"
-  #  type: Array
   rights_uri:
     xpath:
       - "/dim:field[@mdschema='dc'][@element='rights'][@qualifier='uri']"

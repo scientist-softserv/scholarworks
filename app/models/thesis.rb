@@ -31,11 +31,11 @@ class Thesis < ActiveFedora::Base
   end
 
   property :granting_institution, predicate: ::RDF::Vocab::MARCRelators.uvp do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   property :resource_type_thesis, predicate: ::RDF::Vocab::DC.type do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   # This must be included at the end, because it finalizes the metadata

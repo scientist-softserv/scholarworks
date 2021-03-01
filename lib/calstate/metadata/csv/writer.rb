@@ -14,8 +14,8 @@ module CalState
         #
         # New CSV Writer
         #
-        # @param [String] csv_dir      path to csv directory
-        # @param [String] campus_slug  campus slug
+        # @param csv_dir [String]      path to csv directory
+        # @param campus_slug [String]  campus slug
         #
         def initialize(csv_dir, campus_slug)
           @csv_dir = csv_dir
@@ -35,7 +35,7 @@ module CalState
         #
         # Write out file for specified model
         #
-        # @param [String] model_name
+        # @param model_name [String]  the model name
         #
         def write_file(model_name)
           model = Kernel.const_get(model_name)
@@ -70,8 +70,8 @@ module CalState
                           prep_value(doc.visibility_after_embargo)] # not in attributes
                 values.push(*get_attr_values(doc.attributes, attribute_names))
                 csv << values
-              rescue StandardError => e
-                raise e
+              rescue ActiveFedora::ConstraintError => e
+                puts e.message
               end
             end
           end
