@@ -55,7 +55,6 @@
           <div class="col-md-9">
 
             <!-- description -->
-
             <div class="csu-item-description">
               <% unless @presenter.abstract.nil? %>
                 <% @presenter.abstract.each do |abstract| %>
@@ -70,7 +69,6 @@
             </div>
 
             <!-- other metadata -->
-
             <div class="csu-item-metadata">
               <%= render 'metadata', presenter: @presenter %>
             </div>
@@ -88,7 +86,6 @@
         </div>
 
         <!-- files -->
-
         <div class="csu-item-files">
           <%= render 'items', presenter: @presenter %>
         </div>
@@ -99,4 +96,8 @@
       <%# = render 'user_activity', presenter: @presenter %>
     </div>
   </div>
+</div>
+
+<div class="csu-copyright-note">
+  Items in ScholarWorks are protected by copyright, with all rights reserved, unless otherwise indicated.
 </div>
