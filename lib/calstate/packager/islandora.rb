@@ -231,6 +231,7 @@ module CalState
 
         # set resource type
         resource_type = @type || 'Thesis'
+        params['resource_type'] = ['Masters Thesis'] if resource_type.downcase == 'thesis'
 
         # set visibility
         params['visibility'] = @visibility
@@ -332,6 +333,17 @@ module CalState
         params['creator'] << data
       end
 
+      def process_identifier(data, params)
+        data_lc = data.downcase
+        if data_lc.start_with?('islandora')
+          params['description_note'] << data.squish
+        elsif data_lc.start_with?('http')
+          params['related_url'] << data.squish
+        else
+          params['identifier'] << data.squish
+        end
+      end
+
       #
       # Extract data from XML based on config data mapping
       #
@@ -375,6 +387,8 @@ module CalState
 
                   if field_name == 'creator'
                     process_creator(node_text, params)
+                  elsif field_name == 'identifier'
+                    process_identifier(node_text, params)
                   else
                     params[field_name] << node_text
                   end
