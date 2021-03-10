@@ -10,9 +10,9 @@ WillowSword.setup do |config|
   # The fileset model supported by Sword (based on Hyrax integration)
   config.file_set_models = ['FileSet']
   # Remove all parameters that are not part of the model's permitted attributes
-  config.allow_only_permitted_attributes = true
+  config.allow_only_permitted_attributes = false
   # Default visibility for works
-  config.default_visibility = 'open'
+  # config.default_visibility = 'open'
   # Metadata filename in payload
   config.metadata_filename = 'mets.xml'
   # XML crosswalk for creating a work
