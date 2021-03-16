@@ -632,6 +632,18 @@
         </field>
       </xsl:if>
 
+      <!-- resource type -->
+      <xsl:if test="@type">
+        <xsl:choose select="@type">
+          <xsl:when test="@type = 'doctoral'">
+            <xsl:text>Dissertation</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>Masters Thesis</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
+
       <!-- date issued -->
       <xsl:for-each select="pq:DISS_dates">
         <field name="date_issued">
