@@ -63,6 +63,21 @@ module CalState
         end
       end
 
+      #
+      # Rename the folders to islandora_id
+      #
+      # otherwise the folders are named with the title of the work (weird)
+      #
+      def rename_folders
+        Dir.each_child(@input_dir) do |file|
+          m = file.match(/\(islandora:([0-9]*)\)/)
+          unless m.nil?
+            FileUtils.mv(@input_dir + '/' + file,
+                         @input_dir + '/' + 'islandora_' + m[1])
+          end
+        end
+      end
+
       protected
 
       #

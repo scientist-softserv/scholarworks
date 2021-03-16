@@ -15,6 +15,7 @@ namespace :packager do
     throttle = args[:visibility] ||= nil
 
     packager = CalState::Packager::Islandora.new(campus, type)
-    packager.process_items
+    packager.rename_folders
+    packager.process_items(throttle)
   end
 end
