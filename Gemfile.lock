@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/csuscholarworks/willow_sword.git
-  revision: ccda334070b81330feee03c01d120580b74c3c56
-  branch: scholarworks
+  revision: 1ee470799aa8b24e5b221969605299ffc919134f
+  tag: v1.0
   specs:
     willow_sword (0.2.0)
       bagit (~> 0.4.1)
