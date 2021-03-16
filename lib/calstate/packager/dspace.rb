@@ -259,8 +259,10 @@ module CalState
         # set visibility
         if params.key?('embargo_release_date')
           # indefinite embargo, just make it private
-          if params['embargo_release_date'] == '10000-01-01'
+          if params['embargo_release_date'].include?('10000-01-01') ||
+             params['embargo_release_date'].empty?
             params['visibility'] = 'restricted'
+            params.except!('embargo_release_date')
           else # regular embargo
             params['visibility_after_embargo'] = 'open'
             params['visibility_during_embargo'] = 'authenticated'
