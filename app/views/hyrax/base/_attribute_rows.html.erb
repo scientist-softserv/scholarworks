@@ -41,7 +41,7 @@
 <%= presenter.attribute_to_html(:date_issued, html_dl: true) %>
 <%= presenter.attribute_to_html(:date_submitted, html_dl: true) %>
 <%= presenter.attribute_to_html(:date_accessioned, html_dl: true) %>
-<%#  presenter.attribute_to_html(:embargo_terms, html_dl: true) %>
+<div style="display:none"><%= presenter.embargo_terms %></div>
 
 <!-- identifiers -->
 <%= presenter.attribute_to_html(:handle, html_dl: true) %>
@@ -52,7 +52,7 @@
 <%= presenter.attribute_to_html(:oclcno, html_dl: true) %>
 
 <!-- misc -->
-<%= presenter.attribute_to_html(:provenance, html_dl: true) %>
+<div style="display:none"><%= presenter.provenance %></div>
 <%= presenter.attribute_to_html(:language, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:alternative_title, html_dl: true) %>
 <%= presenter.attribute_to_html(:statement_of_responsibility, html_dl: true) %>
