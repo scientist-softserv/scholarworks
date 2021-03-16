@@ -173,11 +173,11 @@
           "      <span id='orcid_error" + cur_creator_num + "' class='orcid_error error text-danger error text-danger combined_creator d_none' role='alert' aria-hidden='true'>must be a string of 19 characters, e.g., '0000-0000-0000-0000'</span>" +
           "    </div>" +
           "    <div class='label_input_div'>" +
-          "      <input type='hidden' name='<%= model_type %>[creator_institution][]' id='creator_institution" + cur_creator_num + "' value='' />" +
+          "      <input type='hidden' name='" + model_type + "[creator_institution][]' id='creator_institution" + cur_creator_num + "' value='' />" +
           "      <label for='creator_institution_tmp" + cur_creator_num + "' class='label_field'>" +
           "        <span class='sr-only'>creator </span>Institution" +
           "      </label>" +
-          "      <input type='text' name='<%= model_type %>[creator_institution_tmp][]' id='creator_institution_tmp" + cur_creator_num + "' value='' class='creator_institution combined_creator multi-text-field multi_value input_field' />" +
+          "      <input type='text' name='" + model_type + "[creator_institution_tmp][]' id='creator_institution_tmp" + cur_creator_num + "' value='' class='creator_institution combined_creator multi-text-field multi_value input_field' />" +
           "    </div>" +
           "  </div>" +
           "  <div class='col-sm'>" +
