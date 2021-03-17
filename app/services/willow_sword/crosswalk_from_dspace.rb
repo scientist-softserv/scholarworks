@@ -34,7 +34,7 @@ module WillowSword
     end
 
     def singular
-      %w(rights degree_level)
+      %w(rights degree_level embargo_terms embargo_release_date)
     end
 
     def map_xml
@@ -53,8 +53,6 @@ module WillowSword
       xslt_file = File.join(Rails.root, 'config', 'sword', 'sword.xslt')
       xslt = Nokogiri::XSLT(File.read(xslt_file))
       doc = xslt.transform(sword_doc)
-
-      @metadata[:visibility] = 'open'
 
       doc.xpath('//field').each do |field|
         next unless field.text.present?

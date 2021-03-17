@@ -17,17 +17,17 @@ module CalState
       #
       # @param campus [String]      campus slug
       # @param type [String]        work type (e.g., Thesis)
-      # @param visibility [String]  visibility to set
       #
-      def initialize(campus, type, visibility)
+      def initialize(campus, type)
         @campus = campus
         @type = type
-        @visibility = visibility
 
         # config and loggers
         config_file = 'config/packager/' + campus + '.yml'
         @config = OpenStruct.new(YAML.load_file(config_file))
         @log = Packager::Log.new(@config['output_level'])
+
+        @visibility = @config['visibility'] ||= 'open'
         @log.info ' Work type ' + @type
         @log.info ' Visibility ' + @visibility
 
@@ -53,10 +53,28 @@ module CalState
       #
       # Process all items
       #
-      def process_items
+      # @param throttle [Integer]  seconds to throttle between
+      #
+      def process_items(throttle)
         Dir.each_child(@input_dir) do |dirname|
-          @log.info 'process ' + dirname
+          @log.info "\n\nProcessing " + dirname
           process_dir(dirname)
+          sleep(throttle.to_i) unless throttle.nil?
+        end
+      end
+
+      #
+      # Rename the folders to islandora_id
+      #
+      # otherwise the folders are named with the title of the work (weird)
+      #
+      def rename_folders
+        Dir.each_child(@input_dir) do |file|
+          m = file.match(/\(islandora:([0-9]*)\)/)
+          unless m.nil?
+            FileUtils.mv(@input_dir + '/' + file,
+                         @input_dir + '/' + 'islandora_' + m[1])
+          end
         end
       end
 
@@ -317,7 +335,8 @@ module CalState
           '(publisher)' => 'publisher',
           '(home campus)' => 'granting_institution',
           '(thesis advisor)' => 'advisor',
-          '(thesis committee member)' => 'committee_member' }
+          '(thesis committee member)' => 'committee_member'
+        }
         data_lc = data.downcase
         return if data_lc.end_with? ignore_tag
 
@@ -385,7 +404,7 @@ module CalState
                   next if node_text.empty?
                   next if field_name == 'resource_type' && node_text.casecmp('TEXT').zero?
 
-                  if field_name == 'creator'
+                  if %w[creator contributor].include? field_name
                     process_creator(node_text, params)
                   elsif field_name == 'identifier'
                     process_identifier(node_text, params)
