@@ -18,7 +18,7 @@ module CalState
         #                        join them using pipe, otherwise return first
         #
         def get_value(value, join = false)
-          if value.is_a?(ActiveTriples::Relation)
+          if value.is_a?(ActiveTriples::Relation) || value.is_a?(Array)
             if join
               prep_value(value.join('|'))
             else
