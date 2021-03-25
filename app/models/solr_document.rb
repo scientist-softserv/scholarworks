@@ -173,6 +173,18 @@ class SolrDocument
     self[Solrizer.solr_name('rights_holder')]
   end
 
+  def creator_email
+      self[Solrizer.solr_name('creator_email')]
+  end
+
+  def creator_orcid 
+      self[Solrizer.solr_name('creator_orcid')]
+  end
+
+  def creator_institution
+    self[Solrizer.solr_name('creator_institution')]
+  end
+
   def rights_note
     self[Solrizer.solr_name('rights_note')]
   end
