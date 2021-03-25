@@ -37,6 +37,22 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
+    property :creator_email, predicate: ::RDF::Vocab::VCARD.hasEmail, multiple: true do |index|
+      index.as :stored_searchable
+    end
+
+    property :creator_institution, predicate: ::RDF::Vocab::VCARD.org, multiple: true do |index|
+      index.as :stored_searchable
+    end
+
+    property :creator_orcid, predicate: ::RDF::Vocab::VCARD.hasUID, multiple: true do |index|
+      index.as :stored_searchable
+    end
+
+    property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false do |index|
+      index.as :stored_searchable
+    end
+
     property :date_available, predicate: ::RDF::Vocab::DC.available do |index|
       index.as :stored_searchable, :facetable
     end
@@ -62,6 +78,10 @@ module CsuMetadata
     end
 
     property :doi, predicate: ::RDF::Vocab::SCHEMA.identifier do |index|
+      index.as :stored_searchable
+    end
+
+    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
       index.as :stored_searchable
     end
 
@@ -101,6 +121,10 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    property :provenance, predicate: ::RDF::Vocab::DC.provenance do |index|
+      index.as :stored_searchable
+    end
+
     property :rights_holder, predicate: ::RDF::Vocab::DC.rightsHolder do |index|
       index.as :stored_searchable
     end
@@ -125,43 +149,20 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
-    property :provenance, predicate: ::RDF::Vocab::DC.provenance do |index|
-      index.as :stored_searchable
-    end
-
-    property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false do |index|
-      index.as :stored_searchable
-    end
-
-    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
-      index.as :stored_searchable
-    end
-    property :creator_email, predicate: ::RDF::Vocab::VCARD.hasEmail, multiple: true do |index|
-      index.as :stored_searchable
-    end
-
-
-    property :creator_orcid, predicate: ::RDF::Vocab::VCARD.hasUID, multiple: true do |index|
-      index.as :stored_searchable
-    end
-
-    property :creator_institution, predicate: ::RDF::Vocab::VCARD.org, multiple: true do |index|
-      index.as :stored_searchable
-    end
 
     validates_with CreatorOrcidValidator
-    
+
     def creator_email
       return [] if super.nil?
-      
-      return OrderedStringHelper.deserialize(super)
+
+      OrderedStringHelper.deserialize(super)
     end
 
     def creator_email= values
       full_sanitizer = Rails::Html::FullSanitizer.new
       sanitized_values = Array.new(values.size, '')
       values.each_with_index do |v, i|
-        if (v != '|||')
+        if v != '|||'
           sanitized_values[i] = full_sanitizer.sanitize(v)
         end
       end
@@ -171,14 +172,14 @@ module CsuMetadata
     def creator_orcid
       return [] if super.nil?
 
+      OrderedStringHelper.deserialize(super)
     end
-      return OrderedStringHelper.deserialize(super)
 
     def creator_orcid= values
       full_sanitizer = Rails::Html::FullSanitizer.new
       sanitized_values = Array.new(values.size, '')
       values.each_with_index do |v, i|
-        if (v != '|||')
+        if v != '|||'
           sanitized_values[i] = full_sanitizer.sanitize(v)
         end
       end
@@ -188,14 +189,14 @@ module CsuMetadata
     def creator_institution
       return [] if super.nil?
 
-      return OrderedStringHelper.deserialize(super)
+      OrderedStringHelper.deserialize(super)
     end
 
     def creator_institution= values
       full_sanitizer = Rails::Html::FullSanitizer.new
       sanitized_values = Array.new(values.size, '')
       values.each_with_index do |v, i|
-        if (v != '|||')
+        if v != '|||'
           sanitized_values[i] = full_sanitizer.sanitize(v)
         end
       end

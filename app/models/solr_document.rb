@@ -33,10 +33,6 @@ class SolrDocument
     self[Solrizer.solr_name('abstract')]
   end
 
-  def alternative_title
-    self[Solrizer.solr_name('alternative_title')]
-  end
-
   def advisor
     self[Solrizer.solr_name('advisor')]
   end
@@ -59,6 +55,18 @@ class SolrDocument
 
   def committee_member
     self[Solrizer.solr_name('committee_member')]
+  end
+
+  def creator_email
+    self[Solrizer.solr_name('creator_email')]
+  end
+
+  def creator_orcid
+    self[Solrizer.solr_name('creator_orcid')]
+  end
+
+  def creator_institution
+    self[Solrizer.solr_name('creator_institution')]
   end
 
   def date_accessioned
@@ -171,18 +179,6 @@ class SolrDocument
 
   def rights_holder
     self[Solrizer.solr_name('rights_holder')]
-  end
-
-  def creator_email
-      self[Solrizer.solr_name('creator_email')]
-  end
-
-  def creator_orcid 
-      self[Solrizer.solr_name('creator_orcid')]
-  end
-
-  def creator_institution
-    self[Solrizer.solr_name('creator_institution')]
   end
 
   def rights_note
