@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
-require 'calstate/metadata'
+require 'calstate/metadata/csv'
 
 # Usage:
-# bundle exec rake calstate:metadata_import[sonoma]
+# bundle exec rake calstate:metadata_import[eastbay,thesis]
 
 namespace :calstate do
   desc 'Import metadata csv for a campus'
-  task :metadata_import, %i[file] => [:environment] do |_t, args|
-    csv_file = args[:file] or raise 'No import file provided.'
-    CalState::Metadata::Csv::Updater.new.update_records(csv_file)
+  task :metadata_import, %i[campus file model run] => [:environment] do |_t, args|
+    campus = args[:campus] or raise 'No campus specified.'
+    model = args[:model] ||= 'thesis'
+
+    file = "/home/ec2-user/data/import/transactions/#{campus}_#{model}.xml"
+    updater = CalState::Metadata::Csv::Updater.new(file)
+    updater.run
+    updater.archive_file
   end
 end
