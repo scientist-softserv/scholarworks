@@ -206,6 +206,14 @@
       return;
     }
 
+    if (typeof invalid_date_issued === 'function') {
+        if (invalid_date_issued()) {
+          event.preventDefault();
+          toggle_submit(true);
+          return;
+        }
+    }
+
     $('.creator_name').each(function () {
       if ($.trim($(this).val()) == '') {
         $('#creator_div' + $(this).prop('id').substring(12)).remove();
@@ -245,6 +253,22 @@
       if (institution.length) {
         institution.val(value);
       }
+    })
+    $('.date_issued_div').each(function () {
+       let index = $(this).prop('id').substring($(this).prop('id').lastIndexOf('_') + 1);
+       let date_issued_str = $('#date_issued_year_' + index).val();
+       let month = $('#date_issued_month_' + index).val();
+       let day = $('#date_issued_day_' + index).val();
+       if (month != '' && day != '') {
+           if (Number(month) < 10) {
+               month = '0' + month;
+           }
+           if (Number(day) < 10) {
+               day = '0' + day;
+           }
+           date_issued_str = date_issued_str + '-' + month + '-' + day;
+       }
+       $('#date_issued_' + index).val(date_issued_str);
     })
   }
 
