@@ -68,12 +68,16 @@ module CalState
       #
       # otherwise the folders are named with the title of the work (weird)
       #
-      def rename_folders
-        Dir.each_child(@input_dir) do |file|
+      # @param folder [String]  [optional] the folder containing the works
+      #                         will use config input_dir if left nil
+      #
+      def rename_folders(folder = nil)
+        folder = @input_dir if folder.nil?
+        Dir.each_child(folder) do |file|
           m = file.match(/\(islandora:([0-9]*)\)/)
           unless m.nil?
-            FileUtils.mv(@input_dir + '/' + file,
-                         @input_dir + '/' + 'islandora_' + m[1])
+            FileUtils.mv(folder + '/' + file,
+                         folder + '/' + 'islandora_' + m[1])
           end
         end
       end

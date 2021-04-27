@@ -1,5 +1,6 @@
 
 # test server
+
 nv9353847: # northridge
   visibility: open
   visibility_during_embargo: restricted
@@ -16,3 +17,14 @@ jw827c041: # east bay
 
 # production
 
+cr56n096b: # east bay
+  visibility: open
+  visibility_during_embargo: restricted
+  visibility_after_embargo: open
+  default_type: Masters Thesis
+
+3b5918567: # pomona
+  visibility: open
+  visibility_during_embargo: restricted
+  visibility_after_embargo: open
+  default_type: Masters Thesis
