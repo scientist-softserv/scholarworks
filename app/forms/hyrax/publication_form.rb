@@ -7,7 +7,7 @@ module Hyrax
       :publication_status, :editor, :description, :handle, :college, :department,
       :bibliographic_citation, :extent, :geographical_area, :time_period, :date_copyright,
       :rights_note, :rights_uri, :rights_holder, :doi, :oclcno, :issn, :isbn, :identifier_uri,
-      :description_note, :creator_email, :creator_orcid, :creator_institution]
+      :description_note, :creator_email, :creator_orcid, :creator_institution, :discipline]
 
     self.terms -= [:contributor, :date_created, :license, :based_near, :source, :handle,
       :keyword, :extent]
@@ -24,7 +24,7 @@ module Hyrax
 
     def secondary_terms
       [:alternative_title, :date_copyright, :editor, :publisher, :sponsor, :publication_status,
-       :subject, :language, :rights_statement, :rights_holder, :rights_uri, :rights_note,
+       :discipline, :subject, :language, :rights_statement, :rights_holder, :rights_uri, :rights_note,
        :doi, :isbn, :issn, :oclcno, :identifier, :identifier_uri, :related_url,
        :bibliographic_citation, :description_note]
     end

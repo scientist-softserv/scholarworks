@@ -38,7 +38,8 @@ module CalState
                :rights_uri,
                :sponsor,
                :statement_of_responsibility,
-               :time_period, to: :solr_document
+               :time_period,
+               :discipline, to: :solr_document
     end
   end
 end

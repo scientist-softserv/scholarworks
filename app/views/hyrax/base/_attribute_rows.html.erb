@@ -23,6 +23,7 @@
 <%= presenter.attribute_to_html(:degree_name, html_dl: true) %>
 
 <!-- subjects -->
+<%= presenter.attribute_to_html(:discipline, render_as: :discipline, html_dl: true) %>
 <%= presenter.attribute_to_html(:subject, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:keyword, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:geographical_area, html_dl: true) %>

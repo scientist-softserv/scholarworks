@@ -1,5 +1,5 @@
 <style>
-  .creator {
+  .flex_center {
     display: flex;
     align-items: center;
   }
@@ -16,13 +16,13 @@
     flex: 0 0 70%;
     max-width: 70%;
   }
-  .creator_divider {
+  .divider {
     margin: 0 auto 10px auto;
     height: 1px;
     max-width: 50%;
     background-image: radial-gradient(#e4ebef,gray);
   }
-  .creator_row {
+  .small_margin_left {
     margin-left: 1px;
   }
   .warning_message {
@@ -113,42 +113,10 @@
     $('#with_files_submit').attr('disabled', disabled);
   }
 
-  function creator_remove() {
-    let id = $(this).prop('id');
-    if (creator_cnt > 1) {
-      let removing_creator = $('#creator_div' + id);
-      if (removing_creator.length) {
-        removing_creator.remove();
-        creator_cnt--;
-        console.log('removing the item creator_cnt ' + creator_cnt);
-        if (creator_cnt == 1) {
-          $('.creator_remove').addClass('d_none').attr('aria-hidden', 'true');
-          $('.creator_divider').remove();
-        }
-        else {
-          if ($('#creator_divider' + id).length) {
-            $('#creator_divider' + id).remove();
-          }
-        }
-        $('#creator_warning').addClass('d_none').attr('aria-hidden', 'true');
-      }
-
-    }
-    toggle_submit(invalid_creator());
-  }
-
-  function creator_add() {
-    $('#creator_warning').addClass('d_none').attr('aria-hidden', 'true');
-
-    if (any_empty_creator()) {
-      $('#creator_warning').removeClass('d_none').attr('aria-hidden', 'false');
-    }
-    else {
-      $('.creator_remove').removeClass('d_none').attr('aria-hidden', 'false');
-      $('#creator_divs')
-        .append(
-          "<div id='creator_divider" + cur_creator_num + "' class='row creator_divider'><div class='creator_divider'></div></div>" +
-          "<div id='creator_div" + cur_creator_num + "' class='row creator'>" +
+  function generate_creator() {
+      let elem =
+          "<div id='creator_divider" + cur_creator_num + "' class='row divider creator_divider'></div>" +
+          "<div id='creator" + cur_creator_num + "' class='row creator flex_center'>" +
           "  <div class='col-xs-6'>" +
           "    <div class='label_input_div'>" +
           "      <label for='creator_name" + cur_creator_num + "' class='label_field'>" +
@@ -181,21 +149,109 @@
           "    </div>" +
           "  </div>" +
           "  <div class='col-sm'>" +
-          "    <span class='input-group-btn field-controls'>" +
-          "    <button id='" + cur_creator_num + "' type='button' class='btn btn-link remove creator_remove' aria-hidden='false'>" +
+          "    <button class='btn btn-link remove element_remove creator_remove' aria-hidden='true' " +
+          "            type='button' data-element-class='creator' data-element-num='" + cur_creator_num + "'>" +
           "      <span class='glyphicon glyphicon-remove'></span>" +
           "      <span class='controls-remove-text'>Remove</span>" +
           "      <span class='sr-only'>creator</span>" +
           "    </button>" +
           "  </div>" +
-          "</div>");
-      $('.creator_remove').on('click', creator_remove);
+          "</div>";
+      return elem;
+  }
+
+  function post_add_creator() {
       $('.creator_name').on('change', creator_name_change);
       $('.creator_orcid').on('focusout', invalid_orcid);    // comment this to test server ORCID validation
       creator_cnt++;
       cur_creator_num++;
-      console.log('in add creator_cnt ' + creator_cnt);
-    }
+      //console.log('in post_add_creator creator_cnt ' + creator_cnt);
+  }
+
+  // function to execute after remove to do any adjustment not just the count
+  function post_remove_creator() {
+      creator_cnt--;
+      toggle_submit(invalid_creator());
+  }
+
+  function element_add() {
+      let elem_class = $(this).data('element-class');
+      //console.log('elem_add class ' + elem_class);
+
+      // let's turn off the warning message first
+      $('#' + elem_class + '_warning').addClass('d_none').attr('aria-hidden', 'true');
+
+      let any_empty_element = false;
+      try {
+          any_empty_element = eval('any_empty_' + elem_class + '()');
+      }
+      catch(err) {
+          console.log('error eval any empty func');
+      }
+
+      if (any_empty_element) {
+          // turn on warning message when we already have empty field
+          $('#' + elem_class + '_warning').removeClass('d_none').attr('aria-hidden', 'false');
+      }
+      else {
+          $('.' + elem_class + '_remove').removeClass('d_none').attr('aria-hidden', 'false');
+          let elem_parent =  $('#' + elem_class + '_divs');
+          let new_elem = null;
+          try {
+              new_elem = eval('generate_' + elem_class + '()');
+          }
+          catch(err) {
+              console.log('fail to find func');
+          }
+          if (elem_parent.length && new_elem != null) {
+              elem_parent.append(new_elem);
+              $('.element_remove').on('click', element_remove);
+              try {
+                  eval('post_add_' + elem_class + '()');
+              }
+              catch(err) {
+                  console.log('fail to find post add');
+              }
+          }
+      }
+  }
+
+  function element_remove() {
+      let elem_class = $(this).data('element-class');
+      let elem_num = $(this).data('element-num');
+      //console.log('element_remove class ' + elem_class + ' num ' + elem_num);
+
+      let elem_cnt = null;
+      try {
+          elem_cnt = eval(elem_class + '_cnt');
+          //console.log('element_remove elem_cnt ' + elem_cnt);
+          if (elem_cnt > 1) {
+              let removing_elem = $('#' + elem_class + elem_num);
+              if (removing_elem.length) {
+                  removing_elem.remove();
+                  try {
+                      eval('post_remove_' + elem_class + '()');
+                  } catch (err) {
+                      console.log('failed to call decrement count');
+                  }
+                  elem_cnt = eval(elem_class + '_cnt');
+                  //console.log('element_remove elem_cnt after decrement ' + elem_cnt);
+                  if (elem_cnt == 1) {
+                      $('.' + elem_class + '_divider').remove();
+                      $('.' + elem_class + '_remove').addClass('d_none').attr('aria-hidden', 'true');
+                  }
+                  else {
+                      if ($('#' + elem_class + '_divider' + elem_num).length) {
+                          $('#' + elem_class + '_divider' + elem_num).remove();
+                      }
+                  }
+                  $('#' + elem_class + '_warning').addClass('d_none').attr('aria-hidden', 'true');
+              }
+          }
+      }
+      catch(err) {
+          console.log('fail to eval elem count');
+      }
   }
 
   function save_handler(event) {
@@ -224,7 +280,7 @@
     $('.creator_email').each(function () {
       let value = $.trim($(this).val());
       if (value == '') {
-        console.log('found an empty ' + $(this).prop('id'));
+        //console.log('found an empty ' + $(this).prop('id'));
         value = '|||';
       }
       let email = $('#creator_email' + $(this).prop('id').substring(17));
@@ -235,7 +291,7 @@
     $('.creator_orcid').each(function (i) {
       let value = $.trim($(this).val());
       if (value == '') {
-        console.log('found an empty ' + $(this).prop('id'));
+        //console.log('found an empty ' + $(this).prop('id'));
         value = '|||';
       }
       let orcid = $('#creator_orcid' + $(this).prop('id').substring(17));
@@ -246,7 +302,7 @@
     $('.creator_institution').each(function (i) {
       let value = $.trim($(this).val());
       if (value == '') {
-        console.log('found an empty ' + $(this).prop('id'));
+        //console.log('found an empty ' + $(this).prop('id'));
         value = '|||';
       }
       let institution = $('#creator_institution' + $(this).prop('id').substring(23));
@@ -270,6 +326,20 @@
        }
        $('#date_issued_' + index).val(date_issued_str);
     })
+
+    $('.discipline_hidden').each(function () {
+        let discipline_val = '';
+        let list = $(this).nextAll();
+        if (list !== undefined) {
+            let div_select = $(list[list.length - 1]).last();
+            discipline_val = div_select.find('select').val();
+            if (discipline_val == '' && list.length > 1) {
+                discipline_val = $(list[list.length - 2]).find('select').val();
+            }
+        }
+        $(this).val(discipline_val);
+    });
+
   }
 
   function creator_name_change() {
@@ -287,11 +357,11 @@
       $('.creator_remove').addClass('d_none').attr('aria-hidden', 'true');
     }
 
-    // register remove creator handler
-    $('.creator_remove').on('click', creator_remove);
-
-    // register add creator handler
-    $('#creator_add_btn').on('click', creator_add);
+    /* no need to add event handler here since we are going to do it in discipline
+      otherwise it will invoke handler twice per click
+    $('.element_add').on('click', element_add);
+    $('.element_remove').on('click', element_remove);
+     */
 
     // comment this to test server ORCID validation
     $('.creator_orcid').on('focusout', invalid_orcid);
@@ -330,10 +400,10 @@
     <% f.object.creator.each_with_index do |creator_name, index| %>
       <% if index > 0 %>
         <% divider_id = "creator_divider#{index}" %>
-        <div id=<%= divider_id %> class="row creator_divider"><div class="creator_divider"></div></div>
+        <div id=<%= divider_id %> class="row divider creator_divider"></div>
       <% end %>
-      <% div_id = "creator_div#{index}" %>
-      <div id=<%= div_id %> class="row creator">
+      <% div_id = "creator#{index}" %>
+      <div id=<%= div_id %> class="row creator flex_center">
         <div class="col-xs-6">
           <div class="label_input_div">
             <label for=<%= "creator_name#{index}" %> class="label_field">
@@ -390,24 +460,22 @@
           </div>
         </div>
         <div class="col-sm">
-          <span class="input-group-btn field-controls">
-            <button id=<%= index %> type="button" class="btn btn-link remove creator_remove" data-element-id=<%= index %> aria-hidden="false">
+            <button class="btn btn-link remove element_remove creator_remove" aria-hidden="true" type="button" data-element-class="creator" data-element-num=<%= "#{index}" %>>
               <span class="glyphicon glyphicon-remove"></span>
               <span class="controls-remove-text">Remove</span>
               <span class="sr-only">creator <%=creator_name%> </span>
             </button>
-          </span>
         </div>
 
       </div>
     <% end %>
   </div>
   <div class="form-group multi_value">
-    <div id="creator_warning" class="row creator_row message has-warning warning_message d_none" aria-hidden="true">
+    <div id="creator_warning" class="row small_margin_left message has-warning warning_message d_none" aria-hidden="true">
       cannot add another with empty field
     </div>
-    <div id="creator_add_div" class="row creator_row">
-      <button id="creator_add_btn" type="button" class="btn btn-link add">
+    <div class="small_margin_left">
+      <button type="button" class="btn btn-link add element_add" data-element-class="creator">
         <span class="glyphicon glyphicon-plus"></span>
         <span class="controls-add-text">Add another Creator</span>
       </button>

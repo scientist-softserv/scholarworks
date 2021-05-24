@@ -149,6 +149,9 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
+    property :discipline, predicate: ::RDF::Vocab::DC.subject, multiple: true do |index|
+      index.as :stored_searchable, :facetable
+    end
 
     validates_with CreatorOrcidValidator
 
@@ -162,9 +165,7 @@ module CsuMetadata
       full_sanitizer = Rails::Html::FullSanitizer.new
       sanitized_values = Array.new(values.size, '')
       values.each_with_index do |v, i|
-        if v != '|||'
-          sanitized_values[i] = full_sanitizer.sanitize(v)
-        end
+          sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
       end
       super OrderedStringHelper.serialize(sanitized_values)
     end
@@ -179,9 +180,7 @@ module CsuMetadata
       full_sanitizer = Rails::Html::FullSanitizer.new
       sanitized_values = Array.new(values.size, '')
       values.each_with_index do |v, i|
-        if v != '|||'
-          sanitized_values[i] = full_sanitizer.sanitize(v)
-        end
+          sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
       end
       super OrderedStringHelper.serialize(sanitized_values)
     end
@@ -196,11 +195,19 @@ module CsuMetadata
       full_sanitizer = Rails::Html::FullSanitizer.new
       sanitized_values = Array.new(values.size, '')
       values.each_with_index do |v, i|
-        if v != '|||'
-          sanitized_values[i] = full_sanitizer.sanitize(v)
-        end
+          sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
       end
       super OrderedStringHelper.serialize(sanitized_values)
+    end
+
+    def discipline= values
+      saved_values = []
+      values.each do |v|
+        next if DisciplineService::DISCIPLINES[v].nil?
+
+        saved_values << v
+      end
+      super saved_values
     end
 
   end

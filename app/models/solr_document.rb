@@ -201,6 +201,10 @@ class SolrDocument
     self[Solrizer.solr_name('time_period')]
   end
 
+  def discipline
+    self[Solrizer.solr_name('discipline')]
+  end
+
   # blacklight_oai_provider mapping
   field_semantics.merge!(
     contributor: %w[contributor_tesim advisor_tesim committee_member_tesim
