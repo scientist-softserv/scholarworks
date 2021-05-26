@@ -156,48 +156,27 @@ module CsuMetadata
     validates_with CreatorOrcidValidator
 
     def creator_email
-      return [] if super.nil?
-
       OrderedStringHelper.deserialize(super)
     end
 
     def creator_email= values
-      full_sanitizer = Rails::Html::FullSanitizer.new
-      sanitized_values = Array.new(values.size, '')
-      values.each_with_index do |v, i|
-          sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
-      end
-      super OrderedStringHelper.serialize(sanitized_values)
+      super sanitize_n_serialize(values)
     end
 
     def creator_orcid
-      return [] if super.nil?
-
       OrderedStringHelper.deserialize(super)
     end
 
     def creator_orcid= values
-      full_sanitizer = Rails::Html::FullSanitizer.new
-      sanitized_values = Array.new(values.size, '')
-      values.each_with_index do |v, i|
-          sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
-      end
-      super OrderedStringHelper.serialize(sanitized_values)
+      super sanitize_n_serialize(values)
     end
 
     def creator_institution
-      return [] if super.nil?
-
       OrderedStringHelper.deserialize(super)
     end
 
     def creator_institution= values
-      full_sanitizer = Rails::Html::FullSanitizer.new
-      sanitized_values = Array.new(values.size, '')
-      values.each_with_index do |v, i|
-          sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
-      end
-      super OrderedStringHelper.serialize(sanitized_values)
+      super sanitize_n_serialize(values)
     end
 
     def discipline= values
@@ -230,6 +209,15 @@ module CsuMetadata
     raise 'No admin set defined for this item.' if admin_set&.title&.first.nil?
 
     assign_campus(admin_set.title.first.to_s)
+  end
+
+  def sanitize_n_serialize(values)
+    full_sanitizer = Rails::Html::FullSanitizer.new
+    sanitized_values = Array.new(values.size, '')
+    values.each_with_index do |v, i|
+      sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
+    end
+    OrderedStringHelper.serialize(sanitized_values)
   end
 
 end
