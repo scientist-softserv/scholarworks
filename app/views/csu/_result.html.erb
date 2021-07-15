@@ -13,7 +13,7 @@
   <% end %>
 </div>
 <div class="csu-document-creator">
-  <%= document.creator.first if document.creator.presence %>
+  <%= document.creator_name.first if document.creator_name.presence %>
 </div>
 <div class="csu-document-description">
   <% if document.description.presence %>

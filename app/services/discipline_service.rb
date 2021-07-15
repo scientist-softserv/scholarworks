@@ -39,12 +39,12 @@ module DisciplineService
 
   DISCIPLINES = {
       # Architecture tree
-      "1" => Discipline.new("Architecture", %w[21 22 23 24 1001 26 27 28 29 30 31], %w[]).freeze,
+      "1" => Discipline.new("Architecture", %w[21 22 23 24 25 26 27 28 29 30 31], %w[]).freeze,
         "21" => Discipline.new("Architectural Engineering", %w[], %w[1]).freeze,
         "22" => Discipline.new("Architectural History and Criticism", %w[], %w[1]).freeze,
         "23" => Discipline.new("Architectural Technology", %w[], %w[1]).freeze,
         "24" => Discipline.new("Construction Engineering", %w[], %w[1]).freeze,
-        "1001" => Discipline.new("Cultural Resource Management and Policy Analysis", %w[], %w[1]).freeze,
+        "25" => Discipline.new("Cultural Resource Management and Policy Analysis", %w[], %w[1]).freeze,
         "26" => Discipline.new("Environmental Design", %w[], %w[1]).freeze,
         "27" => Discipline.new("Historic Preservation and Conservation", %w[], %w[1]).freeze,
         "28" => Discipline.new("Interior Architecture", %w[], %w[1]).freeze,
@@ -647,7 +647,7 @@ module DisciplineService
         "573" => Discipline.new("Workers' Compensation Law", %w[], %w[6]).freeze,
         "574" => Discipline.new("Other Law", %w[], %w[6]).freeze,
       # Life Sciences tree
-      "7" => Discipline.new("Life Sciences", %w[700 706 715 721 722 723 725 726 732 739 740 746 751 757 764 771 772 773 781 789 796 802 809 821 822 823], %w[]).freeze,
+      "7" => Discipline.new("Life Sciences", %w[700 706 715 721 722 723 725 726 732 739 740 746 751 757 764 771 772 773 781 789 796 802 809 821 1409 823], %w[]).freeze,
         # Agriculture subtree
         "700" => Discipline.new("Agriculture", %w[701 702 703 704 705], %w[7]).freeze,
           "701" => Discipline.new("Agricultural Economics", %w[], %w[7 700]).freeze,
@@ -789,7 +789,7 @@ module DisciplineService
         # Research Methods in Life Sciences subtree
         "821" => Discipline.new("Research Methods in Life Sciences", %w[822], %w[7]).freeze,
           "822" => Discipline.new("Animal Experimentation and Research", %w[], %w[7 821]).freeze,
-        "822" => Discipline.new("Systems Biology", %w[], %w[7]).freeze,
+        "1409" => Discipline.new("Systems Biology", %w[], %w[7]).freeze,
         "823" => Discipline.new("Other Life Sciences", %w[], %w[7]).freeze,
       # Medicine and Health Sciences tree
       "8" => Discipline.new("Medicine and Health Sciences", %w[824 826 834 852 853 871 874 886 887 912 914 915 918 948 990 1001 1003 1082 1016 1025 1032 1039 1055 1067 1068 1069 1081], %w[7]).freeze,
@@ -999,12 +999,12 @@ module DisciplineService
           "1015" => Discipline.new("Other Nursing", %w[], %w[8 1003]).freeze,
         "1082" => Discipline.new("Optometry", %w[], %w[8]).freeze,
         # Organisms subtree
-        "1016" => Discipline.new("Organisms", %w[1017 1018 1019 1020 1021 1022 1023 1024], %w[8]).freeze,
+        "1016" => Discipline.new("Organisms", %w[1017 1018 1019 1020 1410 1022 1023 1024], %w[8]).freeze,
           "1017" => Discipline.new("Algae", %w[], %w[8 1016]).freeze,
           "1018" => Discipline.new("Animals", %w[], %w[8 1016]).freeze,
           "1019" => Discipline.new("Archaea", %w[], %w[8 1016]).freeze,
           "1020" => Discipline.new("Bacteria", %w[], %w[8 1016]).freeze,
-          "1021" => Discipline.new("Fungi", %w[], %w[8 1016]).freeze,
+          "1410" => Discipline.new("Fungi", %w[], %w[8 1016]).freeze,
           "1022" => Discipline.new("Mesomycetozoea", %w[], %w[8 1016]).freeze,
           "1023" => Discipline.new("Plants", %w[], %w[8 1016]).freeze,
           "1024" => Discipline.new("Viruses", %w[], %w[8 1016]).freeze,

@@ -95,6 +95,9 @@ module Blacklight::Solr
         f_request_params = blacklight_params[:f]
 
         f_request_params.each_pair do |facet_field, value_list|
+          # let tell solr to use *name_sim when user wants to look for sim of creator & contributor because of composite person
+          facet_field = 'creator_name_sim' if facet_field == 'creator_sim'
+          facet_field = 'contributor_name_sim' if facet_field == 'contributor_sim'
           Array(value_list).reject(&:blank?).each do |value|
             solr_parameters.append_filter_query facet_value_to_fq_string(facet_field, value)
           end

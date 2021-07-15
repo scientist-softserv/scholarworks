@@ -11,7 +11,7 @@
 
 <script type="text/javascript" charset="utf-8">
     var date_issued_cnt = 0;
-    var cur_issued_date_num = 0;
+    var cur_date_issued_num = 0;
     var date_issued_required = false;
     <% if f.object.required?(key) %>date_issued_required = true;<% end %>
 
@@ -53,7 +53,7 @@
         let date = new Date();
         let cur_year = date.getFullYear();
         let year_elem = $('#date_issued_year_' + index);
-        //console.log('initialize_date_issued index ' + index + ' date_str [' + date_str +']');
+        console.log('initialize_date_issued index ' + index + ' date_str [' + date_str +']');
 
         // generate the option year dynamically
         for (let y = 0; y < 20; y++) {
@@ -113,7 +113,7 @@
                 }
             }
         }
-        //console.log('index ' + index + ' date_str ' + date_str + ' input_year ' + input_year + ' input_month ' + input_month + ' input_day ' + input_day);
+        console.log('index ' + index + ' date_str ' + date_str + ' input_year ' + input_year + ' input_month ' + input_month + ' input_day ' + input_day);
 
         year_elem.val(input_year);
         $('#date_issued_month_' + index).val(input_month);
@@ -177,7 +177,7 @@
         $('#date_issued_divs')
             .append(
                 "<div id='date_issued_div_" + cur_date_issued_num + "' class='date_issued_div'>" +
-                "  <input type='hidden' name='<%= model_type %>[date_issued][]' id='<%= key %>_" + cur_date_issued_num + "' class='date_issued_date_hidden' />" +
+                "  <input type='hidden' name='<%= model_type %>[date_issued][]' id='<%= key %>_" + cur_date_issued_num + "' class='date_issued_date_hidden' value='' />" +
                 "  <label for='date_issued_year_" + cur_date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Year</label>" +
                 "  <select id='date_issued_year_" + cur_date_issued_num + "' class='date_issued date_issued_date date_issued_year' " +
                 "          onclick='adjust_date_issued_day(" + cur_date_issued_num + ")'></select>" +
@@ -202,9 +202,10 @@
     }
 
     $(function () {
+        console.log('date_issue ini');
         $('.date_issued_date_hidden').each(function () {
             date_issued_cnt++;
-
+            console.log('inside date_issued loop');
             let index = $(this).prop('id').substring($(this).prop('id').lastIndexOf('_') + 1);
             let date_str = $(this).val();
             initialize_date_issued(index, date_str);
@@ -243,7 +244,7 @@
           <span class="sr-only">date issued </span>
           Month
         </label>
-        <select id=<%= "date_issued_month_#{index}" %> onclick=<%= "adjust_date_issued_day(#{index})" %> class="date_issued date_issued_date date_issued_month"></select>
+        <select id=<%= "date_issued_month_#{index}" %> onchange=<%= "adjust_date_issued_day(#{index})" %> class="date_issued date_issued_date date_issued_month"></select>
         <label for=<%= "date_issued_day_#{index}" %> class="date_label">
           <span class="sr-only">date issued </span>
           Day

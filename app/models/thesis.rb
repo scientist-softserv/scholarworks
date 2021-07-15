@@ -16,11 +16,11 @@ class Thesis < ActiveFedora::Base
   self.human_readable_type = 'Student Work'
 
   property :advisor, predicate: ::RDF::Vocab::MARCRelators.ths do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   property :committee_member, predicate: ::RDF::Vocab::MARCRelators.ctb do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   property :degree_level, predicate: ::RDF::Vocab::DC.educationLevel, multiple: false do |index|
@@ -48,7 +48,23 @@ class Thesis < ActiveFedora::Base
   end
 
   def creator= values
-    super OrderedStringHelper.serialize(values)
+    super sanitize_n_serialize(values)
+  end
+
+  def advisor
+    OrderedStringHelper.deserialize(super)
+  end
+
+  def advisor= values
+    super sanitize_n_serialize(values)
+  end
+
+  def committee_member
+    OrderedStringHelper.deserialize(super)
+  end
+
+  def committee_member= values
+    super sanitize_n_serialize(values)
   end
 
   # this method is to combined all multivalues of this field into a single one for the front end

@@ -10,164 +10,161 @@
 <% model_type = f.object.model.class.to_s.underscore %>
 
 <script type="text/javascript" charset="utf-8">
-    var DISCIPLINES = {};
-    var discipline_cnt = 0;
-    var cur_discipline_num = 0;
+  var DISCIPLINES = {};
+  var discipline_cnt = 0;
+  var cur_discipline_num = 0;
 
-    function any_empty_discipline() {
-        let ret_val = false;
-        $('.discipline_div').each(function () {
-            if ($(this).find('.discipline').val() == '') {
-                ret_val = true;
-                return false;
-            }
-        });
-        return ret_val;
-    }
-
-    function post_add_discipline() {
-        discipline_cnt++;
-        cur_discipline_num++;
-        //console.log('in post_add_discipline discipline_cnt ' + discipline_cnt + ' cur_discipline_num ' + cur_discipline_num);
-        $('.discipline').on('change', discipline_change);
-    }
-
-    function post_remove_discipline() {
-        discipline_cnt--;
-        //console.log('in decrement_discipline discipline_cnt ' + discipline_cnt + ' cur_discipline_num ' + cur_discipline_num);
-    }
-
-    function generate_discipline() {
-        return "<div id='discipline_divider" + cur_discipline_num + "' class='row divider discipline_divider'></div>" +
-            "<div id='discipline" + cur_discipline_num + "' class='row flex_center margin_bottom_10 discipline_div'>" +
-            "  <div class='col-xs-10'>" +
-            "    <input name='<%= model_type %>[<%= key %>][]' id='<%= key %>_" + cur_discipline_num + "_hidden' class='discipline_hidden' type='hidden' value='' />" +
-            "    <div class='margin_bottom_5'>" +
-            "      <select value='' class='form-control discipline'>" +
-            $('#discipline_divs select.discipline').html() + // get top level discipline options from first select element
-            "      </select>" +
-            "    </div>" +
-            "  </div>" +
-            "  <div class='col-xs'>" +
-            "    <button class='btn btn-link remove element_remove discipline_remove' aria-hidden='true' " +
-            "            type='button' data-element-class='discipline' data-element-num='" + cur_discipline_num + "'>" +
-            "      <span class='glyphicon glyphicon-remove'></span>" +
-            "      <span class='controls-remove-text'>Remove</span>" +
-            "      <span class='sr-only'>discipline</span>" +
-            "    </button>" +
-            "  </div>" +
-            "</div>";
-    }
-
-    function generate_discipline_children(discipline_id, select_id) {
-        let html = null;
-        let discipline = DISCIPLINES[discipline_id];
-        //console.log('inside generate_discipline_children discipline ' + discipline.id + ' children ' + discipline.children + 'children size ' + discipline.children.length);
-        if (discipline !== undefined) {
-            let discpline_children = discipline.children;
-            for (let i = 0; i < discpline_children.length; i++) {
-                let child = DISCIPLINES[discpline_children[i]];
-                if (child != undefined) {
-                    if (select_id != null && select_id == discpline_children[i]) {
-                        html += "<option selected value='" + discpline_children[i] + "'>" + child.name + "</option>";
-                    }
-                    else {
-                        html += "<option value='" + discpline_children[i] + "'>" +child.name + "</option>";
-                    }
-                }
-            }
-            if (html != null) {
-                html = "<div class='margin_bottom_5'><select class='form-control discipline'>" +
-                  "<option value=''>Select...</option>" + html + "</select></div>";
-            }
-        }
-
-        //console.log('generate_discipline_children ' + html);
-        return html;
-    }
-
-    function discipline_change() {
-        //console.log('disciplineChange ' + $(this).val());
-        let cat_id = $(this).val();
-        //console.log('discipline_change cat_id ' + cat_id);
-        let siblings = $(this).parent().nextAll();
-        //console.log('siblings text  ' + siblings.text());
-        //console.log('siblings html  ' + siblings.html());
-
-        if (siblings !== undefined) {
-            siblings.remove();
-        }
-
-        console.log('discipline_change cat_id [' + cat_id + ']');
-        if (cat_id == '') return;
-
-        $('#discipline_warning').addClass('d_none').attr('aria-hidden', 'true');
-        let children = generate_discipline_children(cat_id, null);
-        console.log('discipline_change children ' + children);
-        if (children != null) {
-            $(this).parent().parent().append(children);
-            $('.discipline').on('change', discipline_change);
-        }
-
-    }
-
-    $(function () {
-        DISCIPLINES = <%= raw(DisciplineService::DISCIPLINES.to_json) %>;
-
-        $('.discipline_hidden').each(function () {
-            let disc_id = $(this).val();
-            let disc = DISCIPLINES[disc_id];
-            if (disc == undefined) {
-                $(this).parent().find('select').val('');
-            }
-            else {
-                let ancestor = disc.ancestor;
-                let div_elem = $(this).parent();
-                discipline_cnt++;
-                //console.log(' ancestor length ' + ancestor.length);
-                if (ancestor.length == 0) {
-                    // top level
-                    div_elem.find('select').val(disc_id);
-                }
-                else {
-                    div_elem.find('select').val(ancestor[0]);
-                    let parent_id;
-                    let child;
-                    for (let i = 1; i <= ancestor.length; i++) {
-                        //console.log('init ancestor ' + ancestor[i]);
-                        parent_id = ancestor[i - 1];
-                        if (i == ancestor.length) {
-                            child = disc_id;
-                        }
-                        else {
-                            child = ancestor[i];
-                        }
-                        let children = generate_discipline_children(parent_id, child);
-                        //console.log('init children ' + children);
-                        if (children != null) {
-                            //console.log('appending');
-                            div_elem.append(children);
-                        }
-                    }
-                }
-                // now generate the child for the disc_id
-                let children = generate_discipline_children(disc_id, null);
-                if (children != null) {
-                    div_elem.append(children);
-                }
-            }
-        });
-        cur_discipline_num = discipline_cnt;
-        if (discipline_cnt == 1) {
-            $('.discipline_remove').addClass('d_none').attr('aria-hidden', 'true');
-        }
-
-        $('.discipline').on('change', discipline_change);
-
-        // register add and remove handler for all element that have these classes
-        $('.element_add').on('click', element_add);
-        $('.element_remove').on('click', element_remove);
+  function any_empty_discipline(element_type) {
+    let ret_val = false;
+    $('.discipline_div').each(function () {
+      if ($(this).find('.discipline').val() == '') {
+        ret_val = true;
+        return false;
+      }
     });
+    return ret_val;
+  }
+
+  function post_add_discipline() {
+   console.log('in post_add_discipline discipline_cnt ' + window['discipline_cnt'] + ' cur_discipline_num ' + window['cur_discipline_num']);
+   $('.discipline').on('change', discipline_change);
+  }
+
+  function generate_discipline() {
+    let cur_disc_num = window['cur_discipline_num'];
+    return "<div id='discipline_divider" + cur_disc_num + "' class='row divider discipline_divider'></div>" +
+           "<div id='discipline" + cur_disc_num + "' class='row flex_center margin_bottom_10 discipline_div'>" +
+           "  <div class='col-xs-10'>" +
+           "    <input name='<%= model_type %>[<%= key %>][]' id='<%= key %>_" + cur_disc_num + "_hidden' class='discipline_hidden' type='hidden' value='' />" +
+           "    <div class='margin_bottom_5'>" +
+           "      <select value='' class='form-control discipline'>" +
+           $('#discipline_divs select.discipline').html() + // get top level discipline options from first select element
+           "      </select>" +
+           "    </div>" +
+           "  </div>" +
+           "  <div class='col-xs'>" +
+           "    <button class='btn btn-link remove element_remove discipline_remove' aria-hidden='true' " +
+           "            type='button' data-element-class='discipline' data-element-num='" + cur_disc_num + "'>" +
+           "      <span class='glyphicon glyphicon-remove'></span>" +
+           "      <span class='controls-remove-text'>Remove</span>" +
+           "      <span class='sr-only'>discipline</span>" +
+           "    </button>" +
+           "  </div>" +
+           "</div>";
+  }
+
+  function generate_discipline_children(discipline_id, select_id) {
+    let html = null;
+    let discipline = DISCIPLINES[discipline_id];
+    //console.log('inside generate_discipline_children discipline ' + discipline.id + ' children ' + discipline.children + 'children size ' + discipline.children.length);
+    if (discipline !== undefined) {
+      let discpline_children = discipline.children;
+      for (let i = 0; i < discpline_children.length; i++) {
+        let child = DISCIPLINES[discpline_children[i]];
+        if (child != undefined) {
+          if (select_id != null && select_id == discpline_children[i]) {
+            html += "<option selected value='" + discpline_children[i] + "'>" + child.name + "</option>";
+          }
+          else {
+            html += "<option value='" + discpline_children[i] + "'>" +child.name + "</option>";
+          }
+        }
+      }
+      if (html != null) {
+        html = "<div class='margin_bottom_5'><select class='form-control discipline'>" +
+               "<option value=''>Select...</option>" + html + "</select></div>";
+      }
+    }
+
+    //console.log('generate_discipline_children ' + html);
+    return html;
+  }
+
+  function discipline_change() {
+    //console.log('disciplineChange ' + $(this).val());
+    let cat_id = $(this).val();
+    //console.log('discipline_change cat_id ' + cat_id);
+    let siblings = $(this).parent().nextAll();
+    //console.log('siblings text  ' + siblings.text());
+    //console.log('siblings html  ' + siblings.html());
+
+    if (siblings !== undefined) {
+      siblings.remove();
+    }
+
+    //console.log('discipline_change cat_id [' + cat_id + ']');
+    if (cat_id == '') return;
+
+    $('#discipline_warning').addClass('d_none').attr('aria-hidden', 'true');
+    let children = generate_discipline_children(cat_id, null);
+    //console.log('discipline_change children ' + children);
+    if (children != null) {
+      $(this).parent().parent().append(children);
+      $('.discipline').on('change', discipline_change);
+    }
+  }
+
+  $(function () {
+    DISCIPLINES = <%= raw(DisciplineService::DISCIPLINES.to_json) %>;
+
+    $('.discipline_hidden').each(function () {
+       let disc_id = $(this).val();
+       let disc = DISCIPLINES[disc_id];
+       discipline_cnt++;
+       if (disc == undefined) {
+         $(this).parent().find('select').val('');
+       }
+       else {
+         let ancestor = disc.ancestor;
+         let div_elem = $(this).parent();
+         //console.log(' ancestor length ' + ancestor.length);
+         if (ancestor.length == 0) {
+           // top level
+           div_elem.find('select').val(disc_id);
+         }
+         else {
+           div_elem.find('select').val(ancestor[0]);
+           let parent_id;
+           let child;
+           for (let i = 1; i <= ancestor.length; i++) {
+             //console.log('init ancestor ' + ancestor[i]);
+             parent_id = ancestor[i - 1];
+             if (i == ancestor.length) {
+               child = disc_id;
+             }
+             else {
+               child = ancestor[i];
+             }
+             let children = generate_discipline_children(parent_id, child);
+             //console.log('init children ' + children);
+             if (children != null) {
+               //console.log('appending');
+               div_elem.append(children);
+             }
+           }
+         }
+         // now generate the child for the disc_id
+         let children = generate_discipline_children(disc_id, null);
+         if (children != null) {
+           div_elem.append(children);
+         }
+       }
+     });
+
+     cur_discipline_num = discipline_cnt;
+     console.log('after discipline init cur_discipline_num ' + cur_discipline_num + ' discipline_cnt ' + discipline_cnt);
+     if (discipline_cnt <= 1) {
+       $('.discipline_remove').addClass('d_none').attr('aria-hidden', 'true');
+     }
+
+     $('.discipline').on('change', discipline_change);
+
+     // register add and remove handler for all element that have these classes
+     //console.log('registering element_add');
+     $('.element_add').on('click', element_add);
+     //console.log('registering add_remove');
+     $('.element_remove').on('click', element_remove);
+  });
 
 </script>
 

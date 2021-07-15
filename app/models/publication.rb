@@ -35,11 +35,20 @@ class Publication < ActiveFedora::Base
   include ::Hyrax::BasicMetadata
 
   def creator
+    Rails.logger.warn "inside creator getter"
     OrderedStringHelper.deserialize(super)
   end
 
   def creator= values
-    super OrderedStringHelper.serialize(values)
+    super sanitize_n_serialize(values)
+  end
+
+  def editor
+    OrderedStringHelper.deserialize(super)
+  end
+
+  def editor= values
+    super sanitize_n_serialize(values)
   end
 
   # this method is to combined all multivalues of this field into a single one for the front end

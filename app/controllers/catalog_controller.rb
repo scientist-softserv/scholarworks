@@ -35,7 +35,7 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       qt: 'search',
       rows: 10,
-      qf: 'title_tesim description_tesim creator_tesim keyword_tesim'
+      qf: 'title_tesim description_tesim creator_name_tesim keyword_tesim'
     }
 
     # solr field configuration for document/show views
@@ -174,7 +174,8 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('creator') do |field|
-      solr_name = solr_name('creator', :stored_searchable)
+      solr_name = solr_name('creator_name', :stored_searchable)
+      Rails.logger.warn "CatalogController:add_search_field creator solr_name #{solr_name}"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -345,15 +346,6 @@ class CatalogController < ApplicationController
 
     config.add_search_field('handle') do |field|
       solr_name = solr_name('handle', :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
-
-    # allow advanced search like catalog?search_field=creator_orcid&q=0000-0002-4201-9880
-    config.add_search_field('creator_orcid') do |field|
-      solr_name = solr_name('creator_orcid', :stored_searchable)
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name

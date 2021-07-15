@@ -57,18 +57,6 @@ class SolrDocument
     self[Solrizer.solr_name('committee_member')]
   end
 
-  def creator_email
-    self[Solrizer.solr_name('creator_email')]
-  end
-
-  def creator_orcid
-    self[Solrizer.solr_name('creator_orcid')]
-  end
-
-  def creator_institution
-    self[Solrizer.solr_name('creator_institution')]
-  end
-
   def date_accessioned
     self[Solrizer.solr_name('date_accessioned')]
   end
@@ -205,6 +193,10 @@ class SolrDocument
     self[Solrizer.solr_name('discipline')]
   end
 
+  def creator_name
+    self['creator_name_tesim']
+  end
+
   # blacklight_oai_provider mapping
   field_semantics.merge!(
     contributor: %w[contributor_tesim advisor_tesim committee_member_tesim
@@ -229,4 +221,5 @@ class SolrDocument
     type: %w[resource_type_tesim],
     campus: %w[campus_tesim]
   )
+
 end

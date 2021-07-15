@@ -8,7 +8,7 @@ module Hyrax
       :alternative_title, :publisher, :time_period, :geographical_area,
       :identifier, :granting_institution, :rights_note, :rights_uri,
       :rights_holder, :doi, :oclcno, :issn, :isbn, :identifier_uri,
-      :bibliographic_citation, :description_note, :creator_email, :creator_orcid, :creator_institution, :discipline]
+      :bibliographic_citation, :description_note, :discipline]
 
     # remove these from parent workform
     self.terms -= [:contributor, :license, :date_created, :related_url, :source,

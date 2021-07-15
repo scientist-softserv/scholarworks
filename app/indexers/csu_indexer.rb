@@ -13,20 +13,33 @@ class CsuIndexer < Hyrax::WorkIndexer
       solr_doc['handle_suffix_sim'] = object.handle_suffix
 
       # add a discipline text search only field
-      solr_doc['discipline_search_ids_teim'] = get_discipline_search_ids(solr_doc['discipline_tesim'])
+      generate_discipline_search_ids(solr_doc, solr_doc['discipline_tesim'])
+      generate_name(solr_doc, object.creator, 'creator')
     end
   end
 
+  protected
+    def generate_name(solr_doc, person, person_type)
+      names = []
+      person.each do |p|
+        composite_person = p.split(":::")
+        names << composite_person[0]
+      end
+      # don't need this unless we need advanced search just to search for name only
+      #solr_doc[Solrizer.solr_name(person_type + '_name', :stored_searchable)] = names
+      solr_doc[Solrizer.solr_name(person_type + '_name', :facetable)] = names
+    end
+
   private
 
-    def get_discipline_search_ids(disciplines)
+    def generate_discipline_search_ids(solr_doc, disciplines)
       discipline_search_ids = ''
       return discipline_search_ids if disciplines.nil? || disciplines.empty?
 
       disciplines.each do |v|
         discipline_search_ids += ' ' + v + ' ' + DisciplineService::get_ancestor_str(v)
       end
-      discipline_search_ids
+      solr_doc['discipline_search_ids_teim'] = discipline_search_ids
     end
 
 end

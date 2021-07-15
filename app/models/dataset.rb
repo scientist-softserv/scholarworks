@@ -31,7 +31,15 @@ class Dataset < ActiveFedora::Base
   end
 
   def creator= values
-    super OrderedStringHelper.serialize(values)
+    super sanitize_n_serialize(values)
+  end
+
+  def contributor
+    OrderedStringHelper.deserialize(super)
+  end
+
+  def contributor= values
+    super sanitize_n_serialize(values)
   end
 
   # this method is to combined all multivalues of this field into a single one for the front end

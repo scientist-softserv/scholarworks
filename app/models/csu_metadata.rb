@@ -37,18 +37,6 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
-    property :creator_email, predicate: ::RDF::Vocab::VCARD.hasEmail, multiple: true do |index|
-      index.as :stored_searchable
-    end
-
-    property :creator_institution, predicate: ::RDF::Vocab::VCARD.org, multiple: true do |index|
-      index.as :stored_searchable
-    end
-
-    property :creator_orcid, predicate: ::RDF::Vocab::VCARD.hasUID, multiple: true do |index|
-      index.as :stored_searchable
-    end
-
     property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false do |index|
       index.as :stored_searchable
     end
@@ -153,32 +141,6 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
-    validates_with CreatorOrcidValidator
-
-    def creator_email
-      OrderedStringHelper.deserialize(super)
-    end
-
-    def creator_email= values
-      super sanitize_n_serialize(values)
-    end
-
-    def creator_orcid
-      OrderedStringHelper.deserialize(super)
-    end
-
-    def creator_orcid= values
-      super sanitize_n_serialize(values)
-    end
-
-    def creator_institution
-      OrderedStringHelper.deserialize(super)
-    end
-
-    def creator_institution= values
-      super sanitize_n_serialize(values)
-    end
-
     def discipline= values
       saved_values = []
       values.each do |v|
@@ -186,7 +148,7 @@ module CsuMetadata
 
         saved_values << v
       end
-      super saved_values
+      super saved_values.uniq
     end
 
   end
