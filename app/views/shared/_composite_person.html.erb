@@ -78,38 +78,35 @@
 
   if (typeof serialize_person !== 'function') {
     serialize_person = function(person_type) {
-      //console.log('serialize_person ' + person_type);
-      $('.' + person_type + '_name').each(function () {
-         let name = $.trim($(this).val());
-         if (name.length > 0) {
-           let index = $(this).prop('id').substring(person_type.length + 5);
-           let email = $('#' + person_type + '_email' + index).val();
-           let institution = $('#' + person_type + '_institution' + index).val();
-           let orcid = $('#' + person_type + '_orcid' + index).val();
-           $(this).val(name + ':::' + email + ':::' + institution + ':::' + orcid);
-         }
-         else {
-           $(this).val('');
-         }
+      $('.' + person_type).each(function () {
+        let elem_num = $(this).data('element-num');
+        let name = $.trim($('#' + person_type + '_name' + elem_num).val());
+        if (name.length > 0) {
+          let email = $('#' + person_type + '_email' + elem_num).val();
+          let institution = $('#' + person_type + '_institution' + elem_num).val();
+          let orcid = $('#' + person_type + '_orcid' + elem_num).val();
+          $(this).val(name + ':::' + email + ':::' + institution + ':::' + orcid);
+        }
+        else {
+          $(this).val('');
+        }
       });
     };
   }
 
   if (typeof deserialize_person !== 'function') {
     deserialize_person = function(person_type) {
-      // console.log('deserialize_person person_type ' + person_type);
-      $('.' + person_type + '_name').each(function () {
-         let name_str = $(this).val();
-         //console.log('deserialize_person name_str [' + name_str + ']');
-         let index = $(this).prop('id').substring(person_type.length + 5);
+      $('.' + person_type).each(function () {
+        let elem_num = $(this).data('element-num');
+        let name_str = $(this).val();
          let result = name_str.split(":::");
          if (result.length > 1) {
-           $('#' + person_type + '_email' + index).val(result[1]);
-           $('#' + person_type + '_institution' + index).val(result[2]);
-           $('#' + person_type + '_orcid' + index).val(result[3]);
+           $('#' + person_type + '_email' + elem_num).val(result[1]);
+           $('#' + person_type + '_institution' + elem_num).val(result[2]);
+           $('#' + person_type + '_orcid' + elem_num).val(result[3]);
          }
-         $(this).val(result[0]);
-         $('#remove_' + person_type + '_aria' + index).html(' ' + result[0]);
+         $('#' + person_type + '_name' + elem_num).val(result[0]);
+         $('#remove_' + person_type + '_aria' + elem_num).html(' ' + result[0]);
       });
     };
   }
@@ -138,7 +135,7 @@
     any_empty_element = function(element_class) {
       // person_type to distinguish between creator, contributor, etc...
       let retVal = false;
-      $('.' + element_class).each(function () {
+      $('.' + element_class + '_name').each(function () {
         // console.log('any_empty_element: value [' + $.trim($(this).val()) + '] html [' + $(this).html() + ']');
         if ($.trim($(this).val()) == '') {
           retVal = true;
@@ -168,13 +165,16 @@
       elem =
         "<div id='" + person_type + "_divider" + cur_elem_num + "' class='row divider " + person_type + "_divider'></div>" +
         "<div id='" + person_type + cur_elem_num + "' class='row " + person_type + "_div flex_center'>" +
+        "  <input type='hidden' name='<%= model_type %>[" + person_type + "][]' id='" + person_type + cur_elem_num + "' class='" + person_type + "' data-element-num='" + cur_elem_num + "' value='' />" +
         "  <div class='col-xs-6'>" +
         "    <div class='label_input_div'>" +
         "      <label for='" + person_type + "_name" + cur_elem_num + "' class='label_field'>" +
         "        <span class='sr-only'>" + person_type + " </span>Name " +
                  (required_name ? "<span class='label label-info required-tag'>required</span>" : "") +
         "      </label>" +
-        "      <input type='text' name='<%= model_type %>[" + person_type + "][]' id='" + person_type + "_name" + cur_elem_num + "' value='' aria-required='true' class='string multi_value required " + person_type + " " + person_type + "_name margin_bottom_10 multi-text-field multi_value input_field' />" +
+        "      <input type='text'  id='" + person_type + "_name" + cur_elem_num + "' value='' aria-required='" + (required_name ? "true" : "false") + "' " +
+                      (required_name ? "required='required' " : "") +
+        "             class='string multi_value " + (required_name ? "required " : " ") + person_type + "_name margin_bottom_10 multi-text-field multi_value input_field' />" +
         "    </div>" +
         "    <div class='label_input_div'>" +
         "      <label for='" + person_type + "_email" + cur_elem_num + "' class='label_field'>" +
@@ -348,6 +348,7 @@
         <div id=<%= "#{key}_divider#{index}" %> class="row divider <%= key %>_divider"></div>
       <% end %>
       <div id=<%= "#{key}#{index}" %> class="row <%= key %>_div flex_center">
+        <input type="hidden" name="<%= model_type %>[<%= key %>][]" id="<%= key %><%= index %>" value="<%= name %>" class="<%= key %>" data-element-num="<%= index %>" />
         <div class="col-xs-6">
           <div class="label_input_div">
             <label for=<%= "#{key}_name#{index}" %> class="label_field">
@@ -356,12 +357,11 @@
               <% if f.object.required?(key) %><span class="label label-info required-tag">required</span><% end %>
             </label>
             <input type="text"
-                   name="<%= model_type %>[<%= key %>][]"
                    id="<%= key %>_name<%= index %>"
-                   value="<%= name %>"
-                   required="<%= f.object.required?(key) %>"
+                   value=""
+                   <% if f.object.required?(key) %>required="required"<% end %>
                    aria-required="<%= f.object.required?(key) %>"
-                   class="string multi_value <%= key %> <%= key %>_name margin_bottom_10 multi-text-field multi_value input_field <% if f.object.required?(key) %>required<% end %>" />
+                   class="string multi_value <%= key %>_name margin_bottom_10 multi-text-field multi_value input_field <% if f.object.required?(key) %>required<% end %>" />
           </div>
           <div class="label_input_div">
             <label for="<%= key %>_email<%= index %>" class="label_field">
@@ -370,7 +370,6 @@
               </span>
             </label>
             <input type="email"
-                   name="<%= model_type %>[<%= key %>_email][]"
                    id="<%= key %>_email<%= index %>"
                    value=""
                    class="<%= key %>_email margin_bottom_10 multi-text-field multi_value input_field" />
@@ -382,7 +381,6 @@
               </span>
             </label>
             <input type="text"
-                   name="<%= model_type %>[<%= key %>_institution][]"
                    id="<%= key %>_institution<%= index %>"
                    value=""
                    class="<%= key %>_institution margin_bottom_10 multi-text-field multi_value input_field" />
@@ -394,7 +392,6 @@
               </span>
             </label>
             <input type="text"
-                   name="<%= model_type %>[<%= key %>_orcid][]"
                    id="<%= key %>_orcid<%= index %>"
                    value=""
                    class="<%= key %>_orcid person_orcid margin_bottom_10 multi-text-field multi_value input_field"
