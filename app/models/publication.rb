@@ -35,7 +35,6 @@ class Publication < ActiveFedora::Base
   include ::Hyrax::BasicMetadata
 
   def creator
-    Rails.logger.warn "inside creator getter"
     OrderedStringHelper.deserialize(super)
   end
 
