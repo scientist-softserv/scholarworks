@@ -29,6 +29,26 @@ class Publication < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+  property :conference_title, predicate: ::RDF::Vocab::BIBO.presentedAt, multiple: false do |index|
+    index.as :stored_searchable, :facetable
+  end
+
+  property :journal_title, predicate: ::RDF::URI.new('http://purl.org/net/nknouf/ns/bibtex#hasJournal'), multiple: false do |index|
+    index.as :stored_searchable, :facetable
+  end
+
+  property :volume, predicate: ::RDF::Vocab::BIBO.volume, multiple: false do |index|
+    index.as :stored_searchable
+  end
+
+  property :issue, predicate: ::RDF::Vocab::BIBO.issue, multiple: false do |index|
+    index.as :stored_searchable
+  end
+
+  property :pages, predicate: ::RDF::Vocab::BIBO.pages, multiple: false do |index|
+    index.as :stored_searchable
+  end
+
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include ::Hyrax::BasicMetadata
