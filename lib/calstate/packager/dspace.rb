@@ -95,6 +95,10 @@ module CalState
           process_error(e, zip_file, source_file)
           sleep @throttle_always
 
+        rescue ActiveFedora::UnknownAttributeError => e
+          process_error(e, zip_file, source_file)
+          @errors -= 1 # keep on truckin'
+
         rescue StandardError => e
           process_error(e, zip_file, source_file)
           sleep 60
@@ -259,8 +263,10 @@ module CalState
         # set visibility
         if params.key?('embargo_release_date')
           # indefinite embargo, just make it private
-          if params['embargo_release_date'] == '10000-01-01'
+          if params['embargo_release_date'].include?('10000-01-01') ||
+             params['embargo_release_date'].empty?
             params['visibility'] = 'restricted'
+            params.except!('embargo_release_date')
           else # regular embargo
             params['visibility_after_embargo'] = 'open'
             params['visibility_during_embargo'] = 'authenticated'
@@ -319,8 +325,10 @@ module CalState
         file_md5_list = dom.xpath('//premis:object', premis_ns)
         file_md5_list.each do |fptr|
           # file location info
-          file_checksum = fptr.at_xpath(checksum_xpath, premis_ns).inner_html
-          flocat_xpath = "//mets:file[@CHECKSUM='" + file_checksum + "']/mets:FLocat"
+          file_id = fptr.parent.parent.parent.parent.parent.attr('ID')
+          next if file_id.nil?
+
+          flocat_xpath = "//mets:file[@ADMID='" + file_id + "']/mets:FLocat"
           file_location = dom.at_xpath(flocat_xpath, mets_ns)
 
           # the name of the file in the aip package and its original name

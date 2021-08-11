@@ -67,6 +67,14 @@ class Thesis < ActiveFedora::Base
     super sanitize_n_serialize(values)
   end
 
+  def committee_member
+    OrderedStringHelper.deserialize(super)
+  end
+
+  def committee_member= values
+    super OrderedStringHelper.serialize(values)
+  end
+
   protected
 
   def update_fields

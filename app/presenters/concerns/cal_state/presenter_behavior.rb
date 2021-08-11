@@ -9,6 +9,7 @@ module CalState
     included do
       delegate :abstract,
                :alternative_title,
+               :bibliographic_citation,
                :campus,
                :college,
                :creator_email,

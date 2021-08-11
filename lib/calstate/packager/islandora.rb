@@ -17,17 +17,17 @@ module CalState
       #
       # @param campus [String]      campus slug
       # @param type [String]        work type (e.g., Thesis)
-      # @param visibility [String]  visibility to set
       #
-      def initialize(campus, type, visibility)
+      def initialize(campus, type)
         @campus = campus
         @type = type
-        @visibility = visibility
 
         # config and loggers
         config_file = 'config/packager/' + campus + '.yml'
         @config = OpenStruct.new(YAML.load_file(config_file))
         @log = Packager::Log.new(@config['output_level'])
+
+        @visibility = @config['visibility'] ||= 'open'
         @log.info ' Work type ' + @type
         @log.info ' Visibility ' + @visibility
 
@@ -53,10 +53,32 @@ module CalState
       #
       # Process all items
       #
-      def process_items
+      # @param throttle [Integer]  seconds to throttle between
+      #
+      def process_items(throttle)
         Dir.each_child(@input_dir) do |dirname|
-          @log.info 'process ' + dirname
+          @log.info "\n\nProcessing " + dirname
           process_dir(dirname)
+          sleep(throttle.to_i) unless throttle.nil?
+        end
+      end
+
+      #
+      # Rename the folders to islandora_id
+      #
+      # otherwise the folders are named with the title of the work (weird)
+      #
+      # @param folder [String]  [optional] the folder containing the works
+      #                         will use config input_dir if left nil
+      #
+      def rename_folders(folder = nil)
+        folder = @input_dir if folder.nil?
+        Dir.each_child(folder) do |file|
+          m = file.match(/\(islandora:([0-9]*)\)/)
+          unless m.nil?
+            FileUtils.mv(folder + '/' + file,
+                         folder + '/' + 'islandora_' + m[1])
+          end
         end
       end
 
@@ -231,6 +253,7 @@ module CalState
 
         # set resource type
         resource_type = @type || 'Thesis'
+        params['resource_type'] = ['Masters Thesis'] if resource_type.downcase == 'thesis'
 
         # set visibility
         params['visibility'] = @visibility
@@ -316,7 +339,8 @@ module CalState
           '(publisher)' => 'publisher',
           '(home campus)' => 'granting_institution',
           '(thesis advisor)' => 'advisor',
-          '(thesis committee member)' => 'committee_member' }
+          '(thesis committee member)' => 'committee_member'
+        }
         data_lc = data.downcase
         return if data_lc.end_with? ignore_tag
 
@@ -330,6 +354,17 @@ module CalState
 
         # default to creator if no ending tag is found
         params['creator'] << data
+      end
+
+      def process_identifier(data, params)
+        data_lc = data.downcase
+        if data_lc.start_with?('islandora')
+          params['description_note'] << data.squish
+        elsif data_lc.start_with?('http')
+          params['related_url'] << data.squish
+        else
+          params['identifier'] << data.squish
+        end
       end
 
       #
@@ -373,8 +408,10 @@ module CalState
                   next if node_text.empty?
                   next if field_name == 'resource_type' && node_text.casecmp('TEXT').zero?
 
-                  if field_name == 'creator'
+                  if %w[creator contributor].include? field_name
                     process_creator(node_text, params)
+                  elsif field_name == 'identifier'
+                    process_identifier(node_text, params)
                   else
                     params[field_name] << node_text
                   end

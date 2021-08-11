@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'csv'
+require 'nokogiri'
 
 module CalState
   module Metadata
@@ -13,73 +13,99 @@ module CalState
         include Metadata::Utilities
 
         #
-        # Update records for a given model
+        # CSV Updater
         #
-        # @param csv_file [String]  path to csv file
+        # @param path [String]   path to transaction xml file
+        # @param model [String]  model name
         #
-        def update_records(csv_file)
-          tasks = {}
+        def initialize(path, model)
+          @path = path
+          @doc = Nokogiri::XML(File.open(path))
+          @single_fields = %w[date_accessioned
+                              date_modified
+                              degree_level
+                              embargo_release_date
+                              visibility
+                              visibility_during_embargo
+                              visibility_after_embargo]
+          @model = CalState::Metadata.get_model_from_slug(model)
+        end
 
-          model = get_model_from_file(csv_file)
-          fields = model.attribute_names
-
-          csv = Reader.new(csv_file)
-          csv.records.each do |row|
-            begin
-              id = row['id']
-              doc = model.find(id)
-            rescue StandardError => e
-              puts 'ERROR: ' + e.to_s
-              next
+        #
+        # Process the transaction file
+        #
+        def run
+          x = 0
+          records = @doc.xpath("//record[@complete = 'false']")
+          records.each do |record|
+            # throttle
+            x += 1
+            if (x % 25).zero?
+              puts 'shhh, sleeping . . . '
+              sleep(180)
             end
 
-            task = []
-            row.each do |key, value|
-              next unless fields.include? key
-
-              result = compare_value(doc, key, value)
-              task << result unless result.blank?
-            end
-            next if task.empty?
-
-            puts "\n\n------------------------------"
-            puts doc.id + ': ' + doc.title.first.to_s
-            task.each do |message|
-              puts message
-            end
-
-            tasks[id] = task
+            # update record
+            print "Updating #{record['id']} . . . "
+            update_record(record)
+            print "done!\n"
           end
         end
 
-        protected
+        #
+        # Move the finished transaction file to archive
+        #
+        # renames file to include the timestamp
+        #
+        def archive_file
+          timestamp = @doc.xpath('//timestamp').first.content
+          new_path = @path.gsub('.xml', '_' + timestamp + '.xml')
+          File.rename(@path, new_path)
+        end
 
         #
-        # Compare the value in the Fedora document
+        # Find and update the record
         #
-        # @param doc [ActiveFedora::Base]  the fedora document
-        # @param key [String]              the field name
-        # @param value [String]            the value to compare
+        # @param record [Hash]  record from the CSV file
         #
-        def compare_value(doc, key, value)
-          doc_field = doc[key]
-          return if doc_field.blank? && value.blank?
+        def update_record(record)
+          doc = @model.find(record['id'].to_s)
 
-          diff = if doc_field.is_a?(ActiveTriples::Relation)
-                   doc_values = field_to_array(doc_field)
-                   csv_values = value.blank? ? [] : value.split('|')
+          record.xpath('change').each do |change|
+            field = change['field']
+            doc[field] = get_value(field, change)
+          end
 
-                   doc_value = doc_values.sort.join('|') + "\n"
-                   csv_value = csv_values.sort.join('|') + "\n"
+          doc.save
 
-                   Diffy::Diff.new(doc_value, csv_value)
-                 else
-                   Diffy::Diff.new(doc_field.to_s + "\n", value.to_s + "\n")
-                 end
+          # mark as processed
+          record['complete'] = 'true'
+          File.write(@path, @doc.to_xml)
+        end
 
-          return nil if diff.to_s.length.zero?
+        #
+        # Extract the value(s) from the change node
+        #
+        # @param field [String]          field name
+        # @param change [Nokogiri::XML]  node
+        #
+        # @return [Array|String]
+        #
+        def get_value(field, change)
+          values = []
+          if change.xpath('value/part').count.positive?
+            change.xpath("value[@type='new']/part").each do |part|
+              values.append part.text.squish
+            end
+          else
+            values.append change.xpath("value[@type='new']").first.text
+          end
 
-          key + ":\n" + diff.to_s
+          if @single_fields.include?(field)
+            values.first
+          else
+            values
+          end
         end
       end
     end

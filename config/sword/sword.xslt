@@ -8,6 +8,7 @@
   <xsl:template match="/">
     <record>
       <xsl:call-template name="standard" />
+      <xsl:call-template name="resource_type" />
       <xsl:call-template name="embargos" />
       <xsl:call-template name="authors" />
       <xsl:call-template name="subjects" />
@@ -39,23 +40,6 @@
         </field>
       </xsl:if>
 
-      <!-- resource type -->
-      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/type' and ./@epdcx:vesURI='http://purl.org/eprint/terms/Type'">
-        <field name="resource_type">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-      <xsl:if test="./@epdcx:attributeName='type'">
-        <field name="resource_type">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-      <xsl:if test="./@epdcx:attributeName='typeGenre'">
-        <field name="resource_type">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
       <!-- language -->
       <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/language' and ./@epdcx:vesURI='http://purl.org/dc/terms/RFC3066'">
         <field name="language">
@@ -78,13 +62,40 @@
     </xsl:for-each>
   </xsl:template>
 
+  <!-- RESOURCE TYPE -->
+  <xsl:template name="resource_type">
+    <xsl:for-each select="//epdcx:statement">
+      <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/type' and ./@epdcx:vesURI='http://purl.org/eprint/terms/Type'">
+        <field name="resource_type">
+          <xsl:call-template name="resource_type_map">
+            <xsl:with-param name="resource_name" select="epdcx:valueString" />
+          </xsl:call-template>
+        </field>
+      </xsl:if>
+      <xsl:if test="./@epdcx:attributeName='type'">
+        <field name="resource_type">
+          <xsl:call-template name="resource_type_map">
+            <xsl:with-param name="resource_name" select="epdcx:valueString" />
+          </xsl:call-template>
+        </field>
+      </xsl:if>
+      <xsl:if test="./@epdcx:attributeName='typeGenre'">
+        <field name="resource_type">
+          <xsl:call-template name="resource_type_map">
+            <xsl:with-param name="resource_name" select="epdcx:valueString" />
+          </xsl:call-template>
+        </field>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
   <!-- EMBARGO FIELDS -->
   <xsl:template name="embargos">
     <xsl:for-each select="//epdcx:statement">
 
       <!-- embargo until -->
       <xsl:if test="./@epdcx:attributeName='embargoLift' or ./@epdcx:attributeName='embargountil'">
-        <field name="embargo_until">
+        <field name="embargo_release_date">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -621,6 +632,18 @@
         </field>
       </xsl:if>
 
+      <!-- resource type -->
+      <xsl:if test="@type">
+        <xsl:choose select="@type">
+          <xsl:when test="@type = 'doctoral'">
+            <xsl:text>Dissertation</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>Masters Thesis</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
+
       <!-- date issued -->
       <xsl:for-each select="pq:DISS_dates">
         <field name="date_issued">
@@ -684,6 +707,7 @@
     <xsl:param name="pText" />
     <xsl:param name="pElementName" />
     <xsl:param name="pSlitter" />
+
     <xsl:if test="string-length($pText) > 0">
       <xsl:variable name="vNextItem" select="substring-before(concat($pText, $pSlitter), $pSlitter)"/>
       <xsl:element name="{$pElementName}">
@@ -696,4 +720,19 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
+
+  <!-- map resource types to controlled vocab -->
+  <xsl:template name="resource_type_map">
+    <xsl:param name="resource_name" />
+
+    <xsl:choose>
+      <xsl:when test="$resource_name = 'Thesis'">
+        <xsl:text>Masters Thesis</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$resource_name" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

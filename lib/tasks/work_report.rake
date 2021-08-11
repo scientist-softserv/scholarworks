@@ -16,9 +16,13 @@ namespace :calstate do
       CalState::Metadata.models.each do |model|
         model.all.each do |doc|
           begin
+            handle = nil
+            doc.handle.each do |url|
+              handle = url if url.include?('handle.net')
+            end
             values = [
               doc.id,
-              doc.handle.first.to_s,
+              handle,
               doc.campus.first.to_s
             ]
             file_names = String.new
