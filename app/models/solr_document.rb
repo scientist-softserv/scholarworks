@@ -200,7 +200,7 @@ class SolrDocument
                     editor_tesim],
     coverage: %w[coverage_tesim time_period_tesim geographical_area_tesim],
     creator: %w[creator_tesim author_tesim],
-    date: %w[date_tesim date_copyright_tesim],
+    date: %w[date_issued_tesim date_copyright_tesim],
     description: %w[description_tesim abstract_tesim publication_status_tesim
                     bibliographic_citation_tesim],
     format: 'format',
