@@ -98,6 +98,9 @@ module Blacklight::Solr
           # let tell solr to use *name_sim when user wants to look for sim of creator & contributor because of composite person
           facet_field = 'creator_name_sim' if facet_field == 'creator_sim'
           facet_field = 'contributor_name_sim' if facet_field == 'contributor_sim'
+          facet_field = 'editor_name_sim' if facet_field == 'editor_sim'
+          facet_field = 'advisor_name_sim' if facet_field == 'advisor_sim'
+          facet_field = 'committee_member_name_sim' if facet_field == 'committee_member_sim'
           Array(value_list).reject(&:blank?).each do |value|
             solr_parameters.append_filter_query facet_value_to_fq_string(facet_field, value)
           end

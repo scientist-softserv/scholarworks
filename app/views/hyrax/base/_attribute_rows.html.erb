@@ -5,11 +5,11 @@
 <!-- authors -->
 <%= presenter.attribute_to_html(:creator, render_as: :person_link, html_dl: true) %>
 <%= presenter.attribute_to_html(:contributor, render_as: :person_link, html_dl: true) %>
-<%= presenter.attribute_to_html(:editor, render_as: :person, html_dl: true) %>
+<%= presenter.attribute_to_html(:editor, render_as: :person_link, html_dl: true) %>
 <%= presenter.attribute_to_html(:investigator, html_dl: true) %>
 <%= presenter.attribute_to_html(:sponsor, html_dl: true) %>
-<%= presenter.attribute_to_html(:advisor, render_as: :person, html_dl: true) %>
-<%= presenter.attribute_to_html(:committee_member, render_as: :person, html_dl: true) %>
+<%= presenter.attribute_to_html(:advisor, render_as: :person_link, html_dl: true) %>
+<%= presenter.attribute_to_html(:committee_member, render_as: :person_link, html_dl: true) %>
 
 <!-- institution -->
 <%= presenter.attribute_to_html(:campus, render_as: :faceted, html_dl: true) %>
