@@ -13,7 +13,7 @@ module Hyrax
           ancestor = DisciplineService::DISCIPLINES[ancestor_id]
           next if ancestor.nil?
 
-          discipline_path += link_to(ERB::Util.h(ancestor.name), search_path(ancestor_id)) + ': '
+          discipline_path += link_to(ERB::Util.h(ancestor.name), search_path(ancestor_id)) + ' > '
         end
 
         discipline_path += link_to(ERB::Util.h(discipline.name), search_path(value))
