@@ -37,6 +37,10 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
+    property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false do |index|
+      index.as :stored_searchable
+    end
+
     property :date_available, predicate: ::RDF::Vocab::DC.available do |index|
       index.as :stored_searchable, :facetable
     end
@@ -65,6 +69,10 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
+      index.as :stored_searchable
+    end
+
     property :extent, predicate: ::RDF::Vocab::DC.extent do |index|
       index.as :stored_searchable
     end
@@ -81,7 +89,7 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
-    property :issn, predicate: ::RDF::Vocab::SCHEMA.issn do |index|
+    property :is_part_of, predicate: ::RDF::Vocab::DC.relation do |index|
       index.as :stored_searchable
     end
 
@@ -89,7 +97,7 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
-    property :is_part_of, predicate: ::RDF::Vocab::DC.relation do |index|
+    property :issn, predicate: ::RDF::Vocab::SCHEMA.issn do |index|
       index.as :stored_searchable
     end
 
@@ -98,6 +106,10 @@ module CsuMetadata
     end
 
     property :oclcno, predicate: ::RDF::Vocab::BIBO.oclcnum do |index|
+      index.as :stored_searchable
+    end
+
+    property :provenance, predicate: ::RDF::Vocab::DC.provenance do |index|
       index.as :stored_searchable
     end
 
@@ -124,18 +136,6 @@ module CsuMetadata
     property :time_period, predicate: ::RDF::Vocab::DC.temporal do |index|
       index.as :stored_searchable, :facetable
     end
-
-    property :provenance, predicate: ::RDF::Vocab::DC.provenance do |index|
-      index.as :stored_searchable
-    end
-
-    property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false do |index|
-      index.as :stored_searchable
-    end
-
-    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
-      index.as :stored_searchable
-    end
   end
 
   def handle_suffix
@@ -144,8 +144,12 @@ module CsuMetadata
     handle.map { |url| url.split('/')[-1] }
   end
 
+  #
+  # Assign campus name based on admin set
+  #
+  # @param admin_set_title [String]  name of admin set
+  #
   def assign_campus(admin_set_title)
-    # assign campus name based on admin set
     campus = Hyrax::CampusService.get_campus_from_admin_set(admin_set_title)
     self.campus = [campus]
   end
