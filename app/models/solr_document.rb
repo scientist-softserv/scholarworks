@@ -33,10 +33,6 @@ class SolrDocument
     self[Solrizer.solr_name('abstract')]
   end
 
-  def alternative_title
-    self[Solrizer.solr_name('alternative_title')]
-  end
-
   def advisor
     self[Solrizer.solr_name('advisor')]
   end
