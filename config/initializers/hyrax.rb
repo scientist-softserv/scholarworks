@@ -46,6 +46,9 @@ Hyrax.config do |config|
   # Requires a Google Analytics id and OAuth2 keyfile.  See README for more info
   # config.analytics = false
 
+  # disable real-time notifications in Apache
+  config.realtime_notifications = false
+
   # Google Analytics tracking ID to gather usage statistics
   config.google_analytics_id = 'UA-178645232-1'
 

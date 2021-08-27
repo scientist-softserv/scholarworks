@@ -1,5 +1,11 @@
 ---
 en:
+  activefedora:
+    models:
+      dataset: "Research Data"
+      educational_resource: "Open Educational Resource"
+      publication: "Publication"
+      thesis: "Student Research"
   blacklight:
     search:
       fields:

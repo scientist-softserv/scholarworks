@@ -11,8 +11,6 @@ class Dataset < ActiveFedora::Base
   # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
 
-  self.human_readable_type = 'Research Data'
-
   property :investigator, predicate: ::RDF::Vocab::MARCRelators.org do |index|
     index.as :stored_searchable
   end

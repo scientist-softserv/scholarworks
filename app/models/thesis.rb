@@ -12,8 +12,6 @@ class Thesis < ActiveFedora::Base
   # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
 
-  self.human_readable_type = 'Student Work'
-
   property :advisor, predicate: ::RDF::Vocab::MARCRelators.ths do |index|
     index.as :stored_searchable, :facetable
   end

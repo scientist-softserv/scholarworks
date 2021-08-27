@@ -4,7 +4,7 @@ require 'csv'
 
 namespace :calstate do
   desc 'Metadata fixer'
-  task metadata_fixer: :environment do
+  task delete_records: :environment do
     csv_file = '/home/ec2-user/data/remove.csv'
     options = { headers: true, encoding: 'bom|utf-8' }
     x = 0
