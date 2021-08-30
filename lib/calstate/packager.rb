@@ -4,6 +4,8 @@ require_relative 'packager/dspace'
 require_relative 'packager/islandora'
 require_relative 'packager/log'
 require_relative 'packager/proquest'
+require_relative 'packager/zenodo'
+
 
 module CalState
   #
