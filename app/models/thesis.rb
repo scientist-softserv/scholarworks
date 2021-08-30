@@ -13,8 +13,6 @@ class Thesis < ActiveFedora::Base
   validates :title, presence: { message: 'Your work must have a title.' }
   validates :creator, presence: { message: 'Your work must have an author.' }
 
-  self.human_readable_type = 'Student Work'
-
   property :advisor, predicate: ::RDF::Vocab::MARCRelators.ths do |index|
     index.as :stored_searchable
   end

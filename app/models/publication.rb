@@ -16,8 +16,6 @@ class Publication < ActiveFedora::Base
   validates :title, presence: { message: 'Your work must have a title.' }
   validates :creator, presence: { message: 'Your work must have an author.' }
 
-  self.human_readable_type = 'Publication'
-
   property :editor, predicate: ::RDF::Vocab::MARCRelators.edt do |index|
     index.as :stored_searchable
   end

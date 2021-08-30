@@ -13,8 +13,6 @@ class EducationalResource < ActiveFedora::Base
   validates :title, presence: { message: 'Your work must have a title.' }
   validates :creator, presence: { message: 'Your work must have an author.' }
 
-  self.human_readable_type = 'Educational Resource'
-
   property :resource_type_educational_resource, predicate: ::RDF::Vocab::DC.type do |index|
     index.as :stored_searchable
   end

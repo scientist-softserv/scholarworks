@@ -12,8 +12,6 @@ class Dataset < ActiveFedora::Base
   validates :title, presence: { message: 'Your work must have a title.' }
   validates :creator, presence: { message: 'Your work must have an author.' }
 
-  self.human_readable_type = 'Research Data'
-
   property :investigator, predicate: ::RDF::Vocab::MARCRelators.org do |index|
     index.as :stored_searchable
   end
