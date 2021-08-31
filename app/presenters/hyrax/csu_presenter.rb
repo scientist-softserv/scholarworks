@@ -17,6 +17,7 @@ module Hyrax
              :date_submitted,
              :department,
              :description_note,
+             :discipline,
              :doi,
              :embargo_terms,
              :extent,
