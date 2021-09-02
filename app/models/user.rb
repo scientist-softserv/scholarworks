@@ -23,7 +23,7 @@ class User < ApplicationRecord
   # :registerable, :recoverable, :validatable,
   # add :database_authenticatable for dev and test
   # :database_authenticatable
-  devise :rememberable, :trackable, :timeoutable, :omniauthable, omniauth_providers: [:shibboleth]
+  devise :database_authenticatable, :rememberable, :trackable, :timeoutable, :omniauthable, omniauth_providers: [:shibboleth]
 
   def self.from_omniauth(auth)
     where(uid: auth.uid).first_or_create do |user|

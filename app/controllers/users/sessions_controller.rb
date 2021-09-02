@@ -5,7 +5,7 @@ module Users
   class SessionsController < Devise::SessionsController
     def new
       Rails.logger.debug "SessionsController#new: request.referer = #{request.referer}"
-      if Settings.require_shib_user_authn
+      if Settings.require_shib_user_authn && params[:direct].blank?
         store_location_for(:user, '/dashboard')
         redirect_to user_shibboleth_omniauth_authorize_path
       else

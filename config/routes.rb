@@ -11,9 +11,11 @@ Rails.application.routes.draw do
     concerns :searchable
   end
 
-  devise_for :users, controllers: { sessions: 'users/sessions', omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, controllers: { sessions: 'users/sessions', omniauth_callbacks: 'users/omniauth_callbacks' }, skip: [:sessions]
   devise_scope :user do
     get 'sign_in', to: 'users/sessions#new', as: :new_user_session
+    post '/users/sign_in',  to: 'users/sessions#create',  as: :user_session
+
     post 'sign_in', to: 'omniauth_callbacks#shibboleth', as: :new_session
     get 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session
   end

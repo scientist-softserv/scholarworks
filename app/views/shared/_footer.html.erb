@@ -19,6 +19,11 @@
         <h2>Upload your work</h2>
         <p>Faculty, staff, and students at any CSU campus are encouraged to upload completed works to ScholarWorks. Read more about preparing your documents [link to directions] and <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path %>.</p>
       </div>
+      <% if !Rails.env.production? %>
+        <div class="col-sm-4">
+          <%= link_to 'Admin Sign In', '/sign_in?direct=true' %>
+        </div>
+      <% end %>
     </div>
   </div>
 </footer>
