@@ -22,8 +22,8 @@ class CsuIndexer < Hyrax::WorkIndexer
     def generate_name(solr_doc, person, person_type)
       names = []
       person.each do |p|
-        composite_person = p.split(":::")
-        names << composite_person[0]
+        person = Person.new.from_hyrax(p)
+        names << person.name
       end
       # don't need this unless we need advanced search just to search for name only
       #solr_doc[Solrizer.solr_name(person_type + '_name', :stored_searchable)] = names
