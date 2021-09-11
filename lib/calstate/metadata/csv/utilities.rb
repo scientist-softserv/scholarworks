@@ -10,42 +10,26 @@ module CalState
       #
       module Utilities
         #
-        # Get value of a field as a string
-        # If this is a multi-valued field,
+        # Prep multiple values for export
         #
-        # @param value
-        # @param join [Boolean]  [optional] If this is a multi-valued field,
-        #                        join them using pipe, otherwise return first
+        # If this is a multi-valued field, join them using pipe
         #
-        def get_value(value, join = false)
+        # @param value  field value
+        #
+        # @return [String]
+        #
+        def prep_values(value)
           if value.is_a?(ActiveTriples::Relation) || value.is_a?(Array)
-            if join
-              prep_value(value.join('|'))
-            else
-              prep_value(value.first)
-            end
+            prep_value(value.join('|'))
           else
             prep_value(value)
           end
         end
 
         #
-        # Ensure that any value we extract doesn't have illegal characters
-        # including any we supplied in the export to trick excel
+        # Prepare single value for export
         #
-        # @param value[String]  the value to clean
-        #
-        # @return [String|nil] a nice shiny, clean value
-        #
-        def clean_value(value)
-          value = value.to_s.squish
-          return nil if value.empty?
-
-          value
-        end
-
-        #
-        # Convert value to string and append a tab to the end to force excel
+        # Convert to string and append a tab to the end to force excel
         # to treat the field as text rather than a number or date
         #
         # @param value [String]  the value to add
@@ -57,6 +41,67 @@ module CalState
           return nil if value.nil?
 
           value.to_s + "\t"
+        end
+
+        #
+        # Ensure that any value we extract doesn't have illegal characters
+        # including any we supplied in the export to trick excel
+        #
+        # @param value [String]  the value to clean
+        #
+        # @return [String|nil] a nice shiny, clean value
+        #
+        def clean_value(value)
+          value = value.to_s.squish
+          return nil if value.empty?
+
+          value
+        end
+
+        #
+        # Fields with person objects
+        #
+        # @return [Array]
+        #
+        def person_fields
+          %w[creator contributor advisor committee_member]
+        end
+
+        #
+        # Is the supplied field a person field?
+        #
+        # @param field [String]  field name
+        #
+        # @return [Boolean]
+        #
+        def is_person_field?(field)
+          person_fields.include?(field)
+        end
+
+        #
+        # Prep person data for export
+        #
+        # @param person_data [Array|]
+        #
+        def prep_person(person_data)
+          return person_data if person_data.nil?
+
+          final = []
+          person_data.split('|').each do |person_string|
+            person = Person.new.from_hyrax(person_string)
+            final.append person.to_export
+          end
+          final.join('|')
+        end
+
+        #
+        # Clean person data for import
+        #
+        # @param person_csv [String]
+        #
+        def clean_person(person_csv)
+          person = Person.new.from_export(person_csv)
+          person.to_hyrax
         end
 
         #

@@ -57,7 +57,9 @@ module CalState
           csv.each do |row|
             record = {}
             row.each do |key, value|
-              record[key] = clean_value(value)
+              value = clean_value(value)
+              value = clean_person(value) if person_fields.include?(key)
+              record[key] = value
             end
             final.append record
           end
