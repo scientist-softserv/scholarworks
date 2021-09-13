@@ -10,6 +10,13 @@ module CalState
       #
       module Utilities
         #
+        # Multi-value separator
+        #
+        def separator
+          '|'
+        end
+
+        #
         # Prep multiple values for export
         #
         # If this is a multi-valued field, join them using pipe
@@ -20,7 +27,7 @@ module CalState
         #
         def prep_values(value)
           if value.is_a?(ActiveTriples::Relation) || value.is_a?(Array)
-            prep_value(value.join('|'))
+            prep_value(value.join(separator))
           else
             prep_value(value)
           end
@@ -87,11 +94,11 @@ module CalState
           return person_data if person_data.nil?
 
           final = []
-          person_data.split('|').each do |person_string|
+          person_data.split(separator).each do |person_string|
             person = Person.new.from_hyrax(person_string)
             final.append person.to_export
           end
-          final.join('|')
+          final.join(separator)
         end
 
         #
