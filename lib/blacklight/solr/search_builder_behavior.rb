@@ -95,12 +95,7 @@ module Blacklight::Solr
         f_request_params = blacklight_params[:f]
 
         f_request_params.each_pair do |facet_field, value_list|
-          # let tell solr to use *name_sim when user wants to look for sim of creator & contributor because of composite person
-          facet_field = 'creator_name_sim' if facet_field == 'creator_sim'
-          facet_field = 'contributor_name_sim' if facet_field == 'contributor_sim'
-          facet_field = 'editor_name_sim' if facet_field == 'editor_sim'
-          facet_field = 'advisor_name_sim' if facet_field == 'advisor_sim'
-          facet_field = 'committee_member_name_sim' if facet_field == 'committee_member_sim'
+          facet_field = facet_field_substitution(facet_field)
           Array(value_list).reject(&:blank?).each do |value|
             solr_parameters.append_filter_query facet_value_to_fq_string(facet_field, value)
           end
@@ -288,9 +283,7 @@ module Blacklight::Solr
 
       prefix = "{!#{local_params.join(' ')}}" unless local_params.empty?
 
-      if facet_field == 'discipline_sim'
-        "{!dismax qf=discipline_search_ids_teim#{(' ' + local_params.join(' ')) unless local_params.empty?}}#{convert_to_term_value(value)}"
-      elsif facet_config and facet_config.query
+      if facet_config and facet_config.query
         if facet_config.query[value]
           facet_config.query[value][:fq]
         else
@@ -329,5 +322,23 @@ module Blacklight::Solr
     def request_keys
       blacklight_config.facet_paginator_class.request_keys
     end
+
+    def facet_field_substitution(field)
+      facet_field = field
+      if field == 'creator_sim'
+        facet_field = 'creator_name_sim'
+      elsif field == 'contributor_sim'    
+        facet_field = 'contributor_name_sim'
+      elsif field == 'editor_sim'
+        facet_field = 'editor_name_sim'
+      elsif field == 'advisor_sim'
+        facet_field = 'advisor_name_sim'
+      elsif field == 'committee_member_sim'
+        facet_field = 'committee_member_name_sim'
+      elsif field == 'discipline_sim'
+        facet_field = 'discipline_search_ids_teim'
+      end
+      return facet_field           
+    end                                     
   end
 end
