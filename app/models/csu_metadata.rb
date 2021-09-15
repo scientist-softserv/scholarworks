@@ -154,11 +154,14 @@ module CsuMetadata
     self.campus = [campus]
   end
 
-  protected
-
-  def update_fields
+  #
+  # Save this work
+  #
+  def save
     raise 'No admin set defined for this item.' if admin_set&.title&.first.nil?
 
     assign_campus(admin_set.title.first.to_s)
+
+    super
   end
 end

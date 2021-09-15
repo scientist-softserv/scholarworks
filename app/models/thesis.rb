@@ -57,14 +57,4 @@ class Thesis < ActiveFedora::Base
   def committee_member= values
     super OrderedStringHelper.serialize(values)
   end
-
-  protected
-
-  def update_fields
-    super
-
-    # assign main resource type from local resource type
-    self.resource_type = resource_type_thesis
-  end
-
 end
