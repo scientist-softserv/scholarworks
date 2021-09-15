@@ -87,6 +87,7 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
+gem 'chronic'
 gem 'riiif', '~> 1.1'
 gem 'solargraph'
 gem 'colorize'

@@ -73,6 +73,10 @@ class SolrDocument
     self[Solrizer.solr_name('date_issued')]
   end
 
+  def date_issued_year
+    self[Solrizer.solr_name('date_issued_year')]
+  end
+
   def date_submitted
     self[Solrizer.solr_name('date_submitted')]
   end

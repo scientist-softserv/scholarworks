@@ -53,6 +53,10 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
+    property :date_issued_year, predicate: ::RDF::Vocab::SCHEMA.datePublished, multiple: false do |index|
+      index.as :stored_searchable, :facetable
+    end
+
     property :date_submitted, predicate: ::RDF::Vocab::SCHEMA.Date do |index|
       index.as :stored_searchable, :facetable
     end
@@ -161,7 +165,55 @@ module CsuMetadata
     raise 'No admin set defined for this item.' if admin_set&.title&.first.nil?
 
     assign_campus(admin_set.title.first.to_s)
+    set_year
 
     super
+  end
+
+  protected
+
+  #
+  # Set year for work
+  #
+  def set_year
+    year = if self.date_issued.count.zero?
+             self.date_uploaded
+           else
+             self.date_issued.first
+           end
+    self.date_issued_year = extract_year(year)
+  end
+
+  #
+  # Extract four-digit year from date issued, for facet
+  #
+  # @param date_issued [String]
+  #
+  # @return [String]
+  #
+  def extract_year(date_issued)
+    # no date, no mas
+    return nil if date_issued.nil?
+
+    # found four-digit year, cool
+    match = /1[89][0-9]{2}|2[01][0-9]{2}/.match(date_issued)
+    return match[0] unless match.nil?
+
+    # date in another format, use chronic
+    date = Chronic.parse(date_issued, context: 'past')
+    now = Date.today
+    format = '%Y-%m-%d'
+
+    # chronic didn't find a date
+    return nil if date.nil?
+
+    # chronic returned current date, so a miss
+    return nil if date.strftime(format) == now.strftime(format)
+
+    # year way out of range, likely a typo
+    year = date.year
+    return nil if year < 1900 || year > (Date.today.year + 5)
+
+    year.to_s # actual extracted year!
   end
 end
