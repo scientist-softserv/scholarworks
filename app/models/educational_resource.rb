@@ -27,13 +27,4 @@ class EducationalResource < ActiveFedora::Base
   def creator= values
     super OrderedStringHelper.serialize(values)
   end
-
-  protected
-
-  def update_fields
-    super
-    
-    # assign main resource type from local resource type
-    self.resource_type = resource_type_educational_resource
-  end
 end
