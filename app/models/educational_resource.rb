@@ -36,4 +36,8 @@ class EducationalResource < ActiveFedora::Base
   def contributor= values
     super sanitize_n_serialize(values)
   end
+
+  def update_fields
+
+  end
 end

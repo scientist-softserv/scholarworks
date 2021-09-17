@@ -64,4 +64,8 @@ class Thesis < ActiveFedora::Base
   def committee_member= values
     super sanitize_n_serialize(values)
   end
+
+  def update_fields
+
+  end
 end

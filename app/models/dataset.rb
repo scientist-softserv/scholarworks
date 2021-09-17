@@ -40,5 +40,8 @@ class Dataset < ActiveFedora::Base
     super sanitize_n_serialize(values)
   end
 
+  def update_fields
+
+  end
 end
 

@@ -67,4 +67,8 @@ class Publication < ActiveFedora::Base
   def editor= values
     super sanitize_n_serialize(values)
   end
+
+  def update_fields
+
+  end
 end
