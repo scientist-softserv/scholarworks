@@ -37,6 +37,10 @@ class SolrDocument
     self[Solrizer.solr_name('advisor')]
   end
 
+  def alternative_title
+    self[Solrizer.solr_name('alternative_title')]
+  end
+
   def bibliographic_citation
     self[Solrizer.solr_name('bibliographic_citation')]
   end
