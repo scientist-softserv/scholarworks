@@ -55,4 +55,8 @@ class Thesis < ActiveFedora::Base
   def committee_member= values
     super OrderedStringHelper.serialize(values)
   end
+
+  def update_fields
+
+  end
 end
