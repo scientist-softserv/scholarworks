@@ -40,13 +40,5 @@ class Dataset < ActiveFedora::Base
     super sanitize_n_serialize(values)
   end
 
-  protected
-
-  def update_fields
-    super
-
-    # assign main resource type from local resource type
-    self.resource_type = resource_type_dataset
-  end
 end
 

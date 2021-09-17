@@ -67,13 +67,4 @@ class Publication < ActiveFedora::Base
   def editor= values
     super sanitize_n_serialize(values)
   end
-
-  protected
-
-  def update_fields
-    super
-
-    # assign main resource type from local resource type
-    self.resource_type = resource_type_publication
-  end
 end

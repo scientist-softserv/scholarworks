@@ -18,6 +18,9 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|
+    # so super long queries don't cause http 414 errors
+    config.http_method = :post
+
     config.view.gallery.partials = %i[index_header index]
     config.view.masonry.partials = [:index]
     config.view.slideshow.partials = [:index]
