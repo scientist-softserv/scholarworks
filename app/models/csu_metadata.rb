@@ -176,13 +176,14 @@ module CsuMetadata
   #
   # Save this work
   #
-  def save
+  def save(*options)
     raise 'No admin set defined for this item.' if admin_set&.title&.first.nil?
 
     assign_campus(admin_set.title.first.to_s)
     set_year
 
-    super
+    Rails.logger.warn options
+    super(*options)
   end
 
   def sanitize_n_serialize(values)
