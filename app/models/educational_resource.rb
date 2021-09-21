@@ -11,6 +11,7 @@ class EducationalResource < ActiveFedora::Base
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
+  validates :creator, presence: { message: 'Your work must have an author.' }
 
   property :resource_type_educational_resource, predicate: ::RDF::Vocab::DC.type do |index|
     index.as :stored_searchable
@@ -25,7 +26,15 @@ class EducationalResource < ActiveFedora::Base
   end
 
   def creator= values
-    super OrderedStringHelper.serialize(values)
+    super sanitize_n_serialize(values)
+  end
+
+  def contributor
+    OrderedStringHelper.deserialize(super)
+  end
+
+  def contributor= values
+    super sanitize_n_serialize(values)
   end
 
   def update_fields

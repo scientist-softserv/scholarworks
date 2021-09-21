@@ -10,6 +10,7 @@ module CalState
       # Compares old and new metadata files and creates a transaction file
       #
       class Transaction
+        include Utilities
         #
         # @param campus [String]       campus slug
         # @param model [String]        model name
@@ -149,7 +150,7 @@ module CalState
         # @return [Array]
         #
         def to_array(value)
-          is_multi?(value) ? value.split('|') : []
+          is_multi?(value) ? value.split(separator) : [value]
         end
 
         #
@@ -158,7 +159,7 @@ module CalState
         def is_multi?(value)
           return false if value.nil?
 
-          value.include?('|')
+          value.include?(separator)
         end
 
         #
