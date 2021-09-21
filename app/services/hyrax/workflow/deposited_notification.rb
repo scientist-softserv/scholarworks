@@ -9,12 +9,10 @@ module Hyrax
       end
 
       def message
+        handle = 'http://hdl.handle.net/' + ENV['HS_PREFIX'] + '/' + work_id
         text = "#{title} (#{link_to work_id, document_path}) was approved by " \
-          "#{user.name} (#{user.email})"
-        unless document.handle.to_s.empty?
-          text += ' and has been assigned a permanent URL: ' +
-            document.handle.to_s + "\n\n"
-        end
+               "#{user.name} (#{user.email}) and will be assigned the " \
+               'permanent URL: ' + handle + "\n\n"
         text + comment
       end
 

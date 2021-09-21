@@ -195,6 +195,9 @@ module CsuMetadata
     # no date, no mas
     return nil if date_issued.nil?
 
+    # make sure this is a string
+    date_issued = date_issued.to_s
+
     # found four-digit year, cool
     match = /1[89][0-9]{2}|2[01][0-9]{2}/.match(date_issued)
     return match[0] unless match.nil?

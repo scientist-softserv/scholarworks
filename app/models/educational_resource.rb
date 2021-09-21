@@ -27,4 +27,8 @@ class EducationalResource < ActiveFedora::Base
   def creator= values
     super OrderedStringHelper.serialize(values)
   end
+
+  def update_fields
+
+  end
 end

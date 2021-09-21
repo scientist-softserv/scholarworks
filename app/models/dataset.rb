@@ -31,5 +31,8 @@ class Dataset < ActiveFedora::Base
     super OrderedStringHelper.serialize(values)
   end
 
+  def update_fields
+
+  end
 end
 
