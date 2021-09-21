@@ -112,7 +112,9 @@ module CalState
           attributes.each do |key, value|
             next unless attribute_names.include?(key)
 
-            values << get_value(value, true)
+            value = prep_values(value)
+            value = prep_person(value) if is_person_field?(key)
+            values << value
           end
           values
         end

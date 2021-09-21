@@ -38,7 +38,7 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       qt: 'search',
       rows: 10,
-      qf: 'title_tesim description_tesim creator_tesim keyword_tesim'
+      qf: 'title_tesim description_tesim creator_name_tesim keyword_tesim'
     }
 
     # solr field configuration for document/show views
@@ -54,6 +54,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('campus', :facetable), label: 'Campus', limit: 10
     config.add_facet_field solr_name('department', :facetable), label: 'Department', limit: 5
     config.add_facet_field solr_name('degree_level', :facetable), label: 'Degree Level', limit: 5
+    config.add_facet_field solr_name('discipline', :facetable), label: 'Discipline', limit: 5, helper_method: :render_discipline_name
 
     # config.add_facet_field solr_name("advisor", :facetable), label: "Advisor", limit: 5
     # config.add_facet_field solr_name("committee_member", :facetable), label: "Committee Member", limit: 5
@@ -121,6 +122,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('campus', :stored_searchable), label: 'Campus'
     config.add_show_field solr_name('college', :stored_searchable), label: 'College'
     config.add_show_field solr_name('department', :stored_searchable), label: 'Department'
+    config.add_show_field solr_name('discipline', :stored_searchable), label: 'Discipline'
     config.add_show_field solr_name('degree_level', :stored_searchable), label: 'Degree Level'
     config.add_show_field solr_name('degree_name', :stored_searchable), label: 'Degree Name'
     config.add_show_field solr_name('editor', :stored_searchable), label: 'Editor'
@@ -175,7 +177,8 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('creator') do |field|
-      solr_name = solr_name('creator', :stored_searchable)
+      solr_name = solr_name('creator_name', :stored_searchable)
+      Rails.logger.warn "CatalogController:add_search_field creator solr_name #{solr_name}"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -349,6 +352,14 @@ class CatalogController < ApplicationController
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
+      }
+    end
+
+    config.add_search_field('discipline') do |field|
+      solr_name = solr_name('discipline', :stored_searchable)
+      field.solr_local_parameters = {
+          qf: solr_name,
+          pf: solr_name
       }
     end
 

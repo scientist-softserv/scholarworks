@@ -14,6 +14,7 @@ class Publication < ActiveFedora::Base
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
+  validates :creator, presence: { message: 'Your work must have an author.' }
 
   property :editor, predicate: ::RDF::Vocab::MARCRelators.edt do |index|
     index.as :stored_searchable
@@ -56,7 +57,15 @@ class Publication < ActiveFedora::Base
   end
 
   def creator= values
-    super OrderedStringHelper.serialize(values)
+    super sanitize_n_serialize(values)
+  end
+
+  def editor
+    OrderedStringHelper.deserialize(super)
+  end
+
+  def editor= values
+    super sanitize_n_serialize(values)
   end
 
   def update_fields

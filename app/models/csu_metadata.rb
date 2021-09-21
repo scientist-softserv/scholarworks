@@ -140,6 +140,21 @@ module CsuMetadata
     property :time_period, predicate: ::RDF::Vocab::DC.temporal do |index|
       index.as :stored_searchable, :facetable
     end
+
+    property :discipline, predicate: ::RDF::Vocab::DC.subject, multiple: true do |index|
+      index.as :stored_searchable, :facetable
+    end
+
+    def discipline= values
+      saved_values = []
+      values.each do |v|
+        next if DisciplineService::DISCIPLINES[v].nil?
+
+        saved_values << v
+      end
+      super saved_values.uniq
+    end
+
   end
 
   def handle_suffix
@@ -161,14 +176,25 @@ module CsuMetadata
   #
   # Save this work
   #
-  def save
+  def save(*options)
     raise 'No admin set defined for this item.' if admin_set&.title&.first.nil?
 
     assign_campus(admin_set.title.first.to_s)
     set_year
 
-    super
+    Rails.logger.warn options
+    super(*options)
   end
+
+  def sanitize_n_serialize(values)
+    full_sanitizer = Rails::Html::FullSanitizer.new
+    sanitized_values = Array.new(values.size, '')
+    values.each_with_index do |v, i|
+      sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
+    end
+    OrderedStringHelper.serialize(sanitized_values)
+  end
+
 
   protected
 

@@ -1,0 +1,140 @@
+<% model_type = f.object.model.class.to_s.underscore %>
+<% if model_type == 'collection' %>
+  <%= f.input key, as: :multi_value, input_html: { class: 'form-control' }, required: f.object.required?(key) %>
+<% else %>
+  <%= render "shared/composite_person",
+             f: f,
+             model_type: model_type,
+             composite_person: f.object.creator,
+             key: key,
+             key_text: key,
+             help_block_str: t('simple_form.hints.defaults.creator') %>
+  <script type="text/javascript" charset="utf-8">
+    /*
+      model_type = publication, thesis, etc
+      composite_person is the actual object of creator, contributor
+      key is a string with value of creator, contributor, etc
+      which would match to person_type as an parameter for most of the routines
+    */
+
+    // creator
+    function invalid_creator() {
+      let invalid = true;
+      $('.creator_name').each(function () {
+        if ($.trim($(this).val()) != '') {
+          invalid = false;
+          return false;
+        }
+      })
+      return invalid;
+    }
+
+    function creator_name_change() {
+      toggle_submit(invalid_creator());
+    }
+
+    function post_add_creator() {
+      $('.creator_name').on('change', creator_name_change);
+      post_add_person();
+    }
+
+    // function to execute after remove to do any adjustment not just the count
+    function post_remove_creator() {
+      toggle_submit(invalid_creator());
+    }
+
+    function generate_creator() {
+      return generate_person('creator', true);
+    }
+
+    // only one save_handler for submit button event handler
+    if (typeof save_handler !== 'function') {
+        save_handler = function(event) {
+            // comment this to test server ORCID validation by remove the condition invalid_orcid
+            if (invalid_orcid()) {
+                event.preventDefault();
+                toggle_submit(true);
+                return;
+            }
+
+            if (typeof invalid_date_issued === 'function') {
+                if (invalid_date_issued()) {
+                    event.preventDefault();
+                    toggle_submit(true);
+                    return;
+                }
+            }
+
+            // serialize creator
+            serialize_person('creator');
+
+            // serialize contributor if field exists
+            if (window['contributor_cnt'] !== undefined) {
+                serialize_person('contributor');
+            }
+
+            // serialize editor if field exists
+            if (window['editor_cnt'] !== undefined) {
+                serialize_person('editor');
+            }
+
+            // serialize advisor if field exists
+            if (window['advisor_cnt'] !== undefined) {
+                serialize_person('advisor');
+            }
+
+            // serialize committee_member if field exists
+            if (window['committee_member_cnt'] !== undefined) {
+                serialize_person('committee_member');
+            }
+
+            $('.date_issued_div').each(function () {
+                let index = $(this).prop('id').substring($(this).prop('id').lastIndexOf('_') + 1);
+                let date_issued_str = $('#date_issued_year_' + index).val();
+                let month = $('#date_issued_month_' + index).val();
+                let day = $('#date_issued_day_' + index).val();
+                if (month != '' && day != '') {
+                    if (Number(month) < 10) {
+                        month = '0' + month;
+                    }
+                    if (Number(day) < 10) {
+                        day = '0' + day;
+                    }
+                    date_issued_str = date_issued_str + '-' + month + '-' + day;
+                }
+                $('#date_issued_' + index).val(date_issued_str);
+            });
+
+            $('.discipline_hidden').each(function () {
+                let discipline_val = '';
+                let list = $(this).nextAll();
+                if (list !== undefined) {
+                    let div_select = $(list[list.length - 1]).last();
+                    discipline_val = div_select.find('select').val();
+                    if (discipline_val == '' && list.length > 1) {
+                        discipline_val = $(list[list.length - 2]).find('select').val();
+                    }
+                }
+                $(this).val(discipline_val);
+            });
+        }
+    }
+
+    $(function() {
+      deserialize_person('creator');
+
+      // extra validation to catch backend validation for empty author
+      if ($('div.alert.alert-danger.alert-dismissable').length) {
+        if (invalid_creator()) {
+          $('#empty_creator').removeClass('d-none');
+          $('#creator_content').addClass('has-error');
+        }
+      }
+
+      //$('#with_files_submit').submit(function (e) {
+      $('#with_files_submit').click(function (e) {
+        save_handler(e);
+      });
+    });
+  </script>
+<% end %>

@@ -193,6 +193,13 @@ class SolrDocument
     self[Solrizer.solr_name('time_period')]
   end
 
+  def discipline
+    self[Solrizer.solr_name('discipline')]
+  end
+
+  def creator_name
+    self['creator_name_tesim']
+  end
 
   # blacklight_oai_provider mapping
   field_semantics.merge!(
@@ -218,4 +225,5 @@ class SolrDocument
     type: %w[resource_type_tesim],
     campus: %w[campus_tesim]
   )
+
 end
