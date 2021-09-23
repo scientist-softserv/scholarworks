@@ -2,58 +2,42 @@
 en:
   activefedora:
     models:
-      dataset: "Research Data"
-      educational_resource: "Open Educational Resource"
-      publication: "Publication"
-      thesis: "Student Research"
+      dataset: Research Data
+      educational_resource: Open Educational Resource
+      publication: Publication
+      thesis: Student Research
+
   blacklight:
     search:
       fields:
         facet:
-          admin_set_sim: "Administrative Set"
-          based_near_sim: Location
+          admin_set: Administrative Set
+          advisor_sim: Advisor
+          campus_sim: Campus
+          committee_member_sim: Committee member
+          contributor_sim: Contributor
           creator_sim: Creator
-          file_format_sim: Format
-          generic_type_sim: Type
+          description_note: Notes
+          discipline_sim: Discipline
+          editor_sim: Editor
           has_model_ssim: Collection
+          granting_institution_sim: Granting institution
+          identifier_tesim: Identifier
           keyword_sim: Keyword
           language_sim: Language
           publisher_sim: Publisher
           subject_sim: Subject
-        index:
-          based_near_tesim: Location
-          contributor_tesim: Contributor
-          creator_tesim: Creator
-          date_created_tesim: "Date Created"
-          date_modified_dtsi: "Date Modified"
-          date_uploaded_dtsi: "Date Uploaded"
-          description_tesim: Description
-          file_format_tesim: "File Format"
-          has_model_ssim: Collection
-          identifier_tesim: Identifier
-          keyword_tesim: Keyword
-          language_tesim: Language
-          publisher_tesim: Publisher
-          rights_tesim: Rights
-          subject_tesim: Subject
         show:
-          admin_set: "Administrative Set"
-          based_near_tesim: Location
-          contributor_tesim: Contributor
-          creator_tesim: Creator
-          date_created_tesim: "Date Created"
-          date_modified_dtsi: "Date Modified"
-          date_uploaded_dtsi: "Date Uploaded"
-          description_tesim: Description
-          file_format_tesim: "File Format"
+          admin_set: Administrative Set
+          description_note: Notes
           has_model_ssim: Collection
-          identifier_tesim: Identifier
-          keyword_tesim: Keyword
-          language_tesim: Language
-          publisher_tesim: Publisher
-          rights_tesim: Rights
-          subject_tesim: Subject
-          title_tesim: Title
+          doi: DOI
+          identifier_uri: Identifier URI
+          issn: ISSN
+          isbn: ISBN
+          oclcno: OCLC no.
+          rights_uri: Rights URI
+
   hyrax:
     account_name: "My Institution Account Id"
     directory:
@@ -125,7 +109,6 @@ en:
       defaults:
         creator: Creator
         committee_member: Committee member(s)
-        description_note: Description Note
         doi: DOI
         identifier: Other identifier
         identifier_uri: Identifier URI
@@ -136,7 +119,4 @@ en:
         resource_type_dataset: Type of Work
         resource_type_educational_resource: Type of Work
         resource_type_publication: Type of Work
-        rights_holder: Rights Holder
-        rights_statement: Rights Statement
-        rights_note: Rights Note
         rights_uri: Rights URI
