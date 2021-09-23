@@ -6,6 +6,7 @@ en:
       educational_resource: Open Educational Resource
       publication: Publication
       thesis: Student Research
+
   blacklight:
     search:
       fields:
@@ -16,6 +17,7 @@ en:
           committee_member_sim: Committee member
           contributor_sim: Contributor
           creator_sim: Creator
+          description_note: Notes
           discipline_sim: Discipline
           editor_sim: Editor
           has_model_ssim: Collection
@@ -27,6 +29,7 @@ en:
           subject_sim: Subject
         show:
           admin_set: Administrative Set
+          description_note: Notes
           has_model_ssim: Collection
           doi: DOI
           identifier_uri: Identifier URI
