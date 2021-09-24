@@ -2,58 +2,42 @@
 en:
   activefedora:
     models:
-      dataset: "Research Data"
-      educational_resource: "Open Educational Resource"
-      publication: "Publication"
-      thesis: "Student Research"
+      dataset: Research Data
+      educational_resource: Open Educational Resource
+      publication: Publication
+      thesis: Student Research
+
   blacklight:
     search:
       fields:
         facet:
-          admin_set_sim: "Administrative Set"
-          based_near_sim: Location
+          admin_set: Administrative Set
+          advisor_sim: Advisor
+          campus_sim: Campus
+          committee_member_sim: Committee member
+          contributor_sim: Contributor
           creator_sim: Creator
-          file_format_sim: Format
-          generic_type_sim: Type
+          description_note: Notes
+          discipline_sim: Discipline
+          editor_sim: Editor
           has_model_ssim: Collection
+          granting_institution_sim: Granting institution
+          identifier_tesim: Identifier
           keyword_sim: Keyword
           language_sim: Language
           publisher_sim: Publisher
           subject_sim: Subject
-        index:
-          based_near_tesim: Location
-          contributor_tesim: Contributor
-          creator_tesim: Creator
-          date_created_tesim: "Date Created"
-          date_modified_dtsi: "Date Modified"
-          date_uploaded_dtsi: "Date Uploaded"
-          description_tesim: Description
-          file_format_tesim: "File Format"
-          has_model_ssim: Collection
-          identifier_tesim: Identifier
-          keyword_tesim: Keyword
-          language_tesim: Language
-          publisher_tesim: Publisher
-          rights_tesim: Rights
-          subject_tesim: Subject
         show:
-          admin_set: "Administrative Set"
-          based_near_tesim: Location
-          contributor_tesim: Contributor
-          creator_tesim: Creator
-          date_created_tesim: "Date Created"
-          date_modified_dtsi: "Date Modified"
-          date_uploaded_dtsi: "Date Uploaded"
-          description_tesim: Description
-          file_format_tesim: "File Format"
+          admin_set: Administrative Set
+          description_note: Notes
           has_model_ssim: Collection
-          identifier_tesim: Identifier
-          keyword_tesim: Keyword
-          language_tesim: Language
-          publisher_tesim: Publisher
-          rights_tesim: Rights
-          subject_tesim: Subject
-          title_tesim: Title
+          doi: DOI
+          identifier_uri: Identifier URI
+          issn: ISSN
+          isbn: ISBN
+          oclcno: OCLC no.
+          rights_uri: Rights URI
+
   hyrax:
     account_name: "My Institution Account Id"
     directory:
@@ -83,10 +67,10 @@ en:
         college: "The college or school within the university to which the creator of the work is affiliated. Use Ctrl or Command key to select more than one for interdisciplinary works."
         committee_member: "Enter committee members in last name, first name order, i.e. 'Smith, Jane E.' To enter multiple names, select Add another Committee Member."
         contributor: "A person or group you want to recognize for playing a role in the creation of the work, but not the primary role."
-        creator: "The person or organization who created the work.  Personal names should be entered with the last name first (e.g. Smith, John E., or Smith, Mary E. Junior, Associated Students of San Francisco State University).  If there are multiple authors, use the “Add another Creator” option for each additional author."
+        creator: "The person or organization who created the work.  Personal names should be entered with the last name first (e.g. Smith, John E., or Smith, Mary E. Junior, Associated Students of San Francisco State University).  If there are multiple creators, use the “Add another Creator” option for each additional author."
         date_copyright: "Date of copyright, enter in YYYY format, e.g. 2019."
         date_created: "The date on which the work was created."
-        date_issued: "Date of publication. If work is not published, then record the date deposited in ScholarWorks. Enter all known information following the YYYY-MM-DD format. Record at minimum the year (i.e. 2019)."
+        date_issued: "Date of publication. If work is not published, then record the date deposited in ScholarWorks."
         date_published: "Date of publication. If work is not published, then record the date deposited in ScholarWorks. Enter all known information following the YYYY-MM-DD format. Record at minimum the year (i.e. 2019)."
         degree_level: "Select from the drop-down menu."
         degree_name: "The name of the degree awarded as a result of the resource."
@@ -123,9 +107,8 @@ en:
         time_period: "The temporal extent reflected in the resource."
     labels:
       defaults:
-        creator: Author
+        creator: Creator
         committee_member: Committee member(s)
-        description_note: Description Note
         doi: DOI
         identifier: Other identifier
         identifier_uri: Identifier URI
@@ -136,9 +119,4 @@ en:
         resource_type_dataset: Type of Work
         resource_type_educational_resource: Type of Work
         resource_type_publication: Type of Work
-        rights_holder: Rights Holder
-        rights_statement: Rights Statement
-        rights_note: Rights Note
         rights_uri: Rights URI
-  sword:
-    treatment: "The package has been deposited into ScholarWorks. Each file has been unpacked and provided with a unique identifier. The metadata in the manifest has been extracted and attached to the item, which has been provided with an identifier leading to an HTML splash page."

@@ -11,13 +11,14 @@ class Thesis < ActiveFedora::Base
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
+  validates :creator, presence: { message: 'Your work must have an author.' }
 
   property :advisor, predicate: ::RDF::Vocab::MARCRelators.ths do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   property :committee_member, predicate: ::RDF::Vocab::MARCRelators.ctb do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable
   end
 
   property :degree_level, predicate: ::RDF::Vocab::DC.educationLevel, multiple: false do |index|
@@ -45,7 +46,15 @@ class Thesis < ActiveFedora::Base
   end
 
   def creator= values
-    super OrderedStringHelper.serialize(values)
+    super sanitize_n_serialize(values)
+  end
+
+  def advisor
+    OrderedStringHelper.deserialize(super)
+  end
+
+  def advisor= values
+    super sanitize_n_serialize(values)
   end
 
   def committee_member
@@ -53,16 +62,10 @@ class Thesis < ActiveFedora::Base
   end
 
   def committee_member= values
-    super OrderedStringHelper.serialize(values)
+    super sanitize_n_serialize(values)
   end
-
-  protected
 
   def update_fields
-    super
 
-    # assign main resource type from local resource type
-    self.resource_type = resource_type_thesis
   end
-
 end

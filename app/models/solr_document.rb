@@ -33,10 +33,6 @@ class SolrDocument
     self[Solrizer.solr_name('abstract')]
   end
 
-  def alternative_title
-    self[Solrizer.solr_name('alternative_title')]
-  end
-
   def advisor
     self[Solrizer.solr_name('advisor')]
   end
@@ -75,6 +71,10 @@ class SolrDocument
 
   def date_issued
     self[Solrizer.solr_name('date_issued')]
+  end
+
+  def date_issued_year
+    self[Solrizer.solr_name('date_issued_year')]
   end
 
   def date_submitted
@@ -193,6 +193,13 @@ class SolrDocument
     self[Solrizer.solr_name('time_period')]
   end
 
+  def discipline
+    self[Solrizer.solr_name('discipline')]
+  end
+
+  def creator_name
+    self['creator_name_tesim']
+  end
 
   # blacklight_oai_provider mapping
   field_semantics.merge!(
@@ -218,4 +225,5 @@ class SolrDocument
     type: %w[resource_type_tesim],
     campus: %w[campus_tesim]
   )
+
 end

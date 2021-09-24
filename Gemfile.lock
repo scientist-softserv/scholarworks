@@ -168,6 +168,7 @@ GEM
       mime-types (>= 1.16)
       ssrf_filter (~> 1.0)
     childprocess (3.0.0)
+    chronic (0.10.2)
     clipboard-rails (1.7.1)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -873,6 +874,7 @@ DEPENDENCIES
   blacklight_oai_provider
   byebug
   capybara (~> 2.13)
+  chronic
   coffee-rails (~> 4.2)
   colorize
   config
@@ -914,4 +916,4 @@ DEPENDENCIES
   willow_sword!
 
 BUNDLED WITH
-   2.1.4
+   2.2.15

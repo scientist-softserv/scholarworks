@@ -37,6 +37,10 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
+    property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false do |index|
+      index.as :stored_searchable
+    end
+
     property :date_available, predicate: ::RDF::Vocab::DC.available do |index|
       index.as :stored_searchable, :facetable
     end
@@ -46,6 +50,10 @@ module CsuMetadata
     end
 
     property :date_issued, predicate: ::RDF::Vocab::DC.issued do |index|
+      index.as :stored_searchable, :facetable
+    end
+
+    property :date_issued_year, predicate: ::RDF::Vocab::SCHEMA.datePublished, multiple: false do |index|
       index.as :stored_searchable, :facetable
     end
 
@@ -65,6 +73,10 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
+      index.as :stored_searchable
+    end
+
     property :extent, predicate: ::RDF::Vocab::DC.extent do |index|
       index.as :stored_searchable
     end
@@ -81,7 +93,7 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
-    property :issn, predicate: ::RDF::Vocab::SCHEMA.issn do |index|
+    property :is_part_of, predicate: ::RDF::Vocab::DC.relation do |index|
       index.as :stored_searchable
     end
 
@@ -89,7 +101,7 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
-    property :is_part_of, predicate: ::RDF::Vocab::DC.relation do |index|
+    property :issn, predicate: ::RDF::Vocab::SCHEMA.issn do |index|
       index.as :stored_searchable
     end
 
@@ -98,6 +110,10 @@ module CsuMetadata
     end
 
     property :oclcno, predicate: ::RDF::Vocab::BIBO.oclcnum do |index|
+      index.as :stored_searchable
+    end
+
+    property :provenance, predicate: ::RDF::Vocab::DC.provenance do |index|
       index.as :stored_searchable
     end
 
@@ -125,17 +141,20 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
-    property :provenance, predicate: ::RDF::Vocab::DC.provenance do |index|
-      index.as :stored_searchable
+    property :discipline, predicate: ::RDF::Vocab::DC.subject, multiple: true do |index|
+      index.as :stored_searchable, :facetable
     end
 
-    property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false do |index|
-      index.as :stored_searchable
+    def discipline= values
+      saved_values = []
+      values.each do |v|
+        next if DisciplineService::DISCIPLINES[v].nil?
+
+        saved_values << v
+      end
+      super saved_values.uniq
     end
 
-    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
-      index.as :stored_searchable
-    end
   end
 
   def handle_suffix
@@ -144,17 +163,86 @@ module CsuMetadata
     handle.map { |url| url.split('/')[-1] }
   end
 
+  #
+  # Assign campus name based on admin set
+  #
+  # @param admin_set_title [String]  name of admin set
+  #
   def assign_campus(admin_set_title)
-    # assign campus name based on admin set
     campus = Hyrax::CampusService.get_campus_from_admin_set(admin_set_title)
     self.campus = [campus]
   end
 
-  protected
-
-  def update_fields
+  #
+  # Save this work
+  #
+  def save(*options)
     raise 'No admin set defined for this item.' if admin_set&.title&.first.nil?
 
     assign_campus(admin_set.title.first.to_s)
+    set_year
+
+    Rails.logger.warn options
+    super(*options)
+  end
+
+  def sanitize_n_serialize(values)
+    full_sanitizer = Rails::Html::FullSanitizer.new
+    sanitized_values = Array.new(values.size, '')
+    values.each_with_index do |v, i|
+      sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
+    end
+    OrderedStringHelper.serialize(sanitized_values)
+  end
+
+
+  protected
+
+  #
+  # Set year for work
+  #
+  def set_year
+    year = if self.date_issued.count.zero?
+             self.date_uploaded
+           else
+             self.date_issued.first
+           end
+    self.date_issued_year = extract_year(year)
+  end
+
+  #
+  # Extract four-digit year from date issued, for facet
+  #
+  # @param date_issued [String]
+  #
+  # @return [String]
+  #
+  def extract_year(date_issued)
+    # no date, no mas
+    return nil if date_issued.nil?
+
+    # make sure this is a string
+    date_issued = date_issued.to_s
+
+    # found four-digit year, cool
+    match = /1[89][0-9]{2}|2[01][0-9]{2}/.match(date_issued)
+    return match[0] unless match.nil?
+
+    # date in another format, use chronic
+    date = Chronic.parse(date_issued, context: 'past')
+    now = Date.today
+    format = '%Y-%m-%d'
+
+    # chronic didn't find a date
+    return nil if date.nil?
+
+    # chronic returned current date, so a miss
+    return nil if date.strftime(format) == now.strftime(format)
+
+    # year way out of range, likely a typo
+    year = date.year
+    return nil if year < 1900 || year > (Date.today.year + 5)
+
+    year.to_s # actual extracted year!
   end
 end
