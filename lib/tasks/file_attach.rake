@@ -2,7 +2,7 @@
 
 namespace :calstate do
   desc 'Attach a file to an existing record'
-  task attach_file: :environment do
+  task file_attach: :environment do
     filename = '/home/ec2-user/data/some-file.mp4'
     id = '000000000'
 
