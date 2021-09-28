@@ -56,7 +56,7 @@
         console.log('initialize_date_issued index ' + index + ' date_str [' + date_str +']');
 
         // generate the option year dynamically
-        for (let y = 0; y < 20; y++) {
+        for (let y = 0; y <= (cur_year - 1940); y++) {
             let prev_year = document.createElement("option");
             prev_year.value = cur_year - y;
             prev_year.textContent = cur_year - y;
