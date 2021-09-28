@@ -54,7 +54,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('campus', :facetable), label: 'Campus', limit: 10
     config.add_facet_field solr_name('department', :facetable), label: 'Department', limit: 5
     config.add_facet_field solr_name('degree_level', :facetable), label: 'Degree Level', limit: 5
-    config.add_facet_field solr_name('discipline', :facetable), label: 'Discipline', limit: 5, helper_method: :render_discipline_name
+    # config.add_facet_field solr_name('discipline', :facetable), label: 'Discipline', limit: 5, helper_method: :render_discipline_name
 
     # config.add_facet_field solr_name("advisor", :facetable), label: "Advisor", limit: 5
     # config.add_facet_field solr_name("committee_member", :facetable), label: "Committee Member", limit: 5
