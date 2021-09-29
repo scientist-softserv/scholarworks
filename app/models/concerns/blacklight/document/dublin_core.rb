@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
-##
-# Monkey-patched this file from the Blacklight OAI-PMH Provider gem
-# in order to add 'campus' as an allowed field (see dublin_core_field_names)
-#
-
 require 'builder'
+
+##
+# Monkey-patched this file from the Blacklight OAI-PMH Provider gem to:
+# (a) add 'campus' as an allowed field (see dublin_core_field_names)
+# (b) author name only from composite author fields
+#
 
 # This module provide Dublin Core export based on the document's semantic values
 module Blacklight::Document::DublinCore
   def self.extended(document)
     # Register our exportable formats
-    Blacklight::Document::DublinCore.register_export_formats( document )
+    Blacklight::Document::DublinCore.register_export_formats(document)
   end
 
   def self.register_export_formats(document)
@@ -21,6 +22,7 @@ module Blacklight::Document::DublinCore
   end
 
   def dublin_core_field_names
+    # customization: add campus
     [:contributor, :coverage, :creator, :date, :description, :format, :identifier, :language, :publisher, :relation,
      :rights, :source, :subject, :title, :type, :campus]
   end
@@ -35,6 +37,11 @@ module Blacklight::Document::DublinCore
              'xsi:schemaLocation' => %(http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd)) do
       self.to_semantic_values.select { |field, values| dublin_core_field_name? field  }.each do |field,values|
         Array.wrap(values).each do |v|
+          # customization: only name from composite person
+          if %i[creator contributor].include?(field)
+            person = Person.new.from_hyrax(v)
+            v = person.name
+          end
           xml.tag! "dc:#{field}", v
         end
       end
