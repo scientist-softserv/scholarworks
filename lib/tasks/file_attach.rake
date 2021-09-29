@@ -2,7 +2,7 @@
 
 namespace :calstate do
   desc 'Attach a file to an existing record'
-  task attach_file: :environment do
+  task file_attach: :environment do
     filename = '/home/ec2-user/data/some-file.mp4'
     id = '000000000'
 
@@ -10,7 +10,7 @@ namespace :calstate do
     uploaded_file = Hyrax::UploadedFile.create(file: file)
     uploaded_file.save
 
-    work = Publication.find(id)
+    work = ActiveFedora::Base.find(id)
     depositor = User.find_by_user_key('kcloud@calstate.edu')
     work.apply_depositor_metadata(depositor.user_key)
 

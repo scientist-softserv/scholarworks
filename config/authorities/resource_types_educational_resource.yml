@@ -27,7 +27,7 @@ terms:
     term: Online Course Module
   - id: Open Textbook
     term: Open Textbook
-  - id: Photographic Image - Instructional
+  - id: Photographic Image
     term: Photographic Image
   - id: Presentation
     term: Presentation
@@ -45,7 +45,7 @@ terms:
     term: Tutorial
   - id: Workshop and Training Material
     term: Workshop and Training Material
-  - id: Video - Instructional
-    term: Video - Instructional
+  - id: Video
+    term: Video
   - id: Other
     term: Other
