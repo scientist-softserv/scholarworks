@@ -25,10 +25,11 @@ module CalState
         #
         def run
           records = @doc.xpath("//record[@complete = 'false']")
+          x = 0
 
           # get each record that needs to be changed
           records.each do |record|
-
+            x += 1
             print record['id'] + ' . . . '
 
             begin
@@ -44,16 +45,32 @@ module CalState
               File.open(@log_file, 'a') do |f|
                 f.puts record['id'] + "\t" + change_record.changes.inspect
               end
-            rescue => e
-              raise e
 
+              print "done!\n"
+
+            rescue Net::ReadTimeout => e
+              raise e # stop if Fedora is down or something
+
+            rescue StandardError => e
               # error log
               File.open(@error_log, 'a') do |f|
                 f.puts record['id'] + "\t" + e.message
               end
+              print 'ERROR!'
+              sleep 60
             end
 
-            print "done!\n"
+            # pause during work days
+            # if CalState::Metadata.should_throttle(x, 3)
+            #   puts "\n shhhhh . . . sleeping!\n\n"
+            #   sleep(180)
+            # end
+
+            # throttle
+            if (x % 30).zero?
+              puts "\n shhhhh . . . sleeping!\n\n"
+              sleep(120)
+            end
           end
         end
       end

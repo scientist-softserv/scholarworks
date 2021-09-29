@@ -14,6 +14,7 @@ module Hyrax
              :date_available,
              :date_copyright,
              :date_issued,
+             :date_issued_year,
              :date_submitted,
              :department,
              :description_note,
