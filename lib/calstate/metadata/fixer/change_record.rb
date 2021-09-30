@@ -178,7 +178,15 @@ module CalState
         # Fix degree name (and other stuff) in degree level field
         #
         def fix_degree_level
-          return if @work.degree_level.blank?
+
+          if @work.degree_level.blank?
+            if @work.resource_type.first == 'Masters Thesis'
+              @work.degree_level = 'Masters'
+            elsif @work.resource_type.first == 'Dissertation'
+              @work.degree_level = 'Doctoral'
+            end
+            return
+          end
 
           outliers = ['1973', '1', '1971', '1972', 'i',
                       'Graduate Project', 'Graduate certificate']
