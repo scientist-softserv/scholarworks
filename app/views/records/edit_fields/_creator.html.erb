@@ -51,7 +51,7 @@
     if (typeof save_handler !== 'function') {
         save_handler = function(event) {
             // comment this to test server ORCID validation by remove the condition invalid_orcid
-            if (invalid_orcid()) {
+            if (invalid_orcid() || invalid_description()) {
                 event.preventDefault();
                 toggle_submit(true);
                 return;
