@@ -11,7 +11,6 @@ class Thesis < ActiveFedora::Base
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
-  validates :creator, presence: { message: 'Your work must have an author.' }
 
   property :advisor, predicate: ::RDF::Vocab::MARCRelators.ths do |index|
     index.as :stored_searchable
@@ -63,6 +62,15 @@ class Thesis < ActiveFedora::Base
 
   def committee_member= values
     super sanitize_n_serialize(values)
+  end
+
+  # this method is to combined all multivalues of this field into a single one for the front end
+  def descriptions
+    combined_val = ''
+    description.each do |d|
+      combined_val << d
+    end
+    combined_val
   end
 
   def update_fields
