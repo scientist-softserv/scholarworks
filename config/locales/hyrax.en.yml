@@ -73,7 +73,7 @@ en:
         date_issued: "Date of publication. If work is not published, then record the date deposited in ScholarWorks."
         date_published: "Date of publication. If work is not published, then record the date deposited in ScholarWorks. Enter all known information following the YYYY-MM-DD format. Record at minimum the year (i.e. 2019)."
         degree_level: "Select from the drop-down menu."
-        degree_name: "The name of the degree awarded as a result of the resource."
+        degree_name: "Enter degree name in capital letters with a period after each letter.  For example, M.A. or M.S."
         department: "Use Ctrl or Command key to select more than one for interdisciplinary works. If your department is not represented in this list, please email your <a href='https://scholarworks.calstate.edu/about'>ScholarWorks administrator</a>."
         description: "Description of the work. Examples include abstracts of a paper, a summary of a report or dataset, or any additional notes describing the content of the work."
         description_note: "FOR LIBRARY USE ONLY."
