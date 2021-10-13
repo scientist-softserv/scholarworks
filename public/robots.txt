@@ -1,1 +1,1 @@
-Sitemap: https://scholarworks.calstate.edu/sitemap.xml
+Sitemap: https://scholarworks.calstate.edu/sitemap/sitemap.xml
