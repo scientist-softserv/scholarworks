@@ -60,6 +60,16 @@ a {
 .navbar-inverse {
     background-color: #222 !important;
 }
+.csu-title {
+  display: block;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 180%;
+  padding: 20px;
+}
+.csu-title a, .csu-title a:hover, .csu-title a:visited {
+  color: #000;
+  text-decoration: none;
+}
 .breadcrumb {
     background-color: transparent;
     border: none;
@@ -111,20 +121,33 @@ a {
 }
 .csu-home-jumbotron {
     max-width: 34em;
-    margin: 0 auto;
     padding-top: 8%;
-    text-align: center;
 }
-.csu-search-wrapper {
-}
+
+/* search boxes */
+
 .csu-search-wrapper input {
-    border-color: #050939;
-    border-right: none;
+  border-color: #050939;
+  border-right: none;
+  padding: 22px;
 }
 .csu-search-wrapper #search-submit-header {
-    border-color: #050939;
-    border-left: 1 px solid #ddd;
+  border-color: #050939;
+  border-left: 1 px solid #ddd;
+  padding: 12px;
 }
+.csu-search-box input {
+  font-size: 1.8rem;
+  padding: 22px;
+}
+.csu-search-box .btn {
+  padding: 12px;
+}
+.csu-search-box .control-label {
+  display: none;
+}
+
+
 #search-submit-header {
     color: #333;
     background-color: #efef;
@@ -132,6 +155,7 @@ a {
 }
 .home-share-work {
     margin-top: 50px;
+    text-align: center;
 }
 .terms-of-use {
     font-size: 90%;
@@ -394,17 +418,18 @@ table.csu-contacts tr:nth-child(odd) {
 
 /* search results */
 
-.csu-search-box {
-    margin-top: 60px;
-    margin-bottom: 40px;
-    background-color: #efefef;
-    padding: 15px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.csu-search-area {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #efefef;
+}
+.csu-search-results {
+  margin-top: 20px;
 }
 #appliedParams {
     margin-top: -20px;
     margin-bottom: 20px;
+    background: none;
 }
 div.facets h3 {
     font-size: 16px;
