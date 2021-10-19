@@ -78,17 +78,24 @@ a {
 /* search boxes */
 
 .csu-search-wrapper input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border-color: #050939;
   border-right: none;
   padding: 22px;
 }
 .csu-search-wrapper #search-submit-header {
   border-color: #050939;
-  border-left: 1 px solid #ddd;
+  border-left: 1px solid #ddd;
   padding: 12px;
 }
+@media (max-width: 766px) {
+  .csu-search-wrapper {
+    text-align: center;
+  }
+}
 .csu-search-box input {
-  font-size: 1.8rem;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
   padding: 22px;
 }
 .csu-search-box .btn {
