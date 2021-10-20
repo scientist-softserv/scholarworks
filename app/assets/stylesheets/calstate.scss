@@ -452,7 +452,7 @@ ul.catalog li.document div.csu-document-title {
 .csu-document-title {
     overflow: hidden;
 }
-.list-thumbnail img[src*='downloads'] {
+.list-thumbnail img[src*='downloads'], img.representative-media[src*='downloads'] {
     border: 1px solid #ccc;
 }
 

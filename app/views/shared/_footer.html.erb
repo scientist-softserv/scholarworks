@@ -3,21 +3,25 @@
     <div class="row">
       <div class="col-sm-4">
         <h2>About Us</h2>
-        <p>ScholarWorks is supported by <a href="http://calstate.edu/library">Systemwide Digital Library Services</a> in collaboration with the <a href="http://libraries.calstate.edu/">CSU Libraries</a>.</p>
+        <p>ScholarWorks is supported by <a href="https://calstate.edu/library">Systemwide Digital Library Services</a>
+           in collaboration with the <a href="https://libraries.calstate.edu/">CSU Libraries</a>.</p>
         <ul>
-          <li>California State University</li>
+          <li><a href="https://calstate.edu">California State University</a></li>
           <li><%= link_to 'Contact us', hyrax.contact_form_index_path %></li>
-          <li>Accessibility Statement</li>
+          <li><a href="/about#accessibility">Accessibility Statement</a></li>
         </ul>
       </div>
       <div class="col-sm-4">
         <h2>About ScholarWorks</h2>
-        <p>ScholarWorks is a shared institutional repository that collects, preserves, and provides access to scholarship by research communities at The California State University. Collections include CSU faculty publications, student dissertations and theses, datasets, and teaching materials.</p>
+        <p>ScholarWorks is a shared institutional repository that collects, preserves, and provides access to
+           scholarship by research communities at The California State University. Collections include CSU faculty
+           publications, student dissertations and theses, datasets, and teaching materials.</p>
         <p>Powered by Samvera Hyrax <%= Hyrax::VERSION %></p>
       </div>
       <div class="col-sm-4">
         <h2>Upload your work</h2>
-        <p>Faculty, staff, and students at any CSU campus are encouraged to upload completed works to ScholarWorks. Read more about preparing your documents [link to directions] and <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path %>.</p>
+        <p>Faculty, staff, and students at any CSU campus are encouraged to upload works to ScholarWorks.
+           <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path %>.</p>
       </div>
     </div>
   </div>
