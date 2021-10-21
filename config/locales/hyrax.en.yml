@@ -49,6 +49,9 @@ en:
     institution_name_full: "California State University"
     product_name: ScholarWorks
     product_twitter_handle: "@csuscholarworks"
+    search:
+      button:
+        html: <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
     visibility:
       campus:
         note_html: Restrict access to campus
