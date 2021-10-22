@@ -16,16 +16,38 @@ namespace :calstate do
              Hyrax::CampusService.get_campus_name_from_id(campus)
            end
 
-    CalState::Metadata.models.each do |model|
-      results = campus.nil? ? model.all : model.where(campus: name)
-      results.each do |doc|
-        no_embargo = doc.embargo_release_date.nil?
-        next unless doc.visibility == 'restricted' && no_embargo
+    # find restricted results from solr
+    reader = CalState::Metadata::SolrReader.new
+    results = reader.find_restricted_records(name)
+    puts "Found #{results.count} records that are restricted."
 
-        doc.visibility = 'open'
-        doc.save
-        puts doc.id.to_s + ':' + doc.title.first.to_s
+    results.each do |solr_doc|
+      print 'Processing work ' + solr_doc['id'] + ' . . . '
+
+      begin
+        # get the fedora object
+        work = ActiveFedora::Base.find(solr_doc['id'])
+
+        # set visibility to public
+        work.visibility = 'open'
+
+        # remove embargo on work (replicates EmbargoActor)
+        unless work.embargo&.embargo_release_date.nil?
+          work.embargo_visibility!
+          work.deactivate_embargo!
+          work.embargo.save!
+          work.save!
+          abort
+        end
+
+        work.save!
+      rescue Ldp::Gone
+        print '[ GONE! ] . . . '
+      rescue ActiveFedora::ObjectNotFoundError
+        print '[ NOT FOUND! ] . . . '
       end
+
+      print "done!\n"
     end
   end
 end
