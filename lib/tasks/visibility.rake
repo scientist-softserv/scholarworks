@@ -11,23 +11,30 @@ require 'calstate/visibility'
 
 namespace :calstate do
   desc 'Update visibility of all attached files to work'
-  task :visibility, %i[input_file update model_type] => [:environment] do |_t, args|
+  task :visibility, %i[input_file] => [:environment] do |_t, args|
     input_file = args[:input_file] or raise 'No input file provided.'
-    model_type = args[:model_type] ||= 'thesis'
 
     viz = CalState::Visibility.new
-    model = CalState::Metadata.get_model_from_slug(model_type)
     x = 0
 
     viz.get_csv(input_file).each do |row|
       x += 1
-      puts "Processing work ID #{row['id']}"
-      model.where(id: row['id']).each do |work|
+      print "Processing work #{row['id']} . . . "
+
+      begin
+        work = ActiveFedora::Base.find(row['id'])
         viz.set_visibility(work, row['work_visibility'], row['file_visibility'])
-        if (x % 5).zero?
-          puts 'shhhh sleeping . . . . '
-          sleep(180)
-        end
+      rescue Ldp::Gone
+        print '[ GONE! ] . . . '
+      rescue ActiveFedora::ObjectNotFoundError
+        print '[ NOT FOUND! ] . . . '
+      end
+
+      print "done!\n"
+
+      if (x % 5).zero?
+        puts 'shhhh sleeping . . . . '
+        sleep(180)
       end
     end
   end
