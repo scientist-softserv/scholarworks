@@ -39,9 +39,9 @@
         <div class="csu-item-title">
           <% @presenter.title.each_with_index do |title, index| %>
             <% if index == 0 %>
-              <h1><%= title %></h1>
+              <h1><%= title.html_safe %></h1>
             <% else %>
-              <h2><%= title %></h2>
+              <h2><%= title.html.safe %></h2>
             <% end %>
           <% end %>
         </div>

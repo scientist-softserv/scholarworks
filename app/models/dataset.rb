@@ -48,6 +48,14 @@ class Dataset < ActiveFedora::Base
     combined_val
   end
 
+  def titles
+    combined_val = ''
+    title.each do |d|
+      combined_val << d
+    end
+    combined_val
+  end
+
   def update_fields
 
   end

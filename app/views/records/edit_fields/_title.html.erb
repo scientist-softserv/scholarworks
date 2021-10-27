@@ -1,0 +1,67 @@
+<% model_type = f.object.model.class.to_s.underscore %>
+<% if model_type == 'collection' %>
+  <% hint_title = t('simple_form.hints.collection.title') %>
+<% else %>
+  <% hint_title = t('simple_form.hints.defaults.title') %>
+
+  <script type="text/javascript">
+    $(function() {
+      tinymce.init({
+          setup: function (editor) {
+              editor.on('change', function (e) {
+                  toggle_submit(invalid_title());
+              });
+          },
+          selector: 'textarea.title_tinymce',
+          menubar: false,
+          statusbar: false,
+          toolbar1: "italic | undo redo",
+          relative_urls: false,
+      });
+    });
+
+    function invalid_title() {
+      /* will need to check to see if class has required in it if we have more
+         than one textarea tinymce where one of them is not required but for now
+         only one textarea tinymce description is rquired in the work except for collection.
+         let class_str = $('#<%= model_type %>_title').prop('class'); or loop through
+         $('.use_tinymce').each(function () {
+           let class_str = $('#' + $(this).prop('class'));
+           and check if it contains required string
+         });
+      */
+      let title_content = tinymce.get('<%= model_type %>_title').getContent();
+      if (title_content.length > 0) {
+        $('#empty_title').addClass('d-none');
+        $('#title_content').removeClass('has-error');
+        return false;
+      }
+      $('#empty_title').removeClass('d-none');
+      $('#title_content').addClass('has-error');
+      return true;
+    }
+  </script>
+<% end %>
+
+<div id="title_content" class="form-group managed <%= model_type %>_<%= key %> <% if f.object.required?(key) %>required<% end %>">
+  <label class="control-label <% if f.object.required?(key) %> required <% end %>">
+    <%= t('simple_form.labels.defaults.title') %>
+    <% if f.object.required?(key) %><span class="label label-info required-tag">required</span><% end %>
+  </label>
+  <% if model_type != 'collection' %>
+  <span id="empty_title" class="help-block d_none">Please enter a tittle.</span>
+  <% end %>
+  <p id="<%= model_type %>_<%= key %>_help" class="help-block"><%= hint_title %></p>
+  <ul class="listing" aria-live="polite">
+    <li class="field-wrapper input-group input-append">
+        <textarea name="<%= model_type %>[<%= key %>][]"
+                  id="<%= model_type %>_<%= key %>"
+                  aria-labelledby="<%= model_type %>_<%= key %>_help"
+                  style="width:500px"
+                  class="title_tinymce form-control
+                         <% if f.object.required?(key) %>required<% end %>
+                         <% if !f.object.required?(key) %>optional<% end %>
+                         <%= model_type %>_<%= key %>"><%= f.object.model.titles %></textarea>
+    </li>
+  </ul>
+</div>
