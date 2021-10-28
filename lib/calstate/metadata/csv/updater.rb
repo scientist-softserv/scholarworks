@@ -16,9 +16,8 @@ module CalState
         # CSV Updater
         #
         # @param path [String]   path to transaction xml file
-        # @param model [String]  model name
         #
-        def initialize(path, model)
+        def initialize(path)
           @path = path
           @doc = Nokogiri::XML(File.open(path))
           @single_fields = %w[date_accessioned
@@ -28,7 +27,6 @@ module CalState
                               visibility
                               visibility_during_embargo
                               visibility_after_embargo]
-          @model = CalState::Metadata.get_model_from_slug(model)
         end
 
         #
@@ -69,7 +67,7 @@ module CalState
         # @param record [Hash]  record from the CSV file
         #
         def update_record(record)
-          doc = @model.find(record['id'].to_s)
+          doc = ActiveFedora::Base.find(record['id'].to_s)
 
           record.xpath('change').each do |change|
             field = change['field']

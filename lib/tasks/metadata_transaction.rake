@@ -4,7 +4,7 @@ require 'calstate/metadata'
 
 # Usage:
 # bundle exec rake calstate:metadata_transaction[eastbay_thesis]
-# bundle exec rake calstate:metadata_transaction[all]
+# bundle exec rake calstate:metadata_transaction[fix]
 
 namespace :calstate do
   desc 'Import metadata csv for a campus'
@@ -16,13 +16,8 @@ namespace :calstate do
     transaction_dir = new_dir + '/transactions'
     report_dir = '/mnt/efs2/exports/reports/'
 
-    new_file = if file == 'all'
-                 new_dir + '/fix.csv'
-               else
-                 new_dir + '/' + file + '.csv'
-               end
-
-    old_file = if file == 'all'
+    new_file = new_dir + '/' + file + '.csv'
+    old_file = if file == 'fix'
                  old_dir + '/*.csv'
                else
                  old_dir + '/' + file + '.csv'
