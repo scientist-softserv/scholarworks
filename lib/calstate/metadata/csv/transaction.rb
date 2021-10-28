@@ -12,15 +12,14 @@ module CalState
       class Transaction
         include Utilities
         #
-        # @param campus [String]       campus slug
-        # @param model [String]        model name
-        # @param old_csv_dir [String]  path to dir with current metadata files
-        # @param new_csv_dir [String]  path to dir with new metadata files
+        # New transaction
         #
-        def initialize(campus, model, old_csv_dir, new_csv_dir)
-          @campus = campus
-          @old_records_file = "#{old_csv_dir}/#{@campus}_#{model}.csv"
-          @new_records_file = "#{new_csv_dir}/#{@campus}_#{model}.csv"
+        # @param old_records_file [String]  path to dir with current metadata files
+        # @param new_records_file [String]  path to dir with new metadata files
+        #
+        def initialize(old_records_file, new_records_file)
+          @old_records_file = old_records_file
+          @new_records_file = new_records_file
 
           # load the old metadata records into memory
           @xml = create_xml
@@ -55,7 +54,7 @@ module CalState
         def create_xml
           builder = Nokogiri::XML::Builder.new do |xml|
             xml.transaction {
-              xml.campus @campus
+              xml.file @new_records_file
               xml.timestamp Time.now.utc.iso8601
               xml.date Time.now.strftime('%m/%d/%Y')
               xml.records {
@@ -185,14 +184,18 @@ module CalState
         #
         # Load CSV file
         #
+        # @param path [String]  path to file(s)
         # @return [Hash]
         #
         def load_file(path)
           records = {}
-          reader = Reader.new(path)
 
-          reader.records.each do |record|
-            records[record['id']] = record
+          Dir[path].each do |file|
+            reader = Reader.new(file)
+
+            reader.records.each do |record|
+              records[record['id']] = record
+            end
           end
 
           records

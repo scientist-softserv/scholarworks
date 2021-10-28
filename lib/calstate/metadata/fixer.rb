@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'fixer/change_record'
-require_relative 'fixer/tracker'
-
 module CalState
   module Metadata
     #
