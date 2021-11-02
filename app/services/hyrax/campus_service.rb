@@ -134,7 +134,7 @@ module Hyrax
       },
       {
         name: 'San Luis Obispo',
-        slug: 'sanluisobisbo',
+        slug: 'slo',
         demo_email: ['calpoly.edu'],
         org: 'calpoly'
       },
@@ -212,24 +212,23 @@ module Hyrax
     end
 
     #
-    # Extract campus name from a form
+    # Get campus slug from controller
     #
     # @param controller [ApplicationController] the current controller
-    # @param form [Hyrax::Forms::WorkForm]      the current work form
     #
-    # @return [String] the campus name
+    # @return [String] the campus slug
     #
-    def self.get_campus_from_form(controller, form)
-      # if the record has a campus already, take that
-      # because we are editing an existing record
-      campus = form[:campus].first.to_s.dup
-      return campus unless campus.empty?
+    def self.get_campus_from_controller(controller)
+      # if the record has a campus already, use that
+      campus = controller.curation_concern.campus.first.dup.to_s
+      return get_campus_slug_from_name(campus) unless campus.blank?
 
-      # otherwise get it from the admin set name
-      # because we are creating a new record
-      adminset = Hyrax::AdminSetService.new(controller).search_results(:deposit)
-      campus = adminset.first.title_or_label.to_s
-      get_campus_from_admin_set(campus)
+      # otherwise, this is a new record so use user's campus
+      campus = controller.current_user.campus.to_s
+      return campus unless campus.blank?
+
+      # user has no campus (?!), so use default
+      'default'
     end
 
     #

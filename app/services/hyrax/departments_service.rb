@@ -3,17 +3,16 @@ module Hyrax
     mattr_accessor :authority
     self.authority = Qa::Authorities::Local.subauthority_for('departments')
 
-    def self.select_options(controller, form)
-      campus = Hyrax::CampusService.get_campus_from_form(controller, form)
-      campus = campus.downcase.gsub(' ', '_')
+    def self.select_options(controller)
+      campus = Hyrax::CampusService.get_campus_from_controller(controller)
+      dept_file = campus == 'default' ? 'departments' : 'departments_' + campus
+      model = controller.curation_concern.class.name
+      model_file = 'config/authorities/' + dept_file + '_' + model + '.yml'
 
-      model = model_name(controller)
-      file_name = 'config/authorities/departments_' + campus + '_' + model + '.yml'
-
-      subauthority = if File.exist? file_name
-                       'departments_' + campus + '_' + model
+      subauthority = if File.exist? model_file
+                       dept_file + '_' + model
                      else
-                       'departments_' + campus
+                       dept_file
                      end
 
       campus_authority = Qa::Authorities::Local.subauthority_for(subauthority)
@@ -34,14 +33,6 @@ module Hyrax
     def self.microdata_type(id)
       return Hyrax.config.microdata_default_type if id.nil?
       Microdata.fetch("resource_type_thesis.#{id}", default: Hyrax.config.microdata_default_type)
-    end
-
-    def self.model_name(controller)
-      name = controller.class.name
-      name.sub!('Hyrax::', '')
-      name.sub!('Controller', '')
-
-      name.downcase
     end
   end
 end
