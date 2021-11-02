@@ -1,14 +1,11 @@
-# Generated via
-#  `rails generate hyrax:work Thesis`
 
 module Hyrax
   class ThesesController < ApplicationController
-    # Adds Hyrax behaviors to the controller.
     include Hyrax::WorksControllerBehavior
     include Hyrax::BreadcrumbsForWorks
-    self.curation_concern_type = ::Thesis
+    include Csu::WorksControllerBehavior
 
-    # Use this line if you want to use a custom presenter
+    self.curation_concern_type = ::Thesis
     self.show_presenter = Hyrax::ThesisPresenter
   end
 end
