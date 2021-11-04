@@ -1,4 +1,4 @@
-<% degree_level_service = DegreeLevelService.new %>
+<% degree_level_service = DegreeLevelService.new(controller) %>
 <%= f.input :degree_level, as: :select,
   collection: degree_level_service.select_active_options,
   include_blank: true,

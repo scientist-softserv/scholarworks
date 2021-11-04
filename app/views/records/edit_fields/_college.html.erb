@@ -1,4 +1,4 @@
 <%= f.input :college, as: :select,
-  collection: Hyrax::CollegesService.select_options(controller),
+  collection: CollegesService.new(controller).select_all_options,
   input_html: { class: 'form-control', multiple: true }
 %>
