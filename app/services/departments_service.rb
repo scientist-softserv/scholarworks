@@ -5,6 +5,6 @@
 #
 class DepartmentsService < AuthorityService
   def initialize(controller)
-    super('departments', controller)
+    super('departments', controller, true)
   end
 end
