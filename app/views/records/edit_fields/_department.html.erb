@@ -1,4 +1,4 @@
 <%= f.input :department, as: :select,
-  collection: Hyrax::DepartmentsService.select_options(controller, f.object),
+  collection: Hyrax::DepartmentsService.select_options(controller),
   input_html: { class: 'form-control', multiple: true }
 %>
