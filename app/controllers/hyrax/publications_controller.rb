@@ -1,10 +1,10 @@
+# frozen_string_literal: true
 
+#
+# Publications controller
+#
 module Hyrax
-  class PublicationsController < ApplicationController
-    include Hyrax::WorksControllerBehavior
-    include Hyrax::BreadcrumbsForWorks
-    include Csu::WorksControllerBehavior
-
+  class PublicationsController < WorksController
     self.curation_concern_type = ::Publication
     self.show_presenter = Hyrax::PublicationPresenter
   end

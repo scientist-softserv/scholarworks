@@ -1,10 +1,10 @@
+# frozen_string_literal: true
 
+#
+# Educational resources controller
+#
 module Hyrax
-  class EducationalResourcesController < ApplicationController
-    include Hyrax::WorksControllerBehavior
-    include Hyrax::BreadcrumbsForWorks
-    include Csu::WorksControllerBehavior
-
+  class EducationalResourcesController < WorksController
     self.curation_concern_type = ::EducationalResource
     self.show_presenter = Hyrax::EducationalResourcePresenter
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Flexible campus-specific authorities
 #
@@ -5,8 +7,8 @@ class AuthorityService < Hyrax::QaSelectService
   #
   # New Authority
   #
-  # @param field [String]                      field name
-  # @param controller [ApplicationController]  model-based controller
+  # @param field [String]                field name
+  # @param controller [WorksController]  works controller
   #
   def initialize(field, controller)
     authority_name = get_campus_authority(field, controller)
@@ -18,8 +20,8 @@ class AuthorityService < Hyrax::QaSelectService
   #
   # If it doesn't exist, supply the main version
   #
-  # @param field [String]                      field name
-  # @param controller [ApplicationController]  model-based controller
+  # @param field [String]                field name
+  # @param controller [WorksController]  works controller
   #
   # @return [String]
   #
