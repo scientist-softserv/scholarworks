@@ -4,7 +4,7 @@ module Hydra
 
       def represented_visibility
         [Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED,
-         Hyrax::CampusService.all_campus_slugs,
+         CampusService.all_campus_slugs,
          Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC].flatten
       end
 
@@ -12,7 +12,7 @@ module Hydra
         if value.to_s == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS
           raise RuntimeError, 'No campus is set on this work' if campus.blank?
           visibility_will_change! unless visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS
-          campus_slugs = campus.to_a.map { |campus_name| Hyrax::CampusService.get_campus_slug_from_name(campus_name) }
+          campus_slugs = campus.to_a.map { |campus_name| CampusService.get_campus_slug_from_name(campus_name) }
           remove_groups = represented_visibility - campus_slugs # read from object's campus value
 
           set_read_groups(campus_slugs, remove_groups)
@@ -35,7 +35,7 @@ module Hydra
       end
 
       def read_groups_include_campus?
-        (read_groups & Hyrax::CampusService.all_campus_slugs).any?
+        (read_groups & CampusService.all_campus_slugs).any?
       end
     end
   end

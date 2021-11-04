@@ -13,7 +13,7 @@ namespace :calstate do
     name = if campus.nil?
              nil
            else
-             Hyrax::CampusService.get_campus_name_from_id(campus)
+             CampusService.get_campus_name_from_id(campus)
            end
 
     # find restricted results from solr

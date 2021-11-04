@@ -8,7 +8,7 @@ module Csu
     #
     def build_form
       campus = current_user.campus
-      @form = Csu::WorkFormService.build(campus, curation_concern, current_ability, self)
+      @form = WorkFormService.build(campus, curation_concern, current_ability, self)
     end
   end
 end

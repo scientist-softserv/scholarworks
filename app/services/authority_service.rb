@@ -24,7 +24,7 @@ class AuthorityService < Hyrax::QaSelectService
   # @return [String]
   #
   def get_campus_authority(field, controller)
-    campus = Hyrax::CampusService.get_campus_from_controller(controller)
+    campus = CampusService.get_campus_from_controller(controller)
     campus_file = 'config/authorities/' + field + '_' + campus + '.yml'
     if File.exist? campus_file
       field + '_' + campus
