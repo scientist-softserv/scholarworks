@@ -67,7 +67,7 @@ module Hyrax::User
       u = ::User.find_or_create_by(uid: user_key)
       u.display_name = user_key
       u.email = "#{user_key}@example.com"
-      u.password = ('a'..'z').to_a.shuffle(random: Random.new).join.if Settings.require_shib_user_authn?
+      u.password = ('a'..'z').to_a.shuffle(random: Random.new).join.if ENV['AUTHENTICATION_TYPE'] == 'shibboleth'
       u.save
       u
     end
