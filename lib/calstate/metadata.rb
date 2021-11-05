@@ -85,16 +85,24 @@ module CalState
     # @param position [Integer]  current position in the queue
     # @param batch [Integer]     how many records to process before pause
     #
-    # @return [Boolean]  yes if weekday 9-5
+    # @return [Boolean]
     #
     def self.should_throttle(position, batch = 5)
+      (position % batch).zero? && workday?
+    end
+
+    #
+    # Is it a weekday 9-5?
+    #
+    # @return [Boolean]
+    #
+    def self.workday?
       now = Time.now.getlocal('-08:00')
 
       # just keep on truckin' over the weekend
       return false if now.saturday? || now.sunday?
 
-      # otherwise throttle 9-5 weekdays
-      (position % batch).zero? && (now.hour >= 9 && now.hour <= 17)
+      (now.hour >= 9 && now.hour <= 17)
     end
   end
 end

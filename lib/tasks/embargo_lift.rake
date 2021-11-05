@@ -2,35 +2,41 @@
 
 require 'calstate/metadata'
 
+# Usage
+# bundle exec rake calstate:embargo_lift
+
 namespace :calstate do
-  desc 'Metadata fixer'
+  desc 'Embargo lifter'
   task embargo_lift: :environment do
+    solr_reader = CalState::Metadata::SolrReader.new
+    expired_embargoes = solr_reader.find_expired_embargoes
 
-    results = []
+    puts 'Found ' + expired_embargoes.count.to_s + ' expired embargoes.'
 
-    results.each do |row|
-      id = row['id'].squish
+    expired_embargoes.each do |doc|
+      id = doc['id']
+
+      # make sure we have a work
       work = ActiveFedora::Base.find(id)
+      # work = work.parent if work.is_a?(FileSet)
 
+      # make sure the embargo is active and before today
       next if work.embargo.embargo_release_date.nil?
+      next unless work.embargo.embargo_release_date <= Date.today
 
-      print id + ': '
+      print id + ': . . . '
 
-      if work.embargo.embargo_release_date <= Date.today
-        print 'expired'
-        work.deactivate_embargo!
-      else
-        print 'active'
-        work.embargo.visibility_during_embargo = 'restricted'
-      end
-
-      print ' . . . '
-
+      # remove embargo on work (replicates EmbargoActor)
+      work.embargo_visibility!
+      work.deactivate_embargo!
       work.embargo.save!
       work.save!
 
+      # make sure the files get the new visibility as well
+      VisibilityCopyJob.new.perform(work)
+
       print "done!\n"
-      sleep(10)
+      sleep(5)
     end
   end
 end

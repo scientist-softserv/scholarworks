@@ -49,6 +49,9 @@ en:
     institution_name_full: "California State University"
     product_name: ScholarWorks
     product_twitter_handle: "@csuscholarworks"
+    search:
+      button:
+        html: <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
     visibility:
       campus:
         note_html: Restrict access to campus
@@ -103,7 +106,7 @@ en:
         rights_uri: "A free-text rights statement describing a resource. This should be a URI to a resource that offers descriptive terms of use."
         sponsor: "A person or organization sponsoring some aspect of a resource, e.g., funding for research, or the granting agency. Include grant ID if applicable, e.g. National Science Foundation (NSF 1829670)"
         subject: "Headings or index terms describing what the work is about. Start typing to choose from controlled vocabulary, or enter any applicable keyword."
-        title: "Enter the main title of the work. Example: Places to see in San Francisco.  Capitalize the first word and any proper nouns."
+        title: "Enter the main title of the work. Example: Places to see in San Francisco.  You can use <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case' target='_blank'>sentence case</a> or <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case' target='_blank'>title case</a> capitalization. Want to try a <a href='https://titlecaseconverter.com/' target='_blank'>title case converter</a>?"
         time_period: "The temporal extent reflected in the resource."
     labels:
       defaults:

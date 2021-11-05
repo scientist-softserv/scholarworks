@@ -166,7 +166,7 @@
         "<div id='" + person_type + "_divider" + cur_elem_num + "' class='row divider " + person_type + "_divider'></div>" +
         "<div id='" + person_type + cur_elem_num + "' class='row " + person_type + "_div flex_center'>" +
         "  <input type='hidden' name='<%= model_type %>[" + person_type + "][]' id='" + person_type + cur_elem_num + "' class='" + person_type + "' data-element-num='" + cur_elem_num + "' value='' />" +
-        "  <div class='col-xs-6'>" +
+        "  <div class='col-xs-8'>" +
         "    <div class='label_input_div'>" +
         "      <label for='" + person_type + "_name" + cur_elem_num + "' class='label_field'>" +
         "        <span class='sr-only'>" + person_type + " </span>Name " +
@@ -349,7 +349,7 @@
       <% end %>
       <div id=<%= "#{key}#{index}" %> class="row <%= key %>_div flex_center">
         <input type="hidden" name="<%= model_type %>[<%= key %>][]" id="<%= key %><%= index %>" value="<%= name %>" class="<%= key %>" data-element-num="<%= index %>" />
-        <div class="col-xs-6">
+        <div class="col-xs-8">
           <div class="label_input_div">
             <label for=<%= "#{key}_name#{index}" %> class="label_field">
               <span class="sr-only"><%= key %> </span>

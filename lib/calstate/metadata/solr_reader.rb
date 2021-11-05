@@ -26,7 +26,7 @@ module CalState
       # @return [Array] of solr documents
       #
       def fetch_all
-        solr_query = query(true)
+        solr_query = all_records_query(true)
         fetch_records(solr_query)
       end
 
@@ -36,7 +36,7 @@ module CalState
       # @return [Array] of solr documents
       #
       def fetch_all_unsuppressed
-        solr_query = query(false)
+        solr_query = all_records_query(false)
         fetch_records(solr_query)
       end
 
@@ -63,6 +63,28 @@ module CalState
         end
 
         dupes
+      end
+
+      #
+      # Records that have an expired embargo
+      #
+      # @return [Array] of solr documents
+      #
+      def find_expired_embargoes
+        query = 'embargo_release_date_dtsi:[* TO NOW]'
+        fetch_records(query)
+      end
+
+      #
+      # Records that have private visibility
+      #
+      # @return [Array] of solr documents
+      #
+      def find_restricted_records(campus = nil)
+        query = limit_to_models_query +
+                ' AND -visibility_ssi:open AND suppressed_bsi:false'
+        query += ' AND ' + limit_to_campus_query(campus) unless campus.nil?
+        fetch_records(query)
       end
 
       private
@@ -120,19 +142,22 @@ module CalState
       #
       # @return [String] Solr query
       #
-      def query(include_suppressed = false)
-        models_query = []
-        Metadata.model_names.each do |model|
-          models_query.push model
-        end
-
-        query = 'has_model_ssim:(' + models_query.join(' OR ') + ')'
+      def all_records_query(include_suppressed = false)
+        query = limit_to_models_query
 
         if include_suppressed == false
           query + ' AND suppressed_bsi:false AND visibility_ssi:open'
         else
           query
         end
+      end
+
+      def limit_to_models_query
+        'has_model_ssim:(' + Metadata.model_names.join(' OR ') + ')'
+      end
+
+      def limit_to_campus_query(campus)
+        'campus_tesim:"' + campus + '"'
       end
 
       #

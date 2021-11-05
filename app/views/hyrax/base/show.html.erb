@@ -63,11 +63,10 @@
               <% end %>
               <% unless @presenter.description.nil? %>
                 <% @presenter.description.each do |description| %>
-                  <p class="work_description"><%= iconify_auto_link(description) %></p>
+                  <%= iconify_auto_link(description.html_safe) %>
                 <% end %>
               <% end %>
             </div>
-
             <!-- other metadata -->
             <div class="csu-item-metadata">
               <%= render 'metadata', presenter: @presenter %>
