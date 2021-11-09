@@ -181,8 +181,6 @@ module CsuMetadata
 
     assign_campus(admin_set.title.first.to_s)
     set_year
-
-    Rails.logger.warn options
     super(*options)
   end
 

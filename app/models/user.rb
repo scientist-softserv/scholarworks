@@ -1,30 +1,25 @@
 class User < ApplicationRecord
-  # Connects this user object to Hydra behaviors.
   include Hydra::User
-  # Connects this user object to Role-management behaviors.
   include Hydra::RoleManagement::UserRoles
-
-
-  # Connects this user object to Hyrax behaviors.
   include Hyrax::User
   include Hyrax::UserUsageStats
 
   has_many :glacier_sns_download_requests
 
-
-
   if Blacklight::Utils.needs_attr_accessible?
     attr_accessible :email, :password, :password_confirmation
   end
+
   # Connects this user object to Blacklights Bookmarks.
   include Blacklight::User
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   def preferred_locale
-    return nil;
+    nil
   end
 
   # Method added by Blacklight; Blacklight uses #to_s on your
@@ -34,8 +29,22 @@ class User < ApplicationRecord
     email
   end
 
-  #Mailboxer (for Notifications) needs the User object to respond to this method in order to send uses_emails
+  # Mailboxer (for Notifications) needs the User object to respond to
+  # his method in order to send uses_emails
   def mailboxer_email(_object)
     email
+  end
+
+  #
+  # Is this user a manager?
+  #
+  # @return [Boolean]
+  #
+  def manager?
+    Rails.logger.warn groups.inspect
+    groups.each do |group|
+      return true if group.include?('managers-')
+    end
+    false
   end
 end
