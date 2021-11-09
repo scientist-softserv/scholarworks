@@ -24,12 +24,6 @@ namespace :calstate do
 
         x += 1
 
-        # throttle
-        if (x % 10).zero?
-          puts '    sleeping . . . '
-          sleep(60)
-        end
-
         puts "Updating work #{work.id}"
 
         begin
