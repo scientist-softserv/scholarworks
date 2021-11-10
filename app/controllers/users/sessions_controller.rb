@@ -13,9 +13,12 @@ module Users
       end
     end
 
-    def after_sign_out_path_for(scope)
-      return Settings.sso_logout_url if ENV['AUTHENTICATION_TYPE'] == 'shibboleth'
-      super
+    def respond_to_on_destroy
+      if ENV['AUTHENTICATION_TYPE'] == 'shibboleth'
+        redirect_to Settings.sso_logout_url
+      else
+        redirect_to '/'
+      end
     end
   end
 end
