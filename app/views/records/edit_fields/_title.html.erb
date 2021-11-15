@@ -2,7 +2,7 @@
 <% if model_type == 'collection' %>
   <% hint_title = t('simple_form.hints.collection.title') %>
 <% else %>
-  <% hint_title = t('simple_form.hints.defaults.title') %>
+  <% hint_title = t('simple_form.hints.defaults.title').html_safe %>
 
   <script type="text/javascript">
     $(function() {
@@ -17,19 +17,13 @@
           statusbar: false,
           toolbar1: "italic | undo redo",
           relative_urls: false,
+          valid_elements : "em",
+          add_form_submit_trigger : false,
+          remove_linebreaks: true
       });
     });
 
     function invalid_title() {
-      /* will need to check to see if class has required in it if we have more
-         than one textarea tinymce where one of them is not required but for now
-         only one textarea tinymce description is rquired in the work except for collection.
-         let class_str = $('#<%= model_type %>_title').prop('class'); or loop through
-         $('.use_tinymce').each(function () {
-           let class_str = $('#' + $(this).prop('class'));
-           and check if it contains required string
-         });
-      */
       let title_content = tinymce.get('<%= model_type %>_title').getContent();
       if (title_content.length > 0) {
         $('#empty_title').addClass('d-none');
@@ -57,8 +51,8 @@
         <textarea name="<%= model_type %>[<%= key %>][]"
                   id="<%= model_type %>_<%= key %>"
                   aria-labelledby="<%= model_type %>_<%= key %>_help"
-                  style="width:500px"
-                  class="title_tinymce form-control
+                  style="width:500px; "
+                  class="title_tinymce use_tinymce form-control
                          <% if f.object.required?(key) %>required<% end %>
                          <% if !f.object.required?(key) %>optional<% end %>
                          <%= model_type %>_<%= key %>"><%= f.object.model.titles %></textarea>
