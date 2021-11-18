@@ -36,9 +36,9 @@ class WorkFormService
     campus = if !curation_concern.campus.empty?
                curation_concern.campus.first
              elsif !current_user.campus.nil?
-               CampusService.get_campus_name_from_id(current_user.campus)
+               current_user.campus
              end
-    campus_class = campus.to_s.sub(' ', '')
+    campus_class = campus.to_s.downcase.sub(' ', '')
 
     # form object variations
     main_form = curation_concern.model_name.name + 'Form'

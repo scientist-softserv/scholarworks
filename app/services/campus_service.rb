@@ -224,10 +224,10 @@ module CampusService
 
     # otherwise, this is a new record so use user's campus
     campus = controller.current_user.campus.to_s
-    return campus unless campus.blank?
+    return get_campus_slug_from_name(campus) unless campus.blank?
 
     # user has no campus (?!), so use default
-    'default'
+    ''
   end
 
   #

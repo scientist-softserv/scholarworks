@@ -178,7 +178,6 @@ class CatalogController < ApplicationController
 
     config.add_search_field('creator') do |field|
       solr_name = solr_name('creator_name', :stored_searchable)
-      Rails.logger.warn "CatalogController:add_search_field creator solr_name #{solr_name}"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
