@@ -28,5 +28,9 @@ module Hyrax
        :doi, :isbn, :issn, :oclcno, :identifier, :identifier_uri, :related_url,
        :bibliographic_citation, :description_note]
     end
+
+    def alert_msg
+      ""
+    end
   end
 end
