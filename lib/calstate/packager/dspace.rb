@@ -40,7 +40,7 @@ module CalState
         @error_dir = initialize_directory(File.join(@input_dir, 'error'))
 
         @throttle = 0
-        @throttle_always = 600 # time to sleep for built-in throttling
+        @throttle_always = 600 # time to sleep for error throttling
         @errors = 0 # error counter
 
         @log.info 'Starting rake task packager:aip'.green
@@ -59,13 +59,6 @@ module CalState
 
           process_package(filename)
           sleep @throttle unless @throttle.zero?
-
-          # throttle during the day
-          x += 1
-          if CalState::Metadata.should_throttle(x, 3)
-            @log.info 'shhhh sleeping . . . . '
-            sleep @throttle_always
-          end
         end
       end
 
