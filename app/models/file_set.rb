@@ -5,5 +5,9 @@ class FileSet < ActiveFedora::Base
   end
 
   include ::Hyrax::FileSetBehavior
-end
+  include ::Hydra::AccessControls::CampusVisibility
 
+  def campus
+    parent&.campus
+  end
+end
