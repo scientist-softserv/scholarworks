@@ -34,7 +34,7 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
-  # config.authentication_keys = [:email]
+  config.authentication_keys = [:uid]
 
   # Configure parameters from the request object used for authentication. Each entry
   # given should be a request method and it will automatically be passed to the
@@ -153,7 +153,7 @@ Devise.setup do |config|
 
   # Options to be passed to the created cookie. For instance, you can set
   # secure: true in order to force SSL only cookies.
-  # config.rememberable_options = {}
+  config.rememberable_options = {secure:true}
 
   # ==> Configuration for :validatable
   # Range for password length.
@@ -260,6 +260,26 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
+
+  # Add a new OmniAuth provider. Check the wiki for more information on setting
+  # up on your models and hooks.
+  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  config.omniauth :shibboleth, {
+    :request_type => :header,
+    :shib_session_id_field => 'Shib-Session-ID',
+    :shib_application_id_field => 'Shib-Application-ID',
+    :uid => 'eppn',
+    :debug => false,
+    :info_fields => {
+      :email => 'mail',
+      :name => 'givenName',
+      :first_name => 'givenName',
+      :last_name => 'sn',
+      :affiliation => 'unscoped-affiliation',
+      :campus => 'calstateEduPersonOrg',
+      :department => 'departmentNumber'
+    }
+  }
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
