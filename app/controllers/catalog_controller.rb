@@ -380,7 +380,7 @@ class CatalogController < ApplicationController
 
     config.oai = {
       provider: {
-        repository_url: 'http://' + ENV['SCHOLARWORKS_HOST'] + '/catalog/oai',
+        repository_url: 'http://' + ENV.fetch('SCHOLARWORKS_HOST', 'localhost:3000') + '/catalog/oai',
         repository_name: 'CSU ScholarWorks',
         record_prefix: 'oai:scholarworks',
         admin_email: 'library@calstate.edu',
