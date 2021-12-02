@@ -31,11 +31,6 @@ namespace :calstate do
       end
 
       print "done!\n"
-
-      if (x % 5).zero?
-        puts 'shhhh sleeping . . . . '
-        sleep(180)
-      end
     end
   end
 end

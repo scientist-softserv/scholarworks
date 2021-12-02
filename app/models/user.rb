@@ -23,7 +23,7 @@ class User < ApplicationRecord
   # :registerable, :recoverable, :validatable,
   # add :database_authenticatable for dev and test
   # :database_authenticatable
-  devise :rememberable, :trackable, :timeoutable, :omniauthable, omniauth_providers: [:shibboleth]
+  devise :database_authenticatable, :rememberable, :trackable, :timeoutable, :omniauthable, omniauth_providers: [:shibboleth]
 
   def self.from_omniauth(auth)
     where(uid: auth.uid).first_or_create do |user|
@@ -67,7 +67,7 @@ module Hyrax::User
       u = ::User.find_or_create_by(uid: user_key)
       u.display_name = user_key
       u.email = "#{user_key}@example.com"
-      u.password = ('a'..'z').to_a.shuffle(random: Random.new).join.if Settings.require_shib_user_authn?
+      u.password = ('a'..'z').to_a.shuffle(random: Random.new).join.if ENV['AUTHENTICATION_TYPE'] == 'shibboleth'
       u.save
       u
     end

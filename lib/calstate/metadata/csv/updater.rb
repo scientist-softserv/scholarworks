@@ -33,17 +33,7 @@ module CalState
         # Process the transaction file
         #
         def run
-          x = 0
-          records = @doc.xpath("//record[@complete = 'false']")
-          records.each do |record|
-            # throttle
-            x += 1
-            if (x % 25).zero?
-              puts 'shhh, sleeping . . . '
-              sleep(180)
-            end
-
-            # update record
+          @doc.xpath("//record[@complete = 'false']").each do |record|
             print "Updating #{record['id']} . . . "
             update_record(record)
             print "done!\n"

@@ -13,8 +13,6 @@ class Ability
              end
     user_groups.push(campus) if campus.present?
 
-    user_groups.push(campus)
-
     # admin
     if current_user.admin?
       can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Role

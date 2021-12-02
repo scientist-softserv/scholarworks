@@ -28,14 +28,6 @@ namespace :calstate do
 
         print "couldn't locate child node."
       end
-
-      # throttle
-      sleep(60)
-      next unless (x % 10).zero?
-
-      print "\n sleeping . . . "
-      sleep(300)
-      print "wake up! \n"
     end
   end
 end

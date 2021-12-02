@@ -36,7 +36,6 @@ namespace :calstate do
       VisibilityCopyJob.new.perform(work)
 
       print "done!\n"
-      sleep(5)
     end
   end
 end
