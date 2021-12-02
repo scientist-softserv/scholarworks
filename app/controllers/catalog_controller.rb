@@ -389,7 +389,7 @@ class CatalogController < ApplicationController
       document: {
         limit: 25, # number of records returned with each request, default: 15
         set_fields: [ # ability to define ListSets, optional, default: nil
-          { label: 'campus', solr_field: 'campus_tesim' }
+          { label: 'campus', solr_field: 'campus_sim' }
         ]
       }
     }
