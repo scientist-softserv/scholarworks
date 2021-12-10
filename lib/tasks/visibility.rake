@@ -3,7 +3,7 @@
 require 'calstate/visibility'
 
 # Usage
-# bundle exec rake calstate:visibility[/path/to/file.csv,thesis]
+# bundle exec rake calstate:visibility[/home/ec2-user/data/import/file.csv]
 #
 # input file should have three columns with headers for:
 #   id, work_visibility, file_visibility
