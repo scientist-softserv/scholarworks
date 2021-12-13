@@ -74,6 +74,6 @@ class Thesis < ActiveFedora::Base
   end
 
   def update_fields
-
+    super
   end
 end

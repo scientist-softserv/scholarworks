@@ -46,6 +46,6 @@ class EducationalResource < ActiveFedora::Base
   end
 
   def update_fields
-
+    super
   end
 end
