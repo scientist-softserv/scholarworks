@@ -57,6 +57,9 @@ module Blacklight::Solr
     # @return [Blacklight::Solr::Response] the solr response object
     def send_and_receive(path, solr_params = {})
       benchmark("Solr fetch", level: :debug) do
+        # always use http post
+        blacklight_config.http_method = :post
+
         key = blacklight_config.http_method == :post ? :data : :params
         res = connection.send_and_receive(path, {key=>solr_params.to_hash, method: blacklight_config.http_method})
         DisciplineService::recalculate_discipline_filter(res)
