@@ -169,7 +169,7 @@ module CsuMetadata
   # @param admin_set_title [String]  name of admin set
   #
   def assign_campus(admin_set_title)
-    campus = Hyrax::CampusService.get_campus_from_admin_set(admin_set_title)
+    campus = Hyrax::CampusService.ensure_campus_name(admin_set_title)
     self.campus = [campus]
   end
 

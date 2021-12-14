@@ -201,7 +201,7 @@ module Hyrax
     #
     # @return [String] the campus name, e.g., 'Los Angeles'
     #
-    def self.get_campus_name_from_id(campus_id)
+    def self.get_campus_name_from_slug(campus_id)
       result = CAMPUSES.find do |campus|
         campus[:slug] == campus_id
       end
@@ -229,17 +229,17 @@ module Hyrax
       # because we are creating a new record
       adminset = Hyrax::AdminSetService.new(controller).search_results(:deposit)
       campus = adminset.first.title_or_label.to_s
-      get_campus_from_admin_set(campus)
+      ensure_campus_name(campus)
     end
 
     #
-    # Extract campus name from Admin set name
+    # Ensure campus name is in controlled list
     #
-    # @param admin_set_name [String] the admin sets public name
+    # @param campus_name [String]  the name of the campus
     #
     # @return [String] the campus name
     #
-    def self.get_campus_from_admin_set(admin_set_name)
+    def self.ensure_campus_name(admin_set_name)
       result = CAMPUSES.find do |campus|
         admin_set_name.include?(campus[:name])
       end
