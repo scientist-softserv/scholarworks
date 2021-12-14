@@ -28,7 +28,7 @@ module CalState
         CalState::Metadata.models.each do |model|
           model.where(campus: nil).each do |doc|
             admin_set = doc.admin_set.title.first.to_s
-            campus = Hyrax::CampusService.ensure_campus_name(admin_set)
+            campus = CampusService.ensure_campus_name(admin_set)
             doc.campus = [campus]
             doc.save
           end

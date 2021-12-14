@@ -1,4 +1,4 @@
 <%= f.input :resource_type_dataset, as: :select,
-  collection: Hyrax::ResourceTypesDatasetService.select_options,
+  collection: ResourceTypesDatasetService.new(controller).select_all_options,
   input_html: { class: 'form-control', multiple: true }
 %>

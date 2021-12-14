@@ -2,6 +2,9 @@
 <% if model_type == 'collection' %>
   <%= f.input key, as: :multi_value, input_html: { class: 'form-control' }, required: f.object.required?(key) %>
 <% else %>
+  <% if f.object.alert_msg.length > 1 %>
+    <div class="form-group"><%= f.object.alert_msg %></div>
+  <% end %>  
   <%= render "shared/composite_person",
              f: f,
              model_type: model_type,

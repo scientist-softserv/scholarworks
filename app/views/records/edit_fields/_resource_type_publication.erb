@@ -1,4 +1,4 @@
 <%= f.input :resource_type_publication, as: :select,
-  collection: Hyrax::ResourceTypesPublicationService.select_options,
+  collection: ResourceTypesPublicationService.new(controller).select_all_options,
   input_html: { class: 'form-control', multiple: true }
 %>
