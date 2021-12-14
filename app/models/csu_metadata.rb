@@ -169,7 +169,7 @@ module CsuMetadata
   # @param admin_set_title [String]  name of admin set
   #
   def assign_campus(admin_set_title)
-    campus = Hyrax::CampusService.ensure_campus_name(admin_set_title)
+    campus = CampusService.ensure_campus_name(admin_set_title)
     self.campus = [campus]
   end
 
@@ -181,8 +181,6 @@ module CsuMetadata
 
     assign_campus(admin_set.title.first.to_s)
     set_year
-
-    Rails.logger.warn options
     super(*options)
   end
 

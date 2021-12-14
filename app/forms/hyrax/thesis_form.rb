@@ -30,5 +30,9 @@ module Hyrax
        :identifier_uri, :granting_institution, :bibliographic_citation,
        :description_note]
     end
+
+    def alert_msg
+      ""
+    end
   end
 end

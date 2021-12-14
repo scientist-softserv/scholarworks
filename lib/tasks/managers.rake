@@ -13,7 +13,7 @@ namespace :calstate do
     campus = args[:campus] or raise 'No campus provided'
     record = args[:record] ||= 'all'
 
-    campus_name = Hyrax::CampusService.get_campus_name_from_slug(campus)
+    campus_name = CampusService.get_campus_name_from_slug(campus)
     query = record == 'all' ? { campus: campus_name } : { id: record }
 
     x = 0

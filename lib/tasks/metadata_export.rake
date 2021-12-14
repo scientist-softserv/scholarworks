@@ -13,7 +13,7 @@ namespace :calstate do
     csv_dir = '/home/ec2-user/data/exported'
 
     campuses = if campus == 'all'
-                 Hyrax::CampusService.all_campus_slugs
+                 CampusService.all_campus_slugs
                else
                  [campus]
                end

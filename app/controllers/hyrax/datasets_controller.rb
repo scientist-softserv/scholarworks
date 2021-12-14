@@ -1,14 +1,11 @@
-# Generated via
-#  `rails generate hyrax:work Dataset`
-module Hyrax
-  # Generated controller for Dataset
-  class DatasetsController < ApplicationController
-    # Adds Hyrax behaviors to the controller.
-    include Hyrax::WorksControllerBehavior
-    include Hyrax::BreadcrumbsForWorks
-    self.curation_concern_type = ::Dataset
+# frozen_string_literal: true
 
-    # Use this line if you want to use a custom presenter
+#
+# Dataset controller
+#
+module Hyrax
+  class DatasetsController < WorksController
+    self.curation_concern_type = ::Dataset
     self.show_presenter = Hyrax::DatasetPresenter
   end
 end
