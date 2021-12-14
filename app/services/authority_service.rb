@@ -32,11 +32,9 @@ class AuthorityService < Hyrax::QaSelectService
   #
   def get_campus_authority(field, controller)
     campus = CampusService.get_campus_from_controller(controller)
-    if campus.blank?
-      campus_file = 'config/authorities/' + field + '.yml'
-    else
-      campus_file = 'config/authorities/' + field + + '_' + campus + '.yml'
-    end
+    return field if campus.blank?
+
+    campus_file = 'config/authorities/' + field + '_' + campus + '.yml'
     if File.exist? campus_file
       field + '_' + campus
     else

@@ -224,7 +224,7 @@ module CampusService
 
     # otherwise, this is a new record so use user's campus
     campus = controller.current_user.campus.to_s
-    return get_campus_slug_from_name(campus) unless campus.blank?
+    return campus unless campus.blank?
 
     # user has no campus (?!), so use default
     ''
@@ -242,7 +242,7 @@ module CampusService
       campus_name.include?(campus[:name])
     end
 
-    raise 'No campus admin set found' unless result.present?
+    raise "Campus name '#{campus_name}' not found" unless result.present?
 
     result[:name]
   end
@@ -255,9 +255,13 @@ module CampusService
   # @return [String] the campus slug
   #
   def self.get_campus_slug_from_name(campus_name)
-    CAMPUSES.select do |campus|
-      campus[:name].downcase == campus_name.downcase
-    end.first&.fetch(:slug)
+    slug = CAMPUSES.select do |campus|
+             campus[:name].downcase == campus_name.downcase
+           end.first&.fetch(:slug)
+
+    raise "Campus slug '#{campus_name}' not found" unless slug.present?
+
+    slug
   end
 
   #
