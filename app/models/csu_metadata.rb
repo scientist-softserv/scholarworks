@@ -176,7 +176,7 @@ module CsuMetadata
                end
     correct_names = []
     campuses.each do |name|
-      Hyrax::CampusService.ensure_campus_name(name)
+      CampusService.ensure_campus_name(name)
       correct_names.append name
     end
     self.campus = correct_names
