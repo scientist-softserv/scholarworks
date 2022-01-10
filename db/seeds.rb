@@ -12,7 +12,7 @@ role.save!
 
 puts "created admin user #{admin}"
 
-Hyrax::CampusService::CAMPUSES.each do |campus|
+CampusService::CAMPUSES.each do |campus|
 
   campus_admin_set = AdminSet.where(title: campus[:name]).first
   if campus_admin_set.blank?

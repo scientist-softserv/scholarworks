@@ -5,42 +5,36 @@ require 'calstate/metadata'
 # Usage
 # bundle exec rake calstate:visibility_split
 # bundle exec rake calstate:visibility_split[sacramento]
+# bundle exec rake calstate:visibility_split[/home/ec2-user/data/import/file.csv]
 
 namespace :calstate do
   desc 'Make record public but keep files restricted'
-  task :visibility_split, %i[campus] => [:environment] do |_t, args|
-    campus = args[:campus] ||= nil
-    name = if campus.nil?
-             nil
-           else
-             Hyrax::CampusService.get_campus_name_from_id(campus)
-           end
+  task :visibility_split, %i[input] => [:environment] do |_t, args|
+    input = args[:input] ||= nil
 
-    # find restricted results from solr
-    reader = CalState::Metadata::SolrReader.new
-    results = reader.find_restricted_records(name)
-    puts "Found #{results.count} records that are restricted."
+    # find restricted results from file, otherwise solr
+    results = if input.include?('/')
+                CSV.open(input, { headers: true })
+              else
+                name = input.nil? ? nil : CampusService.get_campus_name_from_slug(input)
+                reader = CalState::Metadata::SolrReader.new
+                reader.find_restricted_records(name)
+              end
 
-    results.each do |solr_doc|
-      print 'Processing work ' + solr_doc['id'] + ' . . . '
+    results.each do |record|
+      print 'Processing work ' + record['id'] + ' . . . '
 
       begin
-        # get the fedora object
-        work = ActiveFedora::Base.find(solr_doc['id'])
+        work = ActiveFedora::Base.find(record['id'])
 
-        # set visibility to public
+        # ensure files have correct visibility
+        # (some migrated ones were not set correctly)
+        VisibilityCopyJob.perform_now(work)
+
+        # set visibility of work to public
         work.visibility = 'open'
-
-        # remove embargo on work (replicates EmbargoActor)
-        unless work.embargo&.embargo_release_date.nil?
-          work.embargo_visibility!
-          work.deactivate_embargo!
-          work.embargo.save!
-          work.save!
-          abort
-        end
-
         work.save!
+
       rescue Ldp::Gone
         print '[ GONE! ] . . . '
       rescue ActiveFedora::ObjectNotFoundError

@@ -16,9 +16,8 @@ module CalState
         # CSV Updater
         #
         # @param path [String]   path to transaction xml file
-        # @param model [String]  model name
         #
-        def initialize(path, model)
+        def initialize(path)
           @path = path
           @doc = Nokogiri::XML(File.open(path))
           @single_fields = %w[date_accessioned
@@ -28,24 +27,13 @@ module CalState
                               visibility
                               visibility_during_embargo
                               visibility_after_embargo]
-          @model = CalState::Metadata.get_model_from_slug(model)
         end
 
         #
         # Process the transaction file
         #
         def run
-          x = 0
-          records = @doc.xpath("//record[@complete = 'false']")
-          records.each do |record|
-            # throttle
-            x += 1
-            if (x % 25).zero?
-              puts 'shhh, sleeping . . . '
-              sleep(180)
-            end
-
-            # update record
+          @doc.xpath("//record[@complete = 'false']").each do |record|
             print "Updating #{record['id']} . . . "
             update_record(record)
             print "done!\n"
@@ -69,7 +57,7 @@ module CalState
         # @param record [Hash]  record from the CSV file
         #
         def update_record(record)
-          doc = @model.find(record['id'].to_s)
+          doc = ActiveFedora::Base.find(record['id'].to_s)
 
           record.xpath('change').each do |change|
             field = change['field']
@@ -93,7 +81,7 @@ module CalState
         #
         def get_value(field, change)
           values = []
-          if change.xpath('value/part').count.positive?
+          if change.xpath("value[@type='new']/part").count.positive?
             change.xpath("value[@type='new']/part").each do |part|
               values.append part.text.squish
             end

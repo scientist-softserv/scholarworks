@@ -4,6 +4,16 @@ class FileSet < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  include ::Hyrax::FileSetBehavior
-end
+  attr_accessor :campus
 
+  include ::Hyrax::FileSetBehavior
+  include ::Hydra::AccessControls::CampusVisibility
+
+  def campus
+    # get campus name from work
+    return parent&.campus unless parent&.campus.blank?
+
+    # nope? use attribute, if set
+    @campus
+  end
+end

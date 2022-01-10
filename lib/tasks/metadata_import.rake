@@ -3,16 +3,16 @@
 require 'calstate/metadata/csv'
 
 # Usage:
-# bundle exec rake calstate:metadata_import[eastbay,thesis]
+# bundle exec rake calstate:metadata_import[eastbay_thesis]
+# bundle exec rake calstate:metadata_import[fix]
 
 namespace :calstate do
   desc 'Import metadata csv for a campus'
-  task :metadata_import, %i[campus model] => [:environment] do |_t, args|
-    campus = args[:campus] or raise 'No campus specified.'
-    model = args[:model] ||= 'thesis'
+  task :metadata_import, %i[file] => [:environment] do |_t, args|
+    file = args[:file] or raise 'No file specified.'
 
-    file = "/home/ec2-user/data/import/transactions/#{campus}_#{model}.xml"
-    updater = CalState::Metadata::Csv::Updater.new(file, model)
+    file = "/home/ec2-user/data/import/transactions/#{file}.xml"
+    updater = CalState::Metadata::Csv::Updater.new(file)
     updater.run
     updater.archive_file
   end

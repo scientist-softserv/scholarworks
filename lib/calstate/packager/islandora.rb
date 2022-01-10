@@ -59,7 +59,6 @@ module CalState
         Dir.each_child(@input_dir) do |dirname|
           @log.info "\n\nProcessing " + dirname
           process_dir(dirname)
-          sleep(throttle.to_i) unless throttle.nil?
         end
       end
 
@@ -125,7 +124,6 @@ module CalState
           process_dir(path + '/' + subdir)
         end
 
-        sleep(3)
         metadata_file = ''
         valid_metadata = false
         metadata_files = @config['metadata_file'].split('|')

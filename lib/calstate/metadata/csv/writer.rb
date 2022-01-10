@@ -20,7 +20,7 @@ module CalState
         def initialize(csv_dir, campus_slug)
           @csv_dir = csv_dir
           @campus_slug = campus_slug
-          @campus_name = Hyrax::CampusService.get_campus_name_from_id(campus_slug)
+          @campus_name = CampusService.get_campus_name_from_slug(campus_slug)
         end
 
         #

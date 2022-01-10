@@ -29,7 +29,7 @@ module CalState
         # set work to file visibility so files can inherit from that
         work.visibility = file_visibility
         work.save
-        InheritPermissionsJob.perform_now(work)
+        VisibilityCopyJob.perform_now(work)
 
         # then set work to work visibility
         work.visibility = work_visibility
@@ -37,7 +37,7 @@ module CalState
       else
         work.visibility = work_visibility
         work.save
-        InheritPermissionsJob.perform_now(work)
+        VisibilityCopyJob.perform_now(work)
       end
     end
 

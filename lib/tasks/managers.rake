@@ -13,7 +13,7 @@ namespace :calstate do
     campus = args[:campus] or raise 'No campus provided'
     record = args[:record] ||= 'all'
 
-    campus_name = Hyrax::CampusService.get_campus_name_from_id(campus)
+    campus_name = CampusService.get_campus_name_from_slug(campus)
     query = record == 'all' ? { campus: campus_name } : { id: record }
 
     x = 0
@@ -23,12 +23,6 @@ namespace :calstate do
         next if work.edit_groups.include? 'managers-' + campus
 
         x += 1
-
-        # throttle
-        if (x % 10).zero?
-          puts '    sleeping . . . '
-          sleep(60)
-        end
 
         puts "Updating work #{work.id}"
 

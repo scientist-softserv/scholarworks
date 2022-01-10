@@ -72,6 +72,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'hyrax', '2.5.1'
 gem 'hydra-role-management'
+gem 'omniauth-shibboleth'
 gem 'config'
 
 group :development, :test do
@@ -93,7 +94,6 @@ gem 'solargraph'
 gem 'colorize'
 gem 'rubyzip'
 gem "ruby-vips", "~> 2.0"
-gem 'diffy'
 gem 'handle-system-rest'
 gem 'aws-sdk-s3'
 gem 'blacklight_oai_provider'

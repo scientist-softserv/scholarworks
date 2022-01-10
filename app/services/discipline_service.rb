@@ -731,7 +731,7 @@ module DisciplineService
           "769" => Discipline.new("Psychology of Movement", %w[], %w[7 764]).freeze,
           "770" => Discipline.new("Other Kinesiology", %w[], %w[7 764]).freeze,
         "771" => Discipline.new("Laboratory and Basic Science Research", %w[], %w[7]).freeze,
-        "772" => Discipline.new("Marine Biologyh", %w[], %w[7]).freeze,
+        "772" => Discipline.new("Marine Biology", %w[], %w[7]).freeze,
         # Microbiology subtree
         "773" => Discipline.new("Microbiology", %w[774 775 776 777 778 779 780], %w[7]).freeze,
           "774" => Discipline.new("Bacteriology", %w[], %w[7 773]).freeze,
