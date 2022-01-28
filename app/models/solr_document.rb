@@ -201,6 +201,11 @@ class SolrDocument
     self['creator_name_tesim']
   end
 
+  def title_or_label
+    ActionView::Base.full_sanitizer.sanitize(super)
+  end
+
+
   # blacklight_oai_provider mapping
   field_semantics.merge!(
     contributor: %w[contributor_tesim advisor_tesim committee_member_tesim
