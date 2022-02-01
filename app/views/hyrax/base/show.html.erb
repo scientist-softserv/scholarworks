@@ -67,6 +67,7 @@
                 <% end %>
               <% end %>
             </div>
+
             <!-- other metadata -->
             <div class="csu-item-metadata">
               <%= render 'metadata', presenter: @presenter %>
@@ -74,7 +75,6 @@
             <div class="csu-item-relationship">
               <%= render 'relationships', presenter: @presenter %>
             </div>
-
           </div>
           <div class="col-md-3">
 
@@ -97,6 +97,7 @@
   </div>
 </div>
 
-<div class="csu-copyright-note">
-  Items in ScholarWorks are protected by copyright, with all rights reserved, unless otherwise indicated.
+<div class="csu-statements">
+  <%= render 'campus_statement', presenter: @presenter %>
+  <p>Items in ScholarWorks are protected by copyright, with all rights reserved, unless otherwise indicated.</p>
 </div>
