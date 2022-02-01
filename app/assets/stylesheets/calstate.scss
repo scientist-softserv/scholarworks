@@ -509,10 +509,12 @@ ul.catalog li.document div.csu-document-title {
 .csu-item-date {
     margin-bottom: .5em;
 }
-.csu-copyright-note {
+.csu-statements {
   font-size: 90%;
   color: #444;
   text-align: center;
+  margin: 0 auto;
+  max-width: 800px;
 }
 dl.work-show {
     font-weight: 500;
