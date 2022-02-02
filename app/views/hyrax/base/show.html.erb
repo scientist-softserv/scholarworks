@@ -41,7 +41,7 @@
             <% if index == 0 %>
               <h1><%= title.html_safe %></h1>
             <% else %>
-              <h2><%= title.html.safe %></h2>
+              <h2><%= title.html_safe %></h2>
             <% end %>
           <% end %>
         </div>
@@ -56,11 +56,6 @@
 
             <!-- description -->
             <div class="csu-item-description">
-              <% unless @presenter.abstract.nil? %>
-                <% @presenter.abstract.each do |abstract| %>
-                  <p class="work_description"><%= iconify_auto_link(abstract) %></p>
-                <% end %>
-              <% end %>
               <% unless @presenter.description.nil? %>
                 <% @presenter.description.each do |description| %>
                   <%= iconify_auto_link(description.html_safe) %>

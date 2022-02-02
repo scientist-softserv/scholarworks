@@ -51,5 +51,9 @@ module Hyrax
              :degree_level,
              :degree_name,
              :granting_institution, to: :solr_document
+
+    def page_title
+      "#{solr_document.title_or_label} | #{I18n.t('hyrax.product_name')}"
+    end
   end
 end
