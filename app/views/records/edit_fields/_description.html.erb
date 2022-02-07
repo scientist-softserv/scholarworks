@@ -13,11 +13,13 @@
                   toggle_submit(invalid_description());
               });
           },
-          selector: 'textarea.use_tinymce',
+          selector: 'textarea.description_tinymce',
           menubar: false,
           statusbar: false,
           toolbar1: "italic | bullist numlist | undo redo | link  | removeformat",
           relative_urls: false,
+          valid_elements : "a[href|target=_blank],strong/b,em,i,p,ul,ol,li,br",
+          add_form_submit_trigger : false
       });
     });
 
@@ -26,7 +28,7 @@
          than one textarea tinymce where one of them is not required but for now
          only one textarea tinymce description is rquired in the work except for collection.
          let class_str = $('#<%= model_type %>_description').prop('class'); or loop through
-         $('.use_tinymce').each(function () {
+         $('.description_tinymce').each(function () {
            let class_str = $('#' + $(this).prop('class'));
            and check if it contains required string
          });
@@ -58,7 +60,7 @@
                   rows="14"
                   aria-labelledby="<%= model_type %>_<%= key %>_help"
                   style="width:500px"
-                  class="use_tinymce form-control
+                  class="description_tinymce use_tinymce form-control
                          <% if f.object.required?(key) %>required<% end %>
                          <% if !f.object.required?(key) %>optional<% end %>
                          <%= model_type %>_<%= key %>"><%= f.object.model.descriptions %></textarea>

@@ -39,6 +39,14 @@ class Dataset < ActiveFedora::Base
     super sanitize_n_serialize(values)
   end
 
+  def description= values
+    super (HtmlHelper.get_rid_style_attribute(values))
+  end
+
+  def title= values
+    super (HtmlHelper.get_rid_style_attribute(values))
+  end
+
   # this method is to combined all multivalues of this field into a single one for the front end
   def descriptions
     combined_val = ''
@@ -48,8 +56,16 @@ class Dataset < ActiveFedora::Base
     combined_val
   end
 
-  def update_fields
+  def titles
+    combined_val = ''
+    title.each do |d|
+      combined_val << d
+    end
+    combined_val
+  end
 
+  def update_fields
+    super
   end
 end
 

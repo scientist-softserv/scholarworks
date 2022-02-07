@@ -164,25 +164,29 @@ module CsuMetadata
   end
 
   #
-  # Assign campus name based on admin set
+  # Assign campus name
   #
-  # @param admin_set_title [String]  name of admin set
+  # @param campus [String|Array]  name(s) to assign to campus
   #
-  def assign_campus(admin_set_title)
-    campus = Hyrax::CampusService.ensure_campus_name(admin_set_title)
-    self.campus = [campus]
+  def assign_campus(campus)
+    campuses = if campus.is_a?(Array)
+                 campus
+               else
+                 [campus]
+               end
+    correct_names = []
+    campuses.each do |name|
+      CampusService.ensure_campus_name(name)
+      correct_names.append name
+    end
+    self.campus = correct_names
   end
 
   #
   # Save this work
   #
   def save(*options)
-    raise 'No admin set defined for this item.' if admin_set&.title&.first.nil?
-
-    assign_campus(admin_set.title.first.to_s)
     set_year
-
-    Rails.logger.warn options
     super(*options)
   end
 
@@ -195,6 +199,14 @@ module CsuMetadata
     OrderedStringHelper.serialize(sanitized_values)
   end
 
+  #
+  # Set values the first time the record is created
+  #
+  def update_fields
+    raise 'No admin set defined for this item.' if admin_set&.title&.first.nil?
+
+    assign_campus(admin_set.title.first.to_s)
+  end
 
   protected
 

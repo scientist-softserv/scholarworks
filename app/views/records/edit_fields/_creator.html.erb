@@ -2,6 +2,9 @@
 <% if model_type == 'collection' %>
   <%= f.input key, as: :multi_value, input_html: { class: 'form-control' }, required: f.object.required?(key) %>
 <% else %>
+  <% if f.object.alert_msg.length > 1 %>
+    <div class="form-group"><%= f.object.alert_msg %></div>
+  <% end %>  
   <%= render "shared/composite_person",
              f: f,
              model_type: model_type,
@@ -50,8 +53,23 @@
     // only one save_handler for submit button event handler
     if (typeof save_handler !== 'function') {
         save_handler = function(event) {
+            $('.title_tinymce').each(function () {
+                let editor_txt = tinymce.get($(this).prop('id')).getContent();
+                editor_txt = editor_txt.replace(/&lt;/gm, '<').replace(/&gt;/gm, '>');
+                editor_txt = editor_txt.replace(/<\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|b|big|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|dir|div|dl|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|br|html|i|iframe|img|input|ins|kdb|label|legend|li|link|main|map|mark|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|stike|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr)([^>]*)>/gim, ' ');
+                $(this).text(editor_txt);
+            });
+            $('.description_tinymce').each(function () {
+                let editor_txt = tinymce.get($(this).prop('id')).getContent();
+                editor_txt = editor_txt.replace(/&lt;/gm, '<').replace(/&gt;/gm, '>');
+                editor_txt = editor_txt.replace(/<\/?(abbr|acronym|address|applet|area|article|aside|audio|base|basefont|bdi|big|blockquote|body|button|canvas|caption|center|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|dir|div|dl|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|html|iframe|img|input|ins|kdb|label|legend|link|main|map|mark|meta|meter|nav|noframes|noscript|object|optgroup|option|output|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|stike|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|tt|var|video|wbr)([^>]*)>/gim, ' ');
+                editor_txt = editor_txt.replace(/<u ([^>]*)>/gim, ' ');  // get rid of any <u > with space after
+                editor_txt = editor_txt.replace(/<u>/gim, ' ');  // get rid of any <u> without space after
+                editor_txt = editor_txt.replace(/<\/u>/gim, ' ');  // get rid of any </u>
+                $(this).text(editor_txt);
+            });
             // comment this to test server ORCID validation by remove the condition invalid_orcid
-            if (invalid_orcid() || invalid_description()) {
+            if (invalid_orcid() || invalid_description() || invalid_title()) {
                 event.preventDefault();
                 toggle_submit(true);
                 return;
