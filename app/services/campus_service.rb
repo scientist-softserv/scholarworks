@@ -223,7 +223,10 @@ module CampusService
     return get_campus_slug_from_name(campus) unless campus.blank?
 
     # otherwise, this is a new record so use user's campus
-    campus = controller.current_user.campus.to_s
+    campus = get_shib_user_campus(controller.current_user)
+    return campus unless campus.blank?
+
+    campus = get_demo_user_campus(controller.current_user)
     return campus unless campus.blank?
 
     # user has no campus (?!), so use default
