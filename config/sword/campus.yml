@@ -34,3 +34,9 @@ zk51vg76b: # los angeles
   visibility_during_embargo: restricted
   visibility_after_embargo: campus
   default_type: Masters Thesis
+
+zc77sq08x: # northridge
+  visibility: open
+  visibility_during_embargo: restricted
+  visibility_after_embargo: open
+  default_type: Masters Thesis
