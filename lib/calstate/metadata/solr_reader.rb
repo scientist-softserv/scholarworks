@@ -84,6 +84,7 @@ module CalState
         query = limit_to_models_query +
                 ' AND -visibility_ssi:open AND suppressed_bsi:false'
         query += ' AND ' + limit_to_campus_query(campus) unless campus.nil?
+        query += ' AND timestamp:[2022-02-08T00:00:00Z TO NOW]'
         fetch_records(query)
       end
 
