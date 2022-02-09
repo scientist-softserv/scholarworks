@@ -138,6 +138,26 @@ module CalState
           model_file = Metadata.get_slug(model_name)
           campus_slug + '_' + model_file + '.csv'
         end
+
+        #
+        # Get all records, with cleaned values
+        #
+        # @param csv [CSV]  CSV object
+        # @return [Array]
+        #
+        def load_records(csv)
+          final = []
+          csv.each do |row|
+            record = {}
+            row.each do |key, value|
+              value = clean_value(value)
+              value = clean_person(value) if person_fields.include?(key)
+              record[key] = value
+            end
+            final.append record
+          end
+          final
+        end
       end
     end
   end
