@@ -72,6 +72,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'hyrax', '2.5.1'
 gem 'hydra-role-management'
+gem 'hydra-derivatives', '~>3.6'
 gem 'omniauth-shibboleth'
 gem 'config'
 
