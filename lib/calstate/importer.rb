@@ -23,6 +23,8 @@ module CalState
         work = ActiveFedora::Base.find(record['id'])
         file = record['file']
 
+        puts record['id']
+
         # remove existing files
         unless record['replace'].nil?
           remove_files(work)
@@ -38,6 +40,8 @@ module CalState
         unless record['work_visibility'].empty? && record['file_visibility'].empty?
           viz.set_visibility(work, record['work_visibility'], record['file_visibility'])
         end
+
+        print "\n\n"
       end
     end
 
@@ -71,10 +75,7 @@ module CalState
     # @param work [ActiveFedora::Base]
     #
     def remove_files(work)
-      work.file_sets.each do |file_set|
-        pp file_set
-        puts file_set.destroy!
-      end
+      work.file_sets.each(&:destroy!)
     end
 
     #
@@ -85,9 +86,7 @@ module CalState
     #
     def attach_file_to_work(work, filename)
       # make sure we have a work
-      if work.is_a?(String)
-        work = ActiveFedora::Base.find(work)
-      end
+      work = ActiveFedora::Base.find(work) if work.is_a?(String)
 
       # create new file
       file = File.open(filename)
