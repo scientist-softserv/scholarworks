@@ -10,13 +10,13 @@ require 'calstate/metadata'
 namespace :calstate do
   desc 'Make record public but keep files restricted'
   task :visibility_split, %i[input] => [:environment] do |_t, args|
-    input = args[:input] ||= nil
+    input = args[:input] ||= ''
 
     # find restricted results from file, otherwise solr
     results = if input.include?('/')
                 CSV.open(input, { headers: true })
               else
-                name = input.nil? ? nil : CampusService.get_campus_name_from_slug(input)
+                name = input.empty? ? nil : CampusService.get_campus_name_from_slug(input)
                 reader = CalState::Metadata::SolrReader.new
                 reader.find_restricted_records(name)
               end

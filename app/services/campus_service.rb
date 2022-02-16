@@ -110,13 +110,13 @@ module CampusService
     {
       name: 'San Bernardino',
       slug: 'sanbernardino',
-      demo_email: ['sacramento.edu'],
+      demo_email: ['sb.edu'],
       org: 'csusb'
     },
     {
       name: 'San Diego',
       slug: 'sandiego',
-      demo_email: ['sdsu.edu'],
+      demo_email: ['sd.edu'],
       org: 'sdsu'
     },
     {

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # Usage
-# bundle exec rake calstate:create_user[create,'new@calstate.edu','password']
-# bundle exec rake calstate:create_user[update,'exists@calstate.edu','password']
+# bundle exec rake calstate:user[create,'new@calstate.edu','password']
+# bundle exec rake calstate:user[update,'exists@calstate.edu','password']
 
 namespace :calstate do
   desc 'Create or  update user password'
@@ -29,6 +29,7 @@ namespace :calstate do
       else
         user = User.new
         user.uid = email
+        user.email = email
         user.password = password
         user.password_confirmation = password
         puts "User <#{email}> created" if user.save!
