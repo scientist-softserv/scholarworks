@@ -109,6 +109,9 @@ a {
   background-color: #efef;
   border: 1px solid #ccc;
 }
+.csu-search-box button[data-toggle="dropdown"], .csu-search-box ul.dropdown-menu {
+  display: none;
+}
 
 /* home page */
 
@@ -614,4 +617,10 @@ footer h2 {
 }
 footer a, footer a:hover, footer a:visited {
     color: #84bef2;
+}
+
+/* dashboard */
+
+.fileupload-buttonbar button[data-toggle="browse-everything"] {
+  display: none;
 }
