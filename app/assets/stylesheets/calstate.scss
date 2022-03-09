@@ -426,6 +426,9 @@ table.csu-contacts tr:nth-child(odd) {
 
 /* search results */
 
+.view-type {
+  display: none;
+}
 .csu-search-area {
   padding-top: 15px;
   padding-bottom: 15px;
@@ -465,7 +468,6 @@ ul.catalog li.document div.csu-document-title {
     height: auto;
     max-height: 200px;
 }
-
 .hyc-description {
     text-align: left;
     text-justify: auto;
