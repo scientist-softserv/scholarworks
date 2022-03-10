@@ -33,3 +33,4 @@ importer.sh
 # rubymine
 .generators
 .idea
+.ruby-version

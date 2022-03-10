@@ -109,6 +109,9 @@ a {
   background-color: #efef;
   border: 1px solid #ccc;
 }
+.csu-search-box button[data-toggle="dropdown"], .csu-search-box ul.dropdown-menu {
+  display: none;
+}
 
 /* home page */
 
@@ -423,6 +426,9 @@ table.csu-contacts tr:nth-child(odd) {
 
 /* search results */
 
+.view-type {
+  display: none;
+}
 .csu-search-area {
   padding-top: 15px;
   padding-bottom: 15px;
@@ -462,7 +468,6 @@ ul.catalog li.document div.csu-document-title {
     height: auto;
     max-height: 200px;
 }
-
 .hyc-description {
     text-align: left;
     text-justify: auto;
@@ -614,4 +619,13 @@ footer h2 {
 }
 footer a, footer a:hover, footer a:visited {
     color: #84bef2;
+}
+
+/* dashboard */
+
+.fileupload-buttonbar button[data-toggle="browse-everything"] {
+  display: none;
+}
+button[data-behavior="add-registered-users"] {
+  display: none;
 }
