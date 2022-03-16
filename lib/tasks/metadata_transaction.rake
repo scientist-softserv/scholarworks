@@ -20,7 +20,7 @@ namespace :calstate do
     old_file = if file == 'fix'
                  old_dir + '/*.csv'
                else
-                 old_dir + '/' + file + '.csv'
+                 old_dir + '/' + file + '*.csv'
                end
 
     trans = CalState::Metadata::Csv::Transaction.new(old_file, new_file)
