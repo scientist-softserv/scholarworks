@@ -219,8 +219,10 @@ module CampusService
   #
   def self.get_campus_from_controller(controller)
     # if the record has a campus already, use that
-    campus = controller.curation_concern.campus.first.dup.to_s
-    return get_campus_slug_from_name(campus) unless campus.blank?
+    if controller.class.method_defined?(:curation_concern)
+      campus = controller.curation_concern.campus.first.dup.to_s
+      return get_campus_slug_from_name(campus) unless campus.blank?
+    end
 
     # otherwise, this is a new record so use user's campus
     campus = get_shib_user_campus(controller.current_user)
