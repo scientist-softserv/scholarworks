@@ -98,5 +98,6 @@ gem "ruby-vips", "~> 2.0"
 gem 'handle-system-rest'
 gem 'aws-sdk-s3'
 gem 'blacklight_oai_provider'
+gem 'blacklight_range_limit'
 gem 'willow_sword', github: 'csuscholarworks/willow_sword', tag: 'v1.0'
 gem 'rubocop'

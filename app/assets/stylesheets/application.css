@@ -16,4 +16,9 @@
  *= require calstate.scss
  *= require ada.css
  *= require_self
- */
+ 
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
