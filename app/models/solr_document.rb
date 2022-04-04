@@ -202,7 +202,7 @@ class SolrDocument
   end
 
   def title_or_label
-    ActionView::Base.full_sanitizer.sanitize(super)
+    CGI.unescapeHTML(ActionView::Base.full_sanitizer.sanitize(super))
   end
 
 
