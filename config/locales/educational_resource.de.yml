@@ -1,8 +1,0 @@
-de:
-  hyrax:
-    icons:
-      educational_resource:     'fa fa-file-text-o'
-    select_type:
-      educational_resource:
-        description:        "Educational resource Werke"
-        name:               "Educational Resource"
