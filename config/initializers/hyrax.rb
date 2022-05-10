@@ -1,10 +1,14 @@
 Hyrax.config do |config|
-  config.register_curation_concern :thesis
-  config.register_curation_concern :project
-  config.register_curation_concern :presentation
-  config.register_curation_concern :publication
-  config.register_curation_concern :dataset
-  config.register_curation_concern :educational_resource
+  if ENV['CSU_SYSTEM'] == 'archives'
+    config.register_curation_concern :archive
+  else
+    config.register_curation_concern :thesis
+    config.register_curation_concern :project
+    config.register_curation_concern :presentation
+    config.register_curation_concern :publication
+    config.register_curation_concern :dataset
+    config.register_curation_concern :educational_resource
+  end
 
   # Register roles that are expected by your implementation.
   # @see Hyrax::RoleRegistry for additional details.

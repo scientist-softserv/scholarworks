@@ -100,13 +100,49 @@ class FieldService
        time_period]
   end
 
+  def self.archives
+    %i[accrual_method
+       accrual_periodicity
+       accrual_policy
+       audience
+       conforms_to
+       contributor
+       coverage
+       date_accepted
+       date_created
+       date_modified
+       date_valid
+       education_level
+       format
+       has_format
+       has_part
+       has_version
+       instructional_method
+       is_format_of
+       is_referenced_by
+       is_replaced_by
+       is_required_by
+       is_version_of
+       license
+       mediator
+       medium
+       provenance
+       references
+       relation
+       replaces
+       requires
+       rights_access
+       source
+       table_of_contents]
+  end
+
   #
   # All fields, including deprecated ones
   #
   # @return [Array] symbols
   #
   def self.all
-    fields + deprecated
+    fields + deprecated + archives
   end
 
   #

@@ -2,5 +2,38 @@
 campus: 'Northridge'
 depositor: admin@calstate.edu
 input_dir: /data/exported/
-admin_set_id: 'zc77sq08x'
+admin_set_id: 'h989r321c'
 exit_on_error: false
+separator: ';'
+default_type: Archive
+field_map:
+  'Archival Collection Abstract': description
+  'Archival Collection': is_part_of
+  'Comments/Commentarios': internal_note
+  'Contributing Repository': is_part_of
+  'Date (machine readable)': date_issued
+  'Date Digitized': internal_note
+  'Date': date_issued
+  'Description': description
+  'Digital Collection': is_part_of
+  'Digital Format': format
+  'Digital Publisher': publisher
+  'Donors': contributor
+  'Finding Aid': is_referenced_by
+  'Format-Extent': extent
+  'Identifier': identifier
+  'Keywords': internal_note
+  'Language': language
+  'Medium': medium
+  'Neighborhood': geographical_area
+  'Photographer/Author/Interviewee': creator
+  'Public description': description_note
+  'Repository Number': internal_note
+  'Rights Contact': rights_note
+  'Rights Note': rights_access
+  'Source': source
+  'Subject': subject
+  'Temporal Coverage': time_period
+  'Title': title
+  'Topic': subject
+  'Type': resource_type
