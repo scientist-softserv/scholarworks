@@ -63,6 +63,9 @@ Rails.application.routes.draw do
   mount WillowSword::Engine, at: "/sword"
   get '/robots.txt', to: 'robots#index'
 
+  get 'collections', to: 'collections#index'
+  get 'collections/children/:parent_id', to: 'collections#children'
 
+  get 'campus/:campus', to: 'campus#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

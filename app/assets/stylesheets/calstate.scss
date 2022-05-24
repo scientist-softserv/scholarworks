@@ -337,7 +337,7 @@ h2.csu-home-feature {
     -webkit-transition: all 100ms ease-out 0s;
     transition: all 100ms ease-out 0s;
 }
-ul.csu-documents {
+.csu-documents {
     margin-left: 0;
     padding-left: 0;
     font-size: 90%;
@@ -346,13 +346,13 @@ ul.csu-documents {
 
 }
 @media (min-width: 768px) {
-    ul.csu-documents {
+    ul.csu-documents-home {
         -webkit-column-count: 2;
            -moz-column-count: 2;
                 column-count: 2;
     }
 }
-ul.csu-documents li {
+.csu-documents li {
     list-style-type: none;
     margin-bottom: 2em;
     display: block;
@@ -360,7 +360,7 @@ ul.csu-documents li {
               page-break-inside: avoid;
                    break-inside: avoid;
 }
-ul.csu-documents li a {
+.csu-documents li a {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 500;
     font-size: 100%;
@@ -477,7 +477,6 @@ ul.catalog li.document div.csu-document-title {
     height: auto;
     max-height: 200px;
 }
-
 .hyc-description {
     text-align: left;
     text-justify: auto;
@@ -669,4 +668,26 @@ div.string {
 }
 .switch-upload-type {
   display: none;
+}
+
+/* campus landing page */
+
+.csu-featured {
+  margin-bottom: 40px;
+}
+.featured-item {
+  background: none !important;
+  border: none;
+  font-size: 15.3px;
+  padding: 0;
+}
+.featured-item-public {
+  border-bottom: 10px;
+}
+.collection_list {
+  list-style-type: none;
+  padding-left: 15px;
+}
+.inactive_collection_control {
+  color: #adb5bd;
 }

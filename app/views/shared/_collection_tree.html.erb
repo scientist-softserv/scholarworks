@@ -1,0 +1,109 @@
+<script type="text/javascript" charset="utf-8">
+    if (typeof toggle_collection_control !== 'function') {
+        toggle_collection_control = function (id, expand) {
+            if (expand) {
+                $('#' + id).attr('data-expanded', 'true');
+                $('#expand_' + id).attr('class', 'glyphicon glyphicon-triangle-bottom');
+                $('#' + id + '_assist').html('select to collapse ');
+                $('#' + id + '_children').removeClass('collapse').attr('aria-expanded', 'true');
+            }
+            else {
+                $('#' + id).attr('data-expanded', 'false');
+                $('#expand_' + id).attr('class', 'glyphicon glyphicon-triangle-right');
+                $('#' + id + '_assist').html('select to expand ');
+                $('#' + id + '_children').addClass('collapse').attr('aria-expanded', 'false');
+            }
+        }
+    }
+
+    if (typeof get_children !== 'function') {
+        get_children = function(event) {
+            event.stopImmediatePropagation();
+            let id = $(this).attr('id');
+            let expanded = $(this).attr('data-expanded');
+            if (expanded == 'true') {
+                toggle_collection_control(id, false);
+            }
+            else {
+                let query = $(this).attr('data-query');
+                if (query == 'true') {
+                    let contents = $('#' + id + '_children').html();
+                    $('#' + id + '_children').html(contents);
+                    toggle_collection_control(id, true);
+                }
+                else {
+                    $.getJSON('/collections/children/' + id, {
+                    }, function (data) {
+                        if (data.length == 0) {
+                            $('#' + id).replaceWith("<i class='glyphicon glyphicon-triangle-right inactive_collection_control' aria-hidden='true'></i>");
+                        }
+                        else {
+                            $('#' + id).attr('data-query', 'true');
+                            // clear out all of its previous children and update the latest children
+                            //$('#' + id + '_children').html('');
+                            let children = "";
+                            $.each(data, function (index) {
+                                //console.log('processing index ' + index + ' id ' + data[index].id + ' title [' + data[index].title + ']' );
+                                children = children +
+                                    "  <li>" +
+                                    "    <a id='" + data[index].id + "'" +
+                                    "       href='#" + data[index].id + "_children'" +
+                                    "       class='collection'" +
+                                    "       data-turbolinks='false'" +
+                                    "       data-expanded='false'" +
+                                    "       data-remote='true'" +
+                                    "       data-query='false'" +
+                                    "       role='button'" +
+                                    "       aria-control='" + data[index].id + "_children'>" +
+                                    "      <i id='expand_" + data[index].id + "' class='glyphicon glyphicon-triangle-right' aria-hidden='true'></i>" +
+                                    "      <span class='sr-only'><span id='" + data[index].id + "_assist' class='sr-only'> select to expand </span> all collections under collection " + data[index].title + "</span>" +
+                                    "   </a>" +
+                                    "   <a href='/collections/" + data[index].id + "'><span class='sr-only'>select to go to detail page of collection </span>" + data[index].title + "</a>" +
+                                    "   <ul id='" + data[index].id + "_children' class='collection_list collapse' aria-expanded='false' aria-live='polite'></ul>" +
+                                    "  </li>";
+                            });
+                            $('#' + id + '_children').append(children);
+                            $('.collection').on('click', get_children);
+                            toggle_collection_control(id, true);
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    $(function () {
+        $('.collection').on('click', get_children);
+    });
+</script>
+
+<% if collection_type == 'collection' %>
+  <h2>Collections</h2>
+<% else %>
+  <h1>Collections</h1>
+<% end %>  
+
+<ul class="collection_list">
+  <% collections.each do |collection| %>
+    <li>
+      <a id="<%= collection.id %>"
+         href="#<%= collection.id %>_children"
+         class="collection collapse-toggle"
+         data-turbolinks="false"
+         data-expanded="false"
+         data-remote="true"
+         data-query="false"
+         role="button"
+         aria-control="<%= collection.id %>_children">
+        <i id="expand_<%= collection.id %>" class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>
+        <span class="sr-only"><span id="<%= collection.id %>_assist"> select to expand </span> all collections under  <%= collection_type %> <%= collection.title %></span>
+      </a>
+      <% if collection_type == 'collection' %>
+        <a href="/collections/<%= collection.id %>"><span class="sr-only">select to go to detail page of collection </span> <%= collection.title %></a>
+      <% else %>
+        <span id="<%= collection.id %>_name" class="collection_name"><%= collection.title %></span>
+      <% end %>
+      <ul id="<%= collection.id %>_children" class="collection_list collapse" aria-expanded="false" aria-live="polite"></ul>
+    </li>
+  <% end %>
+</ul>

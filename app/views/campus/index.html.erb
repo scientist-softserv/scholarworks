@@ -1,0 +1,19 @@
+<div class="row">
+  <%= render 'shared/campus_logo', campus: @campus %>
+</div>  
+<div class="row">
+  <div class="col-md-5 col-sm-5">
+    <%= render "shared/collection_tree", collections: @collections, collection_type: 'collection' %>
+  </div>
+  <div id="content" class="col-md-7 col-sm-7">
+    <%= render 'campus_featured_works' %>
+    <h2>Recent submissions</h2>
+    <ul class="csu-documents">
+      <% @recent_documents.each do |document| %>
+        <li>
+          <%= render 'csu/result', document: document, hyrax: main_app %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
