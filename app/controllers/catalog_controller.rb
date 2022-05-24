@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class CatalogController < ApplicationController
+  include BlacklightAdvancedSearch::Controller
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
-  include Blacklight::Catalog
   include BlacklightOaiProvider::Controller
 
   # This filter applies the hydra access controls
@@ -18,6 +18,11 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|
+    config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
+    config.advanced_search[:url_key] ||= 'advanced'
+    config.advanced_search[:query_parser] ||= 'dismax'
+    config.advanced_search[:form_solr_parameters] ||= {}
+
     # so super long queries don't cause http 414 errors
     config.http_method = :post
 
@@ -27,7 +32,7 @@ class CatalogController < ApplicationController
 
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     config.show.partials.insert(1, :openseadragon)
-    config.search_builder_class = Hyrax::CatalogSearchBuilder
+    config.search_builder_class = Scholars::CatalogSearchBuilder
 
     # Show gallery view
     config.view.gallery.partials = %i[index_header index]

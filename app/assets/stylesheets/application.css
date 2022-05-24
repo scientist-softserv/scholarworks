@@ -16,4 +16,5 @@
  *= require calstate.scss
  *= require ada.css
  *= require_self
+ *= require 'blacklight_advanced_search'
  */

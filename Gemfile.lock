@@ -133,6 +133,9 @@ GEM
       bootstrap-sass (~> 3.0)
       openseadragon (>= 0.2.0)
       rails
+    blacklight_advanced_search (6.4.1)
+      blacklight (~> 6.0, >= 6.0.1)
+      parslet
     blacklight_oai_provider (6.0.0)
       blacklight (~> 6.0)
       oai (~> 0.4)

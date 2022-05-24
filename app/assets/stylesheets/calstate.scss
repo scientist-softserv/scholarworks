@@ -112,6 +112,15 @@ a {
 .csu-search-box button[data-toggle="dropdown"], .csu-search-box ul.dropdown-menu {
   display: none;
 }
+.csu-advanced-option {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 80%;
+}
+@media (min-width: 1000px) {
+  .csu-advanced-option {
+    padding-top: 20px;
+  }
+}
 
 /* home page */
 
@@ -611,6 +620,12 @@ a.tumblr:hover {
 .csu-login-options {
   margin: 20px;
   margin-top: 40px;
+}
+
+/* advanced search */
+
+.advanced-search-form {
+  margin-top: 20px;
 }
 
 /* footer */
