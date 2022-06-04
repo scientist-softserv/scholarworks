@@ -4,7 +4,7 @@
 admin = User.where(email: 'kcloud@calstate.edu').first_or_create do |u|
   u.password = 'testing123'
   u.password_confirmation = 'testing123'
-  u.admin_area = true
+  u.uid = 'kcloud@calstate.edu' # needed for non-saml based login
 end
 role = Role.where(name: 'admin').first_or_create
 role.users << admin unless role.users.include?(admin)
@@ -17,12 +17,14 @@ CampusService::CAMPUSES.each do |campus|
   campus_admin_set = AdminSet.where(title: campus[:name]).first
   if campus_admin_set.blank?
     puts "Creating #{campus[:name]} AdminSet"
+    # TODO the next two lines seem redundent, are they?
     campus_admin_set = AdminSet.create!(title: [campus[:name]]) unless campus_admin_set.present?
+    Hyrax::AdminSetCreateService.call(admin_set: campus_admin_set, creating_user: admin)
   else
     puts "#{campus[:name]} AdminSet already exists"
   end
-  Hyrax::AdminSetCreateService.call(admin_set: campus_admin_set, creating_user: admin)
-  campus_user_email = "user@#{campus[:email_domains].first}"
+
+  campus_user_email = "user@#{campus[:demo_email].first}"
   puts "Creating user #{campus_user_email}"
   user = User.where(email: campus_user_email).first_or_create do |f|
     f.password = 'testing123'
