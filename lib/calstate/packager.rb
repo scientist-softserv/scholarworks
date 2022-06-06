@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require_relative 'packager/abstract_packager'
+require_relative 'packager/csv'
+require_relative 'packager/csv_transaction'
 require_relative 'packager/dspace'
 require_relative 'packager/islandora'
 require_relative 'packager/log'
 require_relative 'packager/proquest'
+require_relative 'packager/visibility'
 require_relative 'packager/zenodo'
 
 
@@ -44,6 +48,19 @@ module CalState
       work.edit_users = managers
       work.edit_users = work.edit_users.dup
       work
+    end
+
+    #
+    # Create a directory
+    # only if it doesn't already exist
+    #
+    # @param dir [String]
+    #
+    # @return [String] the new directory
+    #
+    def self.initialize_directory(dir)
+      Dir.mkdir(dir) unless Dir.exist?(dir)
+      dir
     end
   end
 end

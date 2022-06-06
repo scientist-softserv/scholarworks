@@ -24,7 +24,7 @@ module CalState
       # Build sitemap
       #
       def run
-        results = @solr_reader.fetch_all_unsuppressed
+        results = @solr_reader.public_records
 
         # we'll chunk the results into smaller groups to ensure our sitemap
         # files are not too large: < 5MB

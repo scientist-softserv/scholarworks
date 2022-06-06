@@ -16,9 +16,9 @@ namespace :calstate do
     results = if input.include?('/')
                 CSV.open(input, { headers: true })
               else
-                name = input.empty? ? nil : CampusService.get_campus_name_from_slug(input)
+                name = input.empty? ? nil : CampusService.get_name_from_slug(input)
                 reader = CalState::Metadata::SolrReader.new
-                reader.find_restricted_records(name)
+                reader.restricted_records(name)
               end
 
     results.each do |record|
