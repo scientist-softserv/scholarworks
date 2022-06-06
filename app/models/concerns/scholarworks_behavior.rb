@@ -55,13 +55,6 @@ module ScholarworksBehavior
       super saved_values.uniq
     end
 
-    # @deprecated
-    def handle_suffix
-      return nil if handle.blank?
-
-      handle.map { |url| url.split('/')[-1] }
-    end
-
     #
     # Assign campus name
     #

@@ -10,8 +10,6 @@ class CsuIndexer < Hyrax::WorkIndexer
 
   def generate_solr_document
     super.tap do |solr_doc|
-      solr_doc['handle_suffix_sim'] = object.handle_suffix
-
       # add a discipline text search only field and person sim
       generate_discipline_search_ids(solr_doc, solr_doc['discipline_tesim'])
       generate_name(solr_doc, object.creator, 'creator')
