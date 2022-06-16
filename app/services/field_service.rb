@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# ScholarWorks fields
+# Field Service
 #
 # This service is used in the CatalogController, CsuForm, SolrDocument &
 # CsuPresenter to reduce the number of redundant places fields are defined.
@@ -207,37 +207,7 @@ class FieldService
   end
 
   #
-  # Facet fields
-  #
-  # @return [Hash]  as field => no. to display
-  #
-  def self.facets
-    {
-      resource_type: { limit: 5 },
-      campus: { limit: 10 },
-      department: { limit: 5 },
-      degree_level: { limit: 5 },
-      date_issued_year: { range: true, include_in_advanced_search: false, sort: 'index'}
-    }
-  end
-
-  #
-  # Advanced search fields
-  #
-  # @return [Array] string
-  #
-  def self.advanced_search
-    %w[title
-       creator
-       publisher
-       keyword
-       subject
-       discipline
-       handle]
-  end
-
-  #
-  # OAI-PMH mapping of scholarworks fields to dc fields
+  # OAI-PMH mapping of internal fields to dc fields
   #
   # @return [Hash]
   #

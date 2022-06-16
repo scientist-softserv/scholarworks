@@ -4,7 +4,7 @@
 # Open Educational Resource
 #
 class EducationalResource < ActiveFedora::Base
-  include ScholarworksFields
+  include CsuFields
   include FormattingFields
   include Hyrax::WorkBehavior
   include Hydra::AccessControls::CampusVisibility
@@ -17,6 +17,6 @@ class EducationalResource < ActiveFedora::Base
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include Hyrax::BasicMetadata
-  include ScholarworksBehavior
+  include CsuBehavior
   include FormattingBehavior
 end

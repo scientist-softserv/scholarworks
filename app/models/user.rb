@@ -29,7 +29,7 @@ class User < ApplicationRecord
       user.affiliation = auth.info.affiliation
       user.campus = auth.info.campus
 
-      # mlml uses the sjsu auth but is its own campus within scholarworks
+      # mlml uses the sjsu auth but is its own campus
       if auth.info.campus == 'sjsu' && auth.info.department == '1153'
         user.campus = 'mlml'
       end

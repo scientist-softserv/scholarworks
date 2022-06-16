@@ -36,8 +36,8 @@ a {
 .container h3 {
     font-size: 18px;
 }
-
-.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus, .breadcrumb {
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus, .breadcrumb {
     background-color: transparent;
 }
 
@@ -146,13 +146,6 @@ a {
 #csu-home-top {
     background-color: #000;
     overflow: hidden;
-}
-@media (min-width: 767px) {
-    #csu-home-top {
-        background-image: image-url("home/bg.png");
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
 }
 #csu-home-top h1, #csu-home-top p {
     color: #fff !important;
@@ -435,9 +428,6 @@ table.csu-contacts tr:nth-child(odd) {
 
 /* search results */
 
-.view-type {
-  display: none;
-}
 .csu-search-area {
   padding-top: 15px;
   padding-bottom: 15px;

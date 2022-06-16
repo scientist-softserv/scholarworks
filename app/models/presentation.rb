@@ -4,7 +4,7 @@
 # Presentation
 #
 class Presentation < ActiveFedora::Base
-  include ScholarworksFields
+  include CsuFields
   include FormattingFields
   include Hyrax::WorkBehavior
   include Hydra::AccessControls::CampusVisibility
@@ -18,13 +18,9 @@ class Presentation < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :place, predicate: ::RDF::URI.new('http://purl.org/net/nknouf/ns/bibtex#hasLocation'), multiple: false do |index|
-    index.as :stored_searchable
-  end
-
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include Hyrax::BasicMetadata
-  include ScholarworksBehavior
+  include CsuBehavior
   include FormattingBehavior
 end

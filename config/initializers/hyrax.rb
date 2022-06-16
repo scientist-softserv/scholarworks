@@ -1,13 +1,6 @@
 Hyrax.config do |config|
-  if ENV['CSU_SYSTEM'] == 'archives'
-    config.register_curation_concern :archive
-  else
-    config.register_curation_concern :thesis
-    config.register_curation_concern :project
-    config.register_curation_concern :presentation
-    config.register_curation_concern :publication
-    config.register_curation_concern :dataset
-    config.register_curation_concern :educational_resource
+  SystemService.models.each do |model|
+    config.register_curation_concern model
   end
 
   # Register roles that are expected by your implementation.

@@ -2,6 +2,7 @@
 en:
   activefedora:
     models:
+      archive: Archive
       dataset: Research Data
       educational_resource: Open Educational Resource
       presentation: Presentation
@@ -9,7 +10,6 @@ en:
       publication: Publication
       thesis: Thesis or Dissertation
   blacklight:
-    application_name: ScholarWorks
     search:
       fields:
         facet:
@@ -99,6 +99,7 @@ en:
       copyright_html: "<strong>Copyright © 2017 Samvera</strong> Licensed under the Apache License, Version 2.0"
       service_html: "A service of <a href=\"http://samvera.org/\" class=\"navbar-link\" target=\"_blank\">Samvera</a>."
     icons:
+      archive: 'fa fa-file-text-o'
       dataset: 'fa fa-file-text-o'
       educational_resource: 'fa fa-file-text-o'
       presentation: 'fa fa-file-text-o'
@@ -107,12 +108,14 @@ en:
       thesis: 'fa fa-file-text-o'
     institution_name: Cal State
     institution_name_full: California State University
-    product_name: ScholarWorks
     product_twitter_handle: "@csuscholarworks"
     search:
       button:
         html: <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
     select_type:
+      archive:
+        name: Archive
+        description: Archival works
       dataset:
         name: Dataset
         description: Research data

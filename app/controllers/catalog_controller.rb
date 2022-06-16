@@ -46,7 +46,7 @@ class CatalogController < ApplicationController
 
     # facets
 
-    FieldService.facets.each do |field, attr|
+    SystemService.facets.each do |field, attr|
       solr_field = solr_name(field, :facetable)
       attr[:label] = 'blacklight.search.fields.facet.' + solr_field
       config.add_facet_field(solr_field, attr)
@@ -80,7 +80,7 @@ class CatalogController < ApplicationController
 
     # advanced search fields
 
-    FieldService.advanced_search.each do |solr_field|
+    SystemService.advanced_search.each do |solr_field|
       config.add_search_field(solr_field) do |field|
         solr_name = solr_name(solr_field, :stored_searchable)
         field.solr_local_parameters = {
@@ -105,8 +105,8 @@ class CatalogController < ApplicationController
     config.oai = {
       provider: {
         repository_url: 'http://' + ENV.fetch('SCHOLARWORKS_HOST', 'localhost:3000') + '/catalog/oai',
-        repository_name: 'CSU ScholarWorks',
-        record_prefix: 'oai:scholarworks',
+        repository_name: I18n.t('hyrax.product_name'),
+        record_prefix: I18n.t('hyrax.oai_record_prefix'),
         admin_email: 'library@calstate.edu',
         sample_id: '101010'
       },

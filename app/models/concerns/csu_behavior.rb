@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 #
-# Base behavior for shared metadata across all ScholarWorks models
+# Base behavior for shared metadata across all models
 #
-# See also ScholarworksFields
+# See also CsuFields
 #
-module ScholarworksBehavior
+module CsuBehavior
   extend ActiveSupport::Concern
 
   included do

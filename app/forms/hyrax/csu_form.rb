@@ -1,7 +1,7 @@
 module Hyrax
   class CsuForm < Hyrax::Forms::WorkForm
-    # all scholarworks fields
-    self.terms += FieldService.fields
+    # all fields
+    self.terms += FieldService.all
 
     # blank the fields hyrax requires
     self.required_fields = []

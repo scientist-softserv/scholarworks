@@ -24,9 +24,9 @@
 #
 # Base class for shared metadata across all models
 #
-# See also ScholarworksBehavior
+# See also CsuBehavior
 #
-module ScholarworksFields
+module CsuFields
   extend ActiveSupport::Concern
 
   included do
@@ -139,7 +139,7 @@ module ScholarworksFields
       index.as :stored_searchable
     end
 
-    property :is_part_of, predicate: ::RDF::Vocab::DC.isPartOf do |index|
+    property :is_part_of, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#isPartOf') do |index|
       index.as :stored_searchable
     end
 
@@ -156,6 +156,10 @@ module ScholarworksFields
     end
 
     property :oclcno, predicate: ::RDF::Vocab::BIBO.oclcnum do |index|
+      index.as :stored_searchable
+    end
+
+    property :place, predicate: ::RDF::URI.new('http://purl.org/net/nknouf/ns/bibtex#hasLocation'), multiple: false do |index|
       index.as :stored_searchable
     end
 

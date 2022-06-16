@@ -14,7 +14,7 @@ module CalState
   #
   module Metadata
     #
-    # Mapping of models defined in ScholarWorks
+    # Mapping of models
     #
     # @return [Hash]  slug: model name
     #
@@ -27,7 +27,7 @@ module CalState
     end
 
     #
-    # The names of the models defined in ScholarWorks
+    # The names of the models
     #
     # @return [Array<String>]  of model class names
     #
@@ -36,7 +36,7 @@ module CalState
     end
 
     #
-    # Models defined in ScholarWorks
+    # Models
     #
     # @return [Array<ActiveRecord::Base>]  of models
     #

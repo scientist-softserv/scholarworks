@@ -4,7 +4,7 @@
 # Publication
 #
 class Publication < ActiveFedora::Base
-  include ScholarworksFields
+  include CsuFields
   include FormattingFields
   include Hyrax::WorkBehavior
   include Hydra::AccessControls::CampusVisibility
@@ -29,10 +29,6 @@ class Publication < ActiveFedora::Base
 
   property :pages, predicate: ::RDF::Vocab::BIBO.pages, multiple: false
 
-  property :place, predicate: ::RDF::URI.new('http://purl.org/net/nknouf/ns/bibtex#hasLocation'), multiple: false do |index|
-    index.as :stored_searchable
-  end
-
   property :series, predicate: ::RDF::URI.new('http://purl.org/net/nknouf/ns/bibtex#hasSeries') do |index|
     index.as :stored_searchable
   end
@@ -42,7 +38,7 @@ class Publication < ActiveFedora::Base
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include Hyrax::BasicMetadata
-  include ScholarworksBehavior
+  include CsuBehavior
   include FormattingBehavior
 
   def editor

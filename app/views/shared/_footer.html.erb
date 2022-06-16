@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-4">
         <h2>About Us</h2>
-        <p>ScholarWorks is supported by <a href="https://calstate.edu/library">Systemwide Digital Library Services</a>
+        <p><%= t('hyrax.product_name') %> is supported by <a href="https://calstate.edu/library">Systemwide Digital Library Services</a>
            in collaboration with the <a href="https://libraries.calstate.edu/">CSU Libraries</a>.</p>
         <ul>
           <li><a href="https://calstate.edu">California State University</a></li>
@@ -12,10 +12,8 @@
         </ul>
       </div>
       <div class="col-sm-4">
-        <h2>About ScholarWorks</h2>
-        <p>ScholarWorks is a shared institutional repository that collects, preserves, and provides access to
-           scholarship by research communities at The California State University. Collections include CSU faculty
-           publications, student dissertations and theses, datasets, and teaching materials.</p>
+        <h2>About <%= t('hyrax.product_name') %></h2>
+        <p><%= t('hyrax.product_description') %></p>
         <p>Powered by Samvera Hyrax <%= Hyrax::VERSION %></p>
       </div>
       <div class="col-sm-4">
