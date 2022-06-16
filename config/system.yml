@@ -22,9 +22,4 @@ advanced_search:
   - handle
   
 models:
-  - thesis
-  - project
-  - presentation
-  - publication
-  - dataset
-  - educational_resource
+  - archive

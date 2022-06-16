@@ -1,10 +1,10 @@
 en:
   blacklight:
-    application_name: ScholarWorks
+    application_name: CSU Digital Archives
   hyrax:
-    copyright_notice: "Items in ScholarWorks are protected by copyright, with all rights reserved, unless otherwise indicated."
-    oai_record_prefix: "oai:scholarworks"
-    product_name: ScholarWorks
-    product_description: "ScholarWorks is a shared institutional repository that collects, preserves, and provides
-      access to scholarship by research communities at The California State University. Collections include CSU faculty
-      publications, student dissertations and theses, datasets, and teaching materials."
+    copyright_notice: ""
+    oai_record_prefix: "oai:csuarchives"
+    product_name: CSU Digital Archives
+    product_description: "CSU Digital Archives is a shared digital library platform that collects, preserves, and provides
+      access to historical collections at The California State University."
+
