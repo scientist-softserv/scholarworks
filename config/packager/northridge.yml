@@ -2,10 +2,10 @@
 campus: 'Northridge'
 depositor: admin@calstate.edu
 input_dir: /data/exported/
-admin_set_id: 'h989r321c'
+admin_set_id: 'nv9353847'
 exit_on_error: false
+default_model: Archive
 separator: ';'
-default_type: Archive
 field_map:
   'Archival Collection Abstract': description
   'Archival Collection': is_part_of
@@ -21,7 +21,7 @@ field_map:
   'Donors': contributor
   'Finding Aid': is_referenced_by
   'Format-Extent': extent
-  'Identifier': identifier
+  'Identifier': files
   'Keywords': internal_note
   'Language': language
   'Medium': medium

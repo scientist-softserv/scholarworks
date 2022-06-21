@@ -5,3 +5,4 @@ input_dir: /data/exported/
 admin_set_id: 'mw22v5449'
 exit_on_error: false
 metadata_only: true
+default_type: Other

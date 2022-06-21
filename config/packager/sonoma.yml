@@ -2,5 +2,27 @@
 campus: 'Sonoma'
 depositor: admin@calstate.edu
 input_dir: /data/exported/
-admin_set_id: 'dz010q04x'
+admin_set_id: 'pr76f659x'
 exit_on_error: false
+default_model: Archive
+default_type: Image
+separator: ';'
+field_map:
+  Collection: is_part_of
+  Title: title
+  Creator: creator
+  Subject: subject
+  Region: geographical_area
+  Description: description
+  Physical description: description_note
+  Original source: source
+  Place of publication/Origin: place
+  Date created: date_created
+  Source collection: is_part_of
+  Digital collection: is_part_of
+  Related links: related_url
+  Copyright: rights_note
+  Corporate copyright: rights_note
+  Browse topic: keyword
+  OCLC number: oclcno
+  Location ID: files
