@@ -18,6 +18,8 @@ en:
           department_sim: Department
           degree_level_sim: Degree Level
           date_issued_year_sim: Date
+          # @testing
+          accrual_method_sim: Has File
         show: &work_fields
           admin_set: Administrative Set
           advisor: Advisor
@@ -88,6 +90,8 @@ en:
           rights_statement: Rights Statement
           rights_uri: Rights URI
           time_period: Time Period
+          # @testing
+          accrual_method: Has File
   blacklight_advanced_search:
     form:
       title: Advanced Search

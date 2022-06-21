@@ -13,7 +13,7 @@ class Archive < ActiveFedora::Base
   validates :title, presence: { message: 'Your work must have a title.' }
 
   property :accrual_method, predicate: ::RDF::Vocab::DC.accrualMethod do |index|
-    index.as :stored_searchable
+    index.as :stored_searchable, :facetable
   end
 
   property :accrual_periodicity, predicate: ::RDF::Vocab::DC.accrualPeriodicity do |index|

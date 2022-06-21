@@ -3,9 +3,7 @@ facets:
     limit: 5
   campus:
     limit: 10
-  department:
-    limit: 5
-  degree_level:
+  accrual_method:
     limit: 5
   date_issued_year:
     range: true
