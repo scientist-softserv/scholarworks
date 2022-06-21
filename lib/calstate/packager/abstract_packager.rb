@@ -43,20 +43,23 @@ module CalState
         @campus_slug = campus
         @campus = CampusService.get_name_from_slug(@campus_slug)
         @depositor = 'admin@calstate.edu'
-        @exit_on_error = false
-        @metadata_only = false
         @fix_params = false
+        @metadata_only = false
+        @exit_on_error = false
         @throttle = 0
         @throttle_on_error = 60
         @log = Packager::Log.new
         @errors = 0
         @type_map = CalState::Metadata.model_type_map
+        @admin_set_check = []
 
         # campus config
         config_file = 'config/packager/' + campus + '.yml'
         @config = OpenStruct.new(YAML.load_file(config_file))
-        @default_type = @config['default_type']
+
         @default_model = @config['default_model']
+        @metadata_only = true if @config['metadata_only'] == 'true'
+        @exit_on_error = true if @config['exit_on_error'] == 'true'
       end
 
       protected
@@ -159,7 +162,7 @@ module CalState
       def create_work(params, files = [])
         work = create_new_work(params)
         params['id'] = work.id
-        attach_files(work, files) unless files.blank?
+        attach_files(work, files) unless files.empty?
 
         unless params['collection'].blank?
           add_to_collection(work, params['collection'])
@@ -264,12 +267,14 @@ module CalState
 
         if files.empty?
           @log.info 'No files to attach.'
-          raise 'No files to attach!' unless @metadata_only
+          raise MetadataError, 'No files to attach!' unless @metadata_only
 
           return false
         end
 
         files.each do |file_path|
+          next if file_path.blank?
+
           file = File.open(file_path)
           uploaded_file = Hyrax::UploadedFile.create(file: file)
           uploaded_file.save
@@ -415,7 +420,7 @@ module CalState
         elsif @default_model.present?
           @default_model
         else
-          raise 'Could not find model for: ' + resource_type
+          raise MetadataError, 'Could not find model for: ' + resource_type
         end
       end
 
@@ -433,9 +438,13 @@ module CalState
 
         # depositor
         depositor = User.find_by_user_key(@depositor)
-        raise 'User ' + @depositor + ' not found.' if depositor.nil?
+        raise MetadataError, 'User ' + @depositor + ' not found.' if depositor.nil?
 
-        ensure_required_metadata(params)
+        begin
+          params = ensure_required_metadata(params)
+        ensure
+          @log.info params.inspect
+        end
 
         # get model
         resource_type = params['resource_type'].first
@@ -466,25 +475,47 @@ module CalState
       # @return [Hash]
       #
       def ensure_required_metadata(params)
+        # title
+        raise MetadataError, 'No title set in params.' if params['title'].blank?
+
         # admin set
         if params['admin_set_id'].blank? && @config['admin_set_id']
           params['admin_set_id'] = @config['admin_set_id']
         end
 
-        raise 'No admin_set_id supplied in params.' if params['admin_set_id'].blank?
+        if params['admin_set_id'].blank?
+          raise MetadataError, 'No admin_set_id supplied in params.'
+        end
+
+        unless @admin_set_check.include?(params['admin_set_id'])
+          AdminSet.find(params['admin_set_id'])
+          @admin_set_check.append(params['admin_set_id'])
+        end
 
         # campus
         if params['campus'].blank? && @config['campus']
           params['campus'] = [@config['campus']]
         end
 
-        raise 'No campus supplied in params.' if params['campus'].blank?
+        raise MetadataError, 'No campus supplied in params.' if params['campus'].blank?
+
+        params['campus'].each do |campus|
+          CampusService.ensure_campus_name(campus)
+        end
 
         # resource type
         if params['resource_type'].blank?
-          raise 'No resource_type supplied in params' if @default_type.blank?
+          if @config['default_type'].blank?
+            raise MetadataError, 'No resource_type supplied in params'
+          else
+            params['resource_type'] = @config['default_type']
+          end
+        end
 
-          params['resource_type'] = [@default_type]
+        # visibility
+        if params['visibility'].blank?
+          params['visibility'] = @config['visibility']
+          params['visibility'] = 'open' if params['visibility'].blank?
         end
 
         params

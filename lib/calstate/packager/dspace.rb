@@ -14,8 +14,7 @@ module CalState
       def initialize(campus)
         super(campus)
 
-        @log.info 'Campus: ' + @campus.yellow
-        @metadata_only = true if @config['metadata_only']
+        @log.info 'Campus: ' + @campus
 
         # set working directories
         @input_dir = @config['input_dir']
@@ -186,15 +185,9 @@ module CalState
           # type of file
           file_type = file_location.parent.parent.attr('USE')
 
-          case file_type
-          when 'THUMBNAIL'
-            if @config['include_thumbnail']
-              uploaded_file = rename_file(file_dir, orig_filename, aip_filename, 'thumbnail')
-              uploaded_files.push(uploaded_file) unless uploaded_file.nil?
-            end
-          when 'ORIGINAL'
+          if file_type == 'ORIGINAL'
             uploaded_file = rename_file(file_dir, orig_filename, aip_filename, 'bitstream')
-            uploaded_files.push(uploaded_file) unless uploaded_file.nil?
+            uploaded_files.append(uploaded_file) unless uploaded_file.nil?
           end
         end
 

@@ -18,15 +18,17 @@ module CalState
       #
       # Process all items
       #
-      # @param path [String]  full path to csv file
+      # @param path [String]            full path to csv file
       #
       def process_items(path)
         @log.info 'Processing all items.'
 
         x = 0
         base_path = File.dirname(path)
+        file_map = file_map(base_path + '/files')
+        tab_sep = true if @config['tab_separated']
 
-        csv = CalState::Metadata::Csv::Reader.new(path)
+        csv = CalState::Metadata::Csv::Reader.new(path, tab_sep)
         @transaction = CalState::Packager::CsvTransaction.new(csv)
 
         records = csv.records
@@ -38,11 +40,13 @@ module CalState
           files = []
           if record.key?('files')
             record['files'].each do |file|
-              files.append(base_path + '/' + file)
+              files += search_files(file_map, file)
             end
           end
           x += 1
+
           next if @transaction.completed?(x)
+          next unless files.empty?
 
           process_item(record.except('files'), files, counter: x)
         end
@@ -117,12 +121,11 @@ module CalState
             end
 
             if FieldService.single_fields.include?(mapped_field)
-              if value.is_a?(Array)
-                @log.warn "#{field} was multi-valued, but #{mapped_field} is single valued."
-                new_record[mapped_field] = value.first
-              else
-                new_record[mapped_field] = value
-              end
+              new_record[mapped_field] = if value.is_a?(Array)
+                                           value.first
+                                         else
+                                           value
+                                         end
             else
               new_record[mapped_field] = [] unless new_record.key?(mapped_field)
               if value.is_a?(Array)
@@ -136,6 +139,30 @@ module CalState
         end
 
         final
+      end
+
+      def search_files(file_map, id)
+        files = []
+        file_map.each do |file, path|
+          files.append path if file.include?(id)
+        end
+
+        files
+      end
+
+      def file_map(path)
+        file_map = {}
+
+        Dir.children(path).each do |file|
+          local_path = File.absolute_path(path + '/' + file)
+          if File.directory?(local_path)
+            file_map.merge!(file_map(local_path))
+          else
+            file_map[file] = local_path
+          end
+        end
+
+        file_map
       end
     end
   end

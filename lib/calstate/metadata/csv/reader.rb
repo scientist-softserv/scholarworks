@@ -28,11 +28,17 @@ module CalState
         #
         # New CSV Reader
         #
-        # @param csv_file [String]  path to csv file
+        # @param csv_file [String]        path to csv file
+        # @param tab_separated [Boolean]  [optional] whether file is tab separated
         #
-        def initialize(csv_file)
+        def initialize(csv_file, tab_separated = false)
           @file = csv_file
-          options = { headers: true, encoding: 'bom|utf-8' }
+          options = {
+            headers: true,
+            encoding: 'bom|utf-8',
+            liberal_parsing: true
+          }
+          options[:col_sep] = "\t" if tab_separated
           @csv = CSV.read(csv_file, options)
           @records = load_records(@csv)
         end

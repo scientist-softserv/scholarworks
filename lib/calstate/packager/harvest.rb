@@ -91,7 +91,6 @@ module CalState
         params = FieldService.xml_to_params(record)
         params['campus'] = [@campus]
         params['admin_set_id'] = @config['admin_set_id']
-        params['visibility'] = @config['visibility']
         params['external_system'] = @config['external_system']
 
         unless params['date_issued'].blank?
