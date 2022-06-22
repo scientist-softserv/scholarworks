@@ -1,0 +1,13 @@
+terms:
+  - id: Undergraduate Project
+    term: Undergraduate Project
+    degree_level: Undergraduate
+  - id: Capstone Project
+    term: Capstone Project
+    degree_level: Undergraduate
+  - id: Graduate Project
+    term: Graduate Project
+    degree_level: Masters
+  - id: Doctoral Project
+    term: Doctoral Project
+    degree_level: Doctoral

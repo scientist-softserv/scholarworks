@@ -134,6 +134,10 @@ en:
       thesis:
         name: Master's Thesis or Dissertation
         description: Master's Thesis or Dissertation
+        sanmarcos:
+          name: Student Research
+          description: Dissertation, Master's Thesis, or Project
+
     visibility:
       campus:
         note_html: Restrict access to campus
