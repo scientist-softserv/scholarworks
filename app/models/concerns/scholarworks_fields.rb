@@ -1,27 +1,42 @@
+# frozen_string_literal: true
 
 # All models inherit from Hyrax::BasicMetadata, which includes:
-#   creator           RDF::Vocab::DC11.creator
-#   keyword	          RDF::Vocab::DC11.relation
-#   rights_statement  RDF::Vocab::EDM.rights
-#   contributor	      RDF::Vocab::DC11.contributor
-#   description	      RDF::Vocab::DC11.description
-#   license	          RDF::Vocab::DC.rights
-#   publisher	        RDF::Vocab::DC11.publisher
-#   date_created	    RDF::Vocab::DC.created
-#   subject	          RDF::Vocab::DC11.subject
-#   language	        RDF::Vocab::DC11.language
-#   identifier	      RDF::Vocab::DC.identifier
-#   based_near	      RDF::Vocab::FOAF.based_near
-#   related_url	      RDF::RDFS.seeAlso
-#   source	          RDF::Vocab::DC.source
-#   resource_type	    RDF::Vocab::DC.type
+#
+# based_near               ::RDF::Vocab::FOAF.based_near
+# bibliographic_citation   ::RDF::Vocab::DC.bibliographicCitation
+# creator                  ::RDF::Vocab::DC11.creator
+# contributor              ::RDF::Vocab::DC11.contributor
+# date_created             ::RDF::Vocab::DC.created
+# description              ::RDF::Vocab::DC11.description
+# identifier               ::RDF::Vocab::DC.identifier
+# import_url               ::RDF::URI.new('http://scholarsphere.psu.edu/ns#importUrl')
+# language                 ::RDF::Vocab::DC11.language
+# keyword                  ::RDF::Vocab::DC11.relation
+# license                  ::RDF::Vocab::DC.rights
+# publisher                ::RDF::Vocab::DC11.publisher
+# related_url              ::RDF::RDFS.seeAlso
+# relative_path            ::RDF::URI.new('http://scholarsphere.psu.edu/ns#relativePath')
+# resource_type            ::RDF::Vocab::DC.type
+# rights_statement         ::RDF::Vocab::EDM.rights
+# source                   ::RDF::Vocab::DC.source
+# subject                  ::RDF::Vocab::DC11.subject
 
-module CsuMetadata
+#
+# Base class for shared metadata across all models
+#
+# See also ScholarworksBehavior
+#
+module ScholarworksFields
   extend ActiveSupport::Concern
 
   included do
 
+    # @deprecated
     property :abstract, predicate: ::RDF::Vocab::DC.abstract do |index|
+      index.as :stored_searchable
+    end
+
+    property :advisor, predicate: ::RDF::Vocab::MARCRelators.ths do |index|
       index.as :stored_searchable
     end
 
@@ -37,14 +52,21 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
+    property :committee_member, predicate: ::RDF::Vocab::MARCRelators.ctb do |index|
+      index.as :stored_searchable
+    end
+
+    # @deprecated
     property :date_accessioned, predicate: ::RDF::Vocab::DC.date, multiple: false do |index|
       index.as :stored_searchable
     end
 
+    # @deprecated
     property :date_available, predicate: ::RDF::Vocab::DC.available do |index|
       index.as :stored_searchable, :facetable
     end
 
+    # @deprecated
     property :date_copyright, predicate: ::RDF::Vocab::DC.dateCopyrighted do |index|
       index.as :stored_searchable, :facetable
     end
@@ -57,6 +79,7 @@ module CsuMetadata
       index.as :stored_searchable, :facetable
     end
 
+    # @deprecated
     property :date_submitted, predicate: ::RDF::Vocab::SCHEMA.Date do |index|
       index.as :stored_searchable, :facetable
     end
@@ -69,10 +92,15 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    property :discipline, predicate: ::RDF::Vocab::DC.subject do |index|
+      index.as :stored_searchable, :facetable
+    end
+
     property :doi, predicate: ::RDF::Vocab::SCHEMA.identifier do |index|
       index.as :stored_searchable
     end
 
+    # @deprecated
     property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
       index.as :stored_searchable
     end
@@ -81,6 +109,19 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    property :external_id, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#externalID'), multiple: false do |index|
+      index.as :stored_searchable
+    end
+
+    property :external_system, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#externalSystem'), multiple: false do |index|
+      index.as :stored_searchable
+    end
+
+    property :external_modified_date, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#externalModifiedDate'), multiple: false do |index|
+      index.as :stored_searchable, :sortable
+    end
+
+    # @deprecated
     property :geographical_area, predicate: ::RDF::Vocab::DC.spatial do |index|
       index.as :stored_searchable
     end
@@ -89,11 +130,16 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    # @deprecated
     property :identifier_uri, predicate: ::RDF::URI.new('http://id.loc.gov/vocabulary/identifiers/uri') do |index|
       index.as :stored_searchable
     end
 
-    property :is_part_of, predicate: ::RDF::Vocab::DC.relation do |index|
+    property :internal_note, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#internalNote') do |index|
+      index.as :stored_searchable
+    end
+
+    property :is_part_of, predicate: ::RDF::Vocab::DC.isPartOf do |index|
       index.as :stored_searchable
     end
 
@@ -117,6 +163,16 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    # @deprecated
+    property :publication_status, predicate: ::RDF::Vocab::BIBO.status, multiple: false do |index|
+      index.as :stored_searchable, :facetable
+    end
+
+    property :publication_title, predicate: ::RDF::Vocab::DC.relation do |index|
+      index.as :stored_searchable
+    end
+
+    # @deprecated
     property :rights_holder, predicate: ::RDF::Vocab::DC.rightsHolder do |index|
       index.as :stored_searchable
     end
@@ -125,6 +181,7 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    # @deprecated
     property :rights_uri, predicate: ::RDF::URI.new('http://purl.org/dc/elements/1.1/rights') do |index|
       index.as :stored_searchable
     end
@@ -137,124 +194,9 @@ module CsuMetadata
       index.as :stored_searchable
     end
 
+    # @deprecated
     property :time_period, predicate: ::RDF::Vocab::DC.temporal do |index|
       index.as :stored_searchable, :facetable
     end
-
-    property :discipline, predicate: ::RDF::Vocab::DC.subject, multiple: true do |index|
-      index.as :stored_searchable, :facetable
-    end
-
-    def discipline= values
-      saved_values = []
-      values.each do |v|
-        next if DisciplineService::DISCIPLINES[v].nil?
-
-        saved_values << v
-      end
-      super saved_values.uniq
-    end
-
-  end
-
-  def handle_suffix
-    return nil if handle.blank?
-
-    handle.map { |url| url.split('/')[-1] }
-  end
-
-  #
-  # Assign campus name
-  #
-  # @param campus [String|Array]  name(s) to assign to campus
-  #
-  def assign_campus(campus)
-    campuses = if campus.is_a?(Array)
-                 campus
-               else
-                 [campus]
-               end
-    correct_names = []
-    campuses.each do |name|
-      CampusService.ensure_campus_name(name)
-      correct_names.append name
-    end
-    self.campus = correct_names
-  end
-
-  #
-  # Save this work
-  #
-  def save(*options)
-    set_year
-    super(*options)
-  end
-
-  def sanitize_n_serialize(values)
-    full_sanitizer = Rails::Html::FullSanitizer.new
-    sanitized_values = Array.new(values.size, '')
-    values.each_with_index do |v, i|
-      sanitized_values[i] = full_sanitizer.sanitize(v) unless v == '|||'
-    end
-    OrderedStringHelper.serialize(sanitized_values)
-  end
-
-  #
-  # Set values the first time the record is created
-  #
-  def update_fields
-    raise 'No admin set defined for this item.' if admin_set&.title&.first.nil?
-
-    assign_campus(admin_set.title.first.to_s)
-  end
-
-  protected
-
-  #
-  # Set year for work
-  #
-  def set_year
-    year = if self.date_issued.count.zero?
-             self.date_uploaded
-           else
-             self.date_issued.first
-           end
-    self.date_issued_year = extract_year(year)
-  end
-
-  #
-  # Extract four-digit year from date issued, for facet
-  #
-  # @param date_issued [String]
-  #
-  # @return [String]
-  #
-  def extract_year(date_issued)
-    # no date, no mas
-    return nil if date_issued.nil?
-
-    # make sure this is a string
-    date_issued = date_issued.to_s
-
-    # found four-digit year, cool
-    match = /1[89][0-9]{2}|2[01][0-9]{2}/.match(date_issued)
-    return match[0] unless match.nil?
-
-    # date in another format, use chronic
-    date = Chronic.parse(date_issued, context: 'past')
-    now = Date.today
-    format = '%Y-%m-%d'
-
-    # chronic didn't find a date
-    return nil if date.nil?
-
-    # chronic returned current date, so a miss
-    return nil if date.strftime(format) == now.strftime(format)
-
-    # year way out of range, likely a typo
-    year = date.year
-    return nil if year < 1900 || year > (Date.today.year + 5)
-
-    year.to_s # actual extracted year!
   end
 end

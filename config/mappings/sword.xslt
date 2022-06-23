@@ -437,7 +437,7 @@
 
       <!-- is part of -->
       <xsl:if test="./@epdcx:attributeName='relationIsPartOf'">
-        <field name="is_part_of">
+        <field name="publication_title">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>

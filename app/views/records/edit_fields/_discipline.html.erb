@@ -10,7 +10,6 @@
 <% model_type = f.object.model.class.to_s.underscore %>
 
 <script type="text/javascript" charset="utf-8">
-  var DISCIPLINES = {};
   var discipline_cnt = 0;
   var cur_discipline_num = 0;
 
@@ -37,7 +36,7 @@
            "  <div class='col-xs-10'>" +
            "    <input name='<%= model_type %>[<%= key %>][]' id='<%= key %>_" + cur_disc_num + "_hidden' class='discipline_hidden' type='hidden' value='' />" +
            "    <div class='margin_bottom_5'>" +
-           "      <select value='' class='form-control discipline'>" +
+           "      <select value='' class='form-control discipline' data-element-num='" + cur_disc_num + "'>" +
            $('#discipline_divs select.discipline').html() + // get top level discipline options from first select element
            "      </select>" +
            "    </div>" +
@@ -53,117 +52,19 @@
            "</div>";
   }
 
-  function generate_discipline_children(discipline_id, select_id) {
-    let html = null;
-    let discipline = DISCIPLINES[discipline_id];
-    //console.log('inside generate_discipline_children discipline ' + discipline.id + ' children ' + discipline.children + 'children size ' + discipline.children.length);
-    if (discipline !== undefined) {
-      let discpline_children = discipline.children;
-      for (let i = 0; i < discpline_children.length; i++) {
-        let child = DISCIPLINES[discpline_children[i]];
-        if (child != undefined) {
-          if (select_id != null && select_id == discpline_children[i]) {
-            html += "<option selected value='" + discpline_children[i] + "'>" + child.name + "</option>";
-          }
-          else {
-            html += "<option value='" + discpline_children[i] + "'>" +child.name + "</option>";
-          }
-        }
-      }
-      if (html != null) {
-        html = "<div class='margin_bottom_5'><select class='form-control discipline'>" +
-               "<option value=''>Select...</option>" + html + "</select></div>";
-      }
-    }
-
-    //console.log('generate_discipline_children ' + html);
-    return html;
-  }
-
-  function discipline_change() {
-    //console.log('disciplineChange ' + $(this).val());
-    let cat_id = $(this).val();
-    //console.log('discipline_change cat_id ' + cat_id);
-    let siblings = $(this).parent().nextAll();
-    //console.log('siblings text  ' + siblings.text());
-    //console.log('siblings html  ' + siblings.html());
-
-    if (siblings !== undefined) {
-      siblings.remove();
-    }
-
-    //console.log('discipline_change cat_id [' + cat_id + ']');
-    if (cat_id == '') return;
-
-    $('#discipline_warning').addClass('d_none').attr('aria-hidden', 'true');
-    let children = generate_discipline_children(cat_id, null);
-    //console.log('discipline_change children ' + children);
-    if (children != null) {
-      $(this).parent().parent().append(children);
-      $('.discipline').on('change', discipline_change);
-    }
-  }
-
   $(function () {
     DISCIPLINES = <%= raw(DisciplineService::DISCIPLINES.to_json) %>;
 
-    $('.discipline_hidden').each(function () {
-       let disc_id = $(this).val();
-       let disc = DISCIPLINES[disc_id];
-       discipline_cnt++;
-       if (disc == undefined) {
-         $(this).parent().find('select').val('');
-       }
-       else {
-         let ancestor = disc.ancestor;
-         let div_elem = $(this).parent();
-         //console.log(' ancestor length ' + ancestor.length);
-         if (ancestor.length == 0) {
-           // top level
-           div_elem.find('select').val(disc_id);
-         }
-         else {
-           div_elem.find('select').val(ancestor[0]);
-           let parent_id;
-           let child;
-           for (let i = 1; i <= ancestor.length; i++) {
-             //console.log('init ancestor ' + ancestor[i]);
-             parent_id = ancestor[i - 1];
-             if (i == ancestor.length) {
-               child = disc_id;
-             }
-             else {
-               child = ancestor[i];
-             }
-             let children = generate_discipline_children(parent_id, child);
-             //console.log('init children ' + children);
-             if (children != null) {
-               //console.log('appending');
-               div_elem.append(children);
-             }
-           }
-         }
-         // now generate the child for the disc_id
-         let children = generate_discipline_children(disc_id, null);
-         if (children != null) {
-           div_elem.append(children);
-         }
-       }
-     });
+    discipline_cnt = init_discipline();
+    cur_discipline_num = discipline_cnt;
+    console.log('after discipline init cur_discipline_num ' + cur_discipline_num + ' discipline_cnt ' + discipline_cnt);
+    if (discipline_cnt <= 1) {
+      $('.discipline_remove').addClass('d_none').attr('aria-hidden', 'true');
+    }
 
-     cur_discipline_num = discipline_cnt;
-     console.log('after discipline init cur_discipline_num ' + cur_discipline_num + ' discipline_cnt ' + discipline_cnt);
-     if (discipline_cnt <= 1) {
-       $('.discipline_remove').addClass('d_none').attr('aria-hidden', 'true');
-     }
-
-     $('.discipline').on('change', discipline_change);
-
-     // register add and remove handler for all element that have these classes
-     //console.log('registering element_add');
-     $('.element_add').on('click', element_add);
-     //console.log('registering add_remove');
-     $('.element_remove').on('click', element_remove);
+    // register add and remove handler for all element that have these classes
+    $('.element_add').on('click', element_add);
+    $('.element_remove').on('click', element_remove);
   });
 
 </script>
@@ -188,7 +89,8 @@
             <%= select_tag "#{model_type}_discipline",
                             content_tag(:option,'Select...',:value=>"")+options_from_collection_for_select( DisciplineService::TOP_DISCIPLINES, 'id', 'name'),
                             id: "#{model_type}_#{key}_#{index}",
-                            class: "form-control discipline"
+                            class: "form-control discipline",
+                            data: { "element-num" => "#{index}" }
             %>
           </div>
         </div>

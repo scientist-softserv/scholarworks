@@ -59,7 +59,6 @@ class User < ApplicationRecord
   # @return [Boolean]
   #
   def manager?
-    Rails.logger.warn groups.inspect
     groups.each do |group|
       return true if group.include?('managers-')
     end

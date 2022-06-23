@@ -1,71 +1,52 @@
-# Generated via
-#  `rails generate hyrax:work Dataset`
+# frozen_string_literal: true
+
+#
+# Dataset
+#
 class Dataset < ActiveFedora::Base
-  include ::Hyrax::WorkBehavior
-  include ::CsuMetadata
-  include ::Hydra::AccessControls::CampusVisibility
-  before_create :update_fields
+  include ScholarworksFields
+  include FormattingFields
+  include Hyrax::WorkBehavior
+  include Hydra::AccessControls::CampusVisibility
 
   self.indexer = DatasetIndexer
-  # Change this to restrict which works can be added as a child.
-  # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
+  # restrict which works can be added as a child.
+  # self.valid_child_concerns = []
 
+  property :award_number, predicate: ::RDF::Vocab::SCHEMA.award do |index|
+    index.as :stored_searchable
+  end
+
+  property :data_note, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#dataNote') do |index|
+    index.as :stored_searchable
+  end
+
+  property :data_type, predicate: ::RDF::Vocab::MODS.partType do |index|
+    index.as :stored_searchable
+  end
+
+  property :date_range, predicate: ::RDF::Vocab::SCHEMA.temporalCoverage
+
+  property :date_last_modified, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#dateLastModified') do |index|
+    index.as :stored_searchable
+  end
+
+  property :methods_of_collection, predicate: ::RDF::Vocab::BIBO.shortDescription
+
+  # @deprecated
   property :investigator, predicate: ::RDF::Vocab::MARCRelators.org do |index|
     index.as :stored_searchable
   end
 
-  property :resource_type_dataset, predicate: ::RDF::Vocab::DC.type do |index|
-    index.as :stored_searchable
+  def save(*options)
+    self.resource_type = ['Dataset']
+    super(*options)
   end
 
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
-  include ::Hyrax::BasicMetadata
-
-  def creator
-    OrderedStringHelper.deserialize(super)
-  end
-
-  def creator= values
-    super sanitize_n_serialize(values)
-  end
-
-  def contributor
-    OrderedStringHelper.deserialize(super)
-  end
-
-  def contributor= values
-    super sanitize_n_serialize(values)
-  end
-
-  def description= values
-    super (HtmlHelper.get_rid_style_attribute(values))
-  end
-
-  def title= values
-    super (HtmlHelper.get_rid_style_attribute(values))
-  end
-
-  # this method is to combined all multivalues of this field into a single one for the front end
-  def descriptions
-    combined_val = ''
-    description.each do |d|
-      combined_val << d
-    end
-    combined_val
-  end
-
-  def titles
-    combined_val = ''
-    title.each do |d|
-      combined_val << d
-    end
-    combined_val
-  end
-
-  def update_fields
-    super
-  end
+  include Hyrax::BasicMetadata
+  include ScholarworksBehavior
+  include FormattingBehavior
 end
-

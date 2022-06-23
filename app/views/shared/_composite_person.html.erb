@@ -334,7 +334,8 @@
 </script>
 
 <div id="<%= key %>_content" class="form-group multi_value managed <% if f.object.required?(key) %>required<% end %>">
-  <label id="<%= key %>_label" class="control-label"><span class="text-capitalize"><%= key%></span>
+  <label id="<%= key %>_label" class="control-label">
+    <%= t("simple_forms.labels.#{key}") %>
     <% if f.object.required?(key) %><span class="label label-info required-tag">required</span><% end %>
   </label>
 

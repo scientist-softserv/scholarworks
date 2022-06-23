@@ -1,67 +1,22 @@
-# Generated via
-#  `rails generate hyrax:work EducationalResource`
-class EducationalResource < ActiveFedora::Base
-  include ::Hyrax::WorkBehavior
-  include ::CsuMetadata
-  include ::Hydra::AccessControls::CampusVisibility
+# frozen_string_literal: true
 
-  before_create :update_fields
+#
+# Open Educational Resource
+#
+class EducationalResource < ActiveFedora::Base
+  include ScholarworksFields
+  include FormattingFields
+  include Hyrax::WorkBehavior
+  include Hydra::AccessControls::CampusVisibility
 
   self.indexer = EducationalResourceIndexer
-  # Change this to restrict which works can be added as a child.
-  # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
-
-  property :resource_type_educational_resource, predicate: ::RDF::Vocab::DC.type do |index|
-    index.as :stored_searchable
-  end
+  # restrict which works can be added as a child.
+  # self.valid_child_concerns = []
 
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
-  include ::Hyrax::BasicMetadata
-
-  def creator
-    OrderedStringHelper.deserialize(super)
-  end
-
-  def creator= values
-    super sanitize_n_serialize(values)
-  end
-
-  def contributor
-    OrderedStringHelper.deserialize(super)
-  end
-
-  def contributor= values
-    super sanitize_n_serialize(values)
-  end
-
-  def description= values
-    super (HtmlHelper.get_rid_style_attribute(values))
-  end
-
-  def title= values
-    super (HtmlHelper.get_rid_style_attribute(values))
-  end
-
-  # this method is to combined all multivalues of this field into a single one for the front end
-  def descriptions
-    combined_val = ''
-    description.each do |d|
-      combined_val << d
-    end
-    combined_val
-  end
-
-  def titles
-    combined_val = ''
-    title.each do |d|
-      combined_val << d
-    end
-    combined_val
-  end
-
-  def update_fields
-    super
-  end
+  include Hyrax::BasicMetadata
+  include ScholarworksBehavior
+  include FormattingBehavior
 end

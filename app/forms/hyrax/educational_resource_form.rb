@@ -2,35 +2,26 @@
 #  `rails generate hyrax:work EducationalResource`
 module Hyrax
   # Generated form for EducationalResource
-  class EducationalResourceForm < Hyrax::Forms::WorkForm
+  class EducationalResourceForm < Hyrax::CsuForm
     self.model_class = ::EducationalResource
-
-    self.terms += [:resource_type_educational_resource, :sponsor, :date_issued,
-      :alternative_title, :handle, :college, :department, :contributor, :date_available,
-      :date_created, :date_copyright, :identifier, :rights_note, :rights_uri, :rights_holder,
-      :doi, :oclcno, :issn, :isbn, :identifier_uri, :bibliographic_citation, :license, :description,
-      :extent, :description_note, :discipline]
-
-    self.terms -= [:handle, :based_near, :source, :date_available, :date_created, :keyword, :extent]
-
-    self.required_fields += [:creator, :title, :description, :resource_type_educational_resource, :rights_statement]
-
-    self.required_fields -= [:keyword]
-
+    self.required_fields += %i[resource_type
+                               title
+                               creator
+                               description]
     def primary_terms
-      [:creator, :title, :description,
-        :resource_type_educational_resource,
-        :license, :rights_statement, :rights_holder, :rights_uri, :rights_note]
-    end
-
-    def secondary_terms
-      [:discipline, :alternative_title, :contributor, :publisher, :sponsor, :college, :department, :date_issued,
-        :subject, :language, :related_url, :doi, :isbn, :issn, :oclcno, :identifier, :identifier_uri,
-        :bibliographic_citation, :description_note]
-    end
-
-    def alert_msg
-      ""
+      %i[resource_type
+         title
+         creator
+         contributor
+         description
+         date_issued
+         department
+         discipline
+         keyword
+         language
+         license
+         rights_note
+         related_url]
     end
   end
 end

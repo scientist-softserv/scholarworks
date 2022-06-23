@@ -13,20 +13,6 @@
     which would match to person_type as an parameter for most of the routines
    */
 
-  function post_add_editor() {
-    // in case we need to do anything extra for this class
-    post_add_person();
-  }
-
-  /*
-  function remove_empty_editor() {
-    $('.editor_name').each(function () {
-      if ($.trim($(this).val()) == '') {
-        $('#editor' + $(this).prop('id').substring(11)).remove();
-      }
-    })
-  }
-  */
   function generate_editor() {
     return generate_person('editor', false);
   }

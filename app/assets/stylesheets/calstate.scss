@@ -473,9 +473,19 @@ ul.catalog li.document div.csu-document-title {
     text-align: left;
     text-justify: auto;
 }
+.collection_resource_type, .collection_based_near {
+  display: none;
+}
 
 /* item record */
 
+.attribute-related_url, .attribute-doi {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
 .csu-campus-info {
     text-align: center;
 }
@@ -625,5 +635,23 @@ footer a, footer a:hover, footer a:visited {
 /* dashboard */
 
 .fileupload-buttonbar button[data-toggle="browse-everything"] {
+  display: none;
+}
+button[data-behavior="add-registered-users"] {
+  display: none;
+}
+.multi_value .listing li:first-of-type, .controlled_vocabulary .listing li:first-of-type {
+  width: 86.7%;
+}
+.multi_value .listing, .controlled_vocabulary .listing {
+  max-width: 50em;
+}
+div.string {
+  max-width: 600px;
+}
+.form-control {
+  max-width: 50em;
+}
+.switch-upload-type {
   display: none;
 }

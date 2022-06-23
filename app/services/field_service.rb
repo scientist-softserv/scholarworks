@@ -62,6 +62,7 @@ class FieldService
        pages
        place
        provenance
+       publication_title
        publisher
        related_url
        resource_type

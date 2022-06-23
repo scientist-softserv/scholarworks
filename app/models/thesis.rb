@@ -1,24 +1,18 @@
-# Generated via
-#  `rails generate hyrax:work Thesis`
-class Thesis < ActiveFedora::Base
-  include ::Hyrax::WorkBehavior
-  include ::CsuMetadata
-  include ::Hydra::AccessControls::CampusVisibility
+# frozen_string_literal: true
 
-  before_create :update_fields
+#
+# Thesis
+#
+class Thesis < ActiveFedora::Base
+  include ScholarworksFields
+  include FormattingFields
+  include Hyrax::WorkBehavior
+  include Hydra::AccessControls::CampusVisibility
 
   self.indexer = ThesisIndexer
-  # Change this to restrict which works can be added as a child.
-  # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
-
-  property :advisor, predicate: ::RDF::Vocab::MARCRelators.ths do |index|
-    index.as :stored_searchable
-  end
-
-  property :committee_member, predicate: ::RDF::Vocab::MARCRelators.ctb do |index|
-    index.as :stored_searchable
-  end
+  # restrict which works can be added as a child.
+  # self.valid_child_concerns = []
 
   property :degree_level, predicate: ::RDF::Vocab::DC.educationLevel, multiple: false do |index|
     index.as :stored_searchable, :facetable
@@ -28,68 +22,40 @@ class Thesis < ActiveFedora::Base
     index.as :stored_searchable, :facetable
   end
 
-  property :granting_institution, predicate: ::RDF::Vocab::MARCRelators.uvp do |index|
+  property :degree_program, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#degree_program') do |index|
     index.as :stored_searchable
   end
 
-  property :resource_type_thesis, predicate: ::RDF::Vocab::DC.type do |index|
+  property :granting_institution, predicate: ::RDF::Vocab::MARCRelators.uvp do |index|
     index.as :stored_searchable
   end
 
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
-  include ::Hyrax::BasicMetadata
+  include Hyrax::BasicMetadata
+  include ScholarworksBehavior
+  include FormattingBehavior
 
-  def creator
-    OrderedStringHelper.deserialize(super)
+  def save(*options)
+    set_degree_level
+    set_campus_publisher
+    super(*options)
   end
 
-  def creator= values
-    super sanitize_n_serialize(values)
+  #
+  # Set the degree level based on the resource type
+  #
+  def set_degree_level
+    service = DegreeLevelService.new(self.class.name.downcase)
+    level = service.get(resource_type.first)
+    self.degree_level = level unless level.nil?
   end
 
-  def advisor
-    OrderedStringHelper.deserialize(super)
-  end
-
-  def advisor= values
-    super sanitize_n_serialize(values)
-  end
-
-  def committee_member
-    OrderedStringHelper.deserialize(super)
-  end
-
-  def committee_member= values
-    super sanitize_n_serialize(values)
-  end
-
-  def description= values
-    super (HtmlHelper.get_rid_style_attribute(values))
-  end
-
-  def title= values
-    super (HtmlHelper.get_rid_style_attribute(values))
-  end
-
-  # this method is to combined all multivalues of this field into a single one for the front end
-  def descriptions
-    combined_val = ''
-    description.each do |d|
-      combined_val << d
-    end
-    combined_val
-  end
-
-  def titles
-    combined_val = ''
-    title.each do |d|
-      combined_val << d
-    end
-    combined_val
-  end
-
-  def update_fields
-    super
+  #
+  # Make the campus the publisher
+  #
+  def set_campus_publisher
+    full_name = CampusService.get_full_from_name(campus.first)
+    self.publisher = [full_name]
   end
 end

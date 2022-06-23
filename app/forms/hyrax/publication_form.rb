@@ -1,36 +1,41 @@
 # Generated via
 #  `rails generate hyrax:work Publication`
 module Hyrax
-  class PublicationForm < Hyrax::Forms::WorkForm
+  class PublicationForm < Hyrax::CsuForm
     self.model_class = ::Publication
-    self.terms += [:resource_type_publication, :sponsor, :date_issued, :alternative_title,
-      :publication_status, :editor, :description, :handle, :college, :department,
-      :bibliographic_citation, :extent, :geographical_area, :time_period, :date_copyright,
-      :rights_note, :rights_uri, :rights_holder, :doi, :oclcno, :issn, :isbn, :identifier_uri,
-      :description_note, :discipline]
-
-    self.terms -= [:contributor, :date_created, :license, :based_near, :source, :handle,
-      :keyword, :extent]
-
-    self.required_fields += [:creator, :title, :description, :resource_type_publication,
-      :college, :department, :date_issued]
-
-    self.required_fields -= [:rights_statement, :keyword]
-
+    self.required_fields += %i[resource_type
+                               title
+                               description
+                               date_issued]
     def primary_terms
-      [:creator, :title, :description, :resource_type_publication,
-        :college, :department, :date_issued]
-    end
-
-    def secondary_terms
-      [:alternative_title, :date_copyright, :editor, :publisher, :sponsor, :publication_status,
-       :discipline, :subject, :language, :rights_statement, :rights_holder, :rights_uri, :rights_note,
-       :doi, :isbn, :issn, :oclcno, :identifier, :identifier_uri, :related_url,
-       :bibliographic_citation, :description_note]
-    end
-
-    def alert_msg
-      ""
+      %i[resource_type
+         title
+         creator
+         contributor
+         description
+         date_issued
+         edition
+         editor
+         publisher
+         place
+         series
+         is_part_of
+         volume
+         issue
+         pages
+         doi
+         isbn
+         issn
+         identifier
+         department
+         discipline
+         keyword
+         geographical_area
+         time_period
+         language
+         related_url
+         rights_note
+         license]
     end
   end
 end

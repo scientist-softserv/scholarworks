@@ -5,12 +5,11 @@
   <meta property="og:site_name" content="<%= application_name %>" />
   <meta property="og:type" content="object" />
   <meta property="og:title" content="<%= @presenter.title.first %>" />
-  <meta property="og:description" content="<%= @presenter.description.first.truncate(200) rescue @presenter.title.first %>" />
+  <meta property="og:description" content="<%= @presenter.description_short %>" />
   <meta property="og:image" content="<%= @presenter.download_url %>" />
   <meta property="og:url" content="<%= polymorphic_url([main_app, @presenter]) %>" />
   <meta name="twitter:data1" content="<%= @presenter.keyword.join(', ') %>" />
   <meta name="twitter:label1" content="Keywords" />
-  <meta name="twitter:data2" content="<%= @presenter.rights_statement.first %>" />
   <meta name="twitter:label2" content="Rights Statement" />
 <% end %>
 
@@ -21,12 +20,11 @@
   <% end %>
   <meta name="citation_publication_date" content="<%= @presenter.date_issued_year&.first %>" />
   <meta name="citation_pdf_url" content="<%= @presenter.download_url %>" />
-  <!-- Hyrax does not yet support these metadata -->
+  <meta name="citation_journal_title" content="<%= @presenter.is_part_of %>"/>
+  <meta name="citation_volume" content="<%= @presenter.volume %>"/>
+  <meta name="citation_issue" content="<%= @presenter.issue %>"/>
   <!--
-    <meta name="citation_journal_title" content=""/>
-    <meta name="citation_volume" content=""/>
-    <meta name="citation_issue" content=""/>
-    <meta name="citation_firstpage" content=""/>
-    <meta name="citation_lastpage" content=""/>
+  <meta name="citation_firstpage" content=""/>
+  <meta name="citation_lastpage" content=""/>
   -->
 <% end %>
