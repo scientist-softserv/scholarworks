@@ -19,16 +19,21 @@ class CollegeService
   #
   # @param dept [String]  department name
   #
-  # @return [String|nil]
+  # @return [Array]
   #
   def get(dept)
+    colleges = []
     @yaml['terms'].each do |department|
       next unless department['term'] == dept
       next unless department.key?('college')
 
-      return department['college']
+      college = department['college']
+      college = [college] unless college.is_a?(Array)
+      college.each do |coll|
+        colleges.append coll
+      end
     end
 
-    nil
+    colleges
   end
 end
