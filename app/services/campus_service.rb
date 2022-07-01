@@ -85,14 +85,14 @@ module CampusService
     {
       name: 'Maritime',
       slug: 'maritime',
-      demo_email: ['csum.edu'],
+      demo_email: ['maritime.edu'],
       org: 'csum',
       full: 'California State University Maritime Academy'
     },
     {
       name: 'Monterey Bay',
       slug: 'monterey',
-      demo_email: ['csumb.edu'],
+      demo_email: ['monterey.edu'],
       org: 'csumb',
       full: 'California State University, Monterey Bay'
     },
@@ -106,14 +106,14 @@ module CampusService
     {
       name: 'Northridge',
       slug: 'northridge',
-      demo_email: ['csun.edu'],
+      demo_email: ['northridge.edu'],
       org: 'csun',
       full: 'California State University, Northridge'
     },
     {
       name: 'Pomona',
       slug: 'pomona',
-      demo_email: ['cpp.edu'],
+      demo_email: ['bronco.edu'],
       org: 'csupomona',
       full: 'California State Polytechnic University, Pomona'
     },
@@ -148,14 +148,14 @@ module CampusService
     {
       name: 'San Jose',
       slug: 'sanjose',
-      demo_email: ['sjsu.edu'],
+      demo_email: ['sj.edu'],
       org: 'sjsu',
       full: 'San Jose State University'
     },
     {
       name: 'San Luis Obispo',
       slug: 'slo',
-      demo_email: ['calpoly.edu'],
+      demo_email: ['slo.edu'],
       org: 'calpoly',
       full: 'California Polytechnic State University, San Luis Obispo'
     },

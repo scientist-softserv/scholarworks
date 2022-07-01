@@ -23,7 +23,7 @@ class Publication < ActiveFedora::Base
   property :issue, predicate: ::RDF::Vocab::BIBO.issue, multiple: false
 
   # @depricated
-  property :publication_title, predicate: ::RDF::URI.new('http://purl.org/net/nknouf/ns/bibtex#hasJournal'), multiple: false do |index|
+  property :publication_title, predicate: ::RDF::URI.new('http://purl.org/net/nknouf/ns/bibtex#hasJournal') do |index|
     index.as :stored_searchable, :facetable
   end
 
