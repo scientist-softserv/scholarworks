@@ -133,6 +133,9 @@ GEM
       bootstrap-sass (~> 3.0)
       openseadragon (>= 0.2.0)
       rails
+    blacklight_advanced_search (6.4.1)
+      blacklight (~> 6.0, >= 6.0.1)
+      parslet
     blacklight_oai_provider (6.0.0)
       blacklight (~> 6.0)
       oai (~> 0.4)
@@ -443,7 +446,7 @@ GEM
     jaro_winkler (1.5.4)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
-    jmespath (1.4.0)
+    jmespath (1.6.1)
     jquery-datatables-rails (3.4.0)
       actionpack (>= 3.1)
       jquery-rails
@@ -911,6 +914,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   aws-sdk-s3
+  blacklight_advanced_search
   blacklight_oai_provider
   blacklight_range_limit
   byebug

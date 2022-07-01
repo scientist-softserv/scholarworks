@@ -10,7 +10,7 @@ module WillowSword
     #
     def initialize(collection)
       @collection = collection
-      path = Rails.root.join('config', 'sword', 'campus.yml')
+      path = Rails.root.join('config', 'sword.yml')
       file = YAML.safe_load(File.read(path))
 
       unless file.key?(collection)

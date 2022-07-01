@@ -31,8 +31,8 @@ module CalState
 
         # set working directories
         @input_dir = @config['input_dir']
-        @complete_dir = initialize_directory(@input_dir + '_complete')
-        @error_dir = initialize_directory(@input_dir + '_error')
+        @complete_dir = Packager.initialize_directory(@input_dir + '_complete')
+        @error_dir = Packager.initialize_directory(@input_dir + '_error')
         @log.info 'input dir ' + @input_dir
         @log.info 'complete dir ' + @complete_dir
         @log.info 'error_dir ' + @error_dir
@@ -300,19 +300,6 @@ module CalState
         File.delete(@input_dir + '/' + file_name)
 
         uploaded_file
-      end
-
-      #
-      # Create a directory
-      # only if it doesn't already exist
-      #
-      # @param dir [String]
-      #
-      # @return [String] the new directory
-      #
-      def initialize_directory(dir)
-        Dir.mkdir(dir) unless Dir.exist?(dir)
-        dir
       end
     end
   end

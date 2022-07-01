@@ -1,5 +1,0 @@
-<%= f.input :publication_status, as: :select,
-  collection: PublicationStatusService.new(controller).select_all_options,
-  include_blank: true,
-  input_html: { class: 'form-control', multiple: false }
-%>

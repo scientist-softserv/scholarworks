@@ -1,50 +1,99 @@
 terms:
-  - term: Accounting
-  - term: Aerospace Engineering
-  - term: Agribusiness & Food Industry Management/Agricultural Science
-  - term: Animal & Veterinary Sciences
-  - term: Apparel Merchandising & Management
-  - term: Architecture
-  - term: Art
-  - term: Biological Sciences
-  - term: Chemical & Materials Engineering
-  - term: Chemistry and Biochemistry
-  - term: Civil Engineering
-  - term: Collins College of Hospitality Management
-  - term: Communication
-  - term: Computer Information Systems
-  - term: Computer Science
-  - term: Early Childhood Studies
-  - term: Economics
-  - term: Education
-  - term: Educational Leadership
-  - term: Electrical & Computer Engineering
-  - term: Electromechanical Engineering Technology
-  - term: English & Modern Languages
-  - term: Ethnic and Women's Studies
-  - term: Finance, Real Estate, & Law
-  - term: Geography & Anthropology
-  - term: Geological Sciences
-  - term: History
-  - term: Industrial & Manufacturing Engineering
-  - term: Interdisciplinary General Education
-  - term: International Business & Marketing
-  - term: John T. Lyle Center for Regenerative Studies
-  - term: Kinesiology & Health Promotion
-  - term: Landscape Architecture
-  - term: Liberal Studies
-  - term: Management & Human Resources
-  - term: Mathematics & Statistics
-  - term: Mechanical Engineering
-  - term: Music
-  - term: Nutrition & Food Science
-  - term: Philosophy
-  - term: Physics & Astronomy
-  - term: Plant Science
-  - term: Political Science
-  - term: Psychology
-  - term: Sociology
-  - term: Technology & Operations Management
-  - term: Theater & New Dance
-  - term: University Library
-  - term: Urban & Regional Planning
+  - term: "Accounting"
+    college: "Business Administration"
+  - term: "Aerospace Engineering"
+    college: "Engineering"
+  - term: "Agribusiness & Food Industry Management/Agricultural Science"
+    college: "Don B. Huntley College of Agriculture"
+  - term: "Animal & Veterinary Sciences"
+    college: "Don B. Huntley College of Agriculture"
+  - term: "Apparel Merchandising & Management"
+    college: "Don B. Huntley College of Agriculture"
+  - term: "Architecture"
+    college: "Environmental Design"
+  - term: "Art"
+    college: "Environmental Design"
+  - term: "Biological Sciences"
+    college: "Science"
+  - term: "Chemical & Materials Engineering"
+    college: "Engineering"
+  - term: "Chemistry and Biochemistry"
+    college: "Science"
+  - term: "Civil Engineering"
+    college: "Engineering"
+  - term: "Collins College of Hospitality Management"
+    college: "Collins College of Hospitality Management"
+  - term: "Communication"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Computer Information Systems"
+    college: "Business Administration"
+  - term: "Computer Science"
+    college: "Science"
+  - term: "Early Childhood Studies"
+    college: "Education & Integrative Studies"
+  - term: "Economics"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Education"
+    college: "Education & Integrative Studies"
+  - term: "Educational Leadership"
+    college: "Education & Integrative Studies"
+  - term: "Electrical & Computer Engineering"
+    college: "Engineering"
+  - term: "Electromechanical Engineering Technology"
+    college: "Engineering"
+  - term: "English & Modern Languages"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Ethnic and Women's Studies"
+    college: "Education & Integrative Studies"
+  - term: "Finance, Real Estate, & Law"
+    college: "Business Administration"
+  - term: "Geography & Anthropology"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Geological Sciences"
+    college: "Science"
+  - term: "History"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Industrial & Manufacturing Engineering"
+    college: "Engineering"
+  - term: "Interdisciplinary General Education"
+    college: "Education & Integrative Studies"
+  - term: "International Business & Marketing"
+    college: "Business Administration"
+  - term: "John T. Lyle Center for Regenerative Studies"
+    college: "Environmental Design"
+  - term: "Kinesiology & Health Promotion"
+    college: "Science"
+  - term: "Landscape Architecture"
+    college: "Environmental Design"
+  - term: "Liberal Studies"
+    college: "Education & Integrative Studies"
+  - term: "Management & Human Resources"
+    college: "Business Administration"
+  - term: "Mathematics & Statistics"
+    college: "Science"
+  - term: "Mechanical Engineering"
+    college: "Engineering"
+  - term: "Music"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Nutrition & Food Science"
+    college: "Don B. Huntley College of Agriculture"
+  - term: "Philosophy"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Physics & Astronomy"
+    college: "Science"
+  - term: "Plant Science"
+    college: "Don B. Huntley College of Agriculture"
+  - term: "Political Science"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Psychology"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Sociology"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "Technology & Operations Management"
+    college: "Business Administration"
+  - term: "Theater & New Dance"
+    college: "Letters, Arts, & Social Sciences"
+  - term: "University Library"
+    college: "University Library"
+  - term: "Urban & Regional Planning"
+    college: "Environmental Design"

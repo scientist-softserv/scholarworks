@@ -47,14 +47,21 @@ class WorkFormService
     campus_manager_form = manager_form + campus_class
 
     # take most customizable version of form over others
-    if Hyrax.const_defined?(campus_manager_form) && current_user.manager?
-      Hyrax.const_get(campus_manager_form)
-    elsif Hyrax.const_defined?(manager_form) && current_user.manager?
-      Hyrax.const_get(manager_form)
-    elsif Hyrax.const_defined?(campus_form)
-      Hyrax.const_get(campus_form)
-    else
-      Hyrax.const_get(main_form)
-    end
+    form = if Hyrax.const_defined?(campus_manager_form) && current_user.manager?
+             Hyrax.const_get(campus_manager_form)
+           elsif Hyrax.const_defined?(manager_form) && current_user.manager?
+             Hyrax.const_get(manager_form)
+           elsif Hyrax.const_defined?(campus_form)
+             Hyrax.const_get(campus_form)
+           else
+             Hyrax.const_get(main_form)
+           end
+
+    Rails.logger.debug 'Form selection'
+    Rails.logger.debug 'defined: ' + Hyrax.const_defined?(campus_manager_form).to_s
+    Rails.logger.debug 'manager? ' + current_user.manager?.to_s
+    Rails.logger.debug form
+
+    form
   end
 end

@@ -1,23 +1,26 @@
 # frozen_string_literal: true
 
-require 'calstate/importer'
-
 # Usage
-# bundle exec rake calstate:file_attach[000000000,/home/ec2-user/data/import/file.pdf]
-# bundle exec rake calstate:file_attach[all,/home/ec2-user/data/foo/bar.csv]
-
+# bundle exec rake calstate:file_attach[000000000,/home/ec2-user/data/import/file.pdf,admin@calstate.edu]
+#
 namespace :calstate do
   desc 'Attach a file to an existing record'
-  task :file_attach, %i[id file] => [:environment] do |_t, args|
+  task :file_attach, %i[id file depositor] => [:environment] do |_t, args|
     id = args[:id]
-    file = args[:file]
+    filename = args[:file]
+    email = args[:depositor]
 
-    importer = CalState::Importer.new
+    # make sure we have a work
+    work = ActiveFedora::Base.find(id)
 
-    if id == 'all'
-      importer.attach_all(file)
-    else
-      importer.attach_file_to_work(id, file)
-    end
+    # create new file
+    file = File.open(filename)
+    uploaded_file = Hyrax::UploadedFile.create(file: file)
+    uploaded_file.save
+
+    # attach!
+    depositor = User.find_by(email: email)
+    work.apply_depositor_metadata(depositor.user_key)
+    AttachFilesToWorkJob.perform_now(work, [uploaded_file])
   end
 end

@@ -1,12 +1,25 @@
-# get handle id
-#
+# frozen_string_literal: true
 
+#
+# Register work with Handle service
+#
 class HandleService < ActiveJob::Base
   require 'handle_system'
 
-  # @param [env]
   #
-  def self.register(resource, hyrax_path)
+  # Register with Handle service
+  #
+  # @param resource [ActiveFedora::Base]  work
+  #
+  def self.register(resource)
+    # no access key (probably we are on dev or test) so skip
+    unless File.exist?(Rails.root + '/admpriv.pem')
+      logger.warn 'No admpriv.pem file, so skipping Handle registration.'
+      return
+    end
+
+    hyrax_path = polymorphic_url(resource, host: ENV['SCHOLARWORKS_HOST'])
+
     handle_server = ENV['HANDLE_SERVER']
     hs_admin = ENV['HS_ADMIN']
     private_key = ENV['HS_PRIVATE_KEY']

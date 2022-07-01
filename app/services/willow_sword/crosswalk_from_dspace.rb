@@ -1,6 +1,9 @@
+require 'calstate/metadata'
+
 module WillowSword
   class CrosswalkFromDspace
-    attr_reader :dc, :metadata, :model, :mapped_metadata, :files_metadata, :terms, :translated_terms, :singular
+    attr_reader :dc, :metadata, :model, :mapped_metadata, :files_metadata,
+                :terms, :translated_terms, :singular
 
     def initialize(src_file, headers)
       @src_file = src_file
@@ -13,28 +16,24 @@ module WillowSword
     end
 
     def terms
-      %w(abstract accessRights accrualMethod accrualPeriodicity
-        accrualPolicy alternative audience available bibliographicCitation
-        conformsTo contributor coverage created creator date dateAccepted
-        dateCopyrighted dateSubmitted description educationLevel extent
-        format hasFormat hasPart hasVersion identifier instructionalMethod
-        isFormatOf isPartOf isReferencedBy isReplacedBy isRequiredBy issued
-        isVersionOf language license mediator medium modified provenance
-        publisher references relation replaces requires rights rightsHolder
-        source spatial subject tableOfContents temporal title type valid)
+      %w[abstract accessRights accrualMethod accrualPeriodicity
+         accrualPolicy alternative audience available bibliographicCitation
+         conformsTo contributor coverage created creator date dateAccepted
+         dateCopyrighted dateSubmitted description educationLevel extent
+         format hasFormat hasPart hasVersion identifier instructionalMethod
+         isFormatOf isPartOf isReferencedBy isReplacedBy isRequiredBy issued
+         isVersionOf language license mediator medium modified provenance
+         publisher references relation replaces requires rights rightsHolder
+         source spatial subject tableOfContents temporal title type valid]
     end
 
     def translated_terms
       {
-      'created' =>'date_created',
-      'rights' => 'rights_statement',
-      'relation' => 'related_url',
-      'type' => 'resource_type'
+        'created' => 'date_created',
+        'rights' => 'rights_note',
+        'relation' => 'related_url',
+        'type' => 'resource_type'
       }
-    end
-
-    def singular
-      %w(rights degree_level embargo_terms embargo_release_date)
     end
 
     def map_xml
@@ -48,39 +47,26 @@ module WillowSword
       return @metadata unless File.exist? @src_file
 
       # transform the incoming xml data into a standard xml format
-      # that can then be simply imported into a new record
       sword_doc = Nokogiri::XML(File.read(@src_file))
-      xslt_file = File.join(Rails.root, 'config', 'sword', 'sword.xslt')
+      xslt_file = File.join(Rails.root, 'config', 'mappings', 'sword.xslt')
       xslt = Nokogiri::XSLT(File.read(xslt_file))
       doc = xslt.transform(sword_doc)
 
-      doc.xpath('//field').each do |field|
-        next unless field.text.present?
-
-        field_name = field.attr('name').to_sym
-        field_value = field.text.squish
-        is_singular = singular.include?(field_name.to_s)
-
-        if @metadata.key?(field_name) && !is_singular
-          @metadata[field_name] << field_value
-        else
-          @metadata[field_name] = if is_singular
-                                    field_value
-                                  else
-                                    [field_value]
-                                  end
-        end
-      end
+      # convert to params
+      @metadata = FieldService.xml_to_params(doc.root)
     end
 
     def assign_model
-      # unless @metadata.fetch(:resource_type, nil).blank?
-      #   @model = Array(@metadata[:resource_type]).map {
-      #     |t| t.underscore.gsub('_', ' ').gsub('-', ' ').downcase
-      #   }.first
-      # end
+      unless @metadata.fetch('resource_type', nil).blank?
+        resource_type = @metadata['resource_type'].first
+        if ::CalState::Metadata.model_type_map.key?(resource_type)
+          model = ::CalState::Metadata.model_type_map[resource_type].to_s
+          Rails.logger.warn "Found '#{model}' for '#{resource_type}'."
+          return model
+        end
+      end
+
       'Thesis'
     end
-
   end
 end

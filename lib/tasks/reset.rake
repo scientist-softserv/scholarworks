@@ -7,7 +7,7 @@ namespace :calstate do
   task :reset, %i[campus] => [:environment] do |_t, args|
     # campus name
     campus_id = args[:campus] or raise 'No campus provided.'
-    campus_name = CampusService.get_campus_name_from_slug(campus_id)
+    campus_name = CampusService.get_name_from_slug(campus_id)
 
     CalState::Metadata.models.each do |model|
       model.where(campus: campus_name).each.each do |doc|

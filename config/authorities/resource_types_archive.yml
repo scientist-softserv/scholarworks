@@ -1,0 +1,9 @@
+terms:
+  - id: Image
+    term: Image
+  - id: Text
+    term: Text
+  - id: Video
+    term: Video
+  - id: Other
+    term: Other

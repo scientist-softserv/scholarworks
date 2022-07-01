@@ -1,0 +1,53 @@
+
+campus: 'Dominguez Hills'
+depositor: admin@calstate.edu
+input_dir: /data/exported/
+admin_set_id: 'bg257j096'
+exit_on_error: false
+default_model: Archive
+default_type: Image
+separator: ';'
+tab_separated: true
+field_map:
+  Audience: audience
+  Collection Description: description_note
+  Collection description: description_note
+  Collection Finding Aid: is_version_of
+  Collection finding aid: is_version_of
+  Collection: is_part_of
+  Contributing Repository: source
+  Contributors: contributor
+  Creator: creator
+  Coverage: coverage
+  Date: date_issued
+  Date Created: date_created
+  Description: description
+  Digital Format: format
+  Facility: subject
+  Format: format
+  Genre: format
+  Identifier: identifier
+  Keywords (Topic): subject
+  Language: language
+  Local ID: files
+  Location: geographical_area
+  Notes: internal_note
+  Notes for Staff Use: internal_note
+  Object File Name: identifier
+  Project ID: identifier
+  Project Name: is_part_of
+  Publisher: publisher
+  Related Collection: is_part_of
+  Related content: is_format_of
+  Relation: relation
+  Rights: rights_note
+  Source: source
+  Source collection: source
+  Source Description: format
+  Subject: subject
+  Subject (Name): subject
+  Subjects: subject
+  Title: title
+  Title/Name: title
+  Transcription: description_note
+  Type: resource_type

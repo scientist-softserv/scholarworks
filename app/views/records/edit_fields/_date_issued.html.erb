@@ -60,14 +60,14 @@
             let prev_year = document.createElement("option");
             prev_year.value = cur_year - y;
             prev_year.textContent = cur_year - y;
-            year_elem.prepend(prev_year);
+            year_elem.append(prev_year);
         }
 
         for (let y = 1; y < 3; y++) {
             let next_year = document.createElement("option");
             next_year.value = cur_year + y;
             next_year.textContent = cur_year + y
-            year_elem.append(next_year);
+            year_elem.prepend(next_year);
         }
 
         let prev_year = document.createElement("option");
@@ -222,7 +222,7 @@
 
 <div id="<%= model_type %>_<%= key %>_div" class="form-group managed multi_value <% if f.object.required?(key) %>required<% end %>">
   <label class="control-label multi_value <% if f.object.required?(key) %> required <% end %>">
-    <%= t("hydra_editor.form.model_label.#{key}") %>
+    <%= t("simple_form.labels.defaults.#{key}") %>
     <% if f.object.required?(key) %><span class="label label-info required-tag">required</span><% end %>
   </label>
   <p id="<%= model_type %>_<%= key %>_help" class="help-block"><%= t('simple_form.hints.defaults.date_issued') %></p>
