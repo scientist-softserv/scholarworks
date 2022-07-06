@@ -20,7 +20,7 @@ module CalState
         def initialize(csv_dir, campus_slug)
           @csv_dir = csv_dir
           @campus_slug = campus_slug
-          @campus_name = CampusService.get_campus_name_from_slug(campus_slug)
+          @campus_name = CampusService.get_name_from_slug(campus_slug)
         end
 
         #
@@ -42,11 +42,16 @@ module CalState
 
           # add these fields to the front of the array so we can
           # handle them differently, see below as to why
-          special_columns = %w[id campus admin_set_id visibility
-                               embargo_release_date visibility_during_embargo
-                               visibility_after_embargo]
-
-          column_names = special_columns
+          # also make sure to remove any from `get_columns`
+          column_names = %w[id
+                            campus
+                            admin_set_id
+                            visibility
+                            embargo_release_date
+                            visibility_during_embargo
+                            visibility_after_embargo
+                            title
+                            description]
 
           # attributes from fedora
           attribute_names = get_columns(model.attribute_names)
@@ -67,7 +72,9 @@ module CalState
                           prep_value(doc.visibility), # not in attributes
                           prep_value(doc.embargo_release_date), # not in attributes
                           prep_value(doc.visibility_during_embargo), # not in attributes
-                          prep_value(doc.visibility_after_embargo)] # not in attributes
+                          prep_value(doc.visibility_after_embargo), # not in attributes
+                          prep_values(doc.title_formatted), # use formatted
+                          prep_values(doc.description_formatted)] # use formatted
                 values.push(*get_attr_values(doc.attributes, attribute_names))
                 csv << values
               rescue ActiveFedora::ConstraintError => e
@@ -88,14 +95,28 @@ module CalState
         #
         def get_columns(column_names)
           # remove internal fedora fields
-          columns_remove = %w[head tail arkivo_checksum owner access_control_id
-                              state representative_id thumbnail_id rendering_ids
-                              embargo_id lease_id relative_path import_url]
-          # remove scholarworks utility fields
-          columns_remove += %w[resource_type_thesis resource_type_educationalresource
-                               resource_type_dataset resource_type_publication]
-          # remove columns we want to shift to the front, and will handle separately
-          columns_remove += %w[campus admin_set_id]
+          columns_remove = %w[arkivo_checksum
+                              access_control_id
+                              embargo_id
+                              head
+                              import_url
+                              label
+                              lease_id
+                              owner
+                              relative_path
+                              rendering_ids
+                              representative_id
+                              state
+                              tail
+                              thumbnail_id]
+          # remove formatted columns as we will handle those differently
+          columns_remove += %w[title_formatted
+                               description_formatted]
+          # remove columns we want to shift to the front
+          columns_remove += %w[admin_set_id
+                               campus
+                               description
+                               title]
           column_names - columns_remove
         end
 

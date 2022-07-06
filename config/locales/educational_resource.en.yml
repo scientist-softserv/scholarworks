@@ -1,8 +1,0 @@
-en:
-  hyrax:
-    icons:
-      educational_resource:     'fa fa-file-text-o'
-    select_type:
-      educational_resource:
-        name:               "Open educational resource"
-        description:        "Open textbook, course module, etc."

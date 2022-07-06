@@ -66,15 +66,6 @@ module CalState
         end
 
         #
-        # Fields with person objects
-        #
-        # @return [Array]
-        #
-        def person_fields
-          %w[creator contributor advisor committee_member]
-        end
-
-        #
         # Is the supplied field a person field?
         #
         # @param field [String]  field name
@@ -82,7 +73,7 @@ module CalState
         # @return [Boolean]
         #
         def is_person_field?(field)
-          person_fields.include?(field)
+          FieldService.person_fields.include?(field)
         end
 
         #
@@ -137,26 +128,6 @@ module CalState
         def get_csv_filename(campus_slug, model_name)
           model_file = Metadata.get_slug(model_name)
           campus_slug + '_' + model_file + '.csv'
-        end
-
-        #
-        # Get all records, with cleaned values
-        #
-        # @param csv [CSV]  CSV object
-        # @return [Array]
-        #
-        def load_records(csv)
-          final = []
-          csv.each do |row|
-            record = {}
-            row.each do |key, value|
-              value = clean_value(value)
-              value = clean_person(value) if person_fields.include?(key)
-              record[key] = value
-            end
-            final.append record
-          end
-          final
         end
       end
     end

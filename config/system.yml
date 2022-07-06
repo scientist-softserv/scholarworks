@@ -1,0 +1,30 @@
+facets:
+  resource_type:
+    limit: 5
+  campus:
+    limit: 10
+  department:
+    limit: 5
+  degree_level:
+    limit: 5
+  date_issued_year:
+    range: true
+    include_in_advanced_search: false
+    sort: 'index'
+
+advanced_search:
+  - title
+  - creator
+  - publisher
+  - keyword
+  - subject
+  - discipline
+  - handle
+  
+models:
+  - thesis
+  - project
+  - presentation
+  - publication
+  - dataset
+  - educational_resource

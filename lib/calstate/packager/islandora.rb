@@ -1,17 +1,11 @@
 # frozen_string_literal: true
 
-require 'colorize'
-require 'rubygems'
-require 'time'
-require 'yaml'
-require 'zip'
-
 module CalState
   module Packager
     #
-    # Islandora migration
+    # Islandora importer
     #
-    class Islandora
+    class Islandora < AbstractPackager
       #
       # New Islandora packager
       #
@@ -19,46 +13,77 @@ module CalState
       # @param type [String]        work type (e.g., Thesis)
       #
       def initialize(campus, type)
-        @campus = campus
+        super(campus)
+
         @type = type
-
-        # config and loggers
-        config_file = 'config/packager/' + campus + '.yml'
-        @config = OpenStruct.new(YAML.load_file(config_file))
-        @log = Packager::Log.new(@config['output_level'])
-
         @visibility = @config['visibility'] ||= 'open'
-        @log.info ' Work type ' + @type
-        @log.info ' Visibility ' + @visibility
 
-        unless @config['metadata_file']
-          raise 'Must set metadata_file in the config'
-        end
-        raise 'Must set data_file in the config' unless @config['data_file']
-        raise 'Must set campus name in config' unless @config['campus']
+        raise 'Must set metadata_file in config' unless @config['metadata_file']
+        raise 'Must set data_file in config' unless @config['data_file']
+
+        @log.info 'Campus: ' + @campus.yellow
+        @log.info 'Work type ' + @type
+        @log.info 'Visibility ' + @visibility
 
         # set working directories
         @input_dir = @config['input_dir']
         @complete_dir = initialize_directory(@input_dir + '_complete')
         @error_dir = initialize_directory(@input_dir + '_error')
-        @log.info 'input dir ' + @input_dir
-        @log.info 'complete dir ' + @complete_dir
-        @log.info 'error_dir ' + @error_dir
-
-        @log.info 'Starting rake task packager:islandora'.green
-        @log.info 'Campus: ' + @config['campus'].yellow
-        @log.info 'Loading import package from ' + @input_dir
       end
 
       #
       # Process all items
       #
-      # @param throttle [Integer]  seconds to throttle between
-      #
-      def process_items(throttle)
+      def process_items
         Dir.each_child(@input_dir) do |dirname|
           @log.info "\n\nProcessing " + dirname
           process_dir(dirname)
+        end
+      end
+
+      #
+      # Process all packages in a directory
+      #
+      # @param path [String]  path to directory
+      #
+      def process_dir(path)
+        return unless File.directory?(File.join(@input_dir, path))
+
+        # process subdirectories
+        Dir.each_child(File.join(@input_dir, path)) do |subdir|
+          process_dir(path + '/' + subdir)
+        end
+
+        metadata_file = ''
+        valid_metadata = false
+        metadata_files = @config['metadata_file'].split('|')
+        metadata_files.each do |name|
+          metadata_file = File.join(@input_dir + '/' + path, name)
+          if File.exist?(metadata_file)
+            valid_metadata = true
+            break
+          end
+        end
+
+        unless valid_metadata
+          cleanup(path, File.join(@error_dir, path))
+          return
+        end
+
+        data_file = nil
+        data_files = @config['data_file'].split('|')
+
+        # TODO: process all files
+        data_files.each do |fileext|
+          Dir.glob(@input_dir + '/' + path + '/*.' + fileext) do |filename|
+            data_file = filename
+            break
+          end
+          next if data_file.nil?
+
+          @log.info 'Using metadata file ' + metadata_file
+          @log.info 'Using data file ' + data_file
+          prepare_item(path, metadata_file, data_file)
         end
       end
 
@@ -84,102 +109,18 @@ module CalState
       protected
 
       #
-      # Directory clean-up
-      #
-      # @param source_path [String]  input directory path
-      # @param dest_path [String]    destination directory path
-      #
-      def cleanup(source_path, dest_path)
-        # create directories if needed
-        cur_path = ''
-        paths = dest_path.split('/')
-
-        paths.each do |dirname|
-          next if dirname.nil? || dirname.empty?
-
-          cur_path = cur_path + '/' + dirname
-          Dir.mkdir(cur_path) unless Dir.exist?(cur_path)
-        end
-
-        # now move files over to new dest directory
-        Dir.glob(File.join(@input_dir + '/' + source_path, '*')).each do |f|
-          FileUtils.mv(f, dest_path)
-        end
-
-        # now remove the source dir
-        delete_dir = File.join(@input_dir, source_path)
-        Dir.delete delete_dir if File.exist?(delete_dir)
-      end
-
-      #
-      # Process all files in a directory
-      #
-      # @param path [String]  path to directory
-      #
-      def process_dir(path)
-        return unless File.directory?(File.join(@input_dir, path))
-
-        # process subdirectories
-        Dir.each_child(File.join(@input_dir, path)) do |subdir|
-          process_dir(path + '/' + subdir)
-        end
-
-        metadata_file = ''
-        valid_metadata = false
-        metadata_files = @config['metadata_file'].split('|')
-        metadata_files.each do |name|
-          metadata_file = File.join(@input_dir + '/' + path, name)
-          if File.exist?(metadata_file)
-            valid_metadata = true
-            break
-          end
-        end
-
-        done_dir = File.join(@error_dir, path)
-
-        if valid_metadata
-          # we still need to check for PDF file
-          data_file = nil
-          data_files = @config['data_file'].split('|')
-          data_files.each do |fileext|
-            Dir.glob(@input_dir + '/' + path + '/*.' + fileext) do |filename|
-              data_file = filename
-              break
-            end
-            next if data_file.nil?
-
-            begin
-              @log.info 'Using metatadata file ' + metadata_file
-              @log.info 'Using data file ' + data_file
-              process_metadata(path, metadata_file, data_file)
-              done_dir = File.join(@complete_dir, path)
-            rescue StandardError => e
-              @log.error e.class.to_s.red
-              @log.error e
-              raise e
-            end
-            break
-          end
-        end
-
-        cleanup(path, done_dir)
-      end
-
-      #
       # Process the DC Record file in a directory
+      #
       # creates new work(s) based on content
       #
       # @param dir_name [String]       the directory of the extracted package
       # @param metadata_file [String]  location of metadata file
       # @param data_file [String]      the file to upload
       #
-      # @raise RuntimeError if no METS file found
-      #
-      def process_metadata(dir_name, metadata_file, data_file)
-        @log.info 'Processing metadata file'
-        @log.info 'metadata file ' + metadata_file
+      def prepare_item(dir_name, metadata_file, data_file)
+        @log.info 'Processing metadata file:' + metadata_file
 
-        # make sure we actually have a mets file
+        # make sure we actually have a metadata file
         unless File.exist?(metadata_file)
           raise 'No metadata file found in ' + dir_name
         end
@@ -187,182 +128,52 @@ module CalState
         # parse it
         dom = Nokogiri::XML(File.open(metadata_file))
 
-        # determine the type of object
-        # if this is a dspace item, create a new work
-        # otherwise process the items from this community/collection
+        params = prepare_params(dom)
+        files = []
+        files = [data_file] unless @metadata_only
 
-        create_work_and_files(dom, data_file)
+        process_item(params, files, item_dir: dir_name)
       end
 
       #
-      # Create new work and attach any files
+      # What to do on error
+      #
+      # @param error [StandardError]  the error
+      # @param params [Hash]          record attributes
+      # @param files [Array]          file locations
+      # @param args                   other args to pass to error processing
+      #
+      def on_error(error, params, files, **args)
+        done_dir = File.join(@error_dir, args[:item_dir])
+        cleanup(path, done_dir)
+      end
+
+      #
+      # What to do on success
+      #
+      # @param params [Hash]  record attributes
+      # @param files [Array]  file locations
+      # @param args           other args to pass to error processing
+      #
+      def on_success(params, files, **args)
+        done_dir = File.join(@complete_dir, args[:item_dir])
+        cleanup(path, done_dir)
+      end
+
+      #
+      # Prepare record parameters
       #
       # @param dom [Nokogiri::XML::Document]  DOMDocument of METS file
-      # @param data_file [String]             the file to upload
       #
-      def create_work_and_files(dom, data_file)
-        @log.info 'Ingesting ' + @type
-
-        start_time = DateTime.now
-
-        # data mapper
+      # @return Hash
+      #
+      def prepare_params(dom)
         params = collect_params(dom)
-        pp params if @debug
-
-        @log.info 'Creating Hyrax work...'
-        work = create_new_work(params)
-
-        if @config['metadata_only']
-          @log.info 'Metadata only'
-        else
-          @log.info 'Getting uploaded files'
-          uploaded_files = get_files_to_upload(data_file)
-
-          @log.info 'Attaching file(s) to work job...'
-          AttachFilesToWorkJob.perform_now(work, uploaded_files)
-        end
-
-        # Register work in handle
-        HandleRegisterJob.perform_now(work)
-
-        # record the time it took
-        end_time = Time.now.minus_with_coercion(start_time)
-        total_time = Time.at(end_time.to_i.abs).utc.strftime('%H:%M:%S')
-        @log.info 'Total time: ' + total_time
-        @log.info 'DONE!'.green
-      end
-
-      #
-      # Create a new Hyrax work
-      #
-      # @param params [Hash]  the field/xpath mapper
-      #
-      # @return [ActiveFedora::Base] the work
-      #
-      def create_new_work(params)
-        @log.info 'Configuring work attributes'
-
-        # set depositor
-        depositor = User.find_by_user_key(@config['depositor'])
-        raise 'User ' + @config['depositor'] + ' not found.' if depositor.nil?
-
-        # set noid
-        id = Noid::Rails::Service.new.minter.mint
-
-        # set resource type
-        resource_type = @type || 'Thesis'
-        params['resource_type'] = ['Masters Thesis'] if resource_type.downcase == 'thesis'
-
-        # set visibility
         params['visibility'] = @visibility
+        params['admin_set_id'] = @config['admin_set_id']
+        params['campus'] = [@campus]
 
-        # set admin set to deposit into
-        params['admin_set_id'] = @config['admin_set_id'] unless @config['admin_set_id'].nil?
-
-        # set campus
-        params['campus'] = [@config['campus']]
-
-        @log.info 'Creating a new ' + resource_type + ' with id:' + id
-
-        raise 'No mapping for ' + resource_type if @config['type_to_work_map'][resource_type].nil?
-
-        model_name = @config['type_to_work_map'][resource_type]
-
-        # create the actual work based on the mapped resource type
-        model = Kernel.const_get(model_name)
-        work = model.new(id: id)
-        work.update(params)
-        work.apply_depositor_metadata(depositor.user_key)
-        work = Packager.add_manager_group(work, @campus)
-        work.save
-
-        work
-      end
-
-      #
-      # Get files to upload
-      # extracts file info for bitstream (optionally also thumnail) from METS and
-      # creates UploadedFile objects for each
-      #
-      # @param pdf_file [String]  file to upload
-      #
-      # @return [Array<Hyrax::UploadedFile>]
-      #
-      def get_files_to_upload(pdf_file)
-        @log.info 'Figuring out which files to upload'
-
-        uploaded_files = []
-
-        uploaded_file = upload_file(pdf_file)
-        uploaded_files.push(uploaded_file) unless uploaded_file.nil?
-
-        uploaded_files
-      end
-
-      # Upload file to Hyrax
-      # uses the original file name instead of name given by aip package
-      #
-      # @param filename [String]  the file working directory
-      #
-      # @return Hyrax::UploadedFile
-      #
-      def upload_file(filename)
-        @log.info 'uploading filename ' + filename
-
-        return unless File.file?(filename)
-
-        @log.info 'Uploading file ' + filename
-        file = File.open(filename)
-
-        uploaded_file = Hyrax::UploadedFile.create(file: file)
-        uploaded_file.save
-
-        file.close
-
-        uploaded_file
-      end
-
-      #
-      # Map creator notes to field type
-      #
-      # @param data [String]  creator field value
-      # @param params [Hash]  work parameters
-      #
-      def process_creator(data, params)
-        ignore_tag = '(translator)'
-        creator_tags = {
-          '(creator)' => 'creator',
-          '(author)' => 'creator',
-          '(editor)' => 'editor',
-          '(publisher)' => 'publisher',
-          '(home campus)' => 'granting_institution',
-          '(thesis advisor)' => 'advisor',
-          '(thesis committee member)' => 'committee_member'
-        }
-        data_lc = data.downcase
-        return if data_lc.end_with? ignore_tag
-
-        creator_tags.each do |key, value|
-          next unless data_lc.end_with? key
-
-          new_data = data[0, data.length - key.length].strip
-          params[value] << new_data unless new_data.empty? || new_data == ','
-          return nil
-        end
-
-        # default to creator if no ending tag is found
-        params['creator'] << data
-      end
-
-      def process_identifier(data, params)
-        data_lc = data.downcase
-        if data_lc.start_with?('islandora')
-          params['description_note'] << data.squish
-        elsif data_lc.start_with?('http')
-          params['related_url'] << data.squish
-        else
-          params['identifier'] << data.squish
-        end
+        params
       end
 
       #
@@ -425,16 +236,80 @@ module CalState
       end
 
       #
-      # Create a directory
-      # only if it doesn't already exist
+      # Map creator notes to field type
       #
-      # @param dir [String]
+      # @param data [String]  creator field value
+      # @param params [Hash]  work parameters
       #
-      # @return [String] the new directory
+      def process_creator(data, params)
+        ignore_tag = '(translator)'
+        creator_tags = {
+          '(creator)' => 'creator',
+          '(author)' => 'creator',
+          '(editor)' => 'editor',
+          '(publisher)' => 'publisher',
+          '(home campus)' => 'granting_institution',
+          '(thesis advisor)' => 'advisor',
+          '(thesis committee member)' => 'committee_member'
+        }
+        data_lc = data.downcase
+        return if data_lc.end_with? ignore_tag
+
+        creator_tags.each do |key, value|
+          next unless data_lc.end_with? key
+
+          new_data = data[0, data.length - key.length].strip
+          params[value] << new_data unless new_data.empty? || new_data == ','
+          return nil
+        end
+
+        # default to creator if no ending tag is found
+        params['creator'] << data
+      end
+
       #
-      def initialize_directory(dir)
-        Dir.mkdir(dir) unless Dir.exist?(dir)
-        dir
+      # Process identifiers and URLs
+      #
+      # @param data [String]  identifier field value
+      # @param params [Hash]  work parameters
+      #
+      def process_identifier(data, params)
+        data_lc = data.downcase
+        if data_lc.start_with?('islandora')
+          params['description_note'] << data.squish
+        elsif data_lc.start_with?('http')
+          params['related_url'] << data.squish
+        else
+          params['identifier'] << data.squish
+        end
+      end
+
+      #
+      # Directory clean-up
+      #
+      # @param source_path [String]  input directory path
+      # @param dest_path [String]    destination directory path
+      #
+      def cleanup(source_path, dest_path)
+        # create directories if needed
+        cur_path = ''
+        paths = dest_path.split('/')
+
+        paths.each do |dirname|
+          next if dirname.nil? || dirname.empty?
+
+          cur_path = cur_path + '/' + dirname
+          Dir.mkdir(cur_path) unless Dir.exist?(cur_path)
+        end
+
+        # now move files over to new dest directory
+        Dir.glob(File.join(@input_dir + '/' + source_path, '*')).each do |f|
+          FileUtils.mv(f, dest_path)
+        end
+
+        # now remove the source dir
+        delete_dir = File.join(@input_dir, source_path)
+        Dir.delete delete_dir if File.exist?(delete_dir)
       end
     end
   end

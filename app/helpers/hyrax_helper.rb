@@ -23,4 +23,11 @@ module HyraxHelper
     end
     options.map { |value| [visibility_text(value), value] }
   end
+
+  def available_translations
+    {
+      'en' => 'English',
+    }
+  end
+
 end

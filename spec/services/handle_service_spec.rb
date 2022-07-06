@@ -11,7 +11,7 @@ RSpec.describe HandleService do
       end
 
       it 'should call the handle service' do
-        HandleService.register(resource, hyrax_path)
+        HandleService.register(resource)
         expect(resource.handle).to eq(['handle_url'])
       end
     end
@@ -21,7 +21,7 @@ RSpec.describe HandleService do
         allow_any_instance_of(HandleSystem::Client).to receive(:create).with(anything(), anything()).and_raise("That prefix doesn't live here")
         # Note: the expected error is actually HandleSystem::Error.new, "That prefix doesn't live here"
 
-        expect{HandleService.register(resource, hyrax_path)}.to raise_error
+        expect{HandleService.register(resource)}.to raise_error
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe HandleService do
       end
 
       it 'raises an error' do
-        expect{HandleService.register(resource, hyrax_path)}.to raise_error(HandleSystem::AuthenticationError, "Identity not verified")
+        expect{HandleService.register(resource)}.to raise_error(HandleSystem::AuthenticationError, "Identity not verified")
       end
     end
   end

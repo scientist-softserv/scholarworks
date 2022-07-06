@@ -26,21 +26,6 @@ module CalState
         model_path = doc['has_model_ssim'].first.underscore.pluralize
         hyrax_url + '/concern/' + model_path + '/' + doc['id']
       end
-
-      #
-      # Convert an ActiveFedora relation field into array
-      #
-      # @param field [ActiveFedora::Base]
-      #
-      # @return [Array<String>]
-      #
-      def field_to_array(field)
-        final = []
-        field.each do |value|
-          final << value.to_s
-        end
-        final
-      end
     end
   end
 end

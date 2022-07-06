@@ -1,15 +1,7 @@
 terms:
-  - id: Abstract
-    term: Abstract
-  - id: Capstone Project
-    term: Capstone Project
-  - id: Dissertation
-    term: Dissertation
-  - id: Graduate Project
-    term: Graduate Project
-  - id: Journal
-    term: Journal
   - id: Masters Thesis
     term: Masters Thesis
-  - id: Project
-    term: Project
+    degree_level: Masters
+  - id: Dissertation
+    term: Dissertation
+    degree_level: Doctoral

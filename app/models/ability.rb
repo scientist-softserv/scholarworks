@@ -23,6 +23,9 @@ class Ability
     # registered user can create works, files
     can :create, [FileSet] + Hyrax.config.curation_concerns if registered_user?
 
+    # campus specific abilities
+    cannot :create, [Project] if campus == 'sanmarcos'
+
     # managers & admins can also create collections
     can :create, Collection if manager? || current_user.admin?
     return unless current_user.admin?

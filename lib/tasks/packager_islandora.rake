@@ -7,15 +7,15 @@ require 'calstate/packager'
 # bundle exec rake packager:islandora[sandiego,Publication,180]
 
 namespace :packager do
-  desc 'Migrate Landing moss packages to Hyrax'
-  task :islandora, %i[campus type visibility] => [:environment] do |_t, args|
-    # error check
+  desc 'Islandora importer'
+  task :islandora, %i[campus type throttle] => [:environment] do |_t, args|
     campus = args[:campus] or raise 'No campus provided.'
     type = args[:type] ||= 'Thesis'
-    throttle = args[:visibility] ||= nil
+    throttle = args[:throttle] ||= nil
 
     packager = CalState::Packager::Islandora.new(campus, type)
+    packager.throttle = throttle.to_i
     packager.rename_folders
-    packager.process_items(throttle)
+    packager.process_items
   end
 end

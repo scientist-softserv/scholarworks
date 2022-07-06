@@ -9,9 +9,8 @@ module CalState
     #
     class SolrReader
       include Utilities
-
-      # @return [Boolean]  whether to include suppressed records
-      attr_accessor :include_suppressed
+      include HTTParty
+      disable_rails_query_string_format
 
       #
       # New SolrReader
@@ -21,71 +20,84 @@ module CalState
       end
 
       #
-      # Fetch all records
+      # All (including suppressed) works
       #
       # @return [Array] of solr documents
       #
-      def fetch_all
-        solr_query = all_records_query(true)
+      def records
+        solr_query = query_all_records(true)
         fetch_records(solr_query)
       end
 
       #
-      # Fetch all unsuppressed records
+      # All unsuppressed works
       #
       # @return [Array] of solr documents
       #
-      def fetch_all_unsuppressed
-        solr_query = all_records_query(false)
+      def public_records
+        solr_query = query_all_records(false)
         fetch_records(solr_query)
       end
 
       #
-      # Find duplicate records
-      #
-      # @param field [String]  [optional] the solr field key
-      #
-      def find_duplicates(field = 'handle_tesim')
-        handles = {}
-        dupes = {}
-
-        fetch_all.each do |doc|
-          handle = doc[field].first.to_s
-          if handles[handle]
-            handles[handle].append(doc['id'])
-          else
-            handles[handle] = [doc['id']]
-          end
-        end
-
-        handles.each do |key, ids|
-          dupes[key] = ids if ids.length > 1
-        end
-
-        dupes
-      end
-
-      #
-      # Records that have an expired embargo
+      # Works that have private visibility
       #
       # @return [Array] of solr documents
       #
-      def find_expired_embargoes
+      def restricted_records(campus = nil)
+        query = limit_to_models +
+                ' AND -visibility_ssi:open AND suppressed_bsi:false'
+        query += ' AND ' + limit_to_campus(campus) unless campus.nil?
+        query += ' AND timestamp:[2022-02-08T00:00:00Z TO NOW]'
+        fetch_records(query)
+      end
+
+      #
+      # Works that have an expired embargo
+      #
+      # @return [Array] of solr documents
+      #
+      def records_with_expired_embargoes
         query = 'embargo_release_date_dtsi:[* TO NOW]'
         fetch_records(query)
       end
 
       #
-      # Records that have private visibility
+      # Get all facet values
       #
-      # @return [Array] of solr documents
+      # @param fields [Array]   solr field name(s)
+      # @param campus [String]  [optional] campus name
+      # @param models [Array]   [optional] models to search, default is works
+      # @param limit [Integer]  [optional] number of values to return
       #
-      def find_restricted_records(campus = nil)
-        query = limit_to_models_query +
-                ' AND -visibility_ssi:open AND suppressed_bsi:false'
-        query += ' AND ' + limit_to_campus_query(campus) unless campus.nil?
-        query += ' AND timestamp:[2022-02-08T00:00:00Z TO NOW]'
-        fetch_records(query)
+      # @return [Array]
+      #
+      def facet_values(fields, campus = nil, models = [], limit = 1000)
+        query = if models.empty?
+                  query_all_records
+                else
+                  limit_to_models(models) + ' AND ' + limit_to_open_records
+                end
+        query += ' AND ' + limit_to_campus(campus) unless campus.nil?
+        params = {
+          facet: true,
+          'facet.field': fields,
+          'facet.limit': limit
+        }
+        json = fetch(query, 0, 0, params)
+
+        # extract values
+        values = {}
+        fields.each do |field|
+          values[field] = []
+          x = 0
+          json['facet_counts']['facet_fields'][field].each do |value|
+            x += 1
+            values[field].append(value) if x.odd?
+          end
+        end
+
+        values
       end
 
       private
@@ -124,8 +136,7 @@ module CalState
       # @return [SolrResults]
       #
       def fetch_batch(query, start = 0, rows = 1000)
-        response = HTTParty.get(@solr_url, query: params(query, start, rows))
-        json = response.parsed_response
+        json = fetch(query, start, rows)
         total = json['response']['numFound']
         results = SolrResults.new(start, total)
 
@@ -137,46 +148,68 @@ module CalState
       end
 
       #
-      # Solr query to retrieve all open, unsuppressed records
+      # Fetch response from Solr
       #
-      # @param include_suppressed [Boolean]  [optional] include suppressed records?
+      # @param query [String]       solr query
+      # @param start [Integer]      [optional] starting record number
+      # @param rows [Integer]       [optional] number of rows to fetch
+      # @param extra_params [hash]  [optional] extra parameters
       #
-      # @return [String] Solr query
+      # @return [JSON]
       #
-      def all_records_query(include_suppressed = false)
-        query = limit_to_models_query
-
-        if include_suppressed == false
-          query + ' AND suppressed_bsi:false AND visibility_ssi:open'
-        else
-          query
-        end
-      end
-
-      def limit_to_models_query
-        'has_model_ssim:(' + Metadata.model_names.join(' OR ') + ')'
-      end
-
-      def limit_to_campus_query(campus)
-        'campus_tesim:"' + campus + '"'
-      end
-
-      #
-      # Solr parameters for paging
-      #
-      # @param query [String]   solr query
-      # @param start [Integer]  starting record position (default: 0)
-      # @param rows [Integer]   number of rows to return (default: 1,000)
-      #
-      # @return [Hash] parameters, with query and wt: json
-      #
-      def params(query, start = 0, rows = 1000)
-        {
+      def fetch(query, start = 0, rows = 0, extra_params = {})
+        params = {
           fq: query,
           start: start,
           rows: rows,
           wt: 'json'
         }
+        params.merge!(extra_params)
+        response = self.class.get(@solr_url, query: params)
+        response.parsed_response
+      end
+
+      #
+      # Query to retrieve all works
+      #
+      # @param include_suppressed [Boolean]  [optional] include suppressed records?
+      #
+      # @return [String] Solr query
+      #
+      def query_all_records(include_suppressed = false)
+        query = limit_to_models
+        query + ' AND ' + limit_to_open_records unless include_suppressed
+        query
+      end
+
+      #
+      # Limit the query to public records
+      #
+      # @return [String]
+      #
+      def limit_to_open_records
+        'suppressed_bsi:false AND visibility_ssi:open'
+      end
+
+      #
+      # Limit the query to certain models
+      #
+      # @param models [Array]  [optional] defaults to all work models
+      #
+      # @return [String]
+      #
+      def limit_to_models(models = [])
+        models = Metadata.model_names if models.empty?
+        'has_model_ssim:(' + models.join(' OR ') + ')'
+      end
+
+      #
+      # Limit the query to specified campus
+      #
+      # @return [String]
+      #
+      def limit_to_campus(campus)
+        'campus_tesim:"' + campus + '"'
       end
     end
   end

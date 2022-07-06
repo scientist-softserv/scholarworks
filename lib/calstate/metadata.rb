@@ -3,7 +3,6 @@
 require_relative 'metadata/utilities'
 require_relative 'metadata/csv'
 require_relative 'metadata/dspace'
-require_relative 'metadata/fixer'
 require_relative 'metadata/handle_mapper'
 require_relative 'metadata/sitemap'
 require_relative 'metadata/solr_reader'
@@ -15,21 +14,20 @@ module CalState
   #
   module Metadata
     #
-    # Mapping of models defined in ScholarWorks
+    # Mapping of models
     #
     # @return [Hash]  slug: model name
     #
     def self.model_mapping
-      {
-        thesis: 'Thesis',
-        publication: 'Publication',
-        dataset: 'Dataset',
-        educational_resource: 'EducationalResource'
-      }
+      mapping = {}
+      Hyrax.config.registered_curation_concern_types.each do |type|
+        mapping[type.underscore.to_sym] = type
+      end
+      mapping
     end
 
     #
-    # The names of the models defined in ScholarWorks
+    # The names of the models
     #
     # @return [Array<String>]  of model class names
     #
@@ -38,7 +36,7 @@ module CalState
     end
 
     #
-    # Models defined in ScholarWorks
+    # Models
     #
     # @return [Array<ActiveRecord::Base>]  of models
     #
@@ -80,29 +78,28 @@ module CalState
     end
 
     #
-    # Whether we should throttle
+    # Get mapping of resource types to model
     #
-    # @param position [Integer]  current position in the queue
-    # @param batch [Integer]     how many records to process before pause
+    # @return [Hash]
     #
-    # @return [Boolean]
-    #
-    def self.should_throttle(position, batch = 5)
-      (position % batch).zero? && workday?
-    end
+    def self.model_type_map
+      return @type_map unless @type_map.nil?
 
-    #
-    # Is it a weekday 9-5?
-    #
-    # @return [Boolean]
-    #
-    def self.workday?
-      now = Time.now.getlocal('-08:00')
+      @type_map = {}
+      model_names.each do |model|
+        model_ext = model.downcase
+        file = "#{Rails.root}/config/authorities/resource_types_#{model_ext}.yml"
+        if File.exist?(file)
+          yaml_file = OpenStruct.new(YAML.load_file(file))
+          yaml_file.terms.each do |term|
+            @type_map[term['id']] = model
+          end
+        else
+          @type_map[model] = model
+        end
+      end
 
-      # just keep on truckin' over the weekend
-      return false if now.saturday? || now.sunday?
-
-      (now.hour >= 9 && now.hour <= 17)
+      @type_map
     end
   end
 end
