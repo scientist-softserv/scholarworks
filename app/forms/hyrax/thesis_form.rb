@@ -7,8 +7,7 @@ module Hyrax
                                title
                                creator
                                description
-                               degree_name
-                               advisor]
+                               degree_name]
     def primary_terms
       %i[resource_type
          title

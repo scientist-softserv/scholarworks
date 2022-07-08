@@ -22,16 +22,19 @@ module HtmlHelper
     text.sub!('<p></p>', '')
     allowed_tags.delete('p') if text.scan(%r{(?=</p>)}).count == 1
 
-    # strip tags
+    # convert pseudo-html tags to html equivalent
+    text.sub!('<italic>', '<em>')
+    text.sub!('</italic>', '</em>')
+
+    # strip tags and decode html entities
     text = Sanitize.new.sanitize(text, tags: allowed_tags)
 
-    # decode html entities
-    text = HTMLEntities.new.decode(text)
-
-    # remove smart quotes
+    # convert remaining ampersand and smart quotes
+    text.gsub!('&amp;', '&')
     text.gsub!(/[”“]/, '"')
     text.gsub!(/[‘’]/, "'")
     text = text.squish
+
     [text]
   end
 
