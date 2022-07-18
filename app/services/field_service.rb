@@ -49,7 +49,6 @@ class FieldService
        handle
        identifier
        internal_note
-       is_part_of
        isbn
        issn
        issue

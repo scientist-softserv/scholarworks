@@ -4,7 +4,7 @@ depositor: dwalker@calstate.edu
 output_dir: /home/ec2-user/data/harvest/sacramento
 admin_set_id: '8910jv99k'
 external_system: Sac State Scholar
-url: https://csu-csus.esploro.exlibrisgroup.com/view/oai/01CALS_USL/request
+url: https://scholars.csus.edu/view/oai/01CALS_USL/request
 set: esploro_esploro
 metadataPrefix: esploro
 exit_on_error: false

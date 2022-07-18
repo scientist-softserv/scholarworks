@@ -19,7 +19,7 @@ module Hyrax
          publisher
          place
          series
-         is_part_of
+         publication_title
          volume
          issue
          pages

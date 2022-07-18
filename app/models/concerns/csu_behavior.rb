@@ -103,8 +103,9 @@ module CsuBehavior
       campus_slug = CampusService.get_slug_from_name(campus.first)
       college_service = CollegeService.new(campus_slug)
       department.each do |dept|
-        coll = college_service.get(dept)
-        colleges.append coll unless coll.nil?
+        college_service.get(dept).each do |college|
+          colleges.append college
+        end
       end
       self.college = colleges
     end

@@ -20,7 +20,7 @@
   <% end %>
   <meta name="citation_publication_date" content="<%= @presenter.date_issued_year&.first %>" />
   <meta name="citation_pdf_url" content="<%= @presenter.download_url %>" />
-  <meta name="citation_journal_title" content="<%= @presenter.is_part_of %>"/>
+  <meta name="citation_journal_title" content="<%= @presenter.publication_title %>"/>
   <meta name="citation_volume" content="<%= @presenter.volume %>"/>
   <meta name="citation_issue" content="<%= @presenter.issue %>"/>
   <!--
