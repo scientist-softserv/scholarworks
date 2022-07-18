@@ -18,7 +18,7 @@ class HandleService < ActiveJob::Base
       return
     end
 
-    hyrax_path = Rails.application.routes.url_helpers.polymorphic_path(resource, host: ENV['SCHOLARWORKS_HOST'])
+    hyrax_path = Rails.application.routes.url_helpers.polymorphic_url(resource, host: ENV['SCHOLARWORKS_HOST'])
 
     handle_server = ENV['HANDLE_SERVER']
     hs_admin = ENV['HS_ADMIN']
