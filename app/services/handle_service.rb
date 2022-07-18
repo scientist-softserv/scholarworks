@@ -13,12 +13,12 @@ class HandleService < ActiveJob::Base
   #
   def self.register(resource)
     # no access key (probably we are on dev or test) so skip
-    unless File.exist?(Rails.root + '/admpriv.pem')
+    unless File.exist?(Rails.root.join('admpriv.pem'))
       logger.warn 'No admpriv.pem file, so skipping Handle registration.'
       return
     end
 
-    hyrax_path = polymorphic_url(resource, host: ENV['SCHOLARWORKS_HOST'])
+    hyrax_path = Rails.application.routes.url_helpers.polymorphic_url(resource, host: ENV['SCHOLARWORKS_HOST'])
 
     handle_server = ENV['HANDLE_SERVER']
     hs_admin = ENV['HS_ADMIN']
