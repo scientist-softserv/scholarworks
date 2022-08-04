@@ -38,7 +38,8 @@ class WorkFormService
              elsif !current_user.campus.nil?
                current_user.campus
              end
-    campus_class = campus.to_s.sub(' ', '')
+    campus_name = CampusService.get_name_from_slug(campus)
+    campus_class = campus_name.sub(' ', '')
 
     # form object variations
     main_form = curation_concern.model_name.name + 'Form'
@@ -57,10 +58,13 @@ class WorkFormService
              Hyrax.const_get(main_form)
            end
 
-    Rails.logger.debug 'Form selection'
-    Rails.logger.debug 'defined: ' + Hyrax.const_defined?(campus_manager_form).to_s
-    Rails.logger.debug 'manager? ' + current_user.manager?.to_s
-    Rails.logger.debug form
+    Rails.logger.debug 'Looking for: ' + campus_manager_form
+    Rails.logger.debug '   and also: ' + manager_form
+    Rails.logger.debug '   and also: ' + campus_form
+    Rails.logger.debug 'The user is: ' + current_user.inspect
+    Rails.logger.debug '   manager?: ' + current_user.manager?.to_s
+    Rails.logger.debug '     groups: ' + current_user.groups.inspect
+    Rails.logger.debug 'Resulted in: ' + form.to_s
 
     form
   end
