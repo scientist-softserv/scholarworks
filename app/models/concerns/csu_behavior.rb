@@ -101,12 +101,14 @@ module CsuBehavior
 
       colleges = []
       campus_slug = CampusService.get_slug_from_name(campus.first)
-      college_service = CollegeService.new(campus_slug)
+      college_service = CollegeService.new(campus_slug, model_name)
+
       department.each do |dept|
         college_service.get(dept).each do |college|
           colleges.append college
         end
       end
+
       self.college = colleges
     end
 

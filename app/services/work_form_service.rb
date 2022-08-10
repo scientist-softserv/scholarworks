@@ -36,9 +36,9 @@ class WorkFormService
     campus = if !curation_concern.campus.empty?
                curation_concern.campus.first
              elsif !current_user.campus.nil?
-               current_user.campus
+               current_user.campus_name
              end
-    campus_class = campus.to_s.sub(' ', '')
+    campus_class = campus.sub(' ', '')
 
     # form object variations
     main_form = curation_concern.model_name.name + 'Form'
@@ -57,10 +57,13 @@ class WorkFormService
              Hyrax.const_get(main_form)
            end
 
-    Rails.logger.debug 'Form selection'
-    Rails.logger.debug 'defined: ' + Hyrax.const_defined?(campus_manager_form).to_s
-    Rails.logger.debug 'manager? ' + current_user.manager?.to_s
-    Rails.logger.debug form
+    Rails.logger.debug 'Looking for: ' + campus_manager_form
+    Rails.logger.debug '   and also: ' + manager_form
+    Rails.logger.debug '   and also: ' + campus_form
+    Rails.logger.debug '   for user: ' + current_user.inspect
+    Rails.logger.debug '   manager?: ' + current_user.manager?.to_s
+    Rails.logger.debug '     campus: ' + campus
+    Rails.logger.debug 'Resulted in: ' + form.to_s
 
     form
   end

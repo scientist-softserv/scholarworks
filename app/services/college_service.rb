@@ -8,10 +8,17 @@ class CollegeService
   # New campus service
   #
   # @param campus [String]  campus slug
+  # @param model [String]   model name
   #
-  def initialize(campus)
-    dept_file = "config/authorities/departments_#{campus}.yml"
-    @yaml = YAML.load_file(Rails.root.join(dept_file))
+  def initialize(campus, model)
+    model_slug = CalState::Metadata.get_slug(model)
+    model_file = Rails.root.join("config/authorities/departments_#{campus}_#{model_slug}.yml")
+    file = Rails.root.join("config/authorities/departments_#{campus}.yml")
+    @yaml = if File.exist?(model_file)
+              YAML.load_file(model_file)
+            else
+              YAML.load_file(file)
+            end
   end
 
   #

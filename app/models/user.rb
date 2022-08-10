@@ -36,6 +36,24 @@ class User < ApplicationRecord
     end
   end
 
+  #
+  # Full campus name
+  #
+  def campus_name
+    CampusService.get_name_from_slug(campus_slug)
+  end
+
+  #
+  # Campus slug
+  #
+  def campus_slug
+    if ENV['AUTHENTICATION_TYPE'] == 'shibboleth'
+      CampusService.get_shib_user_campus(self)
+    else
+      CampusService.get_demo_user_campus(self)
+    end
+  end
+
   def preferred_locale
     nil
   end
