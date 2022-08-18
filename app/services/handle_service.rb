@@ -18,6 +18,12 @@ class HandleService < ActiveJob::Base
       return
     end
 
+    # don't (yet!) register collections
+    return if resource.class.name.include?('Collection')
+
+    # also don't register handles for harvested collections
+    return unless resource.external_system.blank?
+
     hyrax_path = Rails.application.routes.url_helpers.polymorphic_url(resource, host: ENV['SCHOLARWORKS_HOST'])
 
     handle_server = ENV['HANDLE_SERVER']
