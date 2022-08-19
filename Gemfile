@@ -66,3 +66,5 @@ group :test do
   gem 'database_cleaner'
   gem 'rspec-sidekiq'
 end
+
+gem 'bulkrax'
