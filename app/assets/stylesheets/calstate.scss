@@ -684,3 +684,41 @@ div.string {
 .inactive_collection_control {
   color: #adb5bd;
 }
+
+// for composite person
+.label_input_div {
+  margin-left: 1px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.label_field {
+  flex: 0 0 30%;
+  max-width: 30%;
+}
+.input_field {
+  flex: 0 0 70%;
+  max-width: 70%;
+}
+.divider {
+  margin: 0 auto 10px auto;
+  height: 1px;
+  max-width: 50%;
+  background-image: radial-gradient(#e4ebef,gray);
+}
+.small_margin_left {
+  margin-left: 1px;
+}
+.warning_message {
+  max-width: 40em;
+}
+.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+.person_remove {
+  color: #d9534f;
+  #margin: 25px 0 0 -30px;
+  text-decoration: underline;
+}
+.d_none {
+  display: none;
+}
