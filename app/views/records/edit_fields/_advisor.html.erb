@@ -14,7 +14,7 @@
    */
 
   function generate_advisor() {
-    return generate_person('advisor', false);
+    return generate_person('<%= f.object.model.class.to_s.underscore %>', 'advisor', false);
   }
 
   $(function() {

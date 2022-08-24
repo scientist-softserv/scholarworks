@@ -21,6 +21,11 @@
           add_form_submit_trigger : false,
           remove_linebreaks: true
       });
+
+      // form submit button handling
+      $('#with_files_submit').click(function (e) {
+        save_handler(e);
+      });
     });
 
     function invalid_title() {

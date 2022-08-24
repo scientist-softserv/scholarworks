@@ -17,7 +17,7 @@
       which would match to person_type as an parameter for most of the routines
      */
     function generate_contributor() {
-      return generate_person('contributor', false);
+      return generate_person('<%= f.object.model.class.to_s.underscore %>', 'contributor', false);
     }
 
     $(function() {

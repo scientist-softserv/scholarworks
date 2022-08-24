@@ -14,7 +14,7 @@
    */
 
   function generate_editor() {
-    return generate_person('editor', false);
+    return generate_person('<%= f.object.model.class.to_s.underscore %>', 'editor', false);
   }
 
   $(function() {

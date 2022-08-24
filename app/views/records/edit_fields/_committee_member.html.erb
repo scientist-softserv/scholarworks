@@ -14,7 +14,7 @@
    */
 
   function generate_committee_member() {
-    return generate_person('committee_member', false);
+    return generate_person('<%= f.object.model.class.to_s.underscore %>', 'committee_member', false);
   }
 
   $(function() {

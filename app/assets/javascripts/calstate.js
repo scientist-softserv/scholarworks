@@ -83,13 +83,13 @@ if (typeof toggle_submit !== 'function') {
 }
 
 if (typeof generate_person !== 'function') {
-    generate_person = function(person_type, required_name) {
+    generate_person = function(model_type, person_type, required_name) {
         let elem = "";
         let cur_elem_num = window['cur_' + person_type + '_num'];
         elem =
             "<div id='" + person_type + "_divider" + cur_elem_num + "' class='row divider " + person_type + "_divider'></div>" +
             "<div id='" + person_type + cur_elem_num + "' class='row " + person_type + "_div flex_center'>" +
-            "  <input type='hidden' name='<%= model_type %>[" + person_type + "][]' id='" + person_type + cur_elem_num + "' class='" + person_type + "' data-element-num='" + cur_elem_num + "' value='' />" +
+            "  <input type='hidden' name='" + model_type + "[" + person_type + "][]' id='" + person_type + cur_elem_num + "' class='" + person_type + "' data-element-num='" + cur_elem_num + "' value='' />" +
             "  <div class='col-xs-8'>" +
             "    <div class='label_input_div'>" +
             "      <label for='" + person_type + "_name" + cur_elem_num + "' class='label_field'>" +
@@ -238,6 +238,7 @@ if (typeof save_handler !== 'function') {
             let editor_txt = tinymce.get($(this).prop('id')).getContent();
             $(this).text(editor_txt);
         });
+
         $('.description_tinymce').each(function () {
             let editor_txt = tinymce.get($(this).prop('id')).getContent();
             $(this).text(editor_txt);
@@ -301,15 +302,9 @@ if (typeof save_handler !== 'function') {
 }
 
 $(function() {
-
     // these functions are used by composite person but we
     $('.person_orcid').on('focusout', invalid_orcid);
     if (invalid_orcid()) {
         $('#with_files_submit').attr('disabled', true);
     }
-
-    // form submit button handling
-    $('#with_files_submit').click(function (e) {
-        save_handler(e);
-    });
 });

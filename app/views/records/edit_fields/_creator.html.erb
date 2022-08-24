@@ -48,7 +48,7 @@
     }
 
     function generate_creator() {
-      return generate_person('creator', <% f.object.required?(key) %>);
+      return generate_person('<%= f.object.model.class.to_s.underscore %>', 'creator', <% f.object.required?(key) %>);
     }
 
 
