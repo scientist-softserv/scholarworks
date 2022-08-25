@@ -92,6 +92,15 @@ en:
           time_period: Time Period
           # @testing
           accrual_method: Has File
+          # @archive
+          format: Format
+          has_finding_aid: Finding Aid
+          institution: Institution
+          interviewee: Interviewee
+          interviewer: Interviewer
+          is_part_of: Source Collection
+          repository: Repository
+          work_type: Type
   blacklight_advanced_search:
     form:
       title: Advanced Search

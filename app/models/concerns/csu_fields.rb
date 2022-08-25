@@ -139,10 +139,6 @@ module CsuFields
       index.as :stored_searchable
     end
 
-    property :is_part_of, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#isPartOf') do |index|
-      index.as :stored_searchable
-    end
-
     property :isbn, predicate: ::RDF::Vocab::SCHEMA.isbn do |index|
       index.as :stored_searchable
     end
