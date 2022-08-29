@@ -26,9 +26,9 @@
 
   <xsl:template name="action">
     <xsl:for-each select="oai:metadata/esploro:record/esploro:data">
-      <xsl:if test="not(esploro:filesList) and not(esploro:identifier.doi)">
+      <xsl:if test="not(esploro:filesList)">
         <field name="action">
-          <xsl:text>skip</xsl:text>
+          <xsl:text>delete</xsl:text>
         </field>
       </xsl:if>
     </xsl:for-each>
@@ -45,11 +45,17 @@
         <xsl:when test="../esploro:etd/esploro:diss.type">
           <field name="resource_type">
             <xsl:choose>
+              <xsl:when test="../esploro:etd/esploro:diss.type = 'Doctoral Thesis'">
+                <xsl:text>Dissertation</xsl:text>
+              </xsl:when>
+              <xsl:when test="../esploro:etd/esploro:diss.type = 'Thesis'">
+                <xsl:text>Masters Thesis</xsl:text>
+              </xsl:when>
               <xsl:when test="../esploro:etd/esploro:diss.type = 'Masters Project'">
                 <xsl:text>Graduate Project</xsl:text>
               </xsl:when>
-              <xsl:when test="../esploro:etd/esploro:diss.type = 'Doctoral Thesis'">
-                <xsl:text>Dissertation</xsl:text>
+              <xsl:when test="../esploro:etd/esploro:diss.type = 'Project'">
+                <xsl:text>Undergraduate Project</xsl:text>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:value-of select="../esploro:etd/esploro:diss.type"/>
@@ -93,9 +99,9 @@
           <field name="resource_type">
             <xsl:choose>
               <xsl:when test="text() = 'conference.conferencePaper'">Conference Paper</xsl:when>
-              <xsl:when test="text() = 'conference.conferencePoster'">Conference Poster</xsl:when>
+              <xsl:when test="text() = 'conference.conferencePoster'">Poster</xsl:when>
               <xsl:when test="text() = 'creativeWork.film'">Film</xsl:when>
-              <xsl:when test="text() = 'creativeWork.musicalComposition'">Musical Composition</xsl:when>
+              <xsl:when test="text() = 'creativeWork.musicalComposition'">Performance</xsl:when>
               <xsl:when test="text() = 'dataset.dataset'">Dataset</xsl:when>
               <xsl:when test="text() = 'etd.graduate'">Masters Thesis</xsl:when>
               <xsl:when test="text() = 'other.other'">Other</xsl:when>
@@ -116,12 +122,19 @@
               <xsl:when test="text() = 'creativeWork.essay'">Article</xsl:when>
               <xsl:when test="text() = 'creativeWork.exhibitionCatalog'">Other</xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="text()" />
+                <xsl:text>Other</xsl:text>
               </xsl:otherwise>
             </xsl:choose>
           </field>
         </xsl:otherwise>
       </xsl:choose>
+  </xsl:template>
+
+  <!-- esploru url -->
+  <xsl:template match="esploro:identifier.uri">
+    <field name="external_url">
+      <xsl:value-of select="text()"/>
+    </field>
   </xsl:template>
 
   <!-- handle -->
@@ -259,6 +272,18 @@
     </field>
   </xsl:template>
 
+  <!-- other identifiers -->
+  <xsl:template match="esploro:identifier.pmid">
+    <field name="identifier">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+  <xsl:template match="esploro:identifier.pmcid">
+    <field name="identifier">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
   <!-- related_url -->
   <xsl:template match="esploro:links">
     <xsl:for-each select="esploro:link">
@@ -329,7 +354,24 @@
   </xsl:template>
 
   <!-- issn -->
+  <xsl:template match="esploro:isbn">
+    <field name="isbn">
+      <xsl:value-of select="text()" />
+    </field>
+  </xsl:template>
+  <xsl:template match="esploro:eisbn">
+    <field name="isbn">
+      <xsl:value-of select="text()" />
+    </field>
+  </xsl:template>
+
+  <!-- issn -->
   <xsl:template match="esploro:issn">
+    <field name="issn">
+      <xsl:value-of select="text()" />
+    </field>
+  </xsl:template>
+  <xsl:template match="esploro:eissn">
     <field name="issn">
       <xsl:value-of select="text()" />
     </field>
