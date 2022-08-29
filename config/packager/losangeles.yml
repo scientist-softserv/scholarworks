@@ -1,26 +1,6 @@
 
 campus: 'Los Angeles'
-depositor: admin@calstate.edu
-input_dir: /data/exported/
+depositor: scholarworks@calstate.edu
 admin_set_id: 'zk51vg76b'
-exit_on_error: false
-default_model: Archive
-default_type: Image
-separator: ';'
-tab_separated: true
-field_map:
-  Alternative Title#: alternative_title
-  Contributor#: contributor
-  Coverage#: coverage
-  Creator#: creator
-  Date#: date_issued
-  Description#: description
-  Identifier#: identifier
-  Format#: format
-  Language#: language
-  Publisher#: publisher
-  Rights#: rights
-  Source#: source
-  Subject#: subject
-  Title#: title
-  Type#: resource_type
+exit_on_error: true
+separator: '|'

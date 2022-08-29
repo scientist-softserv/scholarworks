@@ -29,7 +29,11 @@ class AuthorityService < Hyrax::QaSelectService
   #
   def get_campus_authority(field, controller, use_model)
     campus = CampusService.get_campus_from_controller(controller)
-    model = controller.curation_concern.class.name.downcase
+    model = if controller.class.method_defined?(:curation_concern)
+              controller.curation_concern.class.name.downcase
+            else
+              'collection'
+            end
     return field if campus.blank?
 
     base = 'config/authorities/' + field

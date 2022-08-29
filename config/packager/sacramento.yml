@@ -1,8 +1,8 @@
 
 campus: Sacramento
-depositor: dwalker@calstate.edu
+depositor: scholarworks@calstate.edu
 output_dir: /home/ec2-user/data/harvest/sacramento
-admin_set_id: '8910jv99k'
+admin_set_id: 'd217qp48j'
 external_system: Sac State Scholar
 url: https://scholars.csus.edu/view/oai/01CALS_USL/request
 set: esploro_esploro
