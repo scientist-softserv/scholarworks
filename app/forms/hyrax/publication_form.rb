@@ -30,8 +30,6 @@ module Hyrax
          department
          discipline
          keyword
-         geographical_area
-         time_period
          language
          related_url
          rights_note

@@ -24,8 +24,6 @@ module Hyrax
          license
          keyword
          subject
-         geographical_area
-         time_period
          related_url
          language
          department

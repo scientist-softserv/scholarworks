@@ -29,8 +29,6 @@ module Hyrax
          discipline
          keyword
          subject
-         geographical_area
-         time_period
          language
          related_url
          rights_note
