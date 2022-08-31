@@ -25,8 +25,12 @@ module CalState
 
         x = 0
         base_path = File.dirname(path)
-        file_map = file_map(base_path + '/files')
         tab_sep = true if @config['tab_separated']
+        file_map = if @metadata_only
+                     {}
+                   else
+                     file_map(base_path + '/files')
+                   end
 
         csv = CalState::Metadata::Csv::Reader.new(path, tab_sep)
         @transaction = CalState::Packager::CsvTransaction.new(csv)

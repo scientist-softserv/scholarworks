@@ -42,7 +42,6 @@ module CalState
       def initialize(campus)
         @campus_slug = campus
         @campus = CampusService.get_name_from_slug(@campus_slug)
-        @depositor = 'admin@calstate.edu'
         @fix_params = false
         @metadata_only = false
         @exit_on_error = false
@@ -57,6 +56,7 @@ module CalState
         config_file = 'config/packager/' + campus + '.yml'
         @config = OpenStruct.new(YAML.load_file(config_file))
 
+        @depositor = @config['depositor']
         @default_model = @config['default_model']
         @metadata_only = true if @config['metadata_only'] == 'true'
         @exit_on_error = true if @config['exit_on_error'] == 'true'
