@@ -45,6 +45,9 @@ class FieldService
        editor
        extent
        external_id
+       external_modified_date
+       external_system
+       external_url
        granting_institution
        handle
        identifier

@@ -113,12 +113,16 @@ module CsuFields
       index.as :stored_searchable
     end
 
+    property :external_modified_date, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#externalModifiedDate'), multiple: false do |index|
+      index.as :stored_searchable, :sortable
+    end
+
     property :external_system, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#externalSystem'), multiple: false do |index|
       index.as :stored_searchable
     end
 
-    property :external_modified_date, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#externalModifiedDate'), multiple: false do |index|
-      index.as :stored_searchable, :sortable
+    property :external_url, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#externalUrl'), multiple: false do |index|
+      index.as :stored_searchable
     end
 
     # @deprecated
