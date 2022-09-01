@@ -2,7 +2,7 @@
 #  `rails generate hyrax:work EducationalResource`
 module Hyrax
   # Generated form for EducationalResource
-  class EducationalResourceForm < Hyrax::CsuForm
+  class EducationalResourceFormManagers < Hyrax::CsuForm
     self.model_class = ::EducationalResource
     self.required_fields += %i[resource_type
                                title

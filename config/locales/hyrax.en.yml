@@ -88,6 +88,15 @@ en:
           rights_statement: Rights Statement
           rights_uri: Rights URI
           time_period: Time Period
+          # @archive
+          format: Format
+          has_finding_aid: Finding Aid
+          institution: Institution
+          interviewee: Interviewee
+          interviewer: Interviewer
+          is_part_of: Source Collection
+          repository: Repository
+          work_type: Type
   blacklight_advanced_search:
     form:
       title: Advanced Search
