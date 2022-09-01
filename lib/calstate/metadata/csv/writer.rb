@@ -94,24 +94,9 @@ module CalState
         # @return [Array] only the approved columns
         #
         def get_columns(column_names)
-          # remove internal fedora fields
-          columns_remove = %w[arkivo_checksum
-                              access_control_id
-                              embargo_id
-                              head
-                              import_url
-                              label
-                              lease_id
-                              owner
-                              relative_path
-                              rendering_ids
-                              representative_id
-                              state
-                              tail
-                              thumbnail_id]
-          # remove formatted columns as we will handle those differently
-          columns_remove += %w[title_formatted
-                               description_formatted]
+          # remove internal fedora fields & formatted columns
+          columns_remove = FieldService.internal_fields
+
           # remove columns we want to shift to the front
           columns_remove += %w[admin_set_id
                                campus

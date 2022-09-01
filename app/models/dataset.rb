@@ -5,6 +5,7 @@
 #
 class Dataset < ActiveFedora::Base
   include CsuFields
+  include ScholarworksFields
   include FormattingFields
   include Hyrax::WorkBehavior
   include Hydra::AccessControls::CampusVisibility
@@ -39,14 +40,19 @@ class Dataset < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  def save(*options)
-    self.resource_type = ['Dataset']
-    super(*options)
-  end
-
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include Hyrax::BasicMetadata
   include CsuBehavior
   include FormattingBehavior
+  include ScholarworksBehavior
+
+  #
+  # Before saving this work
+  #
+  def on_save
+    self.resource_type = ['Dataset']
+    set_year
+    set_college
+  end
 end

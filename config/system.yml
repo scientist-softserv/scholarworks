@@ -1,3 +1,5 @@
+name: ScholarWorks
+
 facets:
   resource_type:
     limit: 5
@@ -28,3 +30,4 @@ models:
   - publication
   - dataset
   - educational_resource
+
