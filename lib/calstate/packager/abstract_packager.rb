@@ -204,6 +204,8 @@ module CalState
       #
       def delete_work(match_field, match_value)
         works = find_work(match_field, match_value)
+        return if works.blank?
+
         work = works.first
         @log.info "Deleting existing work (#{work.id}) for: " + match_value
         work.destroy!
