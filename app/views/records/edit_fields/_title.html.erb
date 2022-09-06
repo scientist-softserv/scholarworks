@@ -27,21 +27,10 @@
         save_handler(e);
       });
     });
-
-    function invalid_title() {
-      let title_content = tinymce.get('<%= model_type %>_title').getContent();
-      if (title_content.length > 0) {
-        $('#empty_title').addClass('d-none');
-        $('#title_content').removeClass('has-error');
-        return false;
-      }
-      $('#empty_title').removeClass('d-none');
-      $('#title_content').addClass('has-error');
-      return true;
-    }
   </script>
 <% end %>
 
+<%# since we only can have one form at a time so title by itself is sufficient but just to be on the safe side prepending it with scholarworks %>
 <div id="title_content" class="form-group managed <%= model_type %>_<%= key %> <% if f.object.required?(key) %>required<% end %>">
   <label class="control-label <% if f.object.required?(key) %> required <% end %>">
     <%= t('simple_form.labels.defaults.title') %>
@@ -54,7 +43,7 @@
   <ul class="listing" aria-live="polite">
     <li class="field-wrapper input-group input-append">
         <textarea name="<%= model_type %>[<%= key %>][]"
-                  id="<%= model_type %>_<%= key %>"
+                  id="scholarworks_<%= key %>"
                   aria-labelledby="<%= model_type %>_<%= key %>_help"
                   style="width:500px; "
                   class="title_tinymce use_tinymce form-control

@@ -74,6 +74,48 @@ function discipline_change() {
     }
 }
 
+function any_empty_discipline() {
+    let ret_val = false;
+    $('.discipline_div').each(function () {
+        if ($(this).find('.discipline').val() == '') {
+            ret_val = true;
+            return false;
+        }
+    });
+    return ret_val;
+}
+
+function post_add_discipline() {
+    console.log('in post_add_discipline discipline_cnt ' + window['discipline_cnt'] + ' cur_discipline_num ' + window['cur_discipline_num']);
+    $('.discipline').on('change', discipline_change);
+}
+
+function generate_discipline(add_button_id) {
+    let cur_disc_num = window['cur_discipline_num'];
+    let elem_model = $('#' + add_button_id).data('element-model');
+    let elem_type = $('#' + add_button_id).data('element-type');
+    return "<div id='discipline_divider" + cur_disc_num + "' class='row divider discipline_divider'></div>" +
+        "<div id='discipline_div" + cur_disc_num + "' class='row flex_center margin_bottom_10 discipline_div'>" +
+        "  <div class='col-xs-10'>" +
+        "    <input name='" + elem_model + "[" + elem_type + "][]' id='" + elem_type + "_" + cur_disc_num + "_hidden' class='discipline_hidden' type='hidden' value='' />" +
+        "    <div class='margin_bottom_5'>" +
+        "      <select value='' class='form-control discipline' data-element-num='" + cur_disc_num + "'>" +
+        $('#discipline_divs select.discipline').html() + // get top level discipline options from first select element
+        "      </select>" +
+        "    </div>" +
+        "  </div>" +
+        "  <div class='col-xs'>" +
+        "    <button class='btn btn-link remove element_remove discipline_remove' aria-hidden='true' " +
+        "            type='button' data-element-type='discipline' data-element-num='" + cur_disc_num + "'>" +
+        "      <span class='glyphicon glyphicon-remove'></span>" +
+        "      <span class='controls-remove-text'>Remove</span>" +
+        "      <span class='sr-only'>discipline</span>" +
+        "    </button>" +
+        "  </div>" +
+        "</div>";
+}
+
+
 function init_discipline() {
     let elem_cnt = 0
 

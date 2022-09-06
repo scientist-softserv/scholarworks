@@ -21,8 +21,8 @@ class CsuIndexer < Hyrax::WorkIndexer
   def generate_name(solr_doc, person, person_type)
     names = []
     person.each do |p|
-      person = Person.new.from_hyrax(p)
-      names << person.name
+      person = CompositeElement.new.from_hyrax(p)
+      names << person.get(CompositeElement::NAME)
     end
     solr_doc[person_type + '_name_sim'] = names
   end

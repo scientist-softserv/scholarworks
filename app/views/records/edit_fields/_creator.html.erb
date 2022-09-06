@@ -2,66 +2,12 @@
 <% if model_type == 'collection' %>
   <%= f.input key, as: :multi_value, input_html: { class: 'form-control' }, required: f.object.required?(key) %>
 <% else %>
-  <% if f.object.alert_msg.length > 1 %>
-    <div class="form-group"><%= f.object.alert_msg %></div>
-  <% end %>  
-  <%= render "shared/composite_person",
+  <%= render "shared/composite_element",
              f: f,
              model_type: model_type,
-             composite_person: f.object.creator,
-             key: key,
-             key_text: key,
+             composite_element: f.object.creator,
+             elem_type: key,
+             elem_type_text: key,
+             subtypes: 'name email institution orcid',
              help_block_str: t('simple_form.hints.defaults.creator') %>
-
-  <script type="text/javascript" charset="utf-8">
-    /*
-      model_type = publication, thesis, etc
-      composite_person is the actual object of creator, contributor
-      key is a string with value of creator, contributor, etc
-      which would match to person_type as an parameter for most of the routines
-    */
-
-    // creator
-    function invalid_creator() {
-      let invalid = true;
-      $('.creator_name').each(function () {
-        if ($.trim($(this).val()) != '') {
-          invalid = false;
-          return false;
-        }
-      })
-      return invalid;
-    }
-
-    function creator_name_change() {
-      toggle_submit(invalid_creator());
-    }
-
-    function post_add_creator() {
-      $('.creator_name').on('change', creator_name_change);
-      post_add_person();
-    }
-
-    // function to execute after remove to do any adjustment not just the count
-    function post_remove_creator() {
-      toggle_submit(invalid_creator());
-    }
-
-    function generate_creator() {
-      return generate_person('<%= f.object.model.class.to_s.underscore %>', 'creator', <% f.object.required?(key) %>);
-    }
-
-
-    $(function() {
-      deserialize_person('creator');
-
-      // extra validation to catch backend validation for empty author
-      if ($('div.alert.alert-danger.alert-dismissable').length) {
-        if (invalid_creator()) {
-          $('#empty_creator').removeClass('d-none');
-          $('#creator_content').addClass('has-error');
-        }
-      }
-    });
-  </script>
 <% end %>
