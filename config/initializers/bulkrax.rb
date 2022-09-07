@@ -68,31 +68,37 @@ Bulkrax.setup do |config|
   # Defaults: 'rights_statement' and 'license'
   # config.qa_controlled_properties += ['my_field']
 
-  config.field_mappings = {
-    'Bulkrax::CsvParser' => {
-      'parents' => {
-        from: ['parents'],
-        related_parents_field_mapping: true,
-        join: true
-      },
-      'children' => {
-        from: ['children'],
-        related_children_field_mapping: true,
-        join: true
+  %w[Bulkrax::CsvParser Bulkrax::BagitParser].each do |parser|
+    config.field_mappings = {
+      parser => {
+        'parents' => {
+          from: ['parents'],
+          related_parents_field_mapping: true,
+          join: true
+        },
+        'children' => {
+          from: ['children'],
+          related_children_field_mapping: true,
+          join: true
+        },
+        'id' => {
+          from: ['source_identifier'],
+          source_identifier: true
+        }
       }
     }
-  }
 
-  fields = if SystemService.name == 'ScholarWorks'
-             FieldService.scholarworks_fields
-           else
-             FieldService.archives_fields
-           end
+    fields = if SystemService.name == 'ScholarWorks'
+               FieldService.scholarworks_fields
+             else
+               FieldService.archives_fields
+             end
 
-  fields.each do |field|
-    config.field_mappings['Bulkrax::CsvParser'][field] = {
-      from: [field],
-      join: true
-    }
+    fields.each do |field|
+      config.field_mappings[parser][field] = {
+        from: [field],
+        join: true
+      }
+    end
   end
 end
