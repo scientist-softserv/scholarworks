@@ -94,11 +94,6 @@ module ScholarworksFields
       index.as :stored_searchable
     end
 
-    # @deprecated
-    property :rights_holder, predicate: ::RDF::Vocab::DC.rightsHolder do |index|
-      index.as :stored_searchable
-    end
-
     property :sponsor, predicate: ::RDF::Vocab::MARCRelators.spn do |index|
       index.as :stored_searchable
     end

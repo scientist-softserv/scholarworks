@@ -100,7 +100,6 @@ class FieldService
        identifier_uri
        investigator
        publication_status
-       rights_holder
        rights_statement
        rights_uri
        time_period]
@@ -118,6 +117,7 @@ class FieldService
        interviewer
        is_part_of
        repository
+       rights_holder
        work_type]
   end
 
