@@ -43,7 +43,7 @@ module Hyrax
         return_val = '<div class="csu-person">' \
           '<div class="csu-name"">' \
           "<span #{html_attributes(microdata_value_attributes(field))}>#{li_value(composite_element.get(CompositeElement::NAME))}</span>"
-        unless composite_element.get('orcid').nil?
+        unless composite_element.get(CompositeElement::ORCID).nil?
           return_val += '<span class="csu-orcid">' \
             "<a target='_blank' href='https://orcid.org/#{composite_element.get(CompositeElement::ORCID)}'>" \
             "<img alt='ORCID profile for #{person_type} #{composite_element.get(CompositeElement::NAME)}' class='profile' src='/assets/orcid-cb273c1ff10d304ce1b6108a172bfd1660561e7fd8133b083cd66ee0f4a0a944.png' />" \
@@ -51,7 +51,7 @@ module Hyrax
             '</span>'
         end
         return_val += '</div>'
-        unless composite_element.get('institution').nil?
+        unless composite_element.get(CompositeElement::INSTITUTION).nil?
           return_val += "<div class='csu-institution'>#{composite_element.get(CompositeElement::INSTITUTION)}</div>"
         end
         return_val += '</div>'

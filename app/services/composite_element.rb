@@ -9,11 +9,13 @@ class CompositeElement
   EMAIL = 'email'
   INSTITUTION = 'institution'
   ORCID = 'orcid'
+  ROLE = 'role'
+  IDENTIFIER = 'identifier'
 
-  def initialize(params = nil)
+  def initialize(fields = nil)
     @fields = []
     @values = []
-    if params.nil? || params.empty? || !params.is_a?(Hash)
+    if fields.nil? || fields.empty? || !fields.is_a?(Array)
       @fields << NAME
       @fields << EMAIL
       @fields << INSTITUTION
@@ -23,9 +25,8 @@ class CompositeElement
       @values << ''
       @values << ''
     else
-      params.each do | k, v |
-        @fields << k
-        @values << v
+      fields.each do | field |
+        @fields << field
       end
     end
   end

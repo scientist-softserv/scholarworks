@@ -8,7 +8,7 @@
 var scholarworks = scholarworks || {};
 scholarworks.composite_element =  {
     // these are the composite elements we support.
-    SUBTYPES : ['name', 'email', 'institution', 'orcid'],
+    SUBTYPES : ['name', 'email', 'institution', 'orcid', 'role', 'identifier'],
 
     text : function(elem_value, elem_type, subtype_tag, elem_num, elem_required) {
         let subtype_label = subtype_tag.charAt(0).toUpperCase() + subtype_tag.slice(1);
@@ -56,6 +56,14 @@ scholarworks.composite_element =  {
 
     institution : function(elem_value, elem_type, elem_num, elem_required) {
         return this.text(elem_value, elem_type, this.SUBTYPES[2], elem_num, elem_required);
+    },
+
+    role : function(elem_value, elem_type, elem_num, elem_required) {
+        return this.text(elem_value, elem_type, this.SUBTYPES[4], elem_num, elem_required);
+    },
+
+    identifier : function(elem_value, elem_type, elem_num, elem_required) {
+        return this.text(elem_value, elem_type, this.SUBTYPES[5], elem_num, elem_required);
     },
 
     generate_sub_elements : function(elem_type, elem_num, elem_required, subtypes, subvalues) {
@@ -542,7 +550,7 @@ function any_empty_date_issued_year() {
 
 function invalid_date_issued() {
     let retVal = false;
-    if (date_issued_required) {
+    if (typeof date_issued_required !== 'undefined' && date_issued_required) {
         retVal = true;
         $('.date_issued_year').each(function () {
             if ($(this).val() != '') {
