@@ -516,6 +516,7 @@ GEM
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
+    language_list (1.2.1)
     ld-patch (3.2.0)
       ebnf (~> 2.2)
       rdf (~> 3.2)
