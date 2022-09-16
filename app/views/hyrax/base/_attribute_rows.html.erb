@@ -25,8 +25,8 @@
 
 <!-- institution -->
 <%= presenter.attribute_to_html(:campus, render_as: :faceted, html_dl: true) %>
-<%= presenter.attribute_to_html(:college, html_dl: true) %>
-<%= presenter.attribute_to_html(:department, html_dl: true) %>
+<%= presenter.attribute_to_html(:college, render_as: :faceted_for_campus, html_dl: true, campus: presenter.campus) %>
+<%= presenter.attribute_to_html(:department, render_as: :faceted_for_campus, html_dl: true, campus: presenter.campus) %>
 <%= presenter.attribute_to_html(:publisher, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:granting_institution, render_as: :faceted, html_dl: true) %>
 
