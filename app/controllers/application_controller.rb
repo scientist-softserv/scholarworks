@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   skip_after_action :discard_flash_if_xhr # 2.1.0 upgrade
 
+  def not_found
+    render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => true
+  end
+
   private
 
   def after_sign_out_path_for(*)
