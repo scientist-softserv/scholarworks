@@ -9,17 +9,18 @@
     elem_type_cnt -> creator_cnt, editor_cnt which are accessed through window[elem_class + '_cnt'] where elem_class is creator, editor, etc...
     cur_elem_type_num -> cur_creator_num, cur_editor_num which are accessed through window['cur_' + elem_class + '_num'] where elem_class is creator, editor, etc...
    */
-   var <%= elem_type %>_cnt = 0;
-   var cur_<%= elem_type %>_num = 0;
+
+  scholarworks.<%= elem_type %>_cnt = 0;
+  scholarworks.<%= elem_type %>_num = 0;
 
   $(function() {
     $('#<%= elem_type %>_content').addClass('<%= model_type %>_<%= elem_type %>');
     $('.<%= elem_type %>').each(function () {
-        <%= elem_type %>_cnt++;
+        scholarworks.<%= elem_type %>_cnt++;
     })
-    cur_<%= elem_type %>_num = <%= elem_type %>_cnt;
-    // console.log('initialization: <%= elem_type %> num ' + cur_<%= elem_type %>_num + ' <%= elem_type %>_cnt ' + <%= elem_type %>_cnt);
-    if (<%= elem_type %>_cnt <= 1) {
+    scholarworks.<%= elem_type %>_num = scholarworks.<%= elem_type %>_cnt;
+    //console.log('initialization: <%= elem_type %> num ' + scholarworks.<%= elem_type %>_num + ' <%= elem_type %>_cnt ' + scholarworks.<%= elem_type %>_cnt);
+    if (scholarworks.<%= elem_type %>_cnt <= 1) {
         $('.<%= elem_type %>_remove').addClass('d_none').attr('aria-hidden', 'true');
     }
 

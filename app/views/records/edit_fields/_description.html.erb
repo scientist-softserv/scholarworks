@@ -10,7 +10,7 @@
           plugins: 'autolink link tabfocus paste lists advlist',
           setup: function (editor) {
               editor.on('change', function (e) {
-                  toggle_submit(invalid_description());
+                  scholarworks.toggle_submit(scholarworks.invalid_description());
               });
           },
           selector: 'textarea.description_tinymce',

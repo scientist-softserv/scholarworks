@@ -9,7 +9,7 @@
       tinymce.init({
           setup: function (editor) {
               editor.on('change', function (e) {
-                  toggle_submit(invalid_title());
+                  scholarworks.toggle_submit(scholarworks.invalid_title());
               });
           },
           selector: 'textarea.title_tinymce',
@@ -24,7 +24,7 @@
 
       // form submit button handling
       $('#with_files_submit').click(function (e) {
-        save_handler(e);
+          scholarworks.save_handler(e);
       });
     });
   </script>

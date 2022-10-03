@@ -93,7 +93,7 @@ scholarworks.composite_element =  {
         let elem_type = button_elem.data('element-type');
         let elem_required = button_elem.data('element-required');
         let subtypes = button_elem.data('subtypes');
-        let elem_num =  window['cur_' + elem_type + '_num'];
+        let elem_num = eval('scholarworks.' + elem_type + '_num');
         let sub_elem = this.generate_sub_elements(elem_type, elem_num, elem_required, subtypes, '');
 
         let ret_elem =
@@ -117,8 +117,7 @@ scholarworks.composite_element =  {
             " data-element-num='" + elem_num + "'" +
             " data-element-required='" + elem_required + "'" +
             " data-element-post-remove='scholarworks.composite_element.post_action'" +
-            " data-subtypes='" + subtypes + "'" +
-            "'>" +
+            ">" +
             " <span class='glyphicon glyphicon-remove'></span>" +
             " <span class='controls-remove-text'>Remove</span>" +
             " <span class='sr-only'>" + elem_type + "</span>" +
@@ -177,9 +176,9 @@ scholarworks.composite_element =  {
     element_change : function(elem_type, subtypes, elem_required) {
         //console.log('element_change add focusout on orcid element');
         $('.composite_orcid').focusout(function() {
-            toggle_submit(scholarworks.composite_element.invalid_orcid());
+            scholarworks.toggle_submit(scholarworks.composite_element.invalid_orcid());
         });
-        toggle_submit(scholarworks.composite_element.invalid_orcid());
+        scholarworks.toggle_submit(scholarworks.composite_element.invalid_orcid());
 
         /*
         This is the extra checking to turn on/off the submit button based on the main subfield
@@ -193,8 +192,8 @@ scholarworks.composite_element =  {
             let main_elem = elem_type + '_' + subtypes_arr[0];
             $('.' + main_elem).change(function() {
                 console.log('element_change main element ' + main_elem + ' changed ');
-                toggle_submit(scholarworks.composite_element.any_empty_main_element(main_elem));
-                //toggle_submit(!scholarworks.composite_element.any_fill_main_element(main_elem));
+                scholarworks.toggle_submit(scholarworks.composite_element.any_empty_main_element(main_elem));
+                //scholarworks.toggle_submit(!scholarworks.composite_element.any_fill_main_element(main_elem));
             });
             toggle_submit(scholarworks.composite_element.any_empty_main_element(main_elem));
             //toggle_submit(!scholarworks.composite_element.any_fill_main_element(main_elem));
@@ -268,168 +267,169 @@ scholarworks.composite_element =  {
     }
 };
 
-if (typeof toggle_submit !== 'function') {
-    toggle_submit = function(disabled) {
-        //console.log('inside toggle_submit disabled [' + disabled + ']');
-        if (disabled) {
-            $('#required-metadata').removeClass('complete').addClass('incomplete');
-            $('#with_files_submit').prop('disabled', disabled);
-        }
-        else {
-            $('#required-metadata').addClass('complete').removeClass('incomplete');
-            $('#with_files_submit').removeProp('disabled');
-        }
+scholarworks.toggle_submit  = function(disabled) {
+    //console.log('inside scholarworks.toggle_submit disabled [' + disabled + ']');
+    if (disabled) {
+        $('#required-metadata').removeClass('complete').addClass('incomplete');
+        $('#with_files_submit').prop('disabled', disabled);
+    }
+    else {
+        $('#required-metadata').addClass('complete').removeClass('incomplete');
+        $('#with_files_submit').removeProp('disabled');
     }
 }
 
-if (typeof element_add !== 'function') {
-    element_add = function() {
-        let elem_type = $(this).data('element-type');
-        let elem_empty_func = $(this).data('element-empty');
-        let elem_generate_func = $(this).data('element-generate');
-        let add_button_id = $(this).attr('id');
-        let elem_cnt = window[elem_type + '_cnt'];
-        let cur_elem_num = window['cur_' + elem_type + '_num'];
-        //console.log('element_add elem_type ' + elem_type + ' elem_empty_func [' + elem_empty_func + '] elem_generate_func [' + elem_generate_func + '] elem_cnt ' + elem_cnt + ' cur_elem_num ' + cur_elem_num);
-        let any_empty_elem = false;
-        try {
-            any_empty_elem = eval(elem_empty_func + '("' + add_button_id + '")');
-        }
-        catch(err) {
-            console.log('Could not find check for empty function for ' + elem_type + ' so use the default one');
-        }
-
-        // console.log('element_add: any_empty_elem ' + any_empty_elem);
-        if (any_empty_elem) {
-            // turn on warning message when we already have empty field
-            //console.log('there is an empty element for type ' + elem_type);
-            $('#' + elem_type + '_warning').removeClass('d_none').attr('aria-hidden', 'false');
-        }
-        else {
-            let elem_parent = $('#' + elem_type + '_divs');
-            let new_elem = null;
-            //console.log('elem_add any_empty_elem ' + any_empty_elem + ' elem_type ' + elem_type + ' add id [' + $(this).attr('id') + ']');
-            try {
-                new_elem = eval(elem_generate_func + '("' + add_button_id + '")');
-                //console.log('element_add: after adding ' + elem_type + ' elem_cnt ' + window[elem_type + '_cnt'] + ' cur_elem_num ' + window['cur_' + elem_type + '_num']);
-            }
-            catch (err) {
-                console.log('fail to find element generate function ' + elem_generate_func);
-            }
-            if (elem_parent.length && new_elem != null) {
-                elem_parent.append(new_elem);
-                $('.' + elem_type + '_remove').removeClass('d_none').attr('aria-hidden', 'false');
-                window[elem_type + '_cnt']++;
-                window['cur_' + elem_type + '_num']++;
-                let elem_cnt = window[elem_type + '_cnt'];
-                let cur_elem_num = window['cur_' + elem_type + '_num'];
-                //console.log('element_add after add elem_cnt ' + elem_cnt + ' cur_elem_num ' + cur_elem_num);
-                $('.element_remove').on('click', element_remove);
-                try {
-                    let elem_post_add_func = $(this).data('element-post-add');
-                    //console.log('invoke post generate [' + elem_post_add_func + '] add_button_id [' + add_button_id + ']');
-                    eval(elem_post_add_func + '("' + add_button_id + '")');
-                }
-                catch (err) {
-                    console.log('fail to find post add element function ' + elem_post_add_func);
-                }
-            }
-        }
+scholarworks.element_add = function() {
+    let elem_type = $(this).data('element-type');
+    let elem_empty_func = $(this).data('element-empty');
+    let elem_generate_func = $(this).data('element-generate');
+    let add_button_id = $(this).attr('id');
+    //let elem_cnt = window[elem_type + '_cnt'];
+    //let cur_elem_num = window['cur_' + elem_type + '_num'];
+    let elem_cnt = eval('scholarworks.' + elem_type + '_cnt');
+    let cur_elem_num = eval('scholarworks.' + elem_type + '_num');
+    //console.log('element_add elem_type ' + elem_type + ' elem_empty_func [' + elem_empty_func + '] elem_generate_func [' + elem_generate_func + '] elem_cnt ' + elem_cnt + ' cur_elem_num ' + cur_elem_num);
+    let any_empty_elem = false;
+    try {
+        any_empty_elem = eval(elem_empty_func + '("' + add_button_id + '")');
     }
-}
+    catch(err) {
+        console.log('Could not find check for empty function for ' + elem_type + ' so use the default one');
+    }
 
-if (typeof element_remove !== 'function') {
-    element_remove = function() {
-        let elem_type = $(this).data('element-type');
-        let elem_num = $(this).data('element-num');
-        //console.log('element_remove: elem_type ' + elem_type + ' elem_num ' + elem_num);
-
+    // console.log('element_add: any_empty_elem ' + any_empty_elem);
+    if (any_empty_elem) {
+        // turn on warning message when we already have empty field
+        //console.log('there is an empty element for type ' + elem_type);
+        $('#' + elem_type + '_warning').removeClass('d_none').attr('aria-hidden', 'false');
+    }
+    else {
+        let elem_parent = $('#' + elem_type + '_divs');
+        let new_elem = null;
+        //console.log('elem_add any_empty_elem ' + any_empty_elem + ' elem_type ' + elem_type + ' add id [' + $(this).attr('id') + ']');
         try {
-            if (window[elem_type + '_cnt'] > 1) {
-                let removing_elem = $('#' + elem_type + '_div' + elem_num);
-                if (removing_elem.length) {
-                    removing_elem.remove();
-                    window[elem_type + '_cnt']--;
-                    try {
-                        let elem_post_remove_func = $(this).data('element-post-remove');
-                        //console.log('element_remove elem_post_remove_func [' + elem_post_remove_func + ']');
-                        eval(elem_post_remove_func + '("' + 'add_' + elem_type + '")');
-                    }
-                    catch (err) {
-                        console.log('element_remove: failed to call post remove function for type ' + elem_type + ' maybe this type does not need one');
-                    }
-                    //console.log('element_remove: elem_cnt after decrement for ' + elem_type + ' ' + window[elem_type + '_cnt']);
-                    if (window[elem_type + '_cnt'] == 1) {
-                        $('.' + elem_type + '_divider').remove();
-                        $('.' + elem_type + '_remove').addClass('d_none').attr('aria-hidden', 'true');
-                    }
-                    else {
-                        if ($('#' + elem_type + '_divider' + elem_num).length) {
-                            $('#' + elem_type + '_divider' + elem_num).remove();
-                        }
-                    }
-                    $('#' + elem_type + '_warning').addClass('d_none').attr('aria-hidden', 'true');
-                }
-            }
+            new_elem = eval(elem_generate_func + '("' + add_button_id + '")');
         }
         catch (err) {
-            console.log('element_remove: fail to eval elem count');
+            console.log('fail to find element generate function ' + elem_generate_func);
         }
+        if (elem_parent.length && new_elem != null) {
+            elem_parent.append(new_elem);
+            $('.' + elem_type + '_remove').removeClass('d_none').attr('aria-hidden', 'false');
+            eval('scholarworks.' + elem_type + '_cnt' + ' = ' + elem_cnt + ' + 1;');
+            eval('scholarworks.' + elem_type + '_num' + ' = ' + cur_elem_num + ' + 1;');
+            /*
+            elem_cnt = eval('scholarworks.' + elem_type + '_cnt');
+            cur_elem_num = eval('scholarworks.' + elem_type + '_num');
+            console.log('element_add after add elem_cnt ' + elem_cnt + ' cur_elem_num ' + cur_elem_num);
+             */
+            $('.element_remove').on('click', scholarworks.element_remove);
+            let elem_post_add_func = $(this).data('element-post-add');
+            try {
+                //console.log('invoke post generate [' + elem_post_add_func + '] add_button_id [' + add_button_id + ']');
+                eval(elem_post_add_func + '("' + add_button_id + '")');
+            }
+            catch (err) {
+                console.log('fail to find post add element function ' + elem_post_add_func);
+            }
+        }
+    }
+}
+
+scholarworks.element_remove = function() {
+    let elem_type = $(this).data('element-type');
+    let elem_num = $(this).data('element-num');
+    //console.log('element_remove: elem_type ' + elem_type + ' elem_num ' + elem_num);
+
+    try {
+        let elem_cnt = eval('scholarworks.' + elem_type + '_cnt');
+        //console.log('element_remove: elem_cnt ' + elem_cnt);
+        if (elem_cnt > 1) {
+            let removing_elem = $('#' + elem_type + '_div' + elem_num);
+            if (removing_elem.length) {
+                removing_elem.remove();
+                eval('scholarworks.' + elem_type + '_cnt' + ' = ' + elem_cnt + ' - 1;');
+                //window[elem_type + '_cnt']--;
+                try {
+                    let elem_post_remove_func = $(this).data('element-post-remove');
+                    //console.log('element_remove elem_post_remove_func [' + elem_post_remove_func + ']');
+                    eval(elem_post_remove_func + '("' + 'add_' + elem_type + '")');
+                }
+                catch (err) {
+                    console.log('element_remove: failed to call post remove function for type ' + elem_type + ' maybe this type does not need one');
+                }
+                elem_cnt = eval('scholarworks.' + elem_type + '_cnt');
+                //console.log('element_remove: elem_cnt after decrement for ' + elem_type + ' ' + elem_cnt);
+                if (elem_cnt == 1) {
+                    $('.' + elem_type + '_divider').remove();
+                    $('.' + elem_type + '_remove').addClass('d_none').attr('aria-hidden', 'true');
+                }
+                else {
+                    if ($('#' + elem_type + '_divider' + elem_num).length) {
+                        $('#' + elem_type + '_divider' + elem_num).remove();
+                    }
+                }
+                $('#' + elem_type + '_warning').addClass('d_none').attr('aria-hidden', 'true');
+            }
+        }
+    }
+    catch (err) {
+        console.log('element_remove: fail to eval elem count');
     }
 }
 
 // only one save_handler for submit button event handler
-if (typeof save_handler !== 'function') {
-    save_handler = function(event) {
-        $('.title_tinymce').each(function () {
-            let editor_txt = tinymce.get($(this).prop('id')).getContent();
-            $(this).text(editor_txt);
-        });
+scholarworks.save_handler = function(event) {
+    //console.log('inside save handler');
+    $('.title_tinymce').each(function () {
+        let editor_txt = tinymce.get($(this).prop('id')).getContent();
+        $(this).text(editor_txt);
+    });
 
-        $('.description_tinymce').each(function () {
-            let editor_txt = tinymce.get($(this).prop('id')).getContent();
-            $(this).text(editor_txt);
-        });
+    $('.description_tinymce').each(function () {
+        let editor_txt = tinymce.get($(this).prop('id')).getContent();
+        $(this).text(editor_txt);
+    });
 
-        // comment this to test server ORCID validation by remove the condition invalid_orcid
-        if (scholarworks.composite_element.invalid_orcid() || invalid_description() || invalid_title()) {
+    // comment this to test server ORCID validation by remove the condition invalid_orcid
+    if (scholarworks.composite_element.invalid_orcid() || scholarworks.invalid_description() || scholarworks.invalid_title()) {
+        event.preventDefault();
+        scholarworks.toggle_submit(true);
+        return;
+    }
+
+    if (typeof scholarworks.invalid_date_issued === 'function') {
+        if (scholarworks.invalid_date_issued()) {
             event.preventDefault();
-            toggle_submit(true);
+            scholarworks.toggle_submit(true);
             return;
         }
-
-        if (typeof invalid_date_issued === 'function') {
-            if (invalid_date_issued()) {
-                event.preventDefault();
-                toggle_submit(true);
-                return;
-            }
-        }
-
-        // serialize all composite elements
-        scholarworks.composite_element.serialize();
-
-        $('.date_issued_div').each(function () {
-            let index = $(this).prop('id').substring($(this).prop('id').lastIndexOf('_') + 1);
-            let date_issued_str = $('#date_issued_year_' + index).val();
-            let month = $('#date_issued_month_' + index).val();
-            let day = $('#date_issued_day_' + index).val();
-            if (month != '' && day != '') {
-                if (Number(month) < 10) {
-                    month = '0' + month;
-                }
-                if (Number(day) < 10) {
-                    day = '0' + day;
-                }
-                date_issued_str = date_issued_str + '-' + month + '-' + day;
-            }
-            $('#date_issued_' + index).val(date_issued_str);
-        });
     }
+
+    // serialize all composite elements
+    scholarworks.composite_element.serialize();
+
+    $('.date_issued_div').each(function () {
+        let index = $(this).prop('id').substring($(this).prop('id').lastIndexOf('_') + 1);
+        let date_issued_str = $('#date_issued_year_' + index).val();
+        let month = $('#date_issued_month_' + index).val();
+        let day = $('#date_issued_day_' + index).val();
+        if (month != '' && day != '') {
+            if (Number(month) < 10) {
+                month = '0' + month;
+            }
+            if (Number(day) < 10) {
+                day = '0' + day;
+            }
+            date_issued_str = date_issued_str + '-' + month + '-' + day;
+        }
+        $('#date_issued_' + index).val(date_issued_str);
+    });
 }
 
 // functions for data_issued
-function adjust_date_issued_day(index) {
+scholarworks.adjust_date_issued_day = function(index) {
+    //console.log('adjust date issued day')
     let year = $('#date_issued_year_' + index).val();
     let month = parseInt($('#date_issued_month_' + index).val());
     let day = $('#date_issued_day_' + index);
@@ -457,7 +457,8 @@ function adjust_date_issued_day(index) {
     }
 }
 
-function initialize_date_issued(index, date_str) {
+scholarworks.initialize_date_issued = function(index, date_str) {
+    //console.log('initialize date issue');
     const MONTH_NAMES = ["Select", "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
@@ -532,12 +533,13 @@ function initialize_date_issued(index, date_str) {
     year_elem.val(input_year);
     $('#date_issued_month_' + index).val(input_month);
     year_elem.trigger("change");
-    adjust_date_issued_day(index);
+    scholarworks.adjust_date_issued_day(index);
     $('#date_issued_day_' + index).val(input_day);
 
 }
 
-function any_empty_date_issued_year() {
+scholarworks.any_empty_date_issued_year = function() {
+    //console.log('any empty date issue year');
     let retVal = false;
     $('.date_issued_year').each(function () {
         if ($(this).val() == '') {
@@ -548,9 +550,10 @@ function any_empty_date_issued_year() {
     return retVal;
 }
 
-function invalid_date_issued() {
+scholarworks.invalid_date_issued = function() {
+    //console.log('invalid date issued');
     let retVal = false;
-    if (typeof date_issued_required !== 'undefined' && date_issued_required) {
+    if (typeof scholarworks.date_issued_required !== 'undefined' && scholarworks.date_issued_required) {
         retVal = true;
         $('.date_issued_year').each(function () {
             if ($(this).val() != '') {
@@ -562,26 +565,29 @@ function invalid_date_issued() {
     return retVal;
 }
 
-function date_issued_change() {
-    toggle_submit(invalid_date_issued());
+scholarworks.date_issued_change = function() {
+    //console.log('inside date issued change');
+    scholarworks.toggle_submit(scholarworks.invalid_date_issued());
 }
 
-function date_issued_remove() {
+scholarworks.date_issued_remove = function() {
+    //console.log('date issued remove');
     $('#date_issued_warning').addClass('d_none').attr('aria-hidden', 'true');
-    if (date_issued_cnt > 1) {
+    if (scholarworks.date_issued_cnt > 1) {
         let div_parent = $(this).parent().parent();
         if (div_parent.length) {
             div_parent.remove();
-            date_issued_cnt--;
-            if (date_issued_cnt == 1) {
+            scholarworks.date_issued_cnt--;
+            if (scholarworks.date_issued_cnt == 1) {
                 $('.date_issued_remove').addClass('d_none').attr('aria-hidden', 'true');
             }
         }
     }
 }
 
-function date_issued_add(elem_model, elem_type) {
-    if (any_empty_date_issued_year()) {
+scholarworks.date_issued_add = function(elem_model, elem_type) {
+    //console.log('date issued add');
+    if (scholarworks.any_empty_date_issued_year()) {
         $('#date_issued_warning').removeClass('d_none').attr('aria-hidden', 'false');
         return;
     }
@@ -590,15 +596,15 @@ function date_issued_add(elem_model, elem_type) {
     $('.date_issued_remove').removeClass('d_none').attr('aria-hidden', 'false');
     $('#date_issued_divs')
         .append(
-            "<div id='date_issued_div_" + cur_date_issued_num + "' class='date_issued_div'>" +
-            "  <input type='hidden' name='" + elem_model + "[date_issued][]' id='" + elem_type + "_" + cur_date_issued_num + "' class='date_issued_date_hidden' value='' />" +
-            "  <label for='date_issued_year_" + cur_date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Year</label>" +
-            "  <select id='date_issued_year_" + cur_date_issued_num + "' class='date_issued date_issued_date date_issued_year' " +
-            "          onclick='adjust_date_issued_day(" + cur_date_issued_num + ")'></select>" +
-            "  <label for='date_issued_month_" + cur_date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Month</label>" +
-            "  <select id='date_issued_month_" + cur_date_issued_num + "' onclick='adjust_date_issued_day(" + cur_date_issued_num + ")' class='date_issued date_issued_date date_issued_month'></select>" +
-            "  <label for='date_issued_day_" + cur_date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Day</label>" +
-            "  <select id='date_issued_day_" + cur_date_issued_num + "' class='date_issued date_issued_day'></select>" +
+            "<div id='date_issued_div_" + scholarworks.date_issued_num + "' class='date_issued_div'>" +
+            "  <input type='hidden' name='" + elem_model + "[date_issued][]' id='" + elem_type + "_" + scholarworks.date_issued_num + "' class='date_issued_date_hidden' value='' />" +
+            "  <label for='date_issued_year_" + scholarworks.date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Year</label>" +
+            "  <select id='date_issued_year_" + scholarworks.date_issued_num + "' class='date_issued date_issued_date date_issued_year' " +
+            "          onclick='scholarworks.adjust_date_issued_day(" + scholarworks.date_issued_num + ")'></select>" +
+            "  <label for='date_issued_month_" + scholarworks.date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Month</label>" +
+            "  <select id='date_issued_month_" + scholarworks.date_issued_num + "' onclick='scholarworks.adjust_date_issued_day(" + scholarworks.date_issued_num + ")' class='date_issued date_issued_date date_issued_month'></select>" +
+            "  <label for='date_issued_day_" + scholarworks.date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Day</label>" +
+            "  <select id='date_issued_day_" + scholarworks.date_issued_num + "' class='date_issued date_issued_day'></select>" +
             "  <span class='date_label'>" +
             "    <button  type='button' class='btn btn-link remove date_issued_remove' aria-hidden='false'>" +
             "      <span class='glyphicon glyphicon-remove'></span>" +
@@ -608,15 +614,15 @@ function date_issued_add(elem_model, elem_type) {
             "  </span>" +
             "<div>");
     // initialize date selector
-    initialize_date_issued(cur_date_issued_num, null);
-    $('.date_issued_remove').on('click', date_issued_remove);
-    $('.date_issued_year').on('change', date_issued_change);
-    date_issued_cnt++;
-    cur_date_issued_num++;
+    scholarworks.initialize_date_issued(scholarworks.date_issued_num, null);
+    $('.date_issued_remove').on('click', scholarworks.date_issued_remove);
+    $('.date_issued_year').on('change', scholarworks.date_issued_change);
+    scholarworks.date_issued_cnt++;
+    scholarworks.date_issued_num++;
 }
 
 // function for description
-function invalid_description() {
+scholarworks.invalid_description = function() {
     /* will need to check to see if class has required in it if we have more
        than one textarea tinymce where one of them is not required but for now
        only one textarea tinymce description is rquired in the work except for collection.
@@ -626,6 +632,7 @@ function invalid_description() {
          and check if it contains required string
        });
     */
+    //console.log('invalid description');
     let desc_content = tinymce.get('scholarworks_description').getContent();
     if (desc_content.length > 0) {
         $('#empty_description').addClass('d-none');
@@ -637,7 +644,8 @@ function invalid_description() {
     return true;
 }
 
-function invalid_title() {
+scholarworks.invalid_title = function () {
+    //console.log('invalid title');
     let title_content = tinymce.get('scholarworks_title').getContent();
     if (title_content.length > 0) {
         $('#empty_title').addClass('d-none');

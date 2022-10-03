@@ -2,23 +2,25 @@
 <% model_type = f.object.model.class.to_s.underscore %>
 
 <script type="text/javascript" charset="utf-8">
-  var discipline_cnt = 0;
-  var cur_discipline_num = 0;
-
+ // var discipline_cnt = 0;
+ // var cur_discipline_num = 0;
 
   $(function () {
-    DISCIPLINES = <%= raw(DisciplineService::DISCIPLINES.to_json) %>;
-
-    discipline_cnt = init_discipline();
-    cur_discipline_num = discipline_cnt;
-    console.log('after discipline init cur_discipline_num ' + cur_discipline_num + ' discipline_cnt ' + discipline_cnt);
-    if (discipline_cnt <= 1) {
+//<![CDATA[
+    scholarworks.discipline.DISCIPLINES = <%= raw(DisciplineService::DISCIPLINES.to_json) %>;
+//]]>
+    scholarworks.discipline_cnt = scholarworks.discipline.init_discipline();
+    scholarworks.discipline_num = scholarworks.discipline_cnt;
+    //window['discipline_cnt'] = scholarworks.discipline.init_discipline();
+    //window['cur_discipline_num'] = scholarworks.discipline.discipline_cnt;
+    //console.log('after discipline init discipline_num ' + scholarworks.discipline_num + ' discipline_cnt ' + scholarworks.discipline_cnt);
+    if (scholarworks.discipline.discipline_cnt <= 1) {
       $('.discipline_remove').addClass('d_none').attr('aria-hidden', 'true');
     }
 
     // register add and remove handler for all elements that have these classes
-    $('.element_add').on('click', element_add);
-    $('.element_remove').on('click', element_remove);
+    $('.element_add').on('click', scholarworks.element_add);
+    $('.element_remove').on('click', scholarworks.element_remove);
   });
 
 </script>
@@ -73,9 +75,9 @@
             class="btn btn-link add element_add"
             data-element-model="<%= model_type %>"
             data-element-type="discipline"
-            data-element-empty="any_empty_discipline"
-            data-element-generate="generate_discipline"
-            data-element-post-add="post_add_discipline" >
+            data-element-empty="scholarworks.discipline.any_empty_discipline"
+            data-element-generate="scholarworks.discipline.generate_discipline"
+            data-element-post-add="scholarworks.discipline.post_add_discipline" >
       <span class="glyphicon glyphicon-plus"></span>
       <span class="controls-add-text">Add another Discipline</span>
     </button>
