@@ -209,3 +209,5 @@ en:
         volume: "The volume number, if applicable."
     labels:
       defaults: *work_fields
+  sword:
+    treatement:
