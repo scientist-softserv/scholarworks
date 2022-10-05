@@ -5,15 +5,6 @@
 #
 class SystemService
   #
-  # System name
-  #
-  # @return [String]
-  #
-  def self.name
-    config['name']
-  end
-
-  #
   # Facet fields
   #
   # @return [Hash]

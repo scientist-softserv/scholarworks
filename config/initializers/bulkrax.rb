@@ -88,10 +88,10 @@ Bulkrax.setup do |config|
       }
     }
 
-    fields = if SystemService.name == 'ScholarWorks'
-               FieldService.scholarworks_fields
-             else
+    fields = if SystemService::archive?
                FieldService.archives_fields
+             else
+               FieldService.scholarworks_fields
              end
 
     fields.each do |field|
