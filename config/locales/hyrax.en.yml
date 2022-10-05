@@ -15,6 +15,7 @@ en:
         facet:
           resource_type_sim: Resource type
           campus_sim: Campus
+          college_sim: College
           department_sim: Department
           degree_level_sim: Degree Level
           date_issued_year_sim: Date
@@ -213,3 +214,5 @@ en:
         volume: "The volume number, if applicable."
     labels:
       defaults: *work_fields
+  sword:
+    treatement:

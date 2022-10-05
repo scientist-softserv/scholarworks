@@ -12,7 +12,6 @@ module Hyrax
          description
          description_note
          creator
-         contributor
          interviewee
          interviewer
          subject

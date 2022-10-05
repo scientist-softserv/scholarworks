@@ -7,10 +7,10 @@ require 'calstate/packager'
 #   id, work_visibility, file_visibility
 # use internal visibility name, e.g.: 'open' instead of 'public'
 #
-# bundle exec rake calstate:visibility[/home/ec2-user/data/import/file.csv]
+# bundle exec rake calstate:visibility[northridge,/home/ec2-user/data/import/file.csv]
 #
 namespace :calstate do
-  desc 'Import new work from CSV file'
+  desc 'Update work and file visibility'
   task :visibility, %i[campus file] => [:environment] do |_t, args|
     campus = args[:campus] or raise 'No campus provided.'
     file = args[:file] or raise 'No csv file provided.'
@@ -19,4 +19,3 @@ namespace :calstate do
     packager.process_items(file)
   end
 end
-

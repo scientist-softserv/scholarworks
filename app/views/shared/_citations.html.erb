@@ -16,7 +16,7 @@
 <% content_for(:gscholar_meta) do %>
   <meta name="citation_title" content="<%= @presenter.title.first %>" />
   <% @presenter.creator.each do |creator| %>
-    <meta name="citation_author" content="<%= Person.new.from_hyrax(creator).name %>" />
+    <meta name="citation_author" content="<%= CompositeElement.new.from_hyrax(creator).get(CompositeElement::NAME) %>" />
   <% end %>
   <meta name="citation_publication_date" content="<%= @presenter.date_issued_year&.first %>" />
   <meta name="citation_pdf_url" content="<%= @presenter.download_url %>" />

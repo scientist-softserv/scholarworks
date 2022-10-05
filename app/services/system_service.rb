@@ -41,6 +41,15 @@ class SystemService
   end
 
   #
+  # archive?
+  #
+  # @return true if it's an archive system
+  #
+  def self.archive?
+    return models[0] == 'archive'
+  end
+
+  #
   # System configuration file
   #
   # @return [Hash]

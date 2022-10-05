@@ -19,7 +19,7 @@ namespace :calstate do
     uploaded_file.save
 
     # attach!
-    depositor = User.find_by(email: email)
+    depositor = User.find_by_user_key(email)
     work.apply_depositor_metadata(depositor.user_key)
     AttachFilesToWorkJob.perform_now(work, [uploaded_file])
   end
