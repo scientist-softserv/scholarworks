@@ -1,0 +1,119 @@
+
+
+<script type="text/javascript" charset="utf-8">
+  /*
+    model_type = publication, thesis, etc
+    composite_element is the actual object of creator, contributor
+    elem_type is a string with value of creator, contributor, etc
+    which would match to person_type as an parameter for most of the routines
+    elem_type_cnt -> creator_cnt, editor_cnt which are accessed through window[elem_class + '_cnt'] where elem_class is creator, editor, etc...
+    cur_elem_type_num -> cur_creator_num, cur_editor_num which are accessed through window['cur_' + elem_class + '_num'] where elem_class is creator, editor, etc...
+   */
+
+  scholarworks.<%= elem_type %>_cnt = 0;
+  scholarworks.<%= elem_type %>_num = 0;
+
+  $(function() {
+    $('#<%= elem_type %>_content').addClass('<%= model_type %>_<%= elem_type %>');
+    $('.<%= elem_type %>').each(function () {
+        scholarworks.<%= elem_type %>_cnt++;
+    })
+    scholarworks.<%= elem_type %>_num = scholarworks.<%= elem_type %>_cnt;
+    //console.log('initialization: <%= elem_type %> num ' + scholarworks.<%= elem_type %>_num + ' <%= elem_type %>_cnt ' + scholarworks.<%= elem_type %>_cnt);
+    if (scholarworks.<%= elem_type %>_cnt <= 1) {
+        $('.<%= elem_type %>_remove').addClass('d_none').attr('aria-hidden', 'true');
+    }
+
+    scholarworks.composite_element.deserialize("<%= elem_type %>");
+    // register change event and turn off submit button if all main elements are blank and if element is required
+    scholarworks.composite_element.element_change("<%= elem_type %>", "<%= subtypes %>", <%= f.object.required?(elem_type) %>);
+
+    // extra validation to catch backend validation for empty required composite element
+    <% if f.object.required?(elem_type) %>
+      if ($('div.alert.alert-danger.alert-dismissable').length) {
+          // subtypes 0 (first one) is the main field
+          let subtypes = "<%= subtypes %>";
+          const subtypes_arr = subtypes.split(" ");
+          let main_elem = <%= elem_type %> + '_' + subtypes_arr[0];
+          if (scholarworks.composite_element.any_fill_main_element(main_elem)) {
+              $("#empty_<%= elem_type %>").removeClass('d-none');
+              $("#<%= elem_type %>_content").addClass('has-error');
+          }
+      }
+    <% end %>
+
+  });
+</script>
+
+<% if f.object.required?(elem_type) %>
+  <% if f.object.alert_msg.length > 1 %>
+    <div class="form-group"><%= f.object.alert_msg %></div>
+  <% end %>
+<% end %>
+
+<div id="<%= elem_type %>_content" class="form-group multi_value managed <% if f.object.required?(elem_type) %>required<% end %>">
+  <label id="<%= elem_type %>_label" class="control-label">
+    <%= t("simple_forms.labels.#{elem_type}") %>
+    <% if f.object.required?(elem_type) %><span class="label label-info required-tag">required</span><% end %>
+  </label>
+
+  <span id="empty_<%= elem_type %>" class="help-block d_none">Your work must have a <%= elem_type %>.</span>
+
+  <p class="help-block"><%= help_block_str %></p>
+
+  <div id=<%= "#{elem_type}_divs" %>
+       aria-live="polite">
+    <% composite_element.each_with_index do |name, index| %>
+      <% if index > 0 %>
+        <div id=<%= "#{elem_type}_divider#{index}" %> class="row divider <%= elem_type %>_divider"></div>
+      <% end %>
+      <div id=<%= "#{elem_type}_div#{index}" %> class="row <%= elem_type %>_div flex_center">
+        <input type="hidden"
+               name="<%= model_type %>[<%= elem_type %>][]"
+               id="<%= elem_type %><%= index %>"
+               value="<%= name %>"
+               class="<%= elem_type %> composite_element"
+               data-element-type="<%= elem_type %>"
+               data-subtypes="<%= subtypes %>"
+               data-element-num="<%= index %>"
+               data-element-required="<%= f.object.required?(elem_type) %>" />
+        <div id=<%= "#{elem_type}_composite#{index}" %>  class="col-xs-8">
+        </div>
+        <div class="col-sm">
+            <button type="button"
+                    id="remove_<%= elem_type %><%= index %>"
+                    class="btn btn-link remove element_remove <%= elem_type %>_remove"
+                    aria-hidden="true"
+                    data-element-type="<%= elem_type %>"
+                    data-element-post-remove="scholarworks.composite_element.post_action"
+                    data-element-num="<%= index %>">
+              <span class="glyphicon glyphicon-remove"></span>
+              <span class="controls-remove-text">Remove</span>
+              <span class="sr-only"> <%= elem_type %> <span id="remove_<%= elem_type %>_aria<%= index %>"><%= name %></span></span>
+            </button>
+        </div>
+
+      </div>
+    <% end %>
+  </div>
+  <div class="form-group multi_value">
+    <div id="<%= elem_type %>_warning" class="row small_margin_left message has-warning warning_message d_none" aria-hidden="true">
+      cannot add another with empty field
+    </div>
+    <div class="small_margin_left">
+      <button type="button"
+              id="add_<%= elem_type %>"
+              class="btn btn-link add element_add"
+              data-element-model="<%= model_type %>"
+              data-element-type="<%= elem_type %>"
+              data-subtypes="<%= subtypes %>"
+              data-element-empty="scholarworks.composite_element.any_empty_element"
+              data-element-generate="scholarworks.composite_element.generate_element"
+              data-element-post-add="scholarworks.composite_element.post_action"
+              data-element-required="<%= f.object.required?(elem_type) %>" >
+        <span class="glyphicon glyphicon-plus"></span>
+        <span class="controls-add-text">Add another <span class="text-capitalize"><%= elem_type_text %></span></span>
+      </button>
+    </div>
+  </div>
+</div>

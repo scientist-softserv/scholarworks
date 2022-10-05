@@ -2,26 +2,12 @@
 <% if model_type == 'collection' %>
   <%= f.input key, as: :multi_value, input_html: { class: 'form-control' }, required: f.object.required?(key) %>
 <% else %>
-  <%= render "shared/composite_person",
+  <%= render "shared/composite_element",
              f: f,
              model_type: model_type,
-             composite_person: f.object.contributor,
-             key: key,
-             key_text: key,
+             composite_element: f.object.contributor,
+             elem_type: key,
+             elem_type_text: key,
+             subtypes: 'name email institution orcid',
              help_block_str: t('simple_form.hints.defaults.contributor') %>
-  <script type="text/javascript" charset="utf-8">
-    /*
-      model_type = publication, thesis, etc
-      composite_person is the actual object of creator, contributor
-      key is a string with value of creator, contributor, etc
-      which would match to person_type as an parameter for most of the routines
-     */
-    function generate_contributor() {
-      return generate_person('contributor', false);
-    }
-
-    $(function() {
-      deserialize_person('contributor');
-    });
-  </script>
 <% end %>

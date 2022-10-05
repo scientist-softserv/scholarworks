@@ -10,7 +10,7 @@
           plugins: 'autolink link tabfocus paste lists advlist',
           setup: function (editor) {
               editor.on('change', function (e) {
-                  toggle_submit(invalid_description());
+                  scholarworks.toggle_submit(scholarworks.invalid_description());
               });
           },
           selector: 'textarea.description_tinymce',
@@ -22,30 +22,10 @@
           add_form_submit_trigger : false
       });
     });
-
-    function invalid_description() {
-      /* will need to check to see if class has required in it if we have more
-         than one textarea tinymce where one of them is not required but for now
-         only one textarea tinymce description is rquired in the work except for collection.
-         let class_str = $('#<%= model_type %>_description').prop('class'); or loop through
-         $('.description_tinymce').each(function () {
-           let class_str = $('#' + $(this).prop('class'));
-           and check if it contains required string
-         });
-      */
-      let desc_content = tinymce.get('<%= model_type %>_description').getContent();
-      if (desc_content.length > 0) {
-        $('#empty_description').addClass('d-none');
-        $('#description_content').removeClass('has-error');
-        return false;
-      }
-      $('#empty_description').removeClass('d-none');
-      $('#description_content').addClass('has-error');
-      return true;
-    }
   </script>
 <% end %>
 
+<%# since we only can have one form at a time so description by itself is sufficient but just to be on the safe side prepending it with scholarworks %>
 <div id="description_content" class="form-group managed <%= model_type %>_<%= key %> <% if f.object.required?(key) %>required<% end %>">
   <label class="control-label <% if f.object.required?(key) %> required <% end %>">
     <%= t('simple_form.labels.defaults.description') %>
@@ -56,7 +36,7 @@
   <ul class="listing" aria-live="polite">
     <li class="field-wrapper input-group input-append">
         <textarea name="<%= model_type %>[<%= key %>][]"
-                  id="<%= model_type %>_<%= key %>"
+                  id="scholarworks_<%= key %>"
                   rows="14"
                   aria-labelledby="<%= model_type %>_<%= key %>_help"
                   style="width:500px"

@@ -9,7 +9,7 @@
       tinymce.init({
           setup: function (editor) {
               editor.on('change', function (e) {
-                  toggle_submit(invalid_title());
+                  scholarworks.toggle_submit(scholarworks.invalid_title());
               });
           },
           selector: 'textarea.title_tinymce',
@@ -21,22 +21,16 @@
           add_form_submit_trigger : false,
           remove_linebreaks: true
       });
-    });
 
-    function invalid_title() {
-      let title_content = tinymce.get('<%= model_type %>_title').getContent();
-      if (title_content.length > 0) {
-        $('#empty_title').addClass('d-none');
-        $('#title_content').removeClass('has-error');
-        return false;
-      }
-      $('#empty_title').removeClass('d-none');
-      $('#title_content').addClass('has-error');
-      return true;
-    }
+      // form submit button handling
+      $('#with_files_submit').click(function (e) {
+          scholarworks.save_handler(e);
+      });
+    });
   </script>
 <% end %>
 
+<%# since we only can have one form at a time so title by itself is sufficient but just to be on the safe side prepending it with scholarworks %>
 <div id="title_content" class="form-group managed <%= model_type %>_<%= key %> <% if f.object.required?(key) %>required<% end %>">
   <label class="control-label <% if f.object.required?(key) %> required <% end %>">
     <%= t('simple_form.labels.defaults.title') %>
@@ -49,7 +43,7 @@
   <ul class="listing" aria-live="polite">
     <li class="field-wrapper input-group input-append">
         <textarea name="<%= model_type %>[<%= key %>][]"
-                  id="<%= model_type %>_<%= key %>"
+                  id="scholarworks_<%= key %>"
                   aria-labelledby="<%= model_type %>_<%= key %>_help"
                   style="width:500px; "
                   class="title_tinymce use_tinymce form-control

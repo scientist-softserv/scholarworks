@@ -1,70 +1,26 @@
-<style>
-    .margin_bottom_5 {
-      margin-bottom: 5px;
-    }
-    .margin_bottom_10 {
-        margin-bottom: 5px;
-    }
-</style>
 
 <% model_type = f.object.model.class.to_s.underscore %>
 
 <script type="text/javascript" charset="utf-8">
-  var discipline_cnt = 0;
-  var cur_discipline_num = 0;
-
-  function any_empty_discipline(element_type) {
-    let ret_val = false;
-    $('.discipline_div').each(function () {
-      if ($(this).find('.discipline').val() == '') {
-        ret_val = true;
-        return false;
-      }
-    });
-    return ret_val;
-  }
-
-  function post_add_discipline() {
-   console.log('in post_add_discipline discipline_cnt ' + window['discipline_cnt'] + ' cur_discipline_num ' + window['cur_discipline_num']);
-   $('.discipline').on('change', discipline_change);
-  }
-
-  function generate_discipline() {
-    let cur_disc_num = window['cur_discipline_num'];
-    return "<div id='discipline_divider" + cur_disc_num + "' class='row divider discipline_divider'></div>" +
-           "<div id='discipline" + cur_disc_num + "' class='row flex_center margin_bottom_10 discipline_div'>" +
-           "  <div class='col-xs-10'>" +
-           "    <input name='<%= model_type %>[<%= key %>][]' id='<%= key %>_" + cur_disc_num + "_hidden' class='discipline_hidden' type='hidden' value='' />" +
-           "    <div class='margin_bottom_5'>" +
-           "      <select value='' class='form-control discipline' data-element-num='" + cur_disc_num + "'>" +
-           $('#discipline_divs select.discipline').html() + // get top level discipline options from first select element
-           "      </select>" +
-           "    </div>" +
-           "  </div>" +
-           "  <div class='col-xs'>" +
-           "    <button class='btn btn-link remove element_remove discipline_remove' aria-hidden='true' " +
-           "            type='button' data-element-class='discipline' data-element-num='" + cur_disc_num + "'>" +
-           "      <span class='glyphicon glyphicon-remove'></span>" +
-           "      <span class='controls-remove-text'>Remove</span>" +
-           "      <span class='sr-only'>discipline</span>" +
-           "    </button>" +
-           "  </div>" +
-           "</div>";
-  }
+ // var discipline_cnt = 0;
+ // var cur_discipline_num = 0;
 
   $(function () {
-    DISCIPLINES = <%= raw(DisciplineService::DISCIPLINES.to_json) %>;
-
-    discipline_cnt = init_discipline();
-    cur_discipline_num = discipline_cnt;
-    console.log('after discipline init cur_discipline_num ' + cur_discipline_num + ' discipline_cnt ' + discipline_cnt);
-    if (discipline_cnt <= 1) {
+//<![CDATA[
+    scholarworks.discipline.DISCIPLINES = <%= raw(DisciplineService::DISCIPLINES.to_json) %>;
+//]]>
+    scholarworks.discipline_cnt = scholarworks.discipline.init_discipline();
+    scholarworks.discipline_num = scholarworks.discipline_cnt;
+    //window['discipline_cnt'] = scholarworks.discipline.init_discipline();
+    //window['cur_discipline_num'] = scholarworks.discipline.discipline_cnt;
+    //console.log('after discipline init discipline_num ' + scholarworks.discipline_num + ' discipline_cnt ' + scholarworks.discipline_cnt);
+    if (scholarworks.discipline.discipline_cnt <= 1) {
       $('.discipline_remove').addClass('d_none').attr('aria-hidden', 'true');
     }
 
-    // register add and remove handler for all element that have these classes
-    $('.element_add').on('click', element_add);
-    $('.element_remove').on('click', element_remove);
+    // register add and remove handler for all elements that have these classes
+    $('.element_add').on('click', scholarworks.element_add);
+    $('.element_remove').on('click', scholarworks.element_remove);
   });
 
 </script>
@@ -81,7 +37,7 @@
         <% divider_id = "discipline_divider#{index}" %>
         <div id=<%= divider_id %> class="row divider discipline_divider"></div>
       <% end %>
-      <% div_id = "discipline#{index}" %>
+      <% div_id = "discipline_div#{index}" %>
       <div id=<%= div_id %> class="row flex_center margin_bottom_10 discipline_div">
         <div class="col-xs-10">
           <%= hidden_field_tag "#{model_type}[#{key}][]", element, id: "#{key}_#{index}_hidden", class: "discipline_hidden" %>
@@ -95,7 +51,12 @@
           </div>
         </div>
         <div class="col-sm col-xs">
-          <button class="btn btn-link remove element_remove discipline_remove" aria-hidden="true" type="button" data-element-class="discipline" data-element-num=<%= "#{index}" %> >
+          <button class="btn btn-link remove element_remove discipline_remove"
+                  aria-hidden="true"
+                  type="button"
+                  id="remove_<%= key %><%= index %>"
+                  data-element-type="discipline"
+                  data-element-num=<%= "#{index}" %> >
             <span class="glyphicon glyphicon-remove"></span>
             <span class="controls-remove-text">Remove</span>
             <span class="sr-only">discipline</span>
@@ -109,10 +70,16 @@
     cannot add another with empty field
   </div>
   <div class="small_margin_left">
-    <button id="creator_add_btn" type="button" class="btn btn-link add element_add" data-element-class="discipline">
+    <button id="add_<%= key %>"
+            type="button"
+            class="btn btn-link add element_add"
+            data-element-model="<%= model_type %>"
+            data-element-type="discipline"
+            data-element-empty="scholarworks.discipline.any_empty_discipline"
+            data-element-generate="scholarworks.discipline.generate_discipline"
+            data-element-post-add="scholarworks.discipline.post_add_discipline" >
       <span class="glyphicon glyphicon-plus"></span>
       <span class="controls-add-text">Add another Discipline</span>
     </button>
   </div>
-
 </div>

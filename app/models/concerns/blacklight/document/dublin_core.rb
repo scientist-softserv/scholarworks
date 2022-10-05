@@ -40,8 +40,8 @@ module Blacklight::Document::DublinCore
 
           # customization: only name from composite person
           if %i[creator contributor].include?(field)
-            person = Person.new.from_hyrax(v)
-            v = person.name
+            person = CompositeElement.new.from_hyrax(v)
+            v = person.get(CompositeElement::NAME)
           end
 
           # customization: map internal types to oai-pmh types
