@@ -38,6 +38,7 @@ gem 'table_print'
 gem 'turbolinks', '~> 5'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'uglifier', '>= 1.3.0'
+gem 'yaml_extend'
 gem 'willow_sword', github: 'csuscholarworks/willow_sword', tag: 'v1.0'
 
 group :production do
