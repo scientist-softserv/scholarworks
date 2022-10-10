@@ -221,6 +221,13 @@
     </field>
   </xsl:template>
 
+  <!-- department -->
+  <xsl:template match="esploro:asset.affiliation">
+    <field name="department">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
   <!-- description -->
   <xsl:template match="esploro:description.abstract">
     <field name="description">
