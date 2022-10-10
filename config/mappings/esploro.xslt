@@ -26,7 +26,7 @@
 
   <xsl:template name="action">
     <xsl:for-each select="oai:metadata/esploro:record/esploro:data">
-      <xsl:if test="not(esploro:filesList)">
+      <xsl:if test="not(esploro:filesList) or not(esploro:identifier.handle)">
         <field name="action">
           <xsl:text>delete</xsl:text>
         </field>
@@ -130,7 +130,7 @@
       </xsl:choose>
   </xsl:template>
 
-  <!-- esploru url -->
+  <!-- esploro url -->
   <xsl:template match="esploro:identifier.uri">
     <field name="external_url">
       <xsl:value-of select="text()"/>
