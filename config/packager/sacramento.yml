@@ -9,3 +9,4 @@ set: esploro_esploro
 metadataPrefix: esploro
 exit_on_error: false
 visibility: open
+extends: 'sacramento_map.yml'

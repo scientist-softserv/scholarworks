@@ -54,7 +54,7 @@ module CalState
 
         # campus config
         config_file = 'config/packager/' + campus + '.yml'
-        @config = OpenStruct.new(YAML.load_file(config_file))
+        @config = OpenStruct.new(YAML.ext_load_file(config_file))
 
         @depositor = @config['depositor']
         @default_model = @config['default_model']
@@ -218,6 +218,7 @@ module CalState
       # @param params [Hash]             record attributes
       #
       def update_work(work, params)
+        params = value_map(params)
         work.update(params)
       rescue ActiveFedora::UnknownAttributeError => e
         raise e unless @fix_params
@@ -225,6 +226,31 @@ module CalState
         @log.warn e.message
         params = fix_params(work, params)
         work.update(params)
+      end
+
+      #
+      # Convert values using value_map from config
+      #
+      # @param params [Hash]  record attributes
+      #
+      # @return [Hash]
+      #
+      def value_map(params)
+        @config['value_map']&.each do |field, value_map|
+          next unless params[field]
+
+          if params[field].is_a?(Array)
+            final = []
+            params[field].each do |value|
+              final.append value_map[value] if value_map.key?(value)
+            end
+            params[field] = final
+          elsif value_map.key?(params[field])
+            params[field] = value_map[params[field]]
+          end
+        end
+
+        params
       end
 
       #

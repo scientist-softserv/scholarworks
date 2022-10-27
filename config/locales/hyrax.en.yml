@@ -13,12 +13,24 @@ en:
     search:
       fields:
         facet:
-          resource_type_sim: Resource type
+          advisor_sim: Advisor
           campus_sim: Campus
           college_sim: College
-          department_sim: Department
-          degree_level_sim: Degree Level
+          committee_member_sim: Committee Member
+          contributor_sim: Contributor
+          creator_sim: Creator
           date_issued_year_sim: Date
+          degree_level_sim: Degree Level
+          department_sim: Department
+          discipline_sim: Discipline
+          editor_sim: Editor
+          format_sim: Format
+          granting_institution_sim: Granting Institution
+          keyword_sim: Keyword
+          language_sim: Language
+          publisher_sim: Publisher
+          resource_type_sim: Resource Type
+          subject_sim: Subject
           # @testing
           accrual_method_sim: Has File
         show: &work_fields
@@ -107,6 +119,10 @@ en:
       title: Advanced Search
   hyrax:
     account_name: My Institution Account ID
+    collection:
+      actions:
+        nested_subcollection:
+          desc: 'Add this collection to an existing collection'
     directory:
       suffix: "@calstate.edu"
     footer:

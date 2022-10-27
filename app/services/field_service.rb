@@ -262,20 +262,19 @@ class FieldService
       coverage: %w[coverage_tesim
                    time_period_tesim
                    geographical_area_tesim],
-      creator: %w[creator_tesim
-                  author_tesim],
+      creator: 'creator_tesim',
       date: %w[date_issued_tesim
                date_copyright_tesim],
       description: %w[description_tesim
-                      abstract_tesim
+                      description_note_tesim
                       publication_status_tesim
-                      bibliographic_citation_tesim],
+                      bibliographic_citation_tesim
+                      identifier_tesim
+                      doi_tesim
+                      isbn_tesim
+                      issn_tesim],
       format: 'format',
-      identifier: %w[handle_tesim
-                     identifier_tesim
-                     doi_tesim
-                     isbn_tesim
-                     issn_tesim],
+      identifier: 'handle_tesim',
       language: 'language_tesim',
       publisher: %w[publisher_tesim
                     sponsor_tesim

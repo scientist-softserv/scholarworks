@@ -68,5 +68,7 @@ Rails.application.routes.draw do
   get 'collections/children/:parent_id', to: 'collections#children'
 
   get 'campus/:campus', to: 'campus#index'
+
+  get '*unmatched_route', to: 'application#not_found'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
