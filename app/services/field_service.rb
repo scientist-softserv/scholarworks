@@ -136,6 +136,7 @@ class FieldService
        external_id
        external_system
        external_modified_date
+       external_url
        id
        issue
        journal_title

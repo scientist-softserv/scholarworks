@@ -17,6 +17,9 @@
           <field name="external_modified_date">
             <xsl:value-of select="oai:header/oai:datestamp" />
           </field>
+          <field name="external_url">
+            <xsl:value-of select="oai:metadata/esploro:record/esploro:identifier.uri"/>
+          </field>
           <xsl:call-template name="action" />
           <xsl:apply-templates select="oai:metadata/esploro:record/esploro:data" />
         </record>
@@ -24,6 +27,7 @@
     </records>
   </xsl:template>
 
+  <!-- action -->
   <xsl:template name="action">
     <xsl:for-each select="oai:metadata/esploro:record/esploro:data">
       <xsl:if test="not(esploro:filesList) or not(esploro:identifier.handle)">
@@ -128,13 +132,6 @@
           </field>
         </xsl:otherwise>
       </xsl:choose>
-  </xsl:template>
-
-  <!-- esploro url -->
-  <xsl:template match="esploro:identifier.uri">
-    <field name="external_url">
-      <xsl:value-of select="text()"/>
-    </field>
   </xsl:template>
 
   <!-- handle -->
