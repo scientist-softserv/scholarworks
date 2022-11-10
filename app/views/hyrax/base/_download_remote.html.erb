@@ -1,0 +1,6 @@
+<!-- external link -->
+<% if @presenter.external_url && @presenter.external_system %>
+  <a id="file_download" href="<%= @presenter.external_url.first %>">
+    View files at<br><%= @presenter.external_system.first %>
+  </a>
+<% end %>

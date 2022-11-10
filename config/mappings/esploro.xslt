@@ -54,6 +54,9 @@
               <xsl:when test="../esploro:etd/esploro:diss.type = 'Masters Project'">
                 <xsl:text>Graduate Project</xsl:text>
               </xsl:when>
+              <xsl:when test="../esploro:etd/esploro:diss.type = 'Project' and text() = 'etd.graduate'">
+                <xsl:text>Graduate Project</xsl:text>
+              </xsl:when>
               <xsl:when test="../esploro:etd/esploro:diss.type = 'Project'">
                 <xsl:text>Undergraduate Project</xsl:text>
               </xsl:when>
