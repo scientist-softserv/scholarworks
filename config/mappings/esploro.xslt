@@ -49,23 +49,14 @@
         <xsl:when test="../esploro:etd/esploro:diss.type">
           <field name="resource_type">
             <xsl:choose>
-              <xsl:when test="../esploro:etd/esploro:diss.type = 'Doctoral Thesis'">
-                <xsl:text>Dissertation</xsl:text>
-              </xsl:when>
               <xsl:when test="../esploro:etd/esploro:diss.type = 'Thesis'">
                 <xsl:text>Masters Thesis</xsl:text>
-              </xsl:when>
-              <xsl:when test="../esploro:etd/esploro:diss.type = 'Project' and text() = 'etd.doctoral'">
-                <xsl:text>Doctoral Project</xsl:text>
               </xsl:when>
               <xsl:when test="../esploro:etd/esploro:diss.type = 'Masters Project'">
                 <xsl:text>Graduate Project</xsl:text>
               </xsl:when>
-              <xsl:when test="../esploro:etd/esploro:diss.type = 'Project' and text() = 'etd.graduate'">
-                <xsl:text>Graduate Project</xsl:text>
-              </xsl:when>
               <xsl:when test="../esploro:etd/esploro:diss.type = 'Project'">
-                <xsl:text>Undergraduate Project</xsl:text>
+                <xsl:text>Graduate Project</xsl:text>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:value-of select="../esploro:etd/esploro:diss.type"/>
