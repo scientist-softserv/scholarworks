@@ -18,7 +18,7 @@
             <xsl:value-of select="oai:header/oai:datestamp" />
           </field>
           <field name="external_url">
-            <xsl:value-of select="oai:metadata/esploro:record/esploro:identifier.uri"/>
+            <xsl:value-of select="oai:metadata/esploro:record/esploro:identifier.uri"/><xsl:text>#files_and_links</xsl:text>
           </field>
           <xsl:call-template name="action" />
           <xsl:apply-templates select="oai:metadata/esploro:record/esploro:data" />
