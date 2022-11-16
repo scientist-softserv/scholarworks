@@ -5,6 +5,7 @@
 #
 class Presentation < ActiveFedora::Base
   include CsuFields
+  include ScholarworksFields
   include FormattingFields
   include Hyrax::WorkBehavior
   include Hydra::AccessControls::CampusVisibility
@@ -23,4 +24,13 @@ class Presentation < ActiveFedora::Base
   include Hyrax::BasicMetadata
   include CsuBehavior
   include FormattingBehavior
+  include ScholarworksBehavior
+
+  #
+  # Before saving this work
+  #
+  def on_save
+    set_year
+    set_college
+  end
 end

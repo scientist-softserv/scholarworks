@@ -16,6 +16,10 @@ class Archive < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+  property :geographical_area, predicate: ::RDF::Vocab::DC.spatial do |index|
+    index.as :stored_searchable
+  end
+
   property :has_finding_aid, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#hasFindingAid') do |index|
     index.as :stored_searchable
   end
@@ -40,6 +44,10 @@ class Archive < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+  property :rights_holder, predicate: ::RDF::Vocab::DC.rightsHolder do |index|
+    index.as :stored_searchable
+  end
+
   property :work_type, predicate: ::RDF::Vocab::DC11.type do |index|
     index.as :stored_searchable
   end
@@ -49,4 +57,11 @@ class Archive < ActiveFedora::Base
   include Hyrax::BasicMetadata
   include CsuBehavior
   include FormattingBehavior
+
+  #
+  # Before saving this work
+  #
+  def on_save
+    set_year
+  end
 end
