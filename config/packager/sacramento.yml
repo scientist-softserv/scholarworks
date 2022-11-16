@@ -3,7 +3,7 @@ campus: Sacramento
 depositor: scholarworks@calstate.edu
 output_dir: /home/ec2-user/data/harvest/sacramento
 admin_set_id: 'd217qp48j'
-external_system: Sac State Scholar
+external_system: Sac State Scholars
 url: https://scholars.csus.edu/view/oai/01CALS_USL/request
 set: esploro_esploro
 metadataPrefix: esploro
