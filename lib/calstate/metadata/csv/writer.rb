@@ -42,10 +42,10 @@ module CalState
 
           # add these fields to the front of the array so we can
           # handle them differently, see below as to why
-          # also make sure to remove any from `get_columns`
           column_names = %w[id
                             campus
                             admin_set_id
+                            date_uploaded
                             visibility
                             embargo_release_date
                             visibility_during_embargo
@@ -54,21 +54,32 @@ module CalState
                             description]
 
           # attributes from fedora
-          attribute_names = get_columns(model.attribute_names)
+          attribute_names = get_fedora_attr(model)
+
+          # remove formatted columns from attributes, since we handle these differently below
+          attribute_names -= %w[title
+                                title_formatted
+                                description
+                                description_formatted]
+
+          # remove these from attributes, since we're adding them to front
+          attribute_names -= %w[admin_set_id
+                                campus]
+
           column_names.push(*attribute_names)
 
           # csv file
           csv_filename = get_csv_filename(@campus_slug, model_name)
-          csv_file = @csv_dir + '/' + csv_filename
+          csv_file = "#{@csv_dir}/#{csv_filename}"
 
           CSV.open(csv_file, 'wb') do |csv|
-            csv.to_io.write "\uFEFF" # BOM forces excel to treat file as UTF-8
             csv << column_names
             model.where(campus: @campus_name).each do |doc|
               begin
                 values = [prep_value(doc.id), # not in attributes
                           prep_value(doc.campus.first), # move to front
                           prep_value(doc.admin_set_id), # move to front
+                          prep_value(doc.date_uploaded), # not in attributes
                           prep_value(doc.visibility), # not in attributes
                           prep_value(doc.embargo_release_date), # not in attributes
                           prep_value(doc.visibility_during_embargo), # not in attributes
@@ -87,37 +98,14 @@ module CalState
         protected
 
         #
-        # Determine the columns to include in the export
+        # Get Fedora attributes, minus internal fields
         #
-        # @param column_names [Array]  all the attribute names from the fedora model
+        # @param model [ActiveFedora::Base]
         #
-        # @return [Array] only the approved columns
+        # @return [Array]
         #
-        def get_columns(column_names)
-          # remove internal fedora fields
-          columns_remove = %w[arkivo_checksum
-                              access_control_id
-                              embargo_id
-                              head
-                              import_url
-                              label
-                              lease_id
-                              owner
-                              relative_path
-                              rendering_ids
-                              representative_id
-                              state
-                              tail
-                              thumbnail_id]
-          # remove formatted columns as we will handle those differently
-          columns_remove += %w[title_formatted
-                               description_formatted]
-          # remove columns we want to shift to the front
-          columns_remove += %w[admin_set_id
-                               campus
-                               description
-                               title]
-          column_names - columns_remove
+        def get_fedora_attr(model)
+          model.attribute_names - FieldService.fedora
         end
 
         #
@@ -135,6 +123,11 @@ module CalState
 
             value = prep_values(value)
             value = prep_person(value) if is_person_field?(key)
+
+            # date fields should have a tab appended at the end
+            # to keep excel from messing with dates
+            value += "\t" if is_date_field?(key)
+
             values << value
           end
           values

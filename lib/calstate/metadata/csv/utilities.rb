@@ -41,13 +41,13 @@ module CalState
         #
         # @param value [String]  the value to add
         #
-        # @return [String] the value plus tab at the end
+        # @return [String] the value
         #
         def prep_value(value)
           value = clean_value(value)
           return nil if value.nil?
 
-          value.to_s + "\t"
+          value.to_s
         end
 
         #
@@ -73,6 +73,17 @@ module CalState
         # @return [Boolean]
         #
         def is_person_field?(field)
+          FieldService.person_fields.include?(field)
+        end
+
+        #
+        # Is the supplied field a date field?
+        #
+        # @param field [String]  field name
+        #
+        # @return [Boolean]
+        #
+        def is_date_field?(field)
           FieldService.person_fields.include?(field)
         end
 

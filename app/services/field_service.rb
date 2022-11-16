@@ -240,6 +240,11 @@ class FieldService
        editor]
   end
 
+  def self.date_fields
+    %w[date_issued
+       date_last_modified]
+  end
+
   #
   # Fields to search
   #
