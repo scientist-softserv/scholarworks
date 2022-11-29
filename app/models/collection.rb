@@ -24,7 +24,16 @@ class Collection < ActiveFedora::Base
   include FormattingBehavior
 
   def on_create
-    HandleService.register(resource)
+    set_campus
+  end
+
+  #
+  # Set campus based on the depositor
+  #
+  def set_campus
+    user = User.find_by_user_key(depositor)
+    campus_name = user.campus_name
+    self.campus = [campus_name]
   end
 
   def save(*options)
