@@ -178,7 +178,7 @@
   <xsl:template name="orcid">
     <xsl:if test="esploro:identifier.orcid">
       <xsl:text>:::::::::</xsl:text>
-      <xsl:value-of select="esploro:identifier.orcid" />
+      <xsl:value-of select="substring-after(esploro:identifier.orcid, 'https://orcid.org/')" />
     </xsl:if>
   </xsl:template>
 
