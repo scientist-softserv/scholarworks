@@ -197,6 +197,7 @@ class FieldService
     # model is a utility field in csv import
     %w[date_accessioned
        degree_level
+       depositor
        edition
        embargo_release_date
        external_id
