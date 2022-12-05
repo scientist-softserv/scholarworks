@@ -16,7 +16,8 @@ module Bravado
     # -- all .rb files in that directory are automatically loaded.
 
     config.active_job.queue_adapter = :sidekiq
-    Rails.application.routes.default_url_options[:host] = ENV["SCHOLARWORKS_HOST"]
+    config.eager_load_paths << Rails.root.join('lib')
+    Rails.application.routes.default_url_options[:host] = ENV['SCHOLARWORKS_HOST']
 
     config.to_prepare do
       Hyrax::CurationConcern.actor_factory.insert_after Hyrax::Actors::DefaultAdminSetActor, Hyrax::Actors::AssignCampusActor
