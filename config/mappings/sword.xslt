@@ -325,7 +325,7 @@
 
       <!-- rights holder -->
       <xsl:if test="./@epdcx:propertyURI='http://purl.org/eprint/terms/copyrightHolder'">
-        <field name="rights_holder">
+        <field name="rights_note">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>

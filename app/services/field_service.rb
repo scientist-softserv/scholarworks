@@ -13,68 +13,74 @@
 #
 class FieldService
   #
-  # All fields
+  # Fields shared by all models
   #
-  # @return [Array] symbols
-  #
-  def self.fields
-    %i[advisor
-       alternative_title
-       award_number
+  def self.basic
+    %i[alternative_title
        campus
-       college
-       committee_member
        contributor
        creator
        creator_name
-       data_note
-       data_type
        date_issued
        date_issued_year
+       description
+       description_note
+       extent
+       external_id
+       external_modified_date
+       external_system
+       external_url
+       handle
+       identifier
+       internal_note
+       keyword
+       language
+       license
+       provenance
+       related_url
+       resource_type
+       rights_note
+       source
+       subject
+       title]
+  end
+
+  #
+  # ScholarWorks fields
+  #
+  # @return [Array] symbols
+  #
+  def self.scholarworks
+    %i[advisor
+       award_number
+       college
+       committee_member
+       data_note
+       data_type
        date_last_modified
        date_range
        degree_level
        degree_name
        degree_program
        department
-       description
-       description_note
        discipline
        doi
        edition
        editor
-       extent
-       external_id
-       external_modified_date
-       external_system
-       external_url
        granting_institution
-       handle
-       identifier
-       internal_note
        isbn
        issn
        issue
-       keyword
-       language
-       license
        meeting_name
        methods_of_collection
        oclcno
        pages
        place
-       provenance
        publication_title
        publisher
-       related_url
-       resource_type
-       rights_note
        series
-       source
        sponsor
        statement_of_responsibility
-       subject
-       title
        volume]
   end
 
@@ -91,35 +97,95 @@ class FieldService
        date_copyright
        date_submitted
        embargo_terms
-       geographical_area
-       journal_title
        identifier_uri
        investigator
        publication_status
-       rights_holder
        rights_statement
        rights_uri
        time_period]
   end
 
+  #
+  # Digital Archives fields
+  #
   def self.archives
     %i[format
+       geographical_area
        has_finding_aid
        institution
        interviewee
        interviewer
        is_part_of
        repository
+       rights_holder
        work_type]
   end
 
   #
-  # All fields, including deprecated ones
+  # All public fields
+  #
+  # @return [Array] symbols
+  #
+  def self.fields
+    basic + scholarworks + archives
+  end
+
+  #
+  # All ScholarWorks fields
+  #
+  # @return [Array] symbols
+  #
+  def self.scholarworks_fields
+    basic + scholarworks
+  end
+
+  #
+  # All Digital Archives fields
+  #
+  # @return [Array] symbols
+  #
+  def self.archives_fields
+    basic + archives
+  end
+
+  #
+  # All public fields, including deprecated ones
   #
   # @return [Array] symbols
   #
   def self.all
-    fields + deprecated + archives
+    basic + scholarworks + deprecated + archives
+  end
+
+  #
+  # Fedora internal-use fields
+  #
+  # @return [Array] string
+  #
+  def self.fedora
+    %w[arkivo_checksum
+       access_control_id
+       embargo_id
+       head
+       import_url
+       label
+       lease_id
+       owner
+       relative_path
+       rendering_ids
+       representative_id
+       state
+       tail
+       thumbnail_id]
+  end
+
+  #
+  # All internal Fields
+  #
+  # @return [Array] string
+  #
+  def self.internal_fields
+    fedora + %w[title_formatted description_formatted]
   end
 
   #
@@ -139,7 +205,6 @@ class FieldService
        external_url
        id
        issue
-       journal_title
        meeting_name
        model
        pages
@@ -173,6 +238,11 @@ class FieldService
        committee_member
        creator
        editor]
+  end
+
+  def self.date_fields
+    %w[date_issued
+       date_last_modified]
   end
 
   #

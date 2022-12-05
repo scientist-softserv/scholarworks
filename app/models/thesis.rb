@@ -5,6 +5,7 @@
 #
 class Thesis < ActiveFedora::Base
   include CsuFields
+  include ScholarworksFields
   include FormattingFields
   include Hyrax::WorkBehavior
   include Hydra::AccessControls::CampusVisibility
@@ -35,11 +36,16 @@ class Thesis < ActiveFedora::Base
   include Hyrax::BasicMetadata
   include CsuBehavior
   include FormattingBehavior
+  include ScholarworksBehavior
 
-  def save(*options)
+  #
+  # Before saving this work
+  #
+  def on_save
+    set_year
+    set_college
     set_degree_level
     set_campus_publisher
-    super(*options)
   end
 
   #
