@@ -6,7 +6,7 @@ require 'calstate/packager'
 # bundle exec rake packager:csv[losangeles,'/home/ec2-user/data/new/losangeles.csv']
 # bundle exec rake packager:csv[losangeles,'/home/ec2-user/data/new/losangeles.csv',true]
 # bundle exec rake packager:csv[losangeles,'/home/ec2-user/data/new/losangeles.csv',false,5]
-# # bundle exec rake packager:csv[losangeles,'/home/ec2-user/data/new/losangeles.csv',false,admin@calstate.edu]
+# bundle exec rake packager:csv[losangeles,'/home/ec2-user/data/new/losangeles.csv',false,admin@calstate.edu]
 #
 namespace :packager do
   desc 'Import new work from CSV file'

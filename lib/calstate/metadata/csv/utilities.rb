@@ -86,7 +86,7 @@ module CalState
 
           final = []
           person_data.split(separator).each do |person_string|
-            person = Person.new.from_hyrax(person_string)
+            person = CompositeElement.new.from_hyrax(person_string)
             final.append person.to_export
           end
           final.join(separator)
@@ -98,7 +98,7 @@ module CalState
         # @param person_csv [String]
         #
         def clean_person(person_csv)
-          person = Person.new.from_export(person_csv)
+          person = CompositeElement.new.from_export(person_csv)
           person.to_hyrax
         end
 

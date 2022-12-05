@@ -23,6 +23,7 @@
       <!-- sidebar -->
       <div class="col-sm-3 text-center">
         <%= render 'download', presenter: @presenter %>
+        <%= render 'download_remote', presenter: @presenter %>
         <%= render 'citations', presenter: @presenter %>
         <%= render 'social_media' %>
       </div>
@@ -61,22 +62,25 @@
             <div class="csu-item-metadata">
               <%= render 'metadata', presenter: @presenter %>
             </div>
+
+            <!-- relationships -->
             <div class="csu-item-relationship">
               <%= render 'relationships', presenter: @presenter %>
             </div>
           </div>
-          <div class="col-md-3">
 
+          <div class="col-md-3">
             <!-- campus logo -->
             <%= render 'campus_logo', presenter: @presenter %>
-
           </div>
         </div>
 
         <!-- files -->
-        <div class="csu-item-files">
-          <%= render 'items', presenter: @presenter %>
-        </div>
+        <% unless @presenter.external_url %>
+          <div class="csu-item-files">
+            <%= render 'items', presenter: @presenter %>
+          </div>
+        <% end %>
       </div>
 
       <%# TODO: we may consider adding these partials in the future %>

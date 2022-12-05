@@ -17,6 +17,9 @@
           <field name="external_modified_date">
             <xsl:value-of select="oai:header/oai:datestamp" />
           </field>
+          <field name="external_url">
+            <xsl:value-of select="oai:metadata/esploro:record/esploro:identifier.uri"/><xsl:text>#files_and_links</xsl:text>
+          </field>
           <xsl:call-template name="action" />
           <xsl:apply-templates select="oai:metadata/esploro:record/esploro:data" />
         </record>
@@ -24,6 +27,7 @@
     </records>
   </xsl:template>
 
+  <!-- action -->
   <xsl:template name="action">
     <xsl:for-each select="oai:metadata/esploro:record/esploro:data">
       <xsl:if test="not(esploro:filesList) or not(esploro:identifier.handle)">
@@ -45,9 +49,6 @@
         <xsl:when test="../esploro:etd/esploro:diss.type">
           <field name="resource_type">
             <xsl:choose>
-              <xsl:when test="../esploro:etd/esploro:diss.type = 'Doctoral Thesis'">
-                <xsl:text>Dissertation</xsl:text>
-              </xsl:when>
               <xsl:when test="../esploro:etd/esploro:diss.type = 'Thesis'">
                 <xsl:text>Masters Thesis</xsl:text>
               </xsl:when>
@@ -55,7 +56,7 @@
                 <xsl:text>Graduate Project</xsl:text>
               </xsl:when>
               <xsl:when test="../esploro:etd/esploro:diss.type = 'Project'">
-                <xsl:text>Undergraduate Project</xsl:text>
+                <xsl:text>Graduate Project</xsl:text>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:value-of select="../esploro:etd/esploro:diss.type"/>
@@ -130,13 +131,6 @@
       </xsl:choose>
   </xsl:template>
 
-  <!-- esploro url -->
-  <xsl:template match="esploro:identifier.uri">
-    <field name="external_url">
-      <xsl:value-of select="text()"/>
-    </field>
-  </xsl:template>
-
   <!-- handle -->
   <xsl:template match="esploro:identifier.handle">
     <field name="handle">
@@ -184,7 +178,7 @@
   <xsl:template name="orcid">
     <xsl:if test="esploro:identifier.orcid">
       <xsl:text>:::::::::</xsl:text>
-      <xsl:value-of select="esploro:identifier.orcid" />
+      <xsl:value-of select="substring-after(esploro:identifier.orcid, 'https://orcid.org/')" />
     </xsl:if>
   </xsl:template>
 
