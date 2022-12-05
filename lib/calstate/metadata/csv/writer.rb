@@ -73,6 +73,7 @@ module CalState
           csv_file = "#{@csv_dir}/#{csv_filename}"
 
           CSV.open(csv_file, 'wb') do |csv|
+            csv.to_io.write "\uFEFF"
             csv << column_names
             model.where(campus: @campus_name).each do |doc|
               begin
