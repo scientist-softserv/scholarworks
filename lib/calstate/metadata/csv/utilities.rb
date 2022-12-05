@@ -77,20 +77,11 @@ module CalState
         end
 
         #
-        # Is the supplied field a date field?
-        #
-        # @param field [String]  field name
-        #
-        # @return [Boolean]
-        #
-        def is_date_field?(field)
-          FieldService.person_fields.include?(field)
-        end
-
-        #
         # Prep person data for export
         #
         # @param person_data [Array|]
+        #
+        # @return [String]
         #
         def prep_person(person_data)
           return person_data if person_data.nil?
@@ -111,6 +102,31 @@ module CalState
         def clean_person(person_csv)
           person = CompositeElement.new.from_export(person_csv)
           person.to_hyrax
+        end
+
+        #
+        # Is the supplied field a date field?
+        #
+        # @param field [String]  field name
+        #
+        # @return [Boolean]
+        #
+        def is_date_field?(field)
+          FieldService.date_fields.include?(field)
+        end
+
+        #
+        # Date fields should have a tab appended at the end
+        # to keep excel from messing with dates
+        #
+        # @param value [String]
+        #
+        # @return [String]
+        #
+        def prep_date(value)
+          return value if value.nil?
+
+          value + "\t"
         end
 
         #

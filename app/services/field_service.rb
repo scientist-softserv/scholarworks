@@ -7,7 +7,7 @@
 # CsuPresenter to reduce the number of redundant places fields are defined.
 #
 # To add a new field, add it to the appropriate model and then here:
-# (a) add it to `fields` method
+# (a) add it to `basic`, `scholarworks` or `archives` method, as appropriate
 # (b) add it to `single_fields`, if it is single-valued
 # (c) add it to oai-pmh field mapping
 #

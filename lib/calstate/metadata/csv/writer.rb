@@ -123,10 +123,7 @@ module CalState
 
             value = prep_values(value)
             value = prep_person(value) if is_person_field?(key)
-
-            # date fields should have a tab appended at the end
-            # to keep excel from messing with dates
-            value += "\t" if is_date_field?(key)
+            value = prep_date(value) if is_date_field?(key)
 
             values << value
           end
