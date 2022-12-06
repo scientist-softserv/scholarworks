@@ -26,6 +26,7 @@ en:
           editor_sim: Editor
           format_sim: Format
           granting_institution_sim: Granting Institution
+          has_model_ssim: Collection
           keyword_sim: Keyword
           language_sim: Language
           publisher_sim: Publisher
