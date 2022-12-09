@@ -16,13 +16,13 @@ namespace :calstate do
     results = if input.include?('/')
                 CSV.open(input, { headers: true })
               else
-                name = input.empty? ? nil : CampusService.get_name_from_slug(input)
-                reader = CalState::Metadata::SolrReader.new
-                reader.restricted_records(name)
+                campus = input.empty? ? nil : CampusService.get_name_from_slug(input)
+                reader = CalState::Metadata::Solr::Reader.new(campus: campus)
+                reader.restricted_records
               end
 
     results.each do |record|
-      print 'Processing work ' + record['id'] + ' . . . '
+      print "Processing work #{record['id']} . . . "
 
       begin
         work = ActiveFedora::Base.find(record['id'])
