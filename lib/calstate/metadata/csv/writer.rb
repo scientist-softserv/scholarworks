@@ -65,7 +65,8 @@ module CalState
 
           # remove these from attributes, since we're adding them to front
           attribute_names -= %w[admin_set_id
-                                campus]
+                                campus
+                                depositor]
 
           column_names.push(*attribute_names)
 
@@ -86,7 +87,7 @@ module CalState
                           prep_value(doc.embargo_release_date), # not in attributes
                           prep_value(doc.visibility_during_embargo), # not in attributes
                           prep_value(doc.visibility_after_embargo), # not in attributes
-                          prep_value(doc.depositor), # not in attributes
+                          prep_value(doc.depositor), # move to front
                           prep_values(doc.title_formatted), # use formatted
                           prep_values(doc.description_formatted)] # use formatted
                 values.push(*get_attr_values(doc.attributes, attribute_names))
