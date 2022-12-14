@@ -45,7 +45,6 @@ module CalState
           column_names = %w[id
                             campus
                             admin_set_id
-                            date_uploaded
                             visibility
                             embargo_release_date
                             visibility_during_embargo
@@ -79,12 +78,11 @@ module CalState
             csv << column_names
             model.where(campus: @campus_name).each do |doc|
               begin
-                values = [prep_value(doc.id), # not in attributes
+                values = [prep_value_for_excel(doc.id), # not in attributes
                           prep_value(doc.campus.first), # move to front
-                          prep_value(doc.admin_set_id), # move to front
-                          prep_value(doc.date_uploaded), # not in attributes
+                          prep_value_for_excel(doc.admin_set_id), # move to front
                           prep_value(doc.visibility), # not in attributes
-                          prep_value(doc.embargo_release_date), # not in attributes
+                          prep_value_for_excel(doc.embargo_release_date), # not in attributes
                           prep_value(doc.visibility_during_embargo), # not in attributes
                           prep_value(doc.visibility_after_embargo), # not in attributes
                           prep_value(doc.depositor), # move to front
@@ -126,11 +124,12 @@ module CalState
             next unless attribute_names.include?(key)
 
             value = prep_values(value)
-            value = prep_person(value) if is_person_field?(key)
-            value = prep_date(value) if is_date_field?(key)
+            value = prep_person(value) if person_field?(key)
+            value = prep_value_for_excel(value) if date_field?(key) || identifier_field?(key)
 
             values << value
           end
+
           values
         end
       end
