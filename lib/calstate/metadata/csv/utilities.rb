@@ -36,12 +36,11 @@ module CalState
         #
         # Prepare single value for export
         #
-        # Convert to string and append a tab to the end to force excel
-        # to treat the field as text rather than a number or date
+        # Convert to string and clean value
         #
         # @param value [String]  the value to add
         #
-        # @return [String] the value
+        # @return [String|nil] the value
         #
         def prep_value(value)
           value = clean_value(value)
@@ -72,14 +71,14 @@ module CalState
         #
         # @return [Boolean]
         #
-        def is_person_field?(field)
+        def person_field?(field)
           FieldService.person_fields.include?(field)
         end
 
         #
         # Prep person data for export
         #
-        # @param person_data [Array|]
+        # @param person_data [Array]
         #
         # @return [String]
         #
@@ -111,19 +110,33 @@ module CalState
         #
         # @return [Boolean]
         #
-        def is_date_field?(field)
+        def date_field?(field)
           FieldService.date_fields.include?(field)
         end
 
         #
-        # Date fields should have a tab appended at the end
-        # to keep excel from messing with dates
+        # Is the supplied field a number-like identifier?
+        #
+        # @param field [String]  field name
+        #
+        # @return [Boolean]
+        #
+        def identifier_field?(field)
+          FieldService.identifier_fields.include?(field)
+        end
+
+        #
+        # Prep value for Excel
+        #
+        # Append a tab to the end to force excel to treat the field as
+        # text rather than a number or date
         #
         # @param value [String]
         #
-        # @return [String]
+        # @return [String|nil]
         #
-        def prep_date(value)
+        def prep_value_for_excel(value)
+          value = prep_value(value)
           return value if value.nil?
 
           value + "\t"

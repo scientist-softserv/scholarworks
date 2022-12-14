@@ -241,9 +241,30 @@ class FieldService
        editor]
   end
 
+  #
+  # Fields that contain date values
+  #
+  # @return [Array] string
+  #
   def self.date_fields
     %w[date_issued
-       date_last_modified]
+       date_last_modified
+       date_modified
+       date_uploaded
+       external_modified_date]
+  end
+
+  #
+  # Identifier fields that look like numbers but should not be treated as such
+  #
+  # @return [Array] string
+  #
+  def self.identifier_fields
+    %w[admin_set_id
+       id
+       isbn
+       issn
+       oclc]
   end
 
   #
