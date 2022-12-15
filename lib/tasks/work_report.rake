@@ -12,34 +12,35 @@ namespace :calstate do
     export_file = args[:file] or raise 'Please provide path for export file.'
 
     CSV.open(export_file, 'wb') do |csv|
-      csv << %w[ID handle campus files file_ids]
+      csv << %w[ID handle campus files file_ids size]
       CalState::Metadata.models.each do |model|
         model.all.each do |doc|
-          begin
-            handle = nil
-            doc.handle.each do |url|
-              handle = url if url.include?('handle.net')
-            end
-            values = [
-              doc.id,
-              handle,
-              doc.campus.first.to_s
-            ]
-            file_names = String.new
-            file_ids = String.new
-            doc.file_sets.each do |file|
-              file_names.concat('|') unless file_names.to_s.empty?
-              file_names.concat(file.title.first.to_s)
-
-              file_ids.concat('|') unless file_ids.to_s.empty?
-              file_ids.concat(file.id)
-            end
-            values.push(file_names)
-            values.push(file_ids)
-            csv << values
-          rescue StandardError => e
-            raise e
+          handle = nil
+          doc.handle.each do |url|
+            handle = url if url.include?('handle.net')
           end
+
+          file_names = []
+          file_ids = []
+          size_of_files = 0
+
+          doc.file_sets.each do |file|
+            file_names.append file.title.first.to_s
+            file_ids.append file.id
+            size = file.association(:original_file)&.reader&.file_size
+            size_of_files += size.first.to_i unless size.nil?
+          end
+
+          values = [
+            doc.id,
+            handle,
+            doc.campus.first.to_s
+          ]
+          values.append file_names.join('|')
+          values.append file_ids.join('|')
+          values.append size_of_files
+
+          csv << values
         end
       end
     end
