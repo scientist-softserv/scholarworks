@@ -33,14 +33,22 @@ class ApplicationController < ActionController::Base
   def handle_exception(exception = nil)
     return if exception.nil?
 
-    Rails.logger.error exception.message
-    Rails.logger.error exception.backtrace.join("\n")
-
     not_found = %w[ActionController::RoutingError
                    ActiveRecord::RecordNotFound
                    ActiveFedora::ObjectNotFoundError
                    Blacklight::Exceptions::RecordNotFound]
     error_code = not_found.include?(exception.class.to_s) ? 404 : 500
+
+    # just log the path for page (or record) not found in separate log
+    # otherwise the full stack trace for application errors
+    if error_code == 404
+      missing = "[#{request.ip}] #{request.fullpath}"
+      Logger.new('log/not_found.log').info(missing)
+    else
+      Rails.logger.error exception.message
+      Rails.logger.error exception.backtrace.join("\n")
+    end
+
     respond_to do |format|
       format.html { render file: "#{Rails.root}/public/#{error_code}.html", status: error_code, layout: true }
       format.all { render nothing: true, status: status }
