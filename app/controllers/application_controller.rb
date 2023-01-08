@@ -21,6 +21,13 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new('Not Found')
   end
 
+  protected
+
+  # no need for locale, since we only use English
+  def default_url_options
+    super.except!(:locale)
+  end
+
   private
 
   def after_sign_out_path_for(*)
