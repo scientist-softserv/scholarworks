@@ -58,7 +58,18 @@ module Blacklight::Controller
     # Determine whether to render the bookmarks control
     # (Needs to be available globally, as it is used in the navbar)
     def render_bookmarks_control?
-      has_user_authentication_provider? and current_or_guest_user.present?
+
+
+
+      ### CUSTOMIZATION
+      # Only check for current_user instead of current_or_guest
+      # as guest users cause template errors on collection gallery view
+      has_user_authentication_provider? and current_user
+
+      ### END CUSTOMIZATION
+
+
+
     end
 
     ##
@@ -99,10 +110,19 @@ module Blacklight::Controller
 
     def search_facet_url options = {}
       opts = search_state.to_h.merge(action: "facet").merge(options).except(:page)
+
+
+
+      ### CUSTOMIZATION
       # just override this and set it to catalog controller
       # so it doesn't complain about no route error in the
       # front end as it generates the more facet link as it sets to 'advanced'
       opts['controller'] = 'catalog' if opts['controller'].eql?('advanced')
+
+      ### END CUSTOMIZATION
+
+
+
       url_for opts
     end
     deprecation_deprecate search_facet_url: 'Use search_facet_path instead.'
