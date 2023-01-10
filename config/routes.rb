@@ -68,7 +68,7 @@ Rails.application.routes.draw do
 
   get 'campus/:campus', to: 'campus#index'
 
-  get '*unmatched_route', to: 'application#not_found'
-  post '*unmatched_route', to: 'application#not_found'
+  match '*unmatched_route', to: 'application#not_found', via: :all
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

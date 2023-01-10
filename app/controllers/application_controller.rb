@@ -41,7 +41,6 @@ class ApplicationController < ActionController::Base
     # we assume the exception is an application error worth fully logging and inspecting later
     error_code = 500
     error_label = 'SERVER ERROR'
-    use_layout = true
 
     # unless it's one of these common access or invalid request errors, most caused by bots
     not_found = %w[ActionController::RoutingError
@@ -49,7 +48,8 @@ class ApplicationController < ActionController::Base
                    ActiveFedora::ObjectNotFoundError
                    Blacklight::Exceptions::RecordNotFound
                    Ldp::Gone]
-    no_access = %w[CanCan::AccessDenied]
+    no_access = %w[ActionController::InvalidAuthenticityToken
+                   CanCan::AccessDenied]
     not_valid = %w[I18n::InvalidLocale]
 
     # let's find out if it's one of the above
@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
     # response to client
     respond_to do |format|
       # for html pages: give them the full response
-      format.html { render file: "#{Rails.root}/public/#{error_code}.html", status: error_code, layout: 'error' }
+      format.html { render "errors/#{error_code}", status: error_code, layout: 'error' }
 
       # for non-html stuff: respond with just the header
       # content_type set here to stop X-XSS errors for missing .js files

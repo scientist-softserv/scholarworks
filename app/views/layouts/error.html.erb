@@ -10,7 +10,11 @@
 </div>
 <%= render '/masthead' %>
 <div id="content-wrapper" class="container" role="main">
-  <%= render_breadcrumbs builder: Hyrax::BootstrapBreadcrumbsBuilder %>
+  <nav class="breadcrumb" role="region" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Home</a></li>
+    </ol>
+  </nav>
   <a id="skip-to-content"></a>
   <%= content_for?(:content) ? yield(:content) : yield %>
 </div>
