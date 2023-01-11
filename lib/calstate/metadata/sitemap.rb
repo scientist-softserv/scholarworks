@@ -13,10 +13,10 @@ module CalState
       #
       # New Sitemap
       #
-      # @param path [String]  path to location of sitemap files
       #
-      def initialize(path)
-        @path = path
+      def initialize
+        @file_path = 'public/sitemap'
+        @url_path = 'sitemap'
         @solr_reader = Solr::Reader.new
       end
 
@@ -56,9 +56,9 @@ module CalState
               end
             }
           end
-          file_name = @path + '/sitemap-' + x.to_s + '.xml'
+          file_name = "sitemap-#{x.to_s}.xml"
           files.append file_name
-          File.write(file_name, builder.to_xml)
+          File.write("#{@file_path}/#{file_name}", builder.to_xml)
           x += 1
         end
 
@@ -76,13 +76,13 @@ module CalState
             xml.sitemapindex
             files.each do |site_map_file|
               xml.sitemap {
-                xml.loc hyrax_url + '/' + site_map_file
+                xml.loc "#{hyrax_url}/#{@url_path}/#{site_map_file}"
                 xml.lastmod Time.now.strftime('%Y-%m-%dT%H:%M:%S.%L%z')
               }
             end
           }
         end
-        File.write(@path + '/sitemap.xml', builder.to_xml)
+        File.write("#{@file_path}/sitemap.xml", builder.to_xml)
       end
     end
   end
