@@ -52,7 +52,7 @@ class Thesis < ActiveFedora::Base
   # Set the degree level based on the resource type
   #
   def set_degree_level
-    service = DegreeLevelService.new(self.class.name.downcase)
+    service = DegreeLevelService.new(self.class.name.downcase, campus.first)
     level = service.get(resource_type.first)
     self.degree_level = level unless level.nil?
   end
