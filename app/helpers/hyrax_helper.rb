@@ -7,6 +7,7 @@ module HyraxHelper
     CampusPermissionBadge.new(value).render
   end
 
+  # add campus visibility
   def visibility_options(variant)
     options = [
       Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
@@ -24,10 +25,38 @@ module HyraxHelper
     options.map { |value| [visibility_text(value), value] }
   end
 
+  # we only use English
   def available_translations
     {
-      'en' => 'English',
+      'en' => 'English'
     }
   end
 
+  # use pipe instead of // as separator
+  def construct_page_title(*elements)
+    (elements.flatten.compact + [application_name]).join(' | ')
+  end
+
+  # handle catalog title separately
+  def default_page_title
+    if controller_name == 'catalog'
+      title_parts = []
+      title_parts.append(params['q']) if params.key?('q')
+      if params.key?('f')
+        facets = ''
+        params['f'].each do |key, value|
+          facets += " #{key}: #{value}"
+        end
+        title_parts.append(facets.squish)
+      end
+
+      text = title_parts.join(' | ')
+      text = 'Search' if text.blank?
+    else
+      text = controller_name.singularize.titleize
+      text = "#{action_name.titleize} " + text if action_name
+    end
+
+    construct_page_title(text)
+  end
 end
