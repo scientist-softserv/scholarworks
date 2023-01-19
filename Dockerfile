@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/notch8/cal-state-hyrax/base:latest
+FROM ghcr.io/scientist-softserv/cal-state-hyrax/base:latest
 
 ADD http://timejson.herokuapp.com build-time
 #ADD ops/webapp.conf /etc/nginx/sites-enabled/webapp.conf
