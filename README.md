@@ -2,6 +2,75 @@
 
 ## Getting Started
 
+### Using Docker
+
+#### Install Docker
+Download [Docker Desktop](https://www.docker.com/products/docker-desktop) and log in
+
+### Install Dory
+
+On OS X or Linux we recommend running [Dory](https://github.com/FreedomBen/dory). It acts as a proxy allowing you to access domains locally such as app.test or tenant.app.test, making multitenant development more straightforward and prevents the need to bind ports locally. Be sure to [adjust your ~/.dory.yml file to support the .test tld](https://github.com/FreedomBen/dory#config-file).
+
+```bash
+gem install dory
+```
+
+_You can still run in development via docker with out Dory, but to do so please uncomment the ports section in docker-compose.yml_
+
+#### Clone the repository
+
+```
+git clone https://github.com/csuscholarworks/scholarworks.git
+cd scholarworks
+```
+
+#### Start Dory and Docker containers
+
+```
+dory up
+docker compose up
+```
+
+#### Run migrations/setup env
+
+To execute commands inside of the web container
+
+```
+docker compose exec web bash
+```
+
+Bundle and run migrations inside the container
+
+```
+bundle
+bin/rails db:migrate RAILS_ENV=development
+```
+
+Set up admin set and permissions (run these inside the Docker container)
+```
+bin/rails hyrax:default_admin_set:create
+bin/rails hyrax:default_collection_types:create
+bin/rails hyrax:migrate:add_collection_type_and_permissions_to_collections
+```
+
+Run the seeds file (run inside the Docker container)
+```
+bin/rails db:seed
+```
+
+Register a new user in Hyrax. And make that user an administrator (run these inside the Docker container).
+
+`bin/rails c`
+
+```
+admin = Role.create(name: 'admin')
+admin.users << User.find_by_user_key('your_admin_users_email@fake.email.org')
+admin.save
+```
+
+
+### Without Docker
+
 Install Ruby, Java, Postgres, etc., [prerequisites from Hyrax](https://github.com/samvera/hyrax).
 
 Create a database and user using the development settings in `config/database.yml`
