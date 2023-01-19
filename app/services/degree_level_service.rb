@@ -7,11 +7,18 @@ class DegreeLevelService
   #
   # New degree level service
   #
-  # @param model [String]  model, lowercase
+  # @param model [String]        model name lowercase
+  # @param campus_name [String]  campus name
   #
-  def initialize(model)
-    types_file = "config/authorities/resource_types_#{model}.yml"
-    @yaml = YAML.load_file(Rails.root.join(types_file))
+  def initialize(model, campus_name)
+    campus = CampusService.get_slug_from_name(campus_name)
+    types_file  = Rails.root.join("config/authorities/resource_types_#{model}.yml")
+    campus_file = Rails.root.join("config/authorities/resource_types_#{model}_#{campus}.yml")
+    @yaml = if File.exist?(campus_file)
+              YAML.load_file(campus_file)
+            else
+              YAML.load_file(types_file)
+            end
   end
 
   #
