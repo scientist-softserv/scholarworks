@@ -4,12 +4,11 @@ sword_ns = 'http://purl.org/net/sword/'
 handle = 'http://hdl.handle.net/' + ENV['HS_PREFIX'] + '/' + @object.id
 date_uploaded = DateTime.parse @object.date_uploaded.to_s
 date_modified = DateTime.parse @object.date_modified.to_s
-abstract = @object.abstract.empty? ? '' : @object.abstract.first
+summary = @object.description.empty? ? '' : @object.description.first
+rights = @object.rights_statement.empty? ? '' : @object.rights_statement
 user_agent = request.headers['User-Agent']
 packaging = request.headers['X-Packaging']
 col_id = params[:collection_id]
-default_rights = 'http://rightsstatements.org/vocab/InC/1.0/'
-rights = @object.rights_uri.empty? ? default_rights : @object.rights_uri
 
 xml.instruct!
 xml.entry(xmlns: atom_ns) do
@@ -26,7 +25,7 @@ xml.entry(xmlns: atom_ns) do
   xml.link(href: handle, rel: 'alternate', type: 'text/html')
   xml.published date_uploaded.strftime('%F')
   xml.rights(rights, type: 'text')
-  xml.summary(abstract, type: 'text')
+  xml.summary(summary, type: 'text')
   xml.title(@object.title.join(', '), type: 'text')
   xml.updated date_modified.strftime('%FT%RZ')
 

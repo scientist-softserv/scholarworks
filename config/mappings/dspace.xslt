@@ -70,13 +70,13 @@
   </xsl:template>
 
   <xsl:template match="dim:field[@mdschema='dc' and @element='coverage' and @qualifier='spatial']">
-    <field name="geographical_area">
+    <field name="keyword">
       <xsl:value-of select="text()"/>
     </field>
   </xsl:template>
 
   <xsl:template match="dim:field[@mdschema='dc' and @element='coverage' and @qualifier='temporal']">
-    <field name="time_period">
+    <field name="keyword">
       <xsl:value-of select="text()"/>
     </field>
   </xsl:template>
@@ -172,12 +172,6 @@
 
   <xsl:template match="dim:field[@mdschema='dc' and @element='identifier']">
     <field name="identifier">
-      <xsl:value-of select="text()"/>
-    </field>
-  </xsl:template>
-
-  <xsl:template match="dim:field[@mdschema='dc' and @element='identifier' and @qualifier='bibliographicCitation']">
-    <field name="bibliographic_citation">
       <xsl:value-of select="text()"/>
     </field>
   </xsl:template>
