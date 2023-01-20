@@ -228,4 +228,4 @@ en:
     labels:
       defaults: *work_fields
   sword:
-    treatement:
+    treatment: "The work has been received."
