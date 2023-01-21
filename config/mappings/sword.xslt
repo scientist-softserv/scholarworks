@@ -247,12 +247,12 @@
 
       <!-- geographical area -->
       <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/coverage' and ./@epdcx:vesURI='http://purl.org/dc/terms/spatial'">
-        <field name="keyword">
+        <field name="subject" modifier="geographical_area">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
       <xsl:if test="./@epdcx:attributeName='dcCoverageSpatial'">
-        <field name="keyword">
+        <field name="subject" modifier="geographical_area">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>

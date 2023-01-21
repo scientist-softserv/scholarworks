@@ -70,13 +70,13 @@
   </xsl:template>
 
   <xsl:template match="dim:field[@mdschema='dc' and @element='coverage' and @qualifier='spatial']">
-    <field name="keyword">
+    <field name="subject" modifier="geographical_area">
       <xsl:value-of select="text()"/>
     </field>
   </xsl:template>
 
   <xsl:template match="dim:field[@mdschema='dc' and @element='coverage' and @qualifier='temporal']">
-    <field name="keyword">
+    <field name="subject" modifier="time_period">
       <xsl:value-of select="text()"/>
     </field>
   </xsl:template>
