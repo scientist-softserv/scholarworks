@@ -17,7 +17,6 @@ CampusService::CAMPUSES.each do |campus|
   campus_admin_set = AdminSet.where(title: campus[:name]).first
   if campus_admin_set.blank?
     puts "Creating #{campus[:name]} AdminSet"
-    # TODO the next two lines seem redundent, are they?
     campus_admin_set = AdminSet.create!(title: [campus[:name]]) unless campus_admin_set.present?
     Hyrax::AdminSetCreateService.call(admin_set: campus_admin_set, creating_user: admin)
   else
