@@ -1,42 +1,104 @@
-version: '2.1'
+version: '3.4'
+
+x-app: &app
+  build:
+    context: .
+    target: hyrax-base
+  # command: sh -l -c "bundle && bundle exec puma -v -b tcp://0.0.0.0:3000"
+  image: ghcr.io/scientist-softserv/scholarworks:${TAG:-latest}
+  env_file:
+    - .env.development
+    - .env
+  # NOTE: all common env variables moved to .env
+  volumes:
+    - uploads:/app/samvera/hyrax-webapp/public/uploads
+    - assets:/app/samvera/hyrax-webapp/public/assets
+    - cache:/app/samvera/hyrax-webapp/tmp/cache
+    - node:/data/node_modules
+    - uv:/app/samvera/hyrax-webapp/public/uv
+    - .:/app/samvera/hyrax-webapp
+
 services:
-  web:
-    build: .
-    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG:-master}"
-    env_file:
-      - .env
-      - .env.development
-    environment:
-      - VIRTUAL_PORT=3000
-      - VIRTUAL_HOST=calstate.test
-    volumes:
-      - .:/home/app/webapp
-    # Keep the stdin open, so we can attach to our app container's process
-    # and do things such as byebug, etc:
-    stdin_open: true
-    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
-    tty: true
-    ports:
-      - "3000:3000"
+  worker:
+    # command: sh -l -c "bundle && bundle exec sidekiq"
+    <<: *app
+    build:
+      context: .
+      target: hyrax-worker
+      cache_from:
+        - ghcr.io/scientist-softserv/scholarworks:${TAG:-latest}
+        - ghcr.io/scientist-softserv/scholarworks/worker:${TAG:-latest}
+    image: ghcr.io/scientist-softserv/scholarworks/worker:${TAG:-latest}
     depends_on:
+      - solr
+      - fcrepo
       - postgres
       - redis
-    command: ["/sbin/setuser", "app", "bundle", "exec", "rails", "hydra:server"]
+
+  web:
+    <<: *app
+    command: sh -l -c "bundle && bundle exec puma -v -b tcp://0.0.0.0:3000"
+    # ports:
+    #   - "3000:3000"
+    environment:
+      VIRTUAL_HOST: scholarworks.test
+      VIRTUAL_PORT: 3000
+    depends_on:
+      - worker
+      - redis
+      - solr
+      - fcrepo
+      - postgres
+
   redis:
-    image: 'redis:3.2-alpine'
-    command: redis-server
+    image: redis:3
     ports:
-      - "6379:6379"
+      - '6379'
     volumes:
-      - 'redis:/var/lib/redis/data'
+      - 'redis:/data'
+
   postgres:
-    image: postgres
-    env_file:
-      - .env
+    image: postgres:9.6
+    environment:
+      POSTGRES_DB: ${DATABASE_DB}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: "${DATABASE_USER}"
     ports:
-      - "5432:5432"
+      - "5432"
     volumes:
       - 'postgres:/var/lib/postgresql/data'
+
+  solr:
+    image: solr:7.7
+    ports:
+      - "8983"
+    environment:
+      VIRTUAL_HOST: solr.scholarworks.test
+      VIRTUAL_PORT: 8983
+      OOM: script
+    volumes:
+      - './solr/conf:/opt/config:delegated'
+      - solr:/opt/solr/server/solr/mycores
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - "${SOLR_CORE}"
+      - /opt/config
+
+  fcrepo:
+    image: botimer/fcrepo:4.5.1
+    volumes:
+      - 'fcrepo:/opt/data'
+    ports:
+      - "8080"
+
 volumes:
-    redis:
-    postgres:
+  fcrepo:
+  postgres:
+  redis:
+  solr:
+  uploads:
+  assets:
+  cache:
+  node:
+  uv:

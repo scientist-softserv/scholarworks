@@ -24,6 +24,12 @@ git clone https://github.com/csuscholarworks/scholarworks.git
 cd scholarworks
 ```
 
+#### Build Docker containers
+
+```
+docker compose build
+```
+
 #### Start Dory and Docker containers
 
 ```
