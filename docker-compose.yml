@@ -37,7 +37,7 @@ services:
 
   web:
     <<: *app
-    command: sh -l -c "bundle && bundle exec puma -v -b tcp://0.0.0.0:3000"
+    command: bash -l -c "bundle && bundle exec puma -v -b tcp://0.0.0.0:3000"
     # ports:
     #   - "3000:3000"
     environment:
