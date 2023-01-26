@@ -126,20 +126,46 @@ module CalState
         end
 
         #
-        # Prep value for Excel
+        # Prep number for Excel
         #
-        # Append a tab to the end to force excel to treat the field as
-        # text rather than a number or date
+        # Append a tab to the end of a numeric-like value to force excel to treat the field as text
         #
         # @param value [String]
         #
         # @return [String|nil]
         #
-        def prep_value_for_excel(value)
+        def prep_number_for_excel(value)
           value = prep_value(value)
           return value if value.nil?
 
-          value + "\t"
+          # convert the value to a number (will cause leading zeros and stuff to be truncated)
+          value_numeric = value.to_i
+
+          # if the value wasn't a number to begin with the numeric version will be a zero --or--
+          # if the value matches the numeric version then we can take the value straight-up
+          # otherwise excel will munge it, so add a tab to the end so it's treated as text
+          if value_numeric.zero? ||
+             value_numeric.to_s == value
+            value
+          else
+            "#{value}\t"
+          end
+        end
+
+        #
+        # Prep date for Excel
+        #
+        # Append a tab to date value to force excel to treat the field as text
+        #
+        # @param value [String]
+        #
+        # @return [String|nil]
+        #
+        def prep_date_for_excel(value)
+          value = prep_value(value)
+          return value if value.nil?
+
+          "#{value}\t"
         end
 
         #
@@ -167,7 +193,7 @@ module CalState
         #
         def get_csv_filename(campus_slug, model_name)
           model_file = Metadata.get_slug(model_name)
-          campus_slug + '_' + model_file + '.csv'
+          "#{campus_slug}_#{model_file}.csv"
         end
       end
     end
