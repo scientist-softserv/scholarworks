@@ -41,13 +41,15 @@ module HyraxHelper
   def default_page_title
     if controller_name == 'catalog'
       title_parts = []
-      title_parts.append(params['q']) if params.key?('q')
+      query = params['q']
+      title_parts.append(query) unless query.blank?
       if params.key?('f')
-        facets = ''
+        facets = []
         params['f'].each do |key, value|
-          facets += " #{key}: #{value}"
+          field = t("blacklight.search.fields.facet.#{key}")
+          facets.append "#{field}: #{value.join(', ')}".squish
         end
-        title_parts.append(facets.squish)
+        title_parts.append(facets.join(', '))
       end
 
       text = title_parts.join(' | ')
