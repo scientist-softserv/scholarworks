@@ -11,9 +11,7 @@ gem 'rails', '~> 5.1.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-# gem 'puma', '~> 3.7'
-# Use Passenger as the app server
-gem 'passenger',">= 5.0.25", require: "phusion_passenger/rack_handler"
+gem 'puma', '~> 4.3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -39,9 +37,7 @@ gem 'awesome_print'
 gem 'table_print'
 
 # Use sidekiq for background jobs in production
-group :production do
-  gem 'sidekiq'
-end
+gem 'sidekiq'
 
 group :test do
   gem 'rspec-sidekiq'
@@ -74,7 +70,7 @@ gem 'hyrax', '2.9.6'
 gem 'hydra-role-management'
 gem 'hydra-derivatives', '~>3.6'
 gem 'omniauth-shibboleth'
-gem 'config'
+# gem 'config'
 
 group :development, :test do
   gem 'solr_wrapper', '>= 0.3'
