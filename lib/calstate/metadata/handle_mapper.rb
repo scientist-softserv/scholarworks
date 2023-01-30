@@ -15,14 +15,14 @@ module CalState
       #
       def initialize(path)
         @path = path
-        @solr_reader = SolrReader.new
+        @solr_reader = Solr::Reader.new
       end
 
       #
       # Build rewrite mapping files
       #
       def run
-        results = @solr_reader.fetch_all
+        results = @solr_reader.records
         results.each do |doc|
           write_to_file(doc)
         end

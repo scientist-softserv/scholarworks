@@ -1,0 +1,13 @@
+<% presenter = featured.presenter %>
+<li class="featured-item public-featured-item" data-id="<%= presenter.id %>">
+  <div class="row">
+    <div class="col-sm-10">
+      <div>
+        <div class="featured-item-title">
+          <span class="sr-only"><%= t('hyrax.homepage.featured_works.document.title_label') %></span>
+          <%= render 'csu/result', document: presenter.solr_document, hyrax: main_app %>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>

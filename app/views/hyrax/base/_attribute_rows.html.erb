@@ -1,9 +1,17 @@
 <!-- begin attribute rows -->
+
+<!-- main date -->
+<%= presenter.attribute_to_html(:date_issued, html_dl: true) %>
+
 <!-- resource type -->
 <%= presenter.attribute_to_html(:resource_type, render_as: :faceted, html_dl: true) %>
 
 <!-- authors -->
-<%= presenter.attribute_to_html(:creator, render_as: :person_link, html_dl: true) %>
+<% if SystemService::archive? %>
+  <%= presenter.attribute_to_html(:creator, render_as: :archive_person_link, html_dl: true) %>
+<% else %>
+  <%= presenter.attribute_to_html(:creator, render_as: :person_link, html_dl: true) %>
+<% end %>
 <%= presenter.attribute_to_html(:contributor, render_as: :person_link, html_dl: true) %>
 <%= presenter.attribute_to_html(:editor, render_as: :person_link, html_dl: true) %>
 <%= presenter.attribute_to_html(:investigator, html_dl: true) %>
@@ -11,34 +19,48 @@
 <%= presenter.attribute_to_html(:advisor, render_as: :person_link, html_dl: true) %>
 <%= presenter.attribute_to_html(:committee_member, render_as: :person_link, html_dl: true) %>
 
+<!-- archives -->
+<%= presenter.attribute_to_html(:interviewer, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:interviewee, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:format, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:has_finding_aid, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:repository, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:work_type, render_as: :faceted, html_dl: true) %>
+
 <!-- institution -->
 <%= presenter.attribute_to_html(:campus, render_as: :faceted, html_dl: true) %>
-<%= presenter.attribute_to_html(:college, html_dl: true) %>
-<%= presenter.attribute_to_html(:department, html_dl: true) %>
+<%= presenter.attribute_to_html(:college, render_as: :faceted_for_campus, html_dl: true, campus: presenter.campus) %>
+<%= presenter.attribute_to_html(:department, render_as: :faceted_for_campus, html_dl: true, campus: presenter.campus) %>
 <%= presenter.attribute_to_html(:publisher, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:granting_institution, render_as: :faceted, html_dl: true) %>
 
 <!-- degree information -->
 <%= presenter.attribute_to_html(:degree_level, html_dl: true) %>
 <%= presenter.attribute_to_html(:degree_name, html_dl: true) %>
+<%= presenter.attribute_to_html(:degree_program, html_dl: true) %>
 
 <!-- subjects -->
 <%= presenter.attribute_to_html(:discipline, render_as: :discipline, html_dl: true) %>
 <%= presenter.attribute_to_html(:subject, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:keyword, render_as: :faceted, html_dl: true) %>
-<%= presenter.attribute_to_html(:geographical_area, html_dl: true) %>
-<%= presenter.attribute_to_html(:time_period, html_dl: true) %>
+<%= presenter.attribute_to_html(:geographical_area, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:time_period, render_as: :faceted, html_dl: true) %>
 
-<!-- parent information -->
+<!-- related resources information -->
 <%= presenter.attribute_to_html(:source, html_dl: true) %>
 <%= presenter.attribute_to_html(:related_url, render_as: :external_link, html_dl: true) %>
-<%= presenter.attribute_to_html(:is_part_of, html_dl: true) %>
+<%= presenter.attribute_to_html(:series, html_dl: true) %>
 
-<!-- date information -->
-<%= presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim', html_dl: true) %>
+<!-- parent publication -->
+<%= presenter.attribute_to_html(:publication_title, html_dl: true) %>
+<%= presenter.attribute_to_html(:volume, html_dl: true) %>
+<%= presenter.attribute_to_html(:issue, html_dl: true) %>
+<%= presenter.attribute_to_html(:pages, html_dl: true) %>
+
+<!-- additional date information -->
+<%= presenter.attribute_to_html(:date_created, html_dl: true) %>
 <%= presenter.attribute_to_html(:date_available, html_dl: true) %>
 <%= presenter.attribute_to_html(:date_copyright, html_dl: true) %>
-<%= presenter.attribute_to_html(:date_issued, html_dl: true) %>
 <%= presenter.attribute_to_html(:date_submitted, html_dl: true) %>
 <%= presenter.attribute_to_html(:date_accessioned, html_dl: true) %>
 <div style="display:none"><%= presenter.embargo_terms %></div>

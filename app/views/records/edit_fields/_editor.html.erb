@@ -1,38 +1,8 @@
-<%= render "shared/composite_person",
+<%= render "shared/composite_element",
            f: f,
            model_type: f.object.model.class.to_s.underscore,
-           composite_person: f.object.editor,
-           key: key,
-           key_text: key,
+           composite_element: f.object.editor,
+           elem_type: key,
+           elem_type_text: key,
+           subtypes: 'name email institution orcid',
            help_block_str: t('simple_form.hints.defaults.editor') %>
-<script type="text/javascript" charset="utf-8">
-  /*
-    model_type = publication, thesis, etc
-    composite_person is the actual object of creator, contributor
-    key is a string with value of creator, contributor, etc
-    which would match to person_type as an parameter for most of the routines
-   */
-
-  function post_add_editor() {
-    // in case we need to do anything extra for this class
-    post_add_person();
-  }
-
-  /*
-  function remove_empty_editor() {
-    $('.editor_name').each(function () {
-      if ($.trim($(this).val()) == '') {
-        $('#editor' + $(this).prop('id').substring(11)).remove();
-      }
-    })
-  }
-  */
-  function generate_editor() {
-    return generate_person('editor', false);
-  }
-
-  $(function() {
-    deserialize_person('editor');
-  });
-</script>
-

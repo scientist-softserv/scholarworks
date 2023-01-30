@@ -2,124 +2,230 @@
 en:
   activefedora:
     models:
+      archive: Archive
       dataset: Research Data
       educational_resource: Open Educational Resource
+      presentation: Presentation
+      project: Project
       publication: Publication
-      thesis: Student Research
-
+      thesis: Thesis or Dissertation
   blacklight:
     search:
       fields:
         facet:
-          admin_set: Administrative Set
           advisor_sim: Advisor
           campus_sim: Campus
-          committee_member_sim: Committee member
+          college_sim: College
+          committee_member_sim: Committee Member
           contributor_sim: Contributor
           creator_sim: Creator
-          description_note: Notes
+          date_issued_year_sim: Date
+          degree_level_sim: Degree Level
+          department_sim: Department
           discipline_sim: Discipline
           editor_sim: Editor
+          format_sim: Format
+          granting_institution_sim: Granting Institution
           has_model_ssim: Collection
-          granting_institution_sim: Granting institution
-          identifier_tesim: Identifier
           keyword_sim: Keyword
           language_sim: Language
           publisher_sim: Publisher
+          resource_type_sim: Resource Type
           subject_sim: Subject
-        show:
+        show: &work_fields
           admin_set: Administrative Set
+          advisor: Advisor
+          alternative_title: Alternative Title
+          award_number: Award Number
+          campus: Campus
+          college: College
+          committee_member: Committee Member
+          contributor: Contributor
+          creator: Creator
+          data_note: Data Note
+          data_type: Data Type
+          date_issued: Date
+          date_last_modified: Date Last Modified
+          date_range: Date Range
+          degree_level: Degree Level
+          degree_name: Degree Name
+          degree_program: Degree Program
+          department: Department
+          description: Abstract or Summary
           description_note: Notes
-          has_model_ssim: Collection
+          discipline: Discipline
           doi: DOI
-          identifier_uri: Identifier URI
-          issn: ISSN
+          edition: Edition
+          editor: Editor
+          extent: Extent
+          granting_institution: Granting Institution
+          handle: Handle
+          has_model_ssim: Collection
+          identifier: Other Identifier
+          internal_note: Private Note
           isbn: ISBN
-          oclcno: OCLC no.
+          issn: ISSN
+          issue: Issue / Number
+          keyword: Keywords
+          language: Language
+          license: License
+          meeting_name: Meeting Name
+          methods_of_collection: Methods of Collection
+          oclcno: OCLC Number
+          pages: Pages
+          place: Place
+          provenance: Provenance
+          publication_title: Publication Title
+          publisher: Publisher
+          related_url: Related URL
+          resource_type: Resource Type
+          rights_note: Rights Statement
+          series: Series
+          sponsor: Sponsor
+          statement_of_responsibility: Statement of Responsibility
+          subject: Subjects
+          title: Title
+          volume: Volume
+          # @deprecated
+          abstract: Abstract
+          bibliographic_citation: Bibliographic Citation
+          date_accessioned: Date Accessioned
+          date_available: Date Available
+          date_copyright: Date Copyright
+          date_submitted: Date Submitted
+          embargo_terms: Embargo Terms
+          geographical_area: Geographical Area
+          identifier_uri: Identifier URI
+          investigator: Investigator
+          publication_status: Publication Status
+          rights_holder: Rights Holder
+          rights_statement: Rights Statement
           rights_uri: Rights URI
-
+          time_period: Time Period
+          # @archive
+          format: Format
+          has_finding_aid: Finding Aid
+          institution: Institution
+          interviewee: Interviewee
+          interviewer: Interviewer
+          is_part_of: Source Collection
+          repository: Repository
+          work_type: Type
+  blacklight_advanced_search:
+    form:
+      title: Advanced Search
   hyrax:
-    account_name: "My Institution Account Id"
+    account_name: My Institution Account ID
+    collection:
+      actions:
+        nested_subcollection:
+          desc: 'Add this collection to an existing collection'
     directory:
       suffix: "@calstate.edu"
     footer:
       copyright_html: "<strong>Copyright © 2017 Samvera</strong> Licensed under the Apache License, Version 2.0"
       service_html: "A service of <a href=\"http://samvera.org/\" class=\"navbar-link\" target=\"_blank\">Samvera</a>."
-    institution_name: "Cal State"
-    institution_name_full: "California State University"
-    product_name: ScholarWorks
+    icons:
+      archive: 'fa fa-file-text-o'
+      dataset: 'fa fa-file-text-o'
+      educational_resource: 'fa fa-file-text-o'
+      presentation: 'fa fa-file-text-o'
+      project: 'fa fa-file-text-o'
+      publication: 'fa fa-file-text-o'
+      thesis: 'fa fa-file-text-o'
+    institution_name: Cal State
+    institution_name_full: California State University
     product_twitter_handle: "@csuscholarworks"
     search:
       button:
         html: <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+    select_type:
+      archive:
+        name: Archive
+        description: Archival works
+      dataset:
+        name: Dataset
+        description: Research data
+      educational_resource:
+        name: Open Educational Resource
+        description: Textbook or Course Material
+      presentation:
+        name: Presentation
+        description: Conference Paper, Program, Poster or Interview
+      project:
+        name: Project
+        description: Graduate or Undergraduate Project
+      publication:
+        name: Publication
+        description: Article, Book, Conference Proceeding, Journal Issue or Report
+      thesis:
+        name: Master's Thesis or Dissertation
+        description: Master's Thesis or Dissertation
+        sanmarcos:
+          name: Student Research
+          description: Dissertation, Master's Thesis, or Project
+
     visibility:
       campus:
         note_html: Restrict access to campus
         text: Campus
       open:
         warning_html: ""
+  mailboxer:
+    message_mailer:
+      subject_new: "ScholarWorks new message: %{subject}"
+      subject_reply: "ScholarWorks new reply: %{subject}"
+    notification_mailer:
+      subject: "Scholarworks new notification: %{subject}"
   simple_form:
     hints:
       defaults:
-        abstract: "Description of the work. Examples include abstracts of a paper, a summary of a report or dataset, or any additional notes describing the content of the work."
-        advisor: "Enter the advisor’s name exactly as it appears on the work (e.g., Jerome C. Baxter). If there are multiple advisors, click the “Add another Advisor” link to add more."
-        alternative_title: "Use for translations or cases where a user may search for another version of the title (i.e. Places to see in SF could have an alternative title of Places to see in San Francisco).  Capitalize the first word and any proper nouns."
-        author: "Enter the author’s name exactly as it appears on the work (e.g., Jerome C. Baxter). If there are multiple authors, click the “Add another Author” link to add more."
-        based_near: "A place name related to the work, such as its site of publication, or the city, state, or country the work contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>."
-        bibliographic_citation: "Bibliographic reference information for the resource. E.g., volume, issue, page range."
-        college: "The college or school within the university to which the creator of the work is affiliated. Use Ctrl or Command key to select more than one for interdisciplinary works."
-        committee_member: "Enter the committee member’s name exactly as it appears on the work (e.g., Jerome C. Baxter). If there are multiple committee members, click the “Add another Committee Member” link to add more."
-        contributor: "A person or group you want to recognize for playing a role in the creation of the work, but not the primary role. Enter the contributor’s name exactly as it appears on the work (e.g., Jerome C. Baxter). If there are multiple contributors, click the “Add another Contributor” link to add more."
-        creator: "Enter the creator’s name exactly as it appears on the work (e.g., Jerome C. Baxter). If there are multiple creators, click the “Add another Creator” link to add more."
-        date_copyright: "Date of copyright, enter in YYYY format, e.g. 2019."
-        date_created: "The date on which the work was created."
-        date_issued: "Date of publication. If work is not published, then record the date deposited in ScholarWorks."
-        date_published: "Date of publication. If work is not published, then record the date deposited in ScholarWorks. Enter all known information following the YYYY-MM-DD format. Record at minimum the year (i.e. 2019)."
-        degree_level: "Select from the drop-down menu."
-        degree_name: "The name of the degree awarded as a result of the resource."
-        department: "Use Ctrl or Command key to select more than one for interdisciplinary works. If your department is not represented in this list, please email your <a href='https://scholarworks.calstate.edu/about'>ScholarWorks administrator</a>."
+        advisor: "The advisor’s name exactly as it appears on the work (e.g., Jerome C. Baxter)."
+        alternative_title: "Use for translations or cases where a user may search for another version of the title (e.g., Places to see in SF could have an alternative title of Places to see in San Francisco).  You can use <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case' target='_blank'>sentence case</a> or <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case' target='_blank'>title case</a> capitalization. Want to try a <a href='https://titlecaseconverter.com/' target='_blank'>title case converter</a>?"
+        award_number: "The award number provided by the agency or organization which funded the research that produced the dataset. Might include name, number, or an alpha-numeric text string used to uniquely identify the project and its aligned datasets."
+        committee_member: "Committee member's name exactly as it appears on the work (e.g., Jerome C. Baxter)."
+        contributor: "A person or group you want to recognize for playing a role in the creation of the work, but not the primary role. Enter the contributor’s name exactly as it appears on the work (e.g., Jerome C. Baxter)."
+        creator: "A person or organization primarily responsible for creating the intellectual content of the work. Enter the creator’s name exactly as it appears on the work (e.g., Jerome C. Baxter)."
+        data_note: "Important information about how the data set was created, the provenance of the data, or any updates and amendments made to the data sets."
+        data_type: "Type of data collected."
+        date_issued: "Date of publication."
+        date_last_modified: "Date the dataset was last edited, changed, or modified."
+        date_range: "Dates the collection of data started and completed."
+        degree_name: "Enter degree name in capital letters with a period after each letter (e.g., M.A. or M.S.)"
+        degree_program: "The name of the program that awarded the degree."
+        department: "The department within the university to which the creator(s) of the work is affiliated.  If your department is not represented in this list, please email your <a href='https://scholarworks.calstate.edu/about'>ScholarWorks administrator</a>."
         description: "Description of the work. Examples include abstracts of a paper, a summary of a report or dataset, or any additional notes describing the content of the work."
-        description_note: "FOR LIBRARY USE ONLY."
+        description_note: "Additional information describing the resource."
         doi: "The unique Digital Object Identifier (DOI) identifying the work."
-        editor: "A person who is in charge of and determines the final content of a text, particularly a newspaper or magazine. Enter the editor's name exactly as it appears on the work (e.g., Jerome C. Baxter). If there are multiple editors, click the “Add another Editor“ link to add more."
-        identifier: "A unique handle identifying the work. An example would be a DOI for a journal article, or an ISBN or OCLC number for a book."
-        identifier_uri: "A persistent URI providing access to a record."
+        edition: "The number of the work's edition, if known."
+        editor: "A person who is in charge of and determines the final content of a text, particularly a newspaper or journal.  Enter the editor's name exactly as it appears on the work (e.g., Jerome C. Baxter)."
+        extent: "The duration of the work; e.g., number of pages, length of video, file size."
+        granting_institution: "The CSU campus granting the degree."
+        identifier: "A numeric or alphanumeric string or a URL that identifies the work in a particular context."
+        internal_note: "Note that will NOT be displayed to the public."
         isbn: "The International Standard Book Number (ISBN) of the work."
-        issn: "The International Standard Serial Number (ISSN) for a continuing resource, including newspapers, journals, magazines, and periodicals."
-        geographical_area: "The spatial region reflected in the resource."
-        granting_institution: "The university granting the degree."
-        keyword: "Enter words or phrases to describe what the work is about.  Examples can include things like 20th century Art, Victorian Literature, Rabbits."
-        language: "The language(s) of the work."
+        issn: "The International Standard Serial Number (ISSN) for the periodical to which this work belongs."
+        issue: "The issue number, if applicable."
+        keyword: "Enter words or phrases to describe what the work is about. Examples can include things like 20th century Art, Victorian Literature, Rabbits."
+        language: "The language(s) of the work. Start typing to select from the list of languages."
         license: "Licensing and distribution information governing access to the work. Select from the provided drop-down list."
-        oclcno: "The OCLC record number for a work."
-        publisher: "The institution responsible for publishing this work, i.e. San Francisco State University. Do not use abbreviations."
-        publication_status: "Choose one from the list."
+        meeting_name: "Name of the meeting at which the presentation was given."
+        methods_of_collection: "The process by which the data was created or captured, including any code, software, equipment, or protocols used. Generally, methods are descriptive and protocols are prescriptive. The methods describe what was done when collecting data, and protocols are a set of procedures or prescribed actions."
+        oclcno: "The OCLC record number for the work."
+        pages: "The work's page numbers (e.g., 12-35) if this work is part of a larger publication (e.g., an article published in a journal)."
+        place: "The place of publication as it appears on the title page."
+        publication_title: "Journal title, if the work is an article; book title, if this is a book chapter; or other parent publication title."
+        publisher: "The institution responsible for publishing this work; e.g., Routledge. Do not use abbreviations."
         related_url: "A link to a website or other specific content (audio, video, PDF document) related to the work. An example is the URL of a research project from which the work was derived."
-        resource_type: "Pre-defined categories to describe the type of content being uploaded, such as \"article\" or \"dataset.\"  More than one type may be selected."
-        resource_type_thesis: "Choose one from the list."
-        resource_type_dataset: "Choose one from the list."
-        resource_type_educational_resource: "Choose one from the list."
-        resource_type_publication: "Choose one from the list."
-        rights_holder: "A person, family, or organization who owns any one of the exclusive rights of copyright in a work, including the rights to reproduce, create derivatives, distribute copies, perform and/or display publicly. Personal names should be entered exactly as they appear on the work."
-        rights_note: "A free-text rights statement describing a resource. This may be a local description which extends upon the rights statement (above) or other descriptive terms."
-        rights_statement: "The underlying rights status of the work."
-        rights_uri: "A free-text rights statement describing a resource. This should be a URI to a resource that offers descriptive terms of use."
-        sponsor: "A person or organization sponsoring some aspect of a resource, e.g., funding for research, or the granting agency. Include grant ID if applicable, e.g. National Science Foundation (NSF 1829670)"
-        subject: "Headings or index terms describing what the work is about. Start typing to choose from controlled vocabulary, or enter any applicable keyword."
-        title: "Enter the main title of the work. Example: Places to see in San Francisco.  You can use <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case' target='_blank'>sentence case</a> or <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case' target='_blank'>title case</a> capitalization. Want to try a <a href='https://titlecaseconverter.com/' target='_blank'>title case converter</a>?"
+        resource_type: "The type of content being uploaded."
+        rights_note: "The underlying rights status of the work."
+        sponsor: "A person or organization sponsoring some aspect of a resource, e.g., funding for research, or the granting agency. Include grant ID if applicable, e.g. National Science Foundation (NSF 1829670)."
+        series: "If the work is part of a series, provide the name of the series."
+        subject: "LCSH headings describing what the work is about. Start typing to choose from FAST controlled vocabulary."
+        title: "The main title of the work; e.g., Places to see in San Francisco.  You can use <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case' target='_blank'>sentence case</a> or <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case' target='_blank'>title case</a> capitalization. Want to try a <a href='https://titlecaseconverter.com/' target='_blank'>title case converter</a>?"
         time_period: "The temporal extent reflected in the resource."
+        volume: "The volume number, if applicable."
     labels:
-      defaults:
-        creator: Creator
-        committee_member: Committee member(s)
-        doi: DOI
-        identifier: Other identifier
-        identifier_uri: Identifier URI
-        isbn: ISBN
-        issn: ISSN
-        oclcno: OCLC no.
-        resource_type_thesis: Type of Work
-        resource_type_dataset: Type of Work
-        resource_type_educational_resource: Type of Work
-        resource_type_publication: Type of Work
-        rights_uri: Rights URI
+      defaults: *work_fields
+  sword:
+    treatment: "The work has been received."

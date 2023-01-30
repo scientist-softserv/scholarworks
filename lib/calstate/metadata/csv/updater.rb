@@ -20,13 +20,6 @@ module CalState
         def initialize(path)
           @path = path
           @doc = Nokogiri::XML(File.open(path))
-          @single_fields = %w[date_accessioned
-                              date_modified
-                              degree_level
-                              embargo_release_date
-                              visibility
-                              visibility_during_embargo
-                              visibility_after_embargo]
         end
 
         #
@@ -59,11 +52,14 @@ module CalState
         def update_record(record)
           doc = ActiveFedora::Base.find(record['id'].to_s)
 
+          changes = {}
           record.xpath('change').each do |change|
             field = change['field']
-            doc[field] = get_value(field, change)
+            value = get_value(change)
+            changes[field] = value
           end
 
+          doc.update(changes)
           doc.save
 
           # mark as processed
@@ -74,25 +70,19 @@ module CalState
         #
         # Extract the value(s) from the change node
         #
-        # @param field [String]          field name
         # @param change [Nokogiri::XML]  node
         #
         # @return [Array|String]
         #
-        def get_value(field, change)
+        def get_value(change)
           values = []
           if change.xpath("value[@type='new']/part").count.positive?
             change.xpath("value[@type='new']/part").each do |part|
               values.append part.text.squish
             end
-          else
-            values.append change.xpath("value[@type='new']").first.text
-          end
-
-          if @single_fields.include?(field)
-            values.first
-          else
             values
+          else
+            change.xpath("value[@type='new']").first.text
           end
         end
       end

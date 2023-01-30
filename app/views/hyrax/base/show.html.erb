@@ -23,6 +23,7 @@
       <!-- sidebar -->
       <div class="col-sm-3 text-center">
         <%= render 'download', presenter: @presenter %>
+        <%= render 'download_remote', presenter: @presenter %>
         <%= render 'citations', presenter: @presenter %>
         <%= render 'social_media' %>
       </div>
@@ -37,13 +38,7 @@
 
         <!-- title -->
         <div class="csu-item-title">
-          <% @presenter.title.each_with_index do |title, index| %>
-            <% if index == 0 %>
-              <h1><%= title.html_safe %></h1>
-            <% else %>
-              <h2><%= title.html_safe %></h2>
-            <% end %>
-          <% end %>
+          <h1><%= @presenter.title_formatted.first.html_safe %></h1>
         </div>
 
         <!-- publication date -->
@@ -56,8 +51,8 @@
 
             <!-- description -->
             <div class="csu-item-description">
-              <% unless @presenter.description.nil? %>
-                <% @presenter.description.each do |description| %>
+              <% unless @presenter.description_formatted.nil? %>
+                <% @presenter.description_formatted.each do |description| %>
                   <%= iconify_auto_link(description.html_safe) %>
                 <% end %>
               <% end %>
@@ -67,22 +62,25 @@
             <div class="csu-item-metadata">
               <%= render 'metadata', presenter: @presenter %>
             </div>
+
+            <!-- relationships -->
             <div class="csu-item-relationship">
               <%= render 'relationships', presenter: @presenter %>
             </div>
           </div>
-          <div class="col-md-3">
 
+          <div class="col-md-3">
             <!-- campus logo -->
             <%= render 'campus_logo', presenter: @presenter %>
-
           </div>
         </div>
 
         <!-- files -->
-        <div class="csu-item-files">
-          <%= render 'items', presenter: @presenter %>
-        </div>
+        <% unless @presenter.external_url %>
+          <div class="csu-item-files">
+            <%= render 'items', presenter: @presenter %>
+          </div>
+        <% end %>
       </div>
 
       <%# TODO: we may consider adding these partials in the future %>
@@ -94,5 +92,5 @@
 
 <div class="csu-statements">
   <%= render 'campus_statement', presenter: @presenter %>
-  <p>Items in ScholarWorks are protected by copyright, with all rights reserved, unless otherwise indicated.</p>
+  <p><%= t('hyrax.copyright_notice') %></p>
 </div>

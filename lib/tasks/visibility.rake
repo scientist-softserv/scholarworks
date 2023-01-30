@@ -1,36 +1,21 @@
 # frozen_string_literal: true
 
-require 'calstate/visibility'
+require 'calstate/packager'
 
-# Usage
-# bundle exec rake calstate:visibility[/home/ec2-user/data/import/file.csv]
-#
+# Usage:
 # input file should have three columns with headers for:
 #   id, work_visibility, file_visibility
 # use internal visibility name, e.g.: 'open' instead of 'public'
-
+#
+# bundle exec rake calstate:visibility[northridge,/home/ec2-user/data/import/file.csv]
+#
 namespace :calstate do
-  desc 'Update visibility of all attached files to work'
-  task :visibility, %i[input_file] => [:environment] do |_t, args|
-    input_file = args[:input_file] or raise 'No input file provided.'
+  desc 'Update work and file visibility'
+  task :visibility, %i[campus file] => [:environment] do |_t, args|
+    campus = args[:campus] or raise 'No campus provided.'
+    file = args[:file] or raise 'No csv file provided.'
 
-    viz = CalState::Visibility.new
-    x = 0
-
-    viz.get_csv(input_file).each do |row|
-      x += 1
-      print "Processing work #{row['id']} . . . "
-
-      begin
-        work = ActiveFedora::Base.find(row['id'])
-        viz.set_visibility(work, row['work_visibility'], row['file_visibility'])
-      rescue Ldp::Gone
-        print '[ GONE! ] . . . '
-      rescue ActiveFedora::ObjectNotFoundError
-        print '[ NOT FOUND! ] . . . '
-      end
-
-      print "done!\n"
-    end
+    packager = CalState::Packager::Visibility.new(campus)
+    packager.process_items(file)
   end
 end

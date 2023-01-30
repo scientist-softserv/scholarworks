@@ -1,0 +1,16 @@
+<%
+  # determine whether to show relationships or not
+  # based on hyrax/base/_relationships_parent_rows.html.erb
+  show = 0
+  show += presenter.grouped_presenters(except: presenter.presenter_types).count
+  presenter.presenter_types.each do |type|
+    show += presenter.grouped_presenters(filtered_by: type).count
+  end
+  show += 1 if current_user
+%>
+<% if show.positive? %>
+  <h2><%= t('.header') %></h2>
+  <dl class="work-show">
+  <%= render 'relationships_parent_rows', presenter: presenter %>
+  </dl>
+<% end %>

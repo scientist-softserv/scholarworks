@@ -109,8 +109,8 @@ module CalState
 
             change = {
               field: field,
-              old: prep_value(old_record[field].to_s),
-              new: prep_value(value.to_s)
+              old: old_record[field],
+              new: value
             }
 
             record[:changes].append change
@@ -120,45 +120,17 @@ module CalState
         end
 
         #
-        # @return [Array|String]
-        #
-        def prep_value(value)
-          value = to_array(value) if is_multi?(value)
-
-          value
-        end
-
-        #
         # @return [Boolean]
         #
         def are_same?(field, old, new)
-          if is_multi?(old) || is_multi?(new)
-            old = to_array(old)
-            new = to_array(new)
-
-            unless %w[creator committee_member].include?(field)
+          if old.is_a?(Array) && new.is_a?(Array)
+            unless FieldService.person_fields.include?(field)
               old.sort!
               new.sort!
             end
           end
 
           old == new
-        end
-
-        #
-        # @return [Array]
-        #
-        def to_array(value)
-          is_multi?(value) ? value.split(separator) : [value]
-        end
-
-        #
-        # @return [Boolean]
-        #
-        def is_multi?(value)
-          return false if value.nil?
-
-          value.include?(separator)
         end
 
         #

@@ -3,7 +3,6 @@ class HandleRegisterJob < Hyrax::ApplicationJob
   def perform(resource)
     return true if resource.handle.present?
 
-    path = polymorphic_url(resource, host: ENV['SCHOLARWORKS_HOST'])
-    HandleService.register(resource, path)
+    HandleService.register(resource)
   end
 end
