@@ -192,16 +192,8 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     colorize (0.8.1)
-<<<<<<< HEAD
     concurrent-ruby (1.1.9)
     connection_pool (2.2.2)
-=======
-    concurrent-ruby (1.1.10)
-    config (4.0.0)
-      deep_merge (~> 1.2, >= 1.2.1)
-      dry-validation (~> 1.0, >= 1.0.0)
-    connection_pool (2.2.5)
->>>>>>> main
     crass (1.0.6)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
@@ -210,10 +202,6 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     declarative (0.0.20)
-<<<<<<< HEAD
-=======
-    deep_merge (1.2.2)
->>>>>>> main
     deprecation (1.1.0)
       activesupport
     devise (4.8.1)
@@ -646,24 +634,14 @@ GEM
     parser (3.1.2.1)
       ast (~> 2.4.1)
     parslet (2.0.0)
-<<<<<<< HEAD
-=======
-    passenger (6.0.14)
-      rack
-      rake (>= 0.8.1)
->>>>>>> main
     pg (0.21.0)
     posix-spawn (0.3.15)
     power_converter (0.1.2)
     public_suffix (5.0.0)
     pul_uv_rails (2.0.1)
-<<<<<<< HEAD
     puma (4.3.12)
       nio4r (~> 2.0)
     qa (5.8.1)
-=======
-    qa (5.9.0)
->>>>>>> main
       activerecord-import
       deprecation
       faraday (< 3.0, != 2.0.0)
@@ -1019,12 +997,8 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   omniauth-shibboleth
   pg (~> 0.18)
-<<<<<<< HEAD
   puma (~> 4.3)
   rails (~> 5.1.2)
-=======
-  rails (~> 5.2)
->>>>>>> main
   redis (~> 3.0)
   riiif (~> 1.1)
   rsolr (>= 1.0)
