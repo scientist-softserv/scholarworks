@@ -312,8 +312,4 @@ You may notice that this is the id of the actual file in active_fedora with the 
 Glacier files are always visible in S3, but they are not always accessible.  An administrator with access to the S3 bucket must initiate a retrieval of a file, then wait the several hours until it becomes available.  Part of the retrieval process is to specify how long you want the record to stay thawed out for.  Once that time period is expired, the record goes back into deep freeze and would need to be retrieved again to access.  The default thaw period for the application is 7 days.
 
 #### Thawing Via AWS S3
-<<<<<<< Updated upstream
 You can [thaw file](./public/img/glacier-restore.png) from directly within the AWS S3 interface.  This is the only way to retrieve a record that has been deleted from our application.
-=======
-You can [thaw file](./public/img/glacier-restore.png) from directly within the AWS S3 interface.  This is the only way to retrieve a record that has been deleted from our application.
->>>>>>> Stashed changes
