@@ -8,12 +8,11 @@ require 'calstate/packager'
 # bundle exec rake packager:dspace[losangeles,items,60]
 
 namespace :packager do
-  desc 'Migrate DSpace AIP packages to Hyrax'
+  desc 'DSpace importer'
   task :dspace, %i[campus file throttle] => [:environment] do |_t, args|
-    # error check
     campus = args[:campus] or raise 'No campus provided.'
     source_file = args[:file] or raise 'No zip file provided.'
-    throttle = args[:throttle] or 0
+    throttle = args[:throttle] ||= 0
 
     packager = CalState::Packager::Dspace.new(campus)
     packager.throttle = throttle.to_i

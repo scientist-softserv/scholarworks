@@ -19,8 +19,8 @@
               </button>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
       <div class="home-share-work">
         <% if signed_in? %>
           <% if @presenter.create_many_work_types? %>
@@ -229,7 +229,7 @@
     <div class="csu-home-container">
       <div class="csu-recent-submissions service-item">
         <h2 class="csu-home-feature">Recent submissions</h2>
-        <ul class="csu-documents">
+        <ul class="csu-documents csu-documents-home">
           <% @recent_documents.each do |document| %>
             <li>
               <%= render 'csu/result', document: document, hyrax: main_app %>

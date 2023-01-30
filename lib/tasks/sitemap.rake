@@ -8,6 +8,6 @@ require 'calstate/metadata'
 namespace :calstate do
   desc 'Sitemap generator'
   task sitemap: :environment do
-    CalState::Metadata::Sitemap.new('public/sitemap').run
+    CalState::Metadata::Sitemap.new.run
   end
 end

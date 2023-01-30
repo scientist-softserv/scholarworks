@@ -7,11 +7,7 @@ class Ability
     use_shib = ENV['AUTHENTICATION_TYPE'] == 'shibboleth'
 
     # add user to campus group
-    campus = if use_shib
-               CampusService.get_shib_user_campus(current_user)
-             else
-               CampusService.get_demo_user_campus(current_user)
-             end
+    campus = current_user.campus_slug
     user_groups.push(campus) if campus.present?
 
     # add campus name to demo accounts if not already set
@@ -22,6 +18,9 @@ class Ability
 
     # registered user can create works, files
     can :create, [FileSet] + Hyrax.config.curation_concerns if registered_user?
+
+    # campus specific abilities
+    cannot :create, [Project] if campus == 'sanmarcos'
 
     # managers & admins can also create collections
     can :create, Collection if manager? || current_user.admin?

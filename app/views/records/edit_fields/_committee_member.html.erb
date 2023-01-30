@@ -1,24 +1,9 @@
-<%= render "shared/composite_person",
+<%= render "shared/composite_element",
            f: f,
            model_type: f.object.model.class.to_s.underscore,
-           composite_person: f.object.committee_member,
-           key: key,
-           key_text: 'committee member',
+           composite_element: f.object.committee_member,
+           elem_type: key,
+           elem_type_text: key,
+           subtypes: 'name email institution orcid',
            help_block_str: t('simple_form.hints.defaults.committee_member') %>
-<script type="text/javascript" charset="utf-8">
-  /*
-    model_type = publication, thesis, etc
-    composite_person is the actual object of creator, contributor
-    key is a string with value of creator, contributor, etc
-    which would match to person_type as an parameter for most of the routines
-   */
-
-  function generate_committee_member() {
-    return generate_person('committee_member', false);
-  }
-
-  $(function() {
-    deserialize_person('committee_member');
-  });
-</script>
 

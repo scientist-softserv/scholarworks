@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 20200612163900) do
     t.string "work_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "campus", null: false
     t.index ["order"], name: "index_featured_works_on_order"
     t.index ["work_id"], name: "index_featured_works_on_work_id"
   end

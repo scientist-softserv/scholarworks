@@ -1,95 +1,24 @@
-# Generated via
-#  `rails generate hyrax:work Thesis`
-class Thesis < ActiveFedora::Base
-  include ::Hyrax::WorkBehavior
-  include ::CsuMetadata
-  include ::Hydra::AccessControls::CampusVisibility
+# frozen_string_literal: true
 
-  before_create :update_fields
+#
+# Thesis
+#
+class Thesis < ActiveFedora::Base
+  include CsuFields
+  include ScholarworksFields
+  include FormattingFields
+  include Hyrax::WorkBehavior
+  include Hydra::AccessControls::CampusVisibility
+  include ThesisFields
 
   self.indexer = ThesisIndexer
-  # Change this to restrict which works can be added as a child.
-  # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
-
-  property :advisor, predicate: ::RDF::Vocab::MARCRelators.ths do |index|
-    index.as :stored_searchable
-  end
-
-  property :committee_member, predicate: ::RDF::Vocab::MARCRelators.ctb do |index|
-    index.as :stored_searchable
-  end
-
-  property :degree_level, predicate: ::RDF::Vocab::DC.educationLevel, multiple: false do |index|
-    index.as :stored_searchable, :facetable
-  end
-
-  property :degree_name, predicate: ::RDF::Vocab::BIBO.degree do |index|
-    index.as :stored_searchable, :facetable
-  end
-
-  property :granting_institution, predicate: ::RDF::Vocab::MARCRelators.uvp do |index|
-    index.as :stored_searchable
-  end
-
-  property :resource_type_thesis, predicate: ::RDF::Vocab::DC.type do |index|
-    index.as :stored_searchable
-  end
 
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
-  include ::Hyrax::BasicMetadata
-
-  def creator
-    OrderedStringHelper.deserialize(super)
-  end
-
-  def creator= values
-    super sanitize_n_serialize(values)
-  end
-
-  def advisor
-    OrderedStringHelper.deserialize(super)
-  end
-
-  def advisor= values
-    super sanitize_n_serialize(values)
-  end
-
-  def committee_member
-    OrderedStringHelper.deserialize(super)
-  end
-
-  def committee_member= values
-    super sanitize_n_serialize(values)
-  end
-
-  def description= values
-    super (HtmlHelper.get_rid_style_attribute(values))
-  end
-
-  def title= values
-    super (HtmlHelper.get_rid_style_attribute(values))
-  end
-
-  # this method is to combined all multivalues of this field into a single one for the front end
-  def descriptions
-    combined_val = ''
-    description.each do |d|
-      combined_val << d
-    end
-    combined_val
-  end
-
-  def titles
-    combined_val = ''
-    title.each do |d|
-      combined_val << d
-    end
-    combined_val
-  end
-
-  def update_fields
-    super
-  end
+  include Hyrax::BasicMetadata
+  include CsuBehavior
+  include FormattingBehavior
+  include ScholarworksBehavior
+  include ThesisBehavior
 end

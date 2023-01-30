@@ -2,157 +2,17 @@
 <% if model_type == 'collection' %>
   <%= f.input key, as: :multi_value, input_html: { class: 'form-control' }, required: f.object.required?(key) %>
 <% else %>
-  <% if f.object.alert_msg.length > 1 %>
-    <div class="form-group"><%= f.object.alert_msg %></div>
-  <% end %>  
-  <%= render "shared/composite_person",
+  <% if SystemService::archive? %>
+    <% subtypes = 'name role identifier' %>
+  <% else %>
+    <% subtypes = 'name email institution orcid' %>
+  <% end %>
+  <%= render "shared/composite_element",
              f: f,
              model_type: model_type,
-             composite_person: f.object.creator,
-             key: key,
-             key_text: key,
+             composite_element: f.object.creator,
+             elem_type: key,
+             elem_type_text: key,
+             subtypes: subtypes,
              help_block_str: t('simple_form.hints.defaults.creator') %>
-  <script type="text/javascript" charset="utf-8">
-    /*
-      model_type = publication, thesis, etc
-      composite_person is the actual object of creator, contributor
-      key is a string with value of creator, contributor, etc
-      which would match to person_type as an parameter for most of the routines
-    */
-
-    // creator
-    function invalid_creator() {
-      let invalid = true;
-      $('.creator_name').each(function () {
-        if ($.trim($(this).val()) != '') {
-          invalid = false;
-          return false;
-        }
-      })
-      return invalid;
-    }
-
-    function creator_name_change() {
-      toggle_submit(invalid_creator());
-    }
-
-    function post_add_creator() {
-      $('.creator_name').on('change', creator_name_change);
-      post_add_person();
-    }
-
-    // function to execute after remove to do any adjustment not just the count
-    function post_remove_creator() {
-      toggle_submit(invalid_creator());
-    }
-
-    function generate_creator() {
-      return generate_person('creator', true);
-    }
-
-    // only one save_handler for submit button event handler
-    if (typeof save_handler !== 'function') {
-        save_handler = function(event) {
-            $('.title_tinymce').each(function () {
-                let editor_txt = tinymce.get($(this).prop('id')).getContent();
-                editor_txt = editor_txt.replace(/&lt;/gm, '<').replace(/&gt;/gm, '>');
-                editor_txt = editor_txt.replace(/<\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|b|big|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|dir|div|dl|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|br|html|i|iframe|img|input|ins|kdb|label|legend|li|link|main|map|mark|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|stike|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr)([^>]*)>/gim, ' ');
-                $(this).text(editor_txt);
-            });
-            $('.description_tinymce').each(function () {
-                let editor_txt = tinymce.get($(this).prop('id')).getContent();
-                editor_txt = editor_txt.replace(/&lt;/gm, '<').replace(/&gt;/gm, '>');
-                editor_txt = editor_txt.replace(/<\/?(abbr|acronym|address|applet|area|article|aside|audio|base|basefont|bdi|big|blockquote|body|button|canvas|caption|center|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|dir|div|dl|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|html|iframe|img|input|ins|kdb|label|legend|link|main|map|mark|meta|meter|nav|noframes|noscript|object|optgroup|option|output|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|stike|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|tt|var|video|wbr)([^>]*)>/gim, ' ');
-                editor_txt = editor_txt.replace(/<u ([^>]*)>/gim, ' ');  // get rid of any <u > with space after
-                editor_txt = editor_txt.replace(/<u>/gim, ' ');  // get rid of any <u> without space after
-                editor_txt = editor_txt.replace(/<\/u>/gim, ' ');  // get rid of any </u>
-                $(this).text(editor_txt);
-            });
-            // comment this to test server ORCID validation by remove the condition invalid_orcid
-            if (invalid_orcid() || invalid_description() || invalid_title()) {
-                event.preventDefault();
-                toggle_submit(true);
-                return;
-            }
-
-            if (typeof invalid_date_issued === 'function') {
-                if (invalid_date_issued()) {
-                    event.preventDefault();
-                    toggle_submit(true);
-                    return;
-                }
-            }
-
-            // serialize creator
-            serialize_person('creator');
-
-            // serialize contributor if field exists
-            if (window['contributor_cnt'] !== undefined) {
-                serialize_person('contributor');
-            }
-
-            // serialize editor if field exists
-            if (window['editor_cnt'] !== undefined) {
-                serialize_person('editor');
-            }
-
-            // serialize advisor if field exists
-            if (window['advisor_cnt'] !== undefined) {
-                serialize_person('advisor');
-            }
-
-            // serialize committee_member if field exists
-            if (window['committee_member_cnt'] !== undefined) {
-                serialize_person('committee_member');
-            }
-
-            $('.date_issued_div').each(function () {
-                let index = $(this).prop('id').substring($(this).prop('id').lastIndexOf('_') + 1);
-                let date_issued_str = $('#date_issued_year_' + index).val();
-                let month = $('#date_issued_month_' + index).val();
-                let day = $('#date_issued_day_' + index).val();
-                if (month != '' && day != '') {
-                    if (Number(month) < 10) {
-                        month = '0' + month;
-                    }
-                    if (Number(day) < 10) {
-                        day = '0' + day;
-                    }
-                    date_issued_str = date_issued_str + '-' + month + '-' + day;
-                }
-                $('#date_issued_' + index).val(date_issued_str);
-            });
-
-            $('.discipline_hidden').each(function () {
-                let discipline_val = '';
-                let list = $(this).nextAll();
-                if (list !== undefined) {
-                    let div_select = $(list[list.length - 1]).last();
-                    discipline_val = div_select.find('select').val();
-                    if (discipline_val == '' && list.length > 1) {
-                        discipline_val = $(list[list.length - 2]).find('select').val();
-                    }
-                }
-                $(this).val(discipline_val);
-            });
-        }
-    }
-
-    $(function() {
-      deserialize_person('creator');
-
-      // extra validation to catch backend validation for empty author
-      if ($('div.alert.alert-danger.alert-dismissable').length) {
-        if (invalid_creator()) {
-          $('#empty_creator').removeClass('d-none');
-          $('#creator_content').addClass('has-error');
-        }
-      }
-
-      //$('#with_files_submit').submit(function (e) {
-      $('#with_files_submit').click(function (e) {
-        save_handler(e);
-      });
-    });
-  </script>
 <% end %>

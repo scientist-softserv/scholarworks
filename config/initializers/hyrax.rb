@@ -1,12 +1,8 @@
 Hyrax.config do |config|
-  # Injected via `rails g hyrax:work Thesis`
-  config.register_curation_concern :thesis
-  # Injected via `rails g hyrax:work Publication`
-  config.register_curation_concern :publication
-  # Injected via `rails g hyrax:work Dataset`
-  config.register_curation_concern :dataset
-  # Injected via `rails g hyrax:work EducationalResource`
-  config.register_curation_concern :educational_resource
+  SystemService.models.each do |model|
+    config.register_curation_concern model
+  end
+
   # Register roles that are expected by your implementation.
   # @see Hyrax::RoleRegistry for additional details.
   # @note there are magical roles as defined in Hyrax::RoleRegistry::MAGIC_ROLES

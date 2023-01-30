@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
   mount Blacklight::Engine => '/'
+  mount BlacklightAdvancedSearch::Engine => '/'
+
 
   concern :searchable, Blacklight::Routes::Searchable.new
 
@@ -12,7 +14,6 @@ Rails.application.routes.draw do
     concerns :oai_provider
     concerns :searchable
     concerns :range_searchable
-
   end
 
   devise_for :users, controllers: { sessions: 'users/sessions', omniauth_callbacks: 'users/omniauth_callbacks' }, skip: [:sessions]
@@ -62,6 +63,13 @@ Rails.application.routes.draw do
   mount WillowSword::Engine, at: "/sword"
   get '/robots.txt', to: 'robots#index'
 
+  get 'collections', to: 'collections#index'
+  get 'collections/children/:parent_id', to: 'collections#children'
+
+  get 'campus/:campus', to: 'campus#index'
+
+  get '*unmatched_route', to: 'application#not_found'
+  post '*unmatched_route', to: 'application#not_found'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

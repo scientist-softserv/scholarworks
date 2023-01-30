@@ -29,10 +29,28 @@ class User < ApplicationRecord
       user.affiliation = auth.info.affiliation
       user.campus = auth.info.campus
 
-      # mlml uses the sjsu auth but is its own campus within scholarworks
+      # mlml uses the sjsu auth but is its own campus
       if auth.info.campus == 'sjsu' && auth.info.department == '1153'
         user.campus = 'mlml'
       end
+    end
+  end
+
+  #
+  # Full campus name
+  #
+  def campus_name
+    CampusService.get_name_from_slug(campus_slug)
+  end
+
+  #
+  # Campus slug
+  #
+  def campus_slug
+    if ENV['AUTHENTICATION_TYPE'] == 'shibboleth'
+      CampusService.get_shib_user_campus(self)
+    else
+      CampusService.get_demo_user_campus(self)
     end
   end
 
@@ -59,7 +77,6 @@ class User < ApplicationRecord
   # @return [Boolean]
   #
   def manager?
-    Rails.logger.warn groups.inspect
     groups.each do |group|
       return true if group.include?('managers-')
     end

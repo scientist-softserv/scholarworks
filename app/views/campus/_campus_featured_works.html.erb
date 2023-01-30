@@ -1,0 +1,22 @@
+<% unless @featured_work_list.empty? %>
+  <div class="csu-featured">
+    <h2><%= t('hyrax.homepage.featured_works.title') %></h2>
+    <% if can? :update, FeaturedWork %>
+      <%= form_for [hyrax, @featured_work_list] do |f| %>
+        <input type="hidden" name="campus" value="<%= @campus %>" />
+        <div class="panel-group dd" id="dd">
+          <ol id="featured_works">
+            <%= f.fields_for :featured_works do |featured| %>
+              <%= render 'hyrax/homepage/sortable_featured', f: featured %>
+            <% end %>
+          </ol>
+        </div>
+        <%= f.submit("Save order", class: 'btn btn-default') %>
+      <% end %>
+    <% else %>
+      <ol class="csu-documents list-group list-group-striped" id="featured_works">
+        <%= render partial: 'featured', collection: @featured_work_list.featured_works %>
+      </ol>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,5 @@
+<% options = ResourceTypesService.new(controller).select_all_options %>
+<%= f.input :resource_type, as: :select,
+  collection: options,
+  input_html: { class: 'form-control', size: options.count, multiple: true }
+%>

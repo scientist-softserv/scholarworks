@@ -17,9 +17,6 @@
 </div>
 <div class="csu-document-description">
   <% if document.description.presence %>
-    <% description = strip_tags(document.description.first) %>
-    <%= description[0..250] %>
-    <%= '. . .' if description.length > 250 %>
+    <%= document.description_short(250) %>
   <% end %>
 </div>
-<%#= document.methods %>

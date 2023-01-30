@@ -36,18 +36,17 @@ module CalState
         #
         # Prepare single value for export
         #
-        # Convert to string and append a tab to the end to force excel
-        # to treat the field as text rather than a number or date
+        # Convert to string and clean value
         #
         # @param value [String]  the value to add
         #
-        # @return [String] the value plus tab at the end
+        # @return [String|nil] the value
         #
         def prep_value(value)
           value = clean_value(value)
           return nil if value.nil?
 
-          value.to_s + "\t"
+          value.to_s
         end
 
         #
@@ -66,36 +65,29 @@ module CalState
         end
 
         #
-        # Fields with person objects
-        #
-        # @return [Array]
-        #
-        def person_fields
-          %w[creator contributor advisor committee_member]
-        end
-
-        #
         # Is the supplied field a person field?
         #
         # @param field [String]  field name
         #
         # @return [Boolean]
         #
-        def is_person_field?(field)
-          person_fields.include?(field)
+        def person_field?(field)
+          FieldService.person_fields.include?(field)
         end
 
         #
         # Prep person data for export
         #
-        # @param person_data [Array|]
+        # @param person_data [Array]
+        #
+        # @return [String]
         #
         def prep_person(person_data)
           return person_data if person_data.nil?
 
           final = []
           person_data.split(separator).each do |person_string|
-            person = Person.new.from_hyrax(person_string)
+            person = CompositeElement.new.from_hyrax(person_string)
             final.append person.to_export
           end
           final.join(separator)
@@ -107,8 +99,47 @@ module CalState
         # @param person_csv [String]
         #
         def clean_person(person_csv)
-          person = Person.new.from_export(person_csv)
+          person = CompositeElement.new.from_export(person_csv)
           person.to_hyrax
+        end
+
+        #
+        # Is the supplied field a date field?
+        #
+        # @param field [String]  field name
+        #
+        # @return [Boolean]
+        #
+        def date_field?(field)
+          FieldService.date_fields.include?(field)
+        end
+
+        #
+        # Is the supplied field a number-like identifier?
+        #
+        # @param field [String]  field name
+        #
+        # @return [Boolean]
+        #
+        def identifier_field?(field)
+          FieldService.identifier_fields.include?(field)
+        end
+
+        #
+        # Prep value for Excel
+        #
+        # Append a tab to the end to force excel to treat the field as
+        # text rather than a number or date
+        #
+        # @param value [String]
+        #
+        # @return [String|nil]
+        #
+        def prep_value_for_excel(value)
+          value = prep_value(value)
+          return value if value.nil?
+
+          value + "\t"
         end
 
         #
@@ -137,26 +168,6 @@ module CalState
         def get_csv_filename(campus_slug, model_name)
           model_file = Metadata.get_slug(model_name)
           campus_slug + '_' + model_file + '.csv'
-        end
-
-        #
-        # Get all records, with cleaned values
-        #
-        # @param csv [CSV]  CSV object
-        # @return [Array]
-        #
-        def load_records(csv)
-          final = []
-          csv.each do |row|
-            record = {}
-            row.each do |key, value|
-              value = clean_value(value)
-              value = clean_person(value) if person_fields.include?(key)
-              record[key] = value
-            end
-            final.append record
-          end
-          final
         end
       end
     end

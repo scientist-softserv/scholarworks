@@ -36,9 +36,9 @@ class WorkFormService
     campus = if !curation_concern.campus.empty?
                curation_concern.campus.first
              elsif !current_user.campus.nil?
-               current_user.campus
+               current_user.campus_name
              end
-    campus_class = campus.to_s.sub(' ', '')
+    campus_class = campus.sub(' ', '')
 
     # form object variations
     main_form = curation_concern.model_name.name + 'Form'
@@ -47,14 +47,24 @@ class WorkFormService
     campus_manager_form = manager_form + campus_class
 
     # take most customizable version of form over others
-    if Hyrax.const_defined?(campus_manager_form) && current_user.manager?
-      Hyrax.const_get(campus_manager_form)
-    elsif Hyrax.const_defined?(manager_form) && current_user.manager?
-      Hyrax.const_get(manager_form)
-    elsif Hyrax.const_defined?(campus_form)
-      Hyrax.const_get(campus_form)
-    else
-      Hyrax.const_get(main_form)
-    end
+    form = if Hyrax.const_defined?(campus_manager_form) && current_user.manager?
+             Hyrax.const_get(campus_manager_form)
+           elsif Hyrax.const_defined?(manager_form) && current_user.manager?
+             Hyrax.const_get(manager_form)
+           elsif Hyrax.const_defined?(campus_form)
+             Hyrax.const_get(campus_form)
+           else
+             Hyrax.const_get(main_form)
+           end
+
+    Rails.logger.debug 'Looking for: ' + campus_manager_form
+    Rails.logger.debug '   and also: ' + manager_form
+    Rails.logger.debug '   and also: ' + campus_form
+    Rails.logger.debug '   for user: ' + current_user.inspect
+    Rails.logger.debug '   manager?: ' + current_user.manager?.to_s
+    Rails.logger.debug '     campus: ' + campus
+    Rails.logger.debug 'Resulted in: ' + form.to_s
+
+    form
   end
 end
