@@ -3,13 +3,6 @@ redis_config = config.merge(thread_safe: true)
 
 Sidekiq.configure_server do |s|
   s.redis = redis_config
-<<<<<<< Updated upstream
-=======
-end
-
-Sidekiq.configure_client do |s|
-  s.redis = redis_config
->>>>>>> Stashed changes
 end
 
 Sidekiq.configure_client do |s|
