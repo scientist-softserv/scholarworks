@@ -1,0 +1,13 @@
+#!/usr/local/bin/ruby
+
+if ENV['DATABASE_URL'] && !ENV['DATABASE_URL'].empty?
+  ENV['DATABASE_URL'] = ENV['DATABASE_URL'].gsub('pool=5', 'pool=30')
+else
+  puts 'DATABASE_URL not set, no pool change needed'
+end
+
+<<<<<<< Updated upstream
+exec "echo $DATABASE_URL && bundle exec sidekiq"
+=======
+exec "echo $DATABASE_URL && bundle exec sidekiq"
+>>>>>>> Stashed changes

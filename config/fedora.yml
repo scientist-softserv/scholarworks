@@ -1,15 +1,41 @@
 development:
   user: fedoraAdmin
   password: fedoraAdmin
+<<<<<<< Updated upstream
   url: http://127.0.0.1:<%= ENV['FCREPO_DEVELOPMENT_PORT'] || 8984 %>/rest
+=======
+<<<<<<< Updated upstream
+  url: <%= ENV['FEDORA_URL'] || "http://127.0.0.1:#{ENV.fetch('FCREPO_DEVELOPMENT_PORT', 8984)}/rest" %>
+=======
+  url: http://<%= ENV['FCREPO_HOST'] %>:<%= ENV['FCREPO_PORT'] || 8984 %>/rest
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
   base_path: /dev
 test:
   user: fedoraAdmin
   password: fedoraAdmin
+<<<<<<< Updated upstream
   url: http://127.0.0.1:<%= ENV['FCREPO_TEST_PORT'] || 8986 %>/rest
+=======
+<<<<<<< Updated upstream
+  url: <%= ENV['FEDORA_URL'] || "http://127.0.0.1:#{ENV.fetch('FCREPO_TEST_PORT', 8986)}/rest" %>
+=======
+  url: http://<%= ENV['FCREPO_HOST'] %>:<%= ENV['FCREPO_PORT'] || 8986 %>/rest
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
   base_path: /test
 production:
   user: fedoraAdmin
   password: fedoraAdmin
+<<<<<<< Updated upstream
   url: <%= ENV['FCREPO_URL'] %>/rest
   base_path: /<%= ENV['FCREPO_PATH'] %>
+=======
+<<<<<<< Updated upstream
+  url: <%= ENV['FEDORA_URL'] || "http://127.0.0.1:8983/fedora/rest" %>
+  base_path: /prod
+=======
+  url: <%= ENV['FCREPO_URL'] %>
+  base_path: /<%= ENV['FCREPO_PATH'] %>
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes

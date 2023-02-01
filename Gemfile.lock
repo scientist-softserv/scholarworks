@@ -646,7 +646,17 @@ GEM
     power_converter (0.1.2)
     public_suffix (5.0.0)
     pul_uv_rails (2.0.1)
+<<<<<<< Updated upstream
     qa (5.9.0)
+=======
+    puma (4.3.12)
+      nio4r (~> 2.0)
+<<<<<<< Updated upstream
+    qa (5.8.1)
+=======
+    qa (5.9.0)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
       activerecord-import
       deprecation
       faraday (< 3.0, != 2.0.0)
@@ -1004,7 +1014,16 @@ DEPENDENCIES
   omniauth-shibboleth
   passenger (>= 5.0.25)
   pg (~> 0.18)
+<<<<<<< Updated upstream
   rails (~> 5.2)
+=======
+  puma (~> 4.3)
+<<<<<<< Updated upstream
+  rails (~> 5.1.2)
+=======
+  rails (~> 5.2)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
   redis (~> 3.0)
   riiif (~> 1.1)
   rsolr (>= 1.0)
