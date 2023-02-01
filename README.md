@@ -7,7 +7,7 @@
 #### Install Docker
 Download [Docker Desktop](https://www.docker.com/products/docker-desktop) and log in
 
-### Install Dory
+#### Install Dory
 
 On OS X or Linux we recommend running [Dory](https://github.com/FreedomBen/dory). It acts as a proxy allowing you to access domains locally such as app.test or tenant.app.test, making multitenant development more straightforward and prevents the need to bind ports locally. Be sure to [adjust your ~/.dory.yml file to support the .test tld](https://github.com/FreedomBen/dory#config-file).
 
