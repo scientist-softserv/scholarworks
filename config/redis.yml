@@ -1,5 +1,6 @@
 development:
   host: <%= ENV.fetch('REDIS_HOST', 'localhost') %>
+<<<<<<< Updated upstream
   port: <%= ENV.fetch('REDIS_PORT', 6379) %>
 test:
   host: <%= ENV.fetch('REDIS_HOST', 'localhost') %>
@@ -7,3 +8,12 @@ test:
 production:
   host: <%= ENV.fetch('REDIS_HOST', 'localhost') %>
   port: <%= ENV.fetch('REDIS_PORT', 6379) %>
+=======
+  port: 6379
+test:
+  host: <%= ENV.fetch('REDIS_HOST', 'localhost') %>
+  port: 6379
+production:
+  host: <%= ENV['REDIS_HOST'] %>
+  port: <%= ENV['REDIS_PORT'] %>
+>>>>>>> Stashed changes

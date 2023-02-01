@@ -13,4 +13,8 @@ if [[ "$migrations_run" -lt "$migrations_fs" ]]; then
     bundle exec rails db:create
     bundle exec rails db:migrate
     bundle exec rails db:seed
+<<<<<<< Updated upstream
 fi
+=======
+fi
+>>>>>>> Stashed changes

@@ -47,4 +47,8 @@ while [ $COUNTER -lt 30 ]; do
 done
 
 echo "--- ERROR: failed to create/update Solr collection after 5 minutes";
+<<<<<<< Updated upstream
 exit 1
+=======
+exit 1
+>>>>>>> Stashed changes

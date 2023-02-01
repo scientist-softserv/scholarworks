@@ -787,4 +787,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	</xsl:choose>
 </xsl:template>
 
+<<<<<<< Updated upstream
 </xsl:stylesheet>
+=======
+</xsl:stylesheet>
+>>>>>>> Stashed changes
