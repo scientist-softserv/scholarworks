@@ -230,8 +230,3 @@ $ git checkout master                               // change to the master bran
 $ git merge --no-ff hotfix-id                       // forces creation of commit object during merge
 $ git push origin master                            // push merge changes
 $ git push origin :hotfix-id                        // deletes the remote branch
-<<<<<<< Updated upstream
-```
-=======
-```
->>>>>>> Stashed changes

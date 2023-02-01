@@ -48,8 +48,4 @@
 	<!-- Note: This should only be used with files that can provide sufficient metadata at beginning of the file -->
 	<!-- <droid_read_limit include-exts="mov,mxf" read-limit-kb="64" /> -->
 		
-<<<<<<< Updated upstream
 </fits_configuration>
-=======
-</fits_configuration>
->>>>>>> Stashed changes

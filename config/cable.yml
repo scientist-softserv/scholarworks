@@ -6,15 +6,5 @@ test:
 
 production:
   adapter: redis
-<<<<<<< Updated upstream
-  url: redis://<%= ENV['REDIS_SERVER'] %>:<%= ENV['REDIS_PORT'] %>/1
-  channel_prefix: bravado_production
-=======
-<<<<<<< Updated upstream
-  url: redis://<%= ENV['REDIS_HOST'] || 'localhost' %>:<%= ENV['REDIS_PORT'] || '6379' %>
-  channel_prefix: bravado_production
-=======
   url: redis://<%= ENV['REDIS_HOST'] %>:<%= ENV['REDIS_PORT'] %>/1
   channel_prefix: bravado_production
->>>>>>> Stashed changes
->>>>>>> Stashed changes
