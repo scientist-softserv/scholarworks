@@ -1,21 +1,21 @@
 default: &default
-  adapter: postgresql
+  adapter: <%= ENV.fetch("DATABASE_ADAPTER", "postgresql") %>
   encoding: unicode
-  username: <%= ENV.fetch("POSTGRES_USER", "csusm_postgres_dev") %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD", "demo") %>
-  host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
-  port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
+  username: <%= ENV.fetch("DATABASE_USER", "csusm_postgres_dev") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "demo") %>
+  host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
+  port: <%= ENV.fetch("DATABASE_PORT", 5432) %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB", "csusm_postgres_development") %>
+  database: <%= ENV.fetch("DATABASE_NAME", "csusm_postgres_development") %>
 test:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_TEST_DB", "csusm_postgres_test") %>
+  database: <%= ENV.fetch("DATABASE_TEST_NAME", "csusm_postgres_test") %>
 production:
   <<: *default
   url: <%= ENV['DATABASE_URL'] %>
-  database: <%= ENV['DATABASE'] %>
+  database: <%= ENV['DATABASE_NAME'] %>
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
