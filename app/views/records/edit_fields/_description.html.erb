@@ -8,11 +8,13 @@
     $(function() {
       tinymce.init({
           plugins: 'autolink link tabfocus paste lists advlist',
+          <% if f.object.required?(key) %>
           setup: function (editor) {
-              editor.on('change', function (e) {
-                  scholarworks.toggle_submit(scholarworks.invalid_description());
-              });
-          },
+                   editor.on('blur', function (e) {
+                       scholarworks.update_tinymcearea(e);
+                   });
+               },
+          <% end %>
           selector: 'textarea.description_tinymce',
           menubar: false,
           statusbar: false,
@@ -39,6 +41,7 @@
                   id="scholarworks_<%= key %>"
                   rows="14"
                   aria-labelledby="<%= model_type %>_<%= key %>_help"
+                  <% if f.object.required?(key) %> required="required" <% end %>
                   style="width:500px"
                   class="description_tinymce use_tinymce form-control
                          <% if f.object.required?(key) %>required<% end %>
