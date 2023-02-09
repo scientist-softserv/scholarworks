@@ -23,7 +23,7 @@ gem 'hyrax', '2.9.6'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'omniauth-shibboleth'
-gem 'passenger', '>= 5.0.25', require: 'phusion_passenger/rack_handler'
+gem 'puma'
 gem 'pg', '~> 0.18'
 gem 'rails', '~> 5.2'
 gem 'redis', '~> 3.0'
@@ -33,6 +33,7 @@ gem 'rubocop'
 gem 'ruby-vips', '~> 2.0'
 gem 'rubyzip'
 gem 'sass-rails', '~> 5.0'
+gem 'sidekiq'
 gem 'solargraph'
 gem 'table_print'
 gem 'turbolinks', '~> 5'
@@ -40,10 +41,6 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'uglifier', '>= 1.3.0'
 gem 'yaml_extend'
 gem 'willow_sword', github: 'csuscholarworks/willow_sword', tag: 'v1.0'
-
-group :production do
-  gem 'sidekiq'
-end
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
