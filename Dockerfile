@@ -80,11 +80,13 @@ COPY --chown=1001:101 ./ops/fits.xml /app/fits/xml/fits.xml
 COPY --chown=1001:101 ./ops/exiftool_image_to_fits.xslt /app/fits/xml/exiftool/exiftool_image_to_fits.xslt
 RUN ln -sf /usr/lib/libmediainfo.so.0 /app/fits/tools/mediainfo/linux/libmediainfo.so.0 && \
   ln -sf /usr/lib/libzen.so.0 /app/fits/tools/mediainfo/linux/libzen.so.0
+COPY --chown=1001:101 ./Gemfile* /app/samvera/hyrax-webapp/
+RUN bundle install --jobs "$(nproc)"
 
 FROM hyrax-base as hyrax-web
 
-COPY --chown=1001:101 $APP_PATH/Gemfile* /app/samvera/hyrax-webapp/
-RUN bundle install --jobs "$(nproc)"
+ARG APP_PATH=.
+
 COPY --chown=1001:101 $APP_PATH/bin/db-migrate-seed.sh /app/samvera/
 COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 

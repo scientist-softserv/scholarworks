@@ -57,7 +57,7 @@ services:
   solr:
     image: hyku/solr:8
     build:
-      context: solr
+      context: ./solr
       dockerfile: Dockerfile
     env_file:
       - .env
@@ -68,7 +68,7 @@ services:
     user: root
     command: bash -c "
       chown -R 8983:8983 /var/solr
-      && ./bin/solr zk cp file:/var/solr/security.json zk:/security.json
+      && ./bin/solr zk cp file:/var/security.json zk:/security.json
       && runuser -u solr -- solr-foreground"
     expose:
       - 8983
@@ -115,14 +115,6 @@ services:
       - db:/var/lib/postgresql/data
     networks:
       internal:
-
-  # Used exclusively for building and caching the base image to reduce build times
-  base:
-    <<: *app
-    image: ghcr.io/csuscholarworks/scholarworks/base:${TAG:-latest}
-    build:
-      context: .
-      target: hyrax-base
 
   web:
     <<: *app
