@@ -3,7 +3,7 @@ version: '3.8'
 x-app: &app
   build:
     context: .
-    target: hyrax-web
+    target: hyrax-base
     cache_from:
       - ghcr.io/csuscholarworks/scholarworks/base:latest
       - ghcr.io/csuscholarworks/scholarworks/web:latest
