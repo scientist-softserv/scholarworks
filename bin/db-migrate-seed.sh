@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 db-wait.sh "$DB_HOST:$DB_PORT"

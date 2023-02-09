@@ -83,8 +83,6 @@ RUN ln -sf /usr/lib/libmediainfo.so.0 /app/fits/tools/mediainfo/linux/libmediain
 COPY --chown=1001:101 ./Gemfile* /app/samvera/hyrax-webapp/
 RUN bundle install --jobs "$(nproc)"
 
-FROM hyrax-base as hyrax-web
-
 ARG APP_PATH=.
 
 COPY --chown=1001:101 $APP_PATH/bin/db-migrate-seed.sh /app/samvera/
@@ -93,6 +91,6 @@ COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 RUN RAILS_ENV=production SECRET_KEY_BASE=FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE DB_ADAPTER=nulldb DATABASE_URL='postgresql://fake' bundle exec rake assets:precompile 
 CMD ./bin/web
 
-FROM hyrax-web as hyrax-worker
+FROM hyrax-base as hyrax-worker
 ENV MALLOC_ARENA_MAX=2
 CMD ./bin/worker

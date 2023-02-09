@@ -63,15 +63,13 @@ services:
       - .env
     environment:
       - OOM=script
-      - VIRTUAL_PORT=8983
-      - VIRTUAL_HOST=solr.calstate.test
     user: root
     command: bash -c "
       chown -R 8983:8983 /var/solr
       && ./bin/solr zk cp file:/var/security.json zk:/security.json
       && runuser -u solr -- solr-foreground"
-    expose:
-      - 8983
+    ports:
+      - "8983:8983"
     volumes:
       - solr:/var/solr
     networks:
@@ -92,11 +90,9 @@ services:
       - fcrepo:/data:cached
     env_file:
       - .env
-    expose:
-      - 8080
+    ports:
+      - "8080:8080"
     environment:
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_HOST=fcrepo.calstate.test
       - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
     networks:
       internal:
@@ -109,10 +105,10 @@ services:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_USER=${DATABASE_USER}
-      - VIRTUAL_PORT=5432
-      - VIRTUAL_HOST=db.calstate.test
     volumes:
       - db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
       internal:
 
@@ -136,9 +132,6 @@ services:
     ## interact with the breakpoints.
     ##
     # command: sh -l -c "bundle && tail -f /dev/null"
-    environment:
-      - VIRTUAL_PORT=3000
-      - VIRTUAL_HOST=calstate.test
     depends_on:
       db:
         condition: service_started
@@ -158,9 +151,8 @@ services:
         condition: service_started
       initialize_app:
         condition: service_completed_successfully
-
-    expose:
-      - 3000
+    ports:
+      - "3000:3000"
 
   worker:
     <<: *app
