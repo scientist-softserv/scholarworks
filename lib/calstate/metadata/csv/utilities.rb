@@ -138,14 +138,9 @@ module CalState
           value = prep_value(value)
           return value if value.nil?
 
-          # convert the value to a number (will cause leading zeros and stuff to be truncated)
-          value_numeric = value.to_i
-
-          # if the value wasn't a number to begin with the numeric version will be a zero --or--
-          # if the value matches the numeric version then we can take the value straight-up
-          # otherwise excel will munge it, so add a tab to the end so it's treated as text
-          if value_numeric.zero? ||
-             value_numeric.to_s == value
+          # okay if don't we have non-number characters
+          # otherwise, add a tab to the end to force excel to treat as text
+          if value =~ /\D/
             value
           else
             "#{value}\t"
