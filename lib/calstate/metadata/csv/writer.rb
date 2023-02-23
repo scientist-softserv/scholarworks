@@ -62,6 +62,9 @@ module CalState
                                 description
                                 description_formatted]
 
+          # remove fields we just use for internal purposes
+          attribute_names -= FieldService.internal_fields
+
           # remove these from attributes, since we're adding them to front
           attribute_names -= %w[admin_set_id
                                 campus
