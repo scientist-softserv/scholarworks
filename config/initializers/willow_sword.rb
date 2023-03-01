@@ -36,7 +36,7 @@ WillowSword.setup do |config|
     config = WillowSword::CampusConfig.new(params['collection_id'])
 
     # visibility
-    if attributes.key?(:embargo_release_date)
+    if attributes.key?('embargo_release_date')
       attributes['visibility'] = 'embargo'
       attributes['visibility_during_embargo'] = config.visibility_during_embargo
       attributes['visibility_after_embargo'] = config.visibility_after_embargo
