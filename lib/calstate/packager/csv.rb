@@ -50,7 +50,6 @@ module CalState
           x += 1
 
           next if @transaction.completed?(x)
-          next unless files.empty?
 
           process_item(record.except('files'), files, counter: x)
         end
