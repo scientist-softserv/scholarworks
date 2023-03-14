@@ -1,11 +1,10 @@
-require 'rails_autolink/helpers'
-
-module Hyrax
+module Hyrax 
   module Renderers
     module PersonAttribute
       extend ActiveSupport::Concern
 
       def render
+        Rails.logger.error "PersonAttribute:render"
         markup = ''
 
         return markup if values.blank? && !options[:include_empty]
@@ -24,6 +23,7 @@ module Hyrax
 
       # Draw the dl row for the attribute
       def render_dl_row
+        Rails.logger.error "PersonAttribute:render_dl_row"
         markup = ''
         return markup if values.blank? && !options[:include_empty]
 
