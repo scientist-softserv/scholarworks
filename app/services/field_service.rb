@@ -185,7 +185,10 @@ class FieldService
   # @return [Array] string
   #
   def self.internal_fields
-    fedora + %w[date_issued_year external_modified_date external_system external_url]
+    fedora + %w[date_issued_year
+                external_modified_date
+                external_system
+                external_url]
   end
 
   #
