@@ -68,6 +68,7 @@ Rails.application.routes.draw do
 
   get 'campus/:campus', to: 'campus#index'
 
+  post '/', to: 'application#not_found'
   get '*unmatched_route', to: 'application#not_found'
   post '*unmatched_route', to: 'application#not_found'
 

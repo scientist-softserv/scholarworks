@@ -1,4 +1,4 @@
-module Hyrax
+module Hyrax 
   module Renderers
     class PersonLinkAttributeRenderer < FacetedAttributeRenderer
       include PersonAttribute

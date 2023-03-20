@@ -1,6 +1,4 @@
-require "rails_autolink/helpers"
-
-module Hyrax
+module Hyrax 
   module Renderers
     class FacetedForCampusAttributeRenderer < FacetedAttributeRenderer
       def search_path(value)

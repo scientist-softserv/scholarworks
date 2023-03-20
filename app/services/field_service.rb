@@ -25,6 +25,7 @@ class FieldService
        date_issued_year
        description
        description_note
+       embargo_terms
        extent
        external_id
        external_modified_date
@@ -96,7 +97,6 @@ class FieldService
        date_available
        date_copyright
        date_submitted
-       embargo_terms
        identifier_uri
        investigator
        publication_status
@@ -185,7 +185,10 @@ class FieldService
   # @return [Array] string
   #
   def self.internal_fields
-    fedora + %w[title_formatted description_formatted]
+    fedora + %w[date_issued_year
+                external_modified_date
+                external_system
+                external_url]
   end
 
   #
@@ -200,6 +203,7 @@ class FieldService
        depositor
        edition
        embargo_release_date
+       embargo_terms
        external_id
        external_system
        external_modified_date

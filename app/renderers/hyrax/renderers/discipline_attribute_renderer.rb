@@ -1,6 +1,4 @@
-require "rails_autolink/helpers"
-
-module Hyrax
+module Hyrax 
   module Renderers
     class DisciplineAttributeRenderer < FacetedAttributeRenderer
       def li_value(value)
