@@ -6,6 +6,7 @@
 class WorksController < ApplicationController
   include Hyrax::WorksControllerBehavior
   include Hyrax::BreadcrumbsForWorks
+  include Scholarworks::WorkViewBehavior
 
   #
   # Build a campus-specific form, if it exists
