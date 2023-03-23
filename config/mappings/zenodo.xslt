@@ -4,7 +4,7 @@
   <!-- records -->
   <xsl:template match="/record">
     <record>
-      <field name="source">Zenodo</field>
+      <field name="external_system">Zenodo</field>
       <xsl:apply-templates />
     </record>
   </xsl:template>
