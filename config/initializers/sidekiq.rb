@@ -1,13 +1,10 @@
-if Rails.env.production?
-  config = YAML.load(ERB.new(IO.read(Rails.root + 'config' + 'redis.yml')).result)[Rails.env].with_indifferent_access
+config = YAML.load(ERB.new(IO.read(Rails.root + 'config' + 'redis.yml')).result)[Rails.env].with_indifferent_access
+redis_config = config.merge(thread_safe: true)
 
-  redis_conn = { url: "redis://#{config[:host]}:#{config[:port]}/" }
+Sidekiq.configure_server do |s|
+  s.redis = redis_config
+end
 
-  Sidekiq.configure_server do |s|
-    s.redis = redis_conn
-  end
-
-  Sidekiq.configure_client do |s|
-    s.redis = redis_conn
-  end
+Sidekiq.configure_client do |s|
+  s.redis = redis_config
 end
