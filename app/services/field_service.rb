@@ -371,13 +371,13 @@ class FieldService
   #
   # Convert simple fields XML to hash of params
   #
-  # @param doc [Nokogiri::XML]  node or document with simple xml record
+  # @param node [Nokogiri::XML]  record node from Nokogiri XML (don't just pass in the whole document!)
   #
   # @return [Hash]
   #
-  def self.xml_to_params(doc)
+  def self.xml_to_params(node)
     params = {}
-    doc.xpath('field').each do |field|
+    node.xpath('field').each do |field|
       next unless field.text.present?
 
       field_name = field.attr('name')
