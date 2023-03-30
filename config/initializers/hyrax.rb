@@ -83,7 +83,8 @@ Hyrax.config do |config|
   # config.redis_namespace = "hyrax"
 
   # Path to the file characterization tool
-  config.fits_path = "/usr/local/fits/fits.sh"
+  config.fits_path = ENV['FITS_PATH'] || "/usr/local/fits/fits.sh"
+
   #config.fits_path = "/usr/local/bin/fits"
 
   # Path to the file derivatives creation tool

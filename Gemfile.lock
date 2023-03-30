@@ -646,6 +646,8 @@ GEM
     power_converter (0.1.2)
     public_suffix (5.0.0)
     pul_uv_rails (2.0.1)
+    puma (4.3.12)
+      nio4r (~> 2.0)
     qa (5.9.0)
       activerecord-import
       deprecation
@@ -1004,6 +1006,7 @@ DEPENDENCIES
   omniauth-shibboleth
   passenger (>= 5.0.25)
   pg (~> 0.18)
+  puma
   rails (~> 5.2)
   redis (~> 3.0)
   riiif (~> 1.1)
