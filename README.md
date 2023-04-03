@@ -45,60 +45,6 @@ To execute commands inside of the web container
 docker compose exec web bash
 ```
 
-### Without Docker
-
-Install Ruby, Java, Postgres, etc., [prerequisites from Hyrax](https://github.com/samvera/hyrax).
-
-Create a database and user using the development settings in `config/database.yml`
-
-```
-git clone https://github.com/csuscholarworks/scholarworks.git
-cd scholarworks
-vi .solr_wrapper      // change solr version to 6.6.1, uncomment port
-bundle install
-rails db:migrate RAILS_ENV=development
-rails hydra:server
-```
-
-launch new ssh window
-
-```
-rails hyrax:default_admin_set:create
-rails hyrax:default_collection_types:create
-rails hyrax:migrate:add_collection_type_and_permissions_to_collections
-```
-
-Register a new user in Hyrax. And make that user an administrator.
-
-`rails c`
-```
-admin = Role.create(name: 'admin')
-admin.users << User.find_by_user_key('your_admin_users_email@fake.email.org')
-admin.save
-```
-
-## Campus-based Submissions
-
-First, remove all depositors from the default admin set.  This way users can only deposit into a specific campus admin set and only see that option in the 'relationships' tab when depositing.
-
-Create a new admin set and give it the name 'Stanislaus'. Add the group 'stanislaus' as depositor. Create a new user 'test@stanislaus.edu'.
-
-That user should now be able to deposit into the Staniaus admin set, and all submissions will use Stanislaus controlled vocabularies and have the campus field set to 'Stanislaus'.
-
-Other campuses and users can be created for dev/test in this same way.  See `app\models\ability.rb` for mapping.
-
-## DSpace Import
-
-The packager:aip rake task performs the basic functions of importing [DSpace AIP packages](https://wiki.lyrasis.org/display/DSDOC5x/DSpace+AIP+Format) into Hyrax.  The rake task takes two arguments: the campus identifier and the name of the AIP package.  Here's an example for Channel Islands:
-
-```
-bundle exec rake packager:aip[channel,COLLECTION@10139-722.zip]
-```
-
-The campus identifier corresponds to the name of the config file in `config/packager`, so in this example `config/packager/channel.yml`.  That includes configurations for where the AIP packages are located, various fixed metadata elements, and a metadata mapping of DSpace fields to those in Hyrax.
-
-The AIP package can be for a single item, or more typically for an entire DSpace collection or community.
-
 # Branching
 
 ## Quick Legend
