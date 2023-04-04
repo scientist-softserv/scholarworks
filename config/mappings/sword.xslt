@@ -247,12 +247,12 @@
 
       <!-- geographical area -->
       <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/coverage' and ./@epdcx:vesURI='http://purl.org/dc/terms/spatial'">
-        <field name="geographical_area">
+        <field name="subject" modifier="geographical_area">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
       <xsl:if test="./@epdcx:attributeName='dcCoverageSpatial'">
-        <field name="geographical_area">
+        <field name="subject" modifier="geographical_area">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -264,13 +264,6 @@
   <xsl:template name="dates">
     <xsl:for-each select="//epdcx:statement">
 
-      <!-- date created -->
-      <xsl:if test="./@epdcx:attributeName='dcDateCreated'">
-        <field name="date_created">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
       <!-- date issued -->
       <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/terms/available'">
         <field name="date_issued">
@@ -279,13 +272,6 @@
       </xsl:if>
       <xsl:if test="./@epdcx:attributeName='dcDatePublished'">
         <field name="date_issued">
-          <xsl:value-of select="epdcx:valueString" />
-        </field>
-      </xsl:if>
-
-      <!-- copyright date -->
-      <xsl:if test="./@epdcx:attributeName='copyrightDate'">
-        <field name="date_copyright">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -332,7 +318,7 @@
 
       <!-- rights uri -->
       <xsl:if test="./@epdcx:attributeName='rightsURI'">
-        <field name="rights_uri">
+        <field name="rights_note">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -402,35 +388,35 @@
 
       <!-- is version of -->
       <xsl:if test="./@epdcx:attributeName='relationIsVersionOf'">
-        <field name="relation" modifier="is_version_of">
+        <field name="description_note" modifier="is_version_of">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- has version -->
       <xsl:if test="./@epdcx:attributeName='relationHasVersion'">
-        <field name="relation" modifier="has_version">
+        <field name="description_note" modifier="has_version">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- replaced by -->
       <xsl:if test="./@epdcx:attributeName='relationIsReplacedBy'">
-        <field name="relation" modifier="is_replaced_by">
+        <field name="description_note" modifier="is_replaced_by">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- replaces -->
       <xsl:if test="./@epdcx:attributeName='relationReplaces'">
-        <field name="relation" modifier="replaces">
+        <field name="description_note" modifier="replaces">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- requires -->
       <xsl:if test="./@epdcx:attributeName='relationRequires'">
-        <field name="relation" modifier="requires">
+        <field name="description_note" modifier="requires">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
@@ -444,84 +430,84 @@
 
       <!-- has part -->
       <xsl:if test="./@epdcx:attributeName='relationHasPart'">
-        <field name="relation" modifier="has_part">
+        <field name="description_note" modifier="has_part">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- is referenced by -->
       <xsl:if test="./@epdcx:attributeName='relationIsReferencedBy'">
-        <field name="relation" modifier="is_referenced_by">
+        <field name="description_note" modifier="is_referenced_by">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- is format of -->
       <xsl:if test="./@epdcx:attributeName='relationIsFormatOf'">
-        <field name="relation" modifier="is_format_of">
+        <field name="description_note" modifier="is_format_of">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- is required by -->
       <xsl:if test="./@epdcx:attributeName='relationIsRequiredBy'">
-        <field name="relation" modifier="is_required_by">
+        <field name="description_note" modifier="is_required_by">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- references -->
       <xsl:if test="./@epdcx:attributeName='relationReferences'">
-        <field name="relation" modifier="references">
+        <field name="description_note" modifier="references">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- has format of -->
       <xsl:if test="./@epdcx:attributeName='relationHasFormatOf'">
-        <field name="relation" modifier="has_format_of">
+        <field name="description_note" modifier="has_format_of">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- conforms to -->
       <xsl:if test="./@epdcx:attributeName='relationConformsTo'">
-        <field name="relation" modifier="conforms_to">
+        <field name="description_note" modifier="conforms_to">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- is based on -->
       <xsl:if test="./@epdcx:attributeName='relationIsBasedOn'">
-        <field name="relation" modifier="is_based_on">
+        <field name="description_note" modifier="is_based_on">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- is part of series -->
       <xsl:if test="./@epdcx:attributeName='relationIsPartOfSeries'">
-        <field name="relation" modifier="is_part_of_series">
+        <field name="description_note" modifier="is_part_of_series">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- journal -->
       <xsl:if test="./@epdcx:attributeName='relationJournal'">
-        <field name="relation" modifier="journal">
+        <field name="publication_title">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- uri -->
       <xsl:if test="./@epdcx:attributeName='relationUri'">
-        <field name="relation" modifier="uri">
+        <field name="description_note" modifier="uri">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>
 
       <!-- relation -->
       <xsl:if test="./@epdcx:attributeName='relation'">
-        <field name="relation">
+        <field name="description_note">
           <xsl:value-of select="epdcx:valueString" />
         </field>
       </xsl:if>

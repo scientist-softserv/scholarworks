@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale.to_s %>" prefix="og:http://ogp.me/ns#">
+<head>
+  <%= render partial: 'layouts/head_tag_content' %>
+  <%= content_for(:head) %>
+</head>
+<body>
+<div class="skip-to-content">
+  <%= link_to "Skip to Content", "#skip-to-content" %>
+</div>
+<%= render '/masthead' %>
+<div id="content-wrapper" class="container" role="main">
+  <nav class="breadcrumb" role="region" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Home</a></li>
+    </ol>
+  </nav>
+  <a id="skip-to-content"></a>
+  <%= content_for?(:content) ? yield(:content) : yield %>
+</div>
+<%= render 'shared/footer' %>
+</body>
+</html>

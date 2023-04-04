@@ -13,14 +13,14 @@ namespace :calstate do
 
     old_dir = '/home/ec2-user/data/exported'
     new_dir = '/home/ec2-user/data/import'
-    transaction_dir = new_dir + '/transactions'
-    report_dir = '/mnt/efs2/exports/reports/'
+    transaction_dir = "#{new_dir}/transactions"
+    report_dir = '/data/exports/reports/'
 
-    new_file = new_dir + '/' + file + '.csv'
+    new_file = "#{new_dir}/#{file}.csv"
     old_file = if file == 'fix'
-                 old_dir + '/*.csv'
+                 "#{old_dir}/*.csv"
                else
-                 old_dir + '/' + file + '*.csv'
+                 "#{old_dir}/#{file}*.csv"
                end
 
     trans = CalState::Metadata::Csv::Transaction.new(old_file, new_file)

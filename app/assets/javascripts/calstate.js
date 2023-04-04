@@ -76,7 +76,7 @@ scholarworks.composite_element =  {
                 continue;
             }
 
-            let sub_value = (sub_values_arr.length > 1 ? sub_values_arr[i] : '');
+            let sub_value = (sub_values_arr.length >= 1 && sub_values_arr[i] ? sub_values_arr[i] : '');
             let required = (i == 0 ? elem_required : false);
             //console.log('calling function ' + subtypes_arr[i] + ' value [' + sub_value + '] required ' + required);
             ret_elem += this[subtypes_arr[i]](sub_value, elem_type, elem_num, required);
@@ -128,9 +128,9 @@ scholarworks.composite_element =  {
         return ret_elem;
     },
 
-    invalid_orcid : function() {
+    valid_orcid : function() {
         let regex = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/;
-        let has_invalid_orcid = false;
+        let has_valid_orcid = true;
         $('.composite_orcid_error').addClass('d_none').attr('aria-hidden', 'true');
         $('.composite_orcid').each(function () {
             let orcid_val = $.trim($(this).val());
@@ -138,11 +138,11 @@ scholarworks.composite_element =  {
                 let elem_type = $(this).data('element-type');
                 let id = $(this).data('element-num')
                 $('#' + elem_type + '_orcid_error' + id).removeClass('d_none').attr('aria-hidden', 'false');
-                has_invalid_orcid = true;
+                has_valid_orcid = false;
                 return false;
             }
         });
-        return has_invalid_orcid;
+        return has_valid_orcid;
     },
 
     any_empty_main_element : function (main_elem) {
@@ -176,41 +176,21 @@ scholarworks.composite_element =  {
     element_change : function(elem_type, subtypes, elem_required) {
         //console.log('element_change add focusout on orcid element');
         $('.composite_orcid').focusout(function() {
-            scholarworks.toggle_submit(scholarworks.composite_element.invalid_orcid());
+            scholarworks.toggle_submit(scholarworks.composite_element.valid_orcid());
         });
-        scholarworks.toggle_submit(scholarworks.composite_element.invalid_orcid());
-
-        /*
-        This is the extra checking to turn on/off the submit button based on the main subfield
-        but for some reason it seems to be conflict with hyrax event handler so I just comment it
-        out since the main subfield is a required field and will be checked by browser and hyrax
-
-        console.log('element_change elem_required ' + elem_required);
-        if (elem_required) {
-            const subtypes_arr = subtypes.split(" ");
-            // subtypes 0 (first one) is the main field
-            let main_elem = elem_type + '_' + subtypes_arr[0];
-            $('.' + main_elem).change(function() {
-                console.log('element_change main element ' + main_elem + ' changed ');
-                scholarworks.toggle_submit(scholarworks.composite_element.any_empty_main_element(main_elem));
-                //scholarworks.toggle_submit(!scholarworks.composite_element.any_fill_main_element(main_elem));
-            });
-            toggle_submit(scholarworks.composite_element.any_empty_main_element(main_elem));
-            //toggle_submit(!scholarworks.composite_element.any_fill_main_element(main_elem));
-        }
-        */
+        scholarworks.toggle_submit(scholarworks.composite_element.valid_orcid());
     },
 
     // to be used after add and remove action
-    post_action : function(add_button_id) {
-        //console.log('inside post_element_action add_button_id[' + add_button_id + ']');
-        let button_elem = $('#' + add_button_id);
+    post_action : function(button_id) {
+        //console.log('inside post_element_action button_id[' + button_id + ']');
+        let button_elem = $('#' + button_id);
         if (!button_elem.length) return;
 
         let elem_type = button_elem.data('element-type');
         let subtypes = button_elem.data('subtypes');
         let elem_required = button_elem.data('element-required');
-        //console.log('post_element_action button_id [' + add_button_id + '] elem_type [' + elem_type + ' subtypes [' + subtypes + ' elem_required [' + elem_required + ']');
+        //console.log('post_element_action button_id [' + button_id + '] elem_type [' + elem_type + ' subtypes [' + subtypes + ' elem_required [' + elem_required + ']');
         this.element_change(elem_type, subtypes, elem_required);
     },
 
@@ -267,17 +247,17 @@ scholarworks.composite_element =  {
     }
 };
 
-scholarworks.toggle_submit  = function(disabled) {
-    //console.log('inside scholarworks.toggle_submit disabled [' + disabled + ']');
-    if (disabled) {
-        $('#required-metadata').removeClass('complete').addClass('incomplete');
-        $('#with_files_submit').prop('disabled', disabled);
-    }
-    else {
+// mainly used for orcid validation since itself is not a required field
+scholarworks.toggle_submit  = function(enable) {
+    if (enable) {
         $('#required-metadata').addClass('complete').removeClass('incomplete');
         $('#with_files_submit').removeProp('disabled');
     }
-}
+    else {
+        $('#required-metadata').removeClass('complete').addClass('incomplete');
+        $('#with_files_submit').prop('disabled', true);
+    }
+  }
 
 scholarworks.element_add = function() {
     let elem_type = $(this).data('element-type');
@@ -371,6 +351,7 @@ scholarworks.element_remove = function() {
                 }
                 $('#' + elem_type + '_warning').addClass('d_none').attr('aria-hidden', 'true');
             }
+
         }
     }
     catch (err) {
@@ -381,80 +362,66 @@ scholarworks.element_remove = function() {
 // only one save_handler for submit button event handler
 scholarworks.save_handler = function(event) {
     //console.log('inside save handler');
-    $('.title_tinymce').each(function () {
-        let editor_txt = tinymce.get($(this).prop('id')).getContent();
-        $(this).text(editor_txt);
-    });
-
-    $('.description_tinymce').each(function () {
-        let editor_txt = tinymce.get($(this).prop('id')).getContent();
-        $(this).text(editor_txt);
-    });
-
-    // comment this to test server ORCID validation by remove the condition invalid_orcid
-    if (scholarworks.composite_element.invalid_orcid() || scholarworks.invalid_description() || scholarworks.invalid_title()) {
-        event.preventDefault();
-        scholarworks.toggle_submit(true);
-        return;
-    }
-
-    if (typeof scholarworks.invalid_date_issued === 'function') {
-        if (scholarworks.invalid_date_issued()) {
-            event.preventDefault();
-            scholarworks.toggle_submit(true);
-            return;
-        }
-    }
-
     // serialize all composite elements
     scholarworks.composite_element.serialize();
-
-    $('.date_issued_div').each(function () {
-        let index = $(this).prop('id').substring($(this).prop('id').lastIndexOf('_') + 1);
-        let date_issued_str = $('#date_issued_year_' + index).val();
-        let month = $('#date_issued_month_' + index).val();
-        let day = $('#date_issued_day_' + index).val();
-        if (month != '' && day != '') {
-            if (Number(month) < 10) {
-                month = '0' + month;
-            }
-            if (Number(day) < 10) {
-                day = '0' + day;
-            }
-            date_issued_str = date_issued_str + '-' + month + '-' + day;
-        }
-        $('#date_issued_' + index).val(date_issued_str);
-    });
 }
 
 // functions for data_issued
 scholarworks.adjust_date_issued_day = function(index) {
     //console.log('adjust date issued day')
     let year = $('#date_issued_year_' + index).val();
-    let month = parseInt($('#date_issued_month_' + index).val());
     let day = $('#date_issued_day_' + index);
-    day.empty();
 
+    day.empty();
     // setting month to select if year is empty
     if (!year) {
         $('#date_issued_month_' + index).val("");
     }
-
-    //get the last day, so the number of days in that month
-    let days = new Date(year, month, 0).getDate();
 
     let day_elem = document.createElement("option");
     day_elem.value = "";
     day_elem.textContent = "Select";
     day.append(day_elem);
 
-    //lets create the days of that month
-    for (let d = 1; d <= days; d++) {
-        let day_elem = document.createElement("option");
-        day_elem.value = d;
-        day_elem.textContent = d;
-        day.append(day_elem);
+    let month = $('#date_issued_month_' + index).val();
+    if (month) {
+       //get the last day, so the number of days in that month
+        let days = new Date(year, parseInt(month), 0).getDate();
+        //lets create the days of that month
+        for (let d = 1; d <= days; d++) {
+            let day_elem = document.createElement("option");
+            day_elem.value = d;
+            day_elem.textContent = d;
+            day.append(day_elem);
+        }
     }
+}
+
+scholarworks.date_issued_date_change = function(event) {
+    let index = $(this).data('element-num');
+    let elem_class = $(this).attr('class');
+
+    if (!$(this).hasClass('date_issued_day')) {
+        scholarworks.adjust_date_issued_day(index);
+    }
+
+    let date_issued_str = $('#date_issued_year_' + index).val();
+    let month = $('#date_issued_month_' + index).val();
+    let day = $('#date_issued_day_' + index).val();
+    if (month != '') {
+        if (Number(month) < 10) {
+            month = '0' + month;
+        }
+        date_issued_str = date_issued_str + '-' + month;
+        if (day != '') {
+            if (Number(day) < 10) {
+                day = '0' + day;
+            }
+            date_issued_str = date_issued_str + '-' + day;
+         }
+    }
+    $('#date_issued_' + index).val(date_issued_str);
+    scholarworks.is_required_field_complete();
 }
 
 scholarworks.initialize_date_issued = function(index, date_str) {
@@ -522,7 +489,7 @@ scholarworks.initialize_date_issued = function(index, date_str) {
                             if (d >= 1 && d <= 31) {
                                 input_day = d;
                             }
-                        }
+                         }
                     }
                 }
             }
@@ -532,7 +499,7 @@ scholarworks.initialize_date_issued = function(index, date_str) {
 
     year_elem.val(input_year);
     $('#date_issued_month_' + index).val(input_month);
-    year_elem.trigger("change");
+    //year_elem.trigger("change");
     scholarworks.adjust_date_issued_day(index);
     $('#date_issued_day_' + index).val(input_day);
 
@@ -549,27 +516,6 @@ scholarworks.any_empty_date_issued_year = function() {
     })
     return retVal;
 }
-
-scholarworks.invalid_date_issued = function() {
-    //console.log('invalid date issued');
-    let retVal = false;
-    if (typeof scholarworks.date_issued_required !== 'undefined' && scholarworks.date_issued_required) {
-        retVal = true;
-        $('.date_issued_year').each(function () {
-            if ($(this).val() != '') {
-                retVal = false;
-                return false;
-            }
-        })
-    }
-    return retVal;
-}
-
-scholarworks.date_issued_change = function() {
-    //console.log('inside date issued change');
-    scholarworks.toggle_submit(scholarworks.invalid_date_issued());
-}
-
 scholarworks.date_issued_remove = function() {
     //console.log('date issued remove');
     $('#date_issued_warning').addClass('d_none').attr('aria-hidden', 'true');
@@ -592,19 +538,36 @@ scholarworks.date_issued_add = function(elem_model, elem_type) {
         return;
     }
 
+    let required_attr = '';
+    let aria_attr = '';
+    let elem_class = 'date_issued date_issued_date_hidden ' + elem_model + '_' + elem_type;
+    if (scholarworks.date_issued_required) {
+        elem_class = elem_class + " required";
+        required_attr = "required='required'";
+        aria_attr = "aria-required='true'";
+    }
     $('#date_issued_warning').addClass('d_none').attr('aria-hidden', 'true');
     $('.date_issued_remove').removeClass('d_none').attr('aria-hidden', 'false');
     $('#date_issued_divs')
         .append(
             "<div id='date_issued_div_" + scholarworks.date_issued_num + "' class='date_issued_div'>" +
-            "  <input type='hidden' name='" + elem_model + "[date_issued][]' id='" + elem_type + "_" + scholarworks.date_issued_num + "' class='date_issued_date_hidden' value='' />" +
+            "  <input type='hidden' name='" + elem_model + "[date_issued][]' " +
+            "         id='" + elem_type + "_" + scholarworks.date_issued_num + "' " +
+            "         class='date_issued date_issued_date_hidden " + elem_model + '_' + elem_type + "' " +
+            "         value='' />" +
             "  <label for='date_issued_year_" + scholarworks.date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Year</label>" +
-            "  <select id='date_issued_year_" + scholarworks.date_issued_num + "' class='date_issued date_issued_date date_issued_year' " +
-            "          onclick='scholarworks.adjust_date_issued_day(" + scholarworks.date_issued_num + ")'></select>" +
+            "  <select id='date_issued_year_" + scholarworks.date_issued_num + "' " +
+            "          data-element-num='" + scholarworks.date_issued_num + "' " +
+            "          class='date_issued_date date_issued_year'>" +
+            "  </select>" +
             "  <label for='date_issued_month_" + scholarworks.date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Month</label>" +
-            "  <select id='date_issued_month_" + scholarworks.date_issued_num + "' onclick='scholarworks.adjust_date_issued_day(" + scholarworks.date_issued_num + ")' class='date_issued date_issued_date date_issued_month'></select>" +
+            "  <select id='date_issued_month_" + scholarworks.date_issued_num + "' " +
+            "          data-element-num='" + scholarworks.date_issued_num + "' " +
+            "          class='date_issued_date date_issued_month'></select>" +
             "  <label for='date_issued_day_" + scholarworks.date_issued_num + "' class='date_label'><span class='sr-only'>date issued </span>Day</label>" +
-            "  <select id='date_issued_day_" + scholarworks.date_issued_num + "' class='date_issued date_issued_day'></select>" +
+            "  <select id='date_issued_day_" + scholarworks.date_issued_num + "' " +
+            "          data-element-num='" + scholarworks.date_issued_num + "' " +
+            "          class='date_issued_date date_issued_day'></select>" +
             "  <span class='date_label'>" +
             "    <button  type='button' class='btn btn-link remove date_issued_remove' aria-hidden='false'>" +
             "      <span class='glyphicon glyphicon-remove'></span>" +
@@ -616,44 +579,43 @@ scholarworks.date_issued_add = function(elem_model, elem_type) {
     // initialize date selector
     scholarworks.initialize_date_issued(scholarworks.date_issued_num, null);
     $('.date_issued_remove').on('click', scholarworks.date_issued_remove);
-    $('.date_issued_year').on('change', scholarworks.date_issued_change);
+    $('.date_issued_date').on('change', scholarworks.date_issued_date_change);
     scholarworks.date_issued_cnt++;
     scholarworks.date_issued_num++;
 }
 
-// function for description
-scholarworks.invalid_description = function() {
-    /* will need to check to see if class has required in it if we have more
-       than one textarea tinymce where one of them is not required but for now
-       only one textarea tinymce description is rquired in the work except for collection.
-       let class_str = $('#<%= model_type %>_description').prop('class'); or loop through
-       $('.description_tinymce').each(function () {
-         let class_str = $('#' + $(this).prop('class'));
-         and check if it contains required string
-       });
-    */
-    //console.log('invalid description');
-    let desc_content = tinymce.get('scholarworks_description').getContent();
-    if (desc_content.length > 0) {
-        $('#empty_description').addClass('d-none');
-        $('#description_content').removeClass('has-error');
-        return false;
+scholarworks.update_tinymcearea = function(e) {
+    if (e.target.id != undefined && tinymce.get(e.target.id) != null) {
+        $('#' + e.target.id).val(tinymce.get(e.target.id).getContent());
     }
-    $('#empty_description').removeClass('d-none');
-    $('#description_content').addClass('has-error');
-    return true;
+    scholarworks.is_required_field_complete();
 }
 
-scholarworks.invalid_title = function () {
-    //console.log('invalid title');
-    let title_content = tinymce.get('scholarworks_title').getContent();
-    if (title_content.length > 0) {
-        $('#empty_title').addClass('d-none');
-        $('#title_content').removeClass('has-error');
-        return false;
+scholarworks.is_required_field_complete = function() {
+    let completed = $('#agreement').is(":checked") && !($('input[name="uploaded_files[]"]').val() == undefined);
+    //console.log('scholarworks.is_required_field_complete completed ' + completed + ' agreement ' + $('#agreement').is(":checked") + ' uploaded file ' + !($('input[name="uploaded_files[]"]').val() == undefined));
+    // now check for the rest of required inputs
+    let required_fields_completed = true;
+    $('#metadata').find(':input[required]').each(function () {
+	//console.log('is_required_field_complete id ' + $(this).attr('id') + ' value [' + $(this).val() + ']');
+        if ($(this).val() == null || $(this).val().length < 1) {
+            required_fields_completed = false;
+            return false;
+        }
+    });
+    if (required_fields_completed) {
+        $('#required-metadata').addClass('complete').removeClass('incomplete');
     }
-    $('#empty_title').removeClass('d-none');
-    $('#title_content').addClass('has-error');
-    return true;
-}
+    else {
+        $('#required-metadata').removeClass('complete').addClass('incomplete');
+    }
 
+    if ($('#agreement').is(":checked") && !($('input[name="uploaded_files[]"]').val() == undefined) && required_fields_completed) {
+        //console.log('is_required_field_complete completed');
+        $('#with_files_submit').removeProp('disabled');
+    }
+    else {
+        //console.log('is_required_field_complete not completed');
+        $('#with_files_submit').prop('disabled', true);
+    }
+}

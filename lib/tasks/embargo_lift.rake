@@ -8,7 +8,7 @@ require 'calstate/metadata'
 namespace :calstate do
   desc 'Embargo lifter'
   task embargo_lift: :environment do
-    solr_reader = CalState::Metadata::SolrReader.new
+    solr_reader = CalState::Metadata::Solr::Reader.new
     expired_embargoes = solr_reader.records_with_expired_embargoes
 
     puts 'Found ' + expired_embargoes.count.to_s + ' expired embargoes.'

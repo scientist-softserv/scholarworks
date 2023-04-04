@@ -26,7 +26,7 @@
         });
 
         $('.date_issued_remove').on('click', scholarworks.date_issued_remove);
-
+        $('.date_issued_date').on('change', scholarworks.date_issued_date_change);
         scholarworks.date_issued_num = scholarworks.date_issued_cnt;
         if (scholarworks.date_issued_cnt == 1) {
             $('.date_issued_remove').addClass('d_none').attr('aria-hidden', 'true');
@@ -44,46 +44,56 @@
     <% f.object.date_issued.each_with_index do |element, index| %>
       <% date_issued_div_id = "date_issued_div_#{index}" %>
       <div id=<%= date_issued_div_id %> class="date_issued_div">
-        <%= hidden_field_tag "#{model_type}[#{key}][]", element, id: "#{key}_#{index}", class: "date_issued_date_hidden" %>
+        <input type="hidden"
+               name="<%= model_type %>[<%= key %>][]"
+               id="<%= key %>_<%= index %>"
+               value="<%= element %>"
+               <% if f.object.required?(key) && index == 0 %>required="required"<% end %>
+               aria-required="<%= f.object.required?(key) && index == 0 %>"
+               class="date_issued date_issued_date_hidden multi_value <%= model_type %>_<%= key %> <% if f.object.required?(key) && index == 0 %>required<% end %>" />
         <label for="date_issued_year_<%= index %>" class="date_label">
           <span class="sr-only">date issued </span>
           Year
         </label>
         <select id=<%= "date_issued_year_#{index}" %>
-                <% if f.object.required?(key) %>required="required"<% end %>
-                onclick=<%= "scholarworks.adjust_date_issued_day(#{index})" %>
-                aria-required="<%= f.object.required?(key) %>"
-                class="date_issued date_issued_date date_issued_year multi_value <%= model_type %>_<%= key %> <% if f.object.required?(key) %>required<% end %>"></select>
+                data-element-num="<%= index %>"
+                class="date_issued_date date_issued_year"></select>
         <label for=<%= "date_issued_month_#{index}" %> class="date_label">
           <span class="sr-only">date issued </span>
           Month
         </label>
-        <select id=<%= "date_issued_month_#{index}" %> onchange=<%= "scholarworks.adjust_date_issued_day(#{index})" %> class="date_issued date_issued_date date_issued_month"></select>
+        <select id=<%= "date_issued_month_#{index}" %>
+                data-element-num="<%= index %>"
+                class="date_issued_date date_issued_month"></select>
         <label for=<%= "date_issued_day_#{index}" %> class="date_label">
           <span class="sr-only">date issued </span>
           Day
         </label>
-        <select id=<%= "date_issued_day_#{index}" %> class="date_issued date_issued_day"></select>
-        <span class="date_label">
-          <button  type="button" class="btn btn-link remove date_issued_remove" aria-hidden="false">
-            <span class="glyphicon glyphicon-remove"></span>
-            <span class="controls-remove-text">Remove</span>
-            <span class="sr-only"> date issued</span>
-          </button>
-        </span>
+        <select id=<%= "date_issued_day_#{index}" %>
+                data-element-num="<%= index %>"
+                class="date_issued_date date_issued_day"></select>
+        <% if index > 0 %>
+          <span class="date_label">
+            <button  type="button" class="btn btn-link remove date_issued_remove" aria-hidden="false">
+              <span class="glyphicon glyphicon-remove"></span>
+              <span class="controls-remove-text">Remove</span>
+              <span class="sr-only"> date issued</span>
+            </button>
+          </span>
+        <% end %>
       </div>
     <% end %>
   </div>
 
   <div class="form-group multi_value">
-    <div id="date_issued_warning" class="message has-warning warning_message d_none" aria-hidden="true">
-      cannot add another with empty field
+      <div id="date_issued_warning" class="message has-warning warning_message d_none" aria-hidden="true">
+            cannot add another with empty field
+          </div>
+      <div id="date_issued_add_div" class="">
+            <button id="date_issued_add_btn" type="button" class="btn btn-link add" onclick="scholarworks.date_issued_add('<%= model_type %>', '<%= key %>')">
+              <span class="glyphicon glyphicon-plus"></span>
+              <span class="controls-add-text">Add another date issued</span>
+            </button>
+          </div>
     </div>
-    <div id="date_issued_add_div" class="">
-      <button id="date_issued_add_btn" type="button" class="btn btn-link add" onclick="scholarworks.date_issued_add('<%= model_type %>', '<%= key %>')">
-        <span class="glyphicon glyphicon-plus"></span>
-        <span class="controls-add-text">Add another date issued</span>
-      </button>
-    </div>
-  </div>
 </div>

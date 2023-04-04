@@ -40,7 +40,7 @@ module CalState
         #
         def archive_file
           timestamp = @doc.xpath('//timestamp').first.content
-          new_path = @path.gsub('.xml', '_' + timestamp + '.xml')
+          new_path = @path.gsub('.xml', "_#{timestamp}.xml")
           File.rename(@path, new_path)
         end
 
@@ -76,7 +76,7 @@ module CalState
         #
         def get_value(change)
           values = []
-          if change.xpath("value[@type='new']/part").count.positive?
+          if change.xpath("value[@type='new' and @multi='true']").count.positive?
             change.xpath("value[@type='new']/part").each do |part|
               values.append part.text.squish
             end

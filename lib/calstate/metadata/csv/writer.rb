@@ -45,11 +45,11 @@ module CalState
           column_names = %w[id
                             campus
                             admin_set_id
-                            date_uploaded
                             visibility
                             embargo_release_date
                             visibility_during_embargo
                             visibility_after_embargo
+                            depositor
                             title
                             description]
 
@@ -62,9 +62,13 @@ module CalState
                                 description
                                 description_formatted]
 
+          # remove fields we just use for internal purposes
+          attribute_names -= FieldService.internal_fields
+
           # remove these from attributes, since we're adding them to front
           attribute_names -= %w[admin_set_id
-                                campus]
+                                campus
+                                depositor]
 
           column_names.push(*attribute_names)
 
@@ -73,17 +77,18 @@ module CalState
           csv_file = "#{@csv_dir}/#{csv_filename}"
 
           CSV.open(csv_file, 'wb') do |csv|
+            csv.to_io.write "\uFEFF"
             csv << column_names
             model.where(campus: @campus_name).each do |doc|
               begin
-                values = [prep_value(doc.id), # not in attributes
+                values = [prep_number_for_excel(doc.id), # not in attributes
                           prep_value(doc.campus.first), # move to front
-                          prep_value(doc.admin_set_id), # move to front
-                          prep_value(doc.date_uploaded), # not in attributes
+                          prep_number_for_excel(doc.admin_set_id), # move to front
                           prep_value(doc.visibility), # not in attributes
-                          prep_value(doc.embargo_release_date), # not in attributes
+                          prep_date_for_excel(doc.embargo_release_date), # not in attributes
                           prep_value(doc.visibility_during_embargo), # not in attributes
                           prep_value(doc.visibility_after_embargo), # not in attributes
+                          prep_value(doc.depositor), # move to front
                           prep_values(doc.title_formatted), # use formatted
                           prep_values(doc.description_formatted)] # use formatted
                 values.push(*get_attr_values(doc.attributes, attribute_names))
@@ -122,14 +127,13 @@ module CalState
             next unless attribute_names.include?(key)
 
             value = prep_values(value)
-            value = prep_person(value) if is_person_field?(key)
-
-            # date fields should have a tab appended at the end
-            # to keep excel from messing with dates
-            value += "\t" if is_date_field?(key)
+            value = prep_person(value) if person_field?(key)
+            value = prep_date_for_excel(value) if date_field?(key)
+            value = prep_number_for_excel(value) if identifier_field?(key)
 
             values << value
           end
+
           values
         end
       end

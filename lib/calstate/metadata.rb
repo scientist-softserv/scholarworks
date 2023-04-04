@@ -5,8 +5,7 @@ require_relative 'metadata/csv'
 require_relative 'metadata/dspace'
 require_relative 'metadata/handle_mapper'
 require_relative 'metadata/sitemap'
-require_relative 'metadata/solr_reader'
-require_relative 'metadata/solr_results'
+require_relative 'metadata/solr'
 
 module CalState
   #

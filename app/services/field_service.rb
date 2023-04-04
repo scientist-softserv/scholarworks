@@ -7,7 +7,7 @@
 # CsuPresenter to reduce the number of redundant places fields are defined.
 #
 # To add a new field, add it to the appropriate model and then here:
-# (a) add it to `fields` method
+# (a) add it to `basic`, `scholarworks` or `archives` method, as appropriate
 # (b) add it to `single_fields`, if it is single-valued
 # (c) add it to oai-pmh field mapping
 #
@@ -25,6 +25,7 @@ class FieldService
        date_issued_year
        description
        description_note
+       embargo_terms
        extent
        external_id
        external_modified_date
@@ -96,7 +97,6 @@ class FieldService
        date_available
        date_copyright
        date_submitted
-       embargo_terms
        identifier_uri
        investigator
        publication_status
@@ -185,7 +185,10 @@ class FieldService
   # @return [Array] string
   #
   def self.internal_fields
-    fedora + %w[title_formatted description_formatted]
+    fedora + %w[date_issued_year
+                external_modified_date
+                external_system
+                external_url]
   end
 
   #
@@ -197,8 +200,10 @@ class FieldService
     # model is a utility field in csv import
     %w[date_accessioned
        degree_level
+       depositor
        edition
        embargo_release_date
+       embargo_terms
        external_id
        external_system
        external_modified_date
@@ -240,9 +245,30 @@ class FieldService
        editor]
   end
 
+  #
+  # Fields that contain date values
+  #
+  # @return [Array] string
+  #
   def self.date_fields
     %w[date_issued
-       date_last_modified]
+       date_last_modified
+       date_modified
+       date_uploaded
+       external_modified_date]
+  end
+
+  #
+  # Identifier fields that look like numbers but should not be treated as such
+  #
+  # @return [Array] string
+  #
+  def self.identifier_fields
+    %w[admin_set_id
+       id
+       isbn
+       issn
+       oclc]
   end
 
   #
@@ -345,13 +371,13 @@ class FieldService
   #
   # Convert simple fields XML to hash of params
   #
-  # @param doc [Nokogiri::XML]  node or document with simple xml record
+  # @param node [Nokogiri::XML]  record node from Nokogiri XML (don't just pass in the whole document!)
   #
   # @return [Hash]
   #
-  def self.xml_to_params(doc)
+  def self.xml_to_params(node)
     params = {}
-    doc.xpath('field').each do |field|
+    node.xpath('field').each do |field|
       next unless field.text.present?
 
       field_name = field.attr('name')

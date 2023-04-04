@@ -29,3 +29,11 @@ rr171x20k: # stanislaus
   visibility_during_embargo: restricted
   visibility_after_embargo: open
   default_type: Masters Thesis
+
+# test
+
+4b29b635b: # northridge
+  visibility: open
+  visibility_during_embargo: restricted
+  visibility_after_embargo: open
+  default_type: Masters Thesis

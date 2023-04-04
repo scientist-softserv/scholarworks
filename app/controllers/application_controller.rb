@@ -1,24 +1,27 @@
 class ApplicationController < ActionController::Base
   helper Openseadragon::OpenseadragonHelper
-  # Adds a few additional behaviors into the application controller
   include Blacklight::Controller
   include Hydra::Controller::ControllerBehavior
-
-  # Adds Hyrax behaviors into the application controller
   include Hyrax::Controller
   include Hyrax::ThemedLayoutController
+
   with_themed_layout '1_column'
 
   protect_from_forgery with: :exception
-
-  unless Rails.application.config.consider_all_requests_local
-    rescue_from Exception, with: lambda { |exception| handle_exception exception }
-  end
-
+  rescue_from StandardError, with: :deal_with_exception unless Rails.application.config.consider_all_requests_local
   skip_after_action :discard_flash_if_xhr
 
+  # all missing routes end up here
   def not_found
-    raise ActionController::RoutingError.new('Not Found')
+    raise ActionController::RoutingError, 'Not Found'
+  end
+
+  protected
+
+  # no need for locale, since we only use English
+  # this removes it from params when generating urls
+  def default_url_options
+    super.except!(:locale)
   end
 
   private
@@ -28,22 +31,60 @@ class ApplicationController < ActionController::Base
   end
 
   #
-  # Log the exception and present a custom error page
+  # Log the exception appropriately and present error page
   #
-  def handle_exception(exception = nil)
+  # @param exception [StandardError]
+  #
+  def deal_with_exception(exception = nil)
     return if exception.nil?
 
-    Rails.logger.error exception.message
-    Rails.logger.error exception.backtrace.join("\n")
+    # we assume the exception is an application error worth fully logging and inspecting later
+    error_code = 500
+    error_label = 'SERVER ERROR'
 
+    # unless it's one of these common access or invalid request errors, most caused by bots
     not_found = %w[ActionController::RoutingError
                    ActiveRecord::RecordNotFound
                    ActiveFedora::ObjectNotFoundError
-                   Blacklight::Exceptions::RecordNotFound]
-    error_code = not_found.include?(exception.class.to_s) ? 404 : 500
+                   Blacklight::Exceptions::RecordNotFound
+                   Ldp::Gone]
+    no_access = %w[ActionController::InvalidAuthenticityToken
+                   CanCan::AccessDenied]
+    not_valid = %w[I18n::InvalidLocale]
+
+    # let's find out if it's one of the above
+    class_name = exception.class.to_s
+
+    if not_found.include?(class_name)
+      error_code = 404
+      error_label = 'NOT FOUND'
+    elsif no_access.include?(class_name)
+      error_code = 401
+      error_label = 'ACCESS DENIED'
+    elsif not_valid.include?(class_name)
+      error_code = 422
+      error_label = 'REJECTED'
+    end
+
+    # for common errors: just log the reason, ip address & path in a separate log file
+    # for application errors: log the full stack trace in the main error log file
+    if error_code != 500
+      line = [error_label, request.ip, request.fullpath].join("\t")
+      Logger.new('log/access_error.log').info(line)
+    else
+      Rails.logger.warn "[#{request.ip}] #{request.fullpath}"
+      Rails.logger.error "#{class_name}: #{exception.message}"
+      Rails.logger.error Rails.backtrace_cleaner.clean(exception.backtrace)
+    end
+
+    # response to client
     respond_to do |format|
-      format.html { render file: "#{Rails.root}/public/#{error_code}.html", status: error_code, layout: true }
-      format.all { render nothing: true, status: status }
+      # for html pages: give them the full response
+      format.html { render "errors/#{error_code}", status: error_code, layout: 'error' }
+
+      # for non-html stuff: respond with just the header
+      # content_type set here to stop X-XSS errors for missing .js files
+      format.any { head error_code, content_type: 'text/html' }
     end
   end
 end

@@ -286,7 +286,7 @@ module CalState
       # Upload and attach files to Hyrax
       #
       # @param work [ActiveFedora::Base]  work
-      # @param files [Array]              file locations
+      # @param files [Array<String>]              file locations
       #
       def attach_files(work, files)
         @log.info 'Attaching files.'
@@ -300,11 +300,15 @@ module CalState
           return false
         end
 
-        files.each do |file_path|
-          next if file_path.blank?
+        files.each do |file|
+          next if file.blank?
 
-          file = File.open(file_path)
-          uploaded_file = Hyrax::UploadedFile.create(file: file)
+          uploaded_file = if file.is_a? Hyrax::UploadedFile
+                            file
+                          else
+                            file_obj = File.open(file)
+                            Hyrax::UploadedFile.create(file: file_obj)
+                          end
           uploaded_file.save
           uploaded_files.append uploaded_file
         end

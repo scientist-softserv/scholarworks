@@ -60,7 +60,7 @@ module ScholarworksFields
     end
 
     # @deprecated
-    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: false do |index|
+    property :embargo_terms, predicate: ::RDF::Vocab::DC.description, multiple: true do |index|
       index.as :stored_searchable
     end
 

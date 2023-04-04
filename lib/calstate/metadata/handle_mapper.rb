@@ -15,7 +15,7 @@ module CalState
       #
       def initialize(path)
         @path = path
-        @solr_reader = SolrReader.new
+        @solr_reader = Solr::Reader.new
       end
 
       #
