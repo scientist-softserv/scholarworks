@@ -30,9 +30,8 @@
         $(this).on('click', scholarworks.is_required_field_complete);
       });
       $('.hyrax_work_form_tab').each(function () {
-          $(this).on('click', scholarworks.is_required_field_complete);
+          $(this).on('click', scholarworks.tab_click_handler);
       });
-
       // form submit button handling
       $('#with_files_submit').click(function (e) {
           scholarworks.save_handler(e);
