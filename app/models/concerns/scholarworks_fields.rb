@@ -69,10 +69,6 @@ module ScholarworksFields
       index.as :stored_searchable
     end
 
-    property :is_abstract, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#is_abstract'), multiple: false do |index|
-      index.as :stored_searchable
-    end
-
     property :isbn, predicate: ::RDF::Vocab::SCHEMA.isbn do |index|
       index.as :stored_searchable
     end

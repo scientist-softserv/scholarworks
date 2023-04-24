@@ -50,3 +50,22 @@
     </li>
   </ul>
 </div>
+
+<% if f.object.model.id.nil? %>
+  <script type="text/javascript" charset="utf-8">
+      $(function () {
+          $('#is_abstract').on('change', scholarworks.is_abstract_change);
+          scholarworks.is_abstract_change(); // turn on/off warning based on edit work
+      });
+  </script>
+  <div class="form-group">
+    <label class="control-label">Abstract-only Submission</label>
+    <div class="checkbox">
+      <label class="boolean optional" for="is_abstract">
+        <input id="is_abstract" type="checkbox" value="1" />
+        Abstract only
+      </label>
+    </div>
+    <p class="help-block">Check this box if this submission is only an abstract of the work and won't include any files with the full-text (or full media) of the item.</p>
+  </div>
+<% end %>

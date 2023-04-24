@@ -69,7 +69,6 @@ class FieldService
        edition
        editor
        granting_institution
-       is_abstract
        isbn
        issn
        issue
@@ -210,7 +209,6 @@ class FieldService
        external_modified_date
        external_url
        id
-       is_abstract
        issue
        meeting_name
        model

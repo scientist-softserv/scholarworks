@@ -13,7 +13,6 @@ module Hyrax
          title
          creator
          description
-         is_abstract
          date_issued
          degree_name
          degree_program
