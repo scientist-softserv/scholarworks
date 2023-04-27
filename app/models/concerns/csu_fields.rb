@@ -71,6 +71,10 @@ module CsuFields
       index.as :stored_searchable
     end
 
+    property :file_format, predicate: ::RDF::Vocab::DC.FileFormat do |index|
+      index.as :stored_searchable, :facetable
+    end
+
     property :handle, predicate: ::RDF::Vocab::PREMIS.ContentLocation do |index|
       index.as :stored_searchable
     end
@@ -84,6 +88,10 @@ module CsuFields
     end
 
     property :provenance, predicate: ::RDF::Vocab::DC.provenance do |index|
+      index.as :stored_searchable
+    end
+
+    property :sponsor, predicate: ::RDF::Vocab::MARCRelators.spn do |index|
       index.as :stored_searchable
     end
 

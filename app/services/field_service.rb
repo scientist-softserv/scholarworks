@@ -31,6 +31,7 @@ class FieldService
        external_modified_date
        external_system
        external_url
+       file_format
        handle
        identifier
        internal_note
@@ -100,8 +101,6 @@ class FieldService
        identifier_uri
        investigator
        publication_status
-       rights_statement
-       rights_uri
        time_period]
   end
 
@@ -109,7 +108,9 @@ class FieldService
   # Digital Archives fields
   #
   def self.archives
-    %i[format
+    %i[digital_project
+       format
+       funding_code
        geographical_area
        has_finding_aid
        institution
