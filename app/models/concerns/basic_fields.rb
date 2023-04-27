@@ -24,9 +24,9 @@
 #
 # Shared metadata across all models
 #
-# See also CsuBehavior
+# See also BasicBehavior
 #
-module CsuFields
+module BasicFields
   extend ActiveSupport::Concern
 
   included do
