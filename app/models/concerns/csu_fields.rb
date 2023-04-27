@@ -87,6 +87,10 @@ module CsuFields
       index.as :stored_searchable
     end
 
+    property :sponsor, predicate: ::RDF::Vocab::MARCRelators.spn do |index|
+      index.as :stored_searchable
+    end
+
     property :rights_note, predicate: ::RDF::Vocab::EBUCore.rightsExpression do |index|
       index.as :stored_searchable
     end
