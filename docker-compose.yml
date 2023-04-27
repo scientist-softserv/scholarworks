@@ -1,40 +1,242 @@
-version: '2.1'
-services:
-  #  web:
-  #    build: .
-  #    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG:-master}"
-  #    env_file:
-  #      - .env
-  #      - .env.development
-  #    volumes:
-  #      - .:/home/app/webapp
-  #    # Keep the stdin open, so we can attach to our app container's process
-  #    # and do things such as byebug, etc:
-  #    stdin_open: true
-  #    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
-  #    tty: true
-  #    ports:
-  #      - '3000:3000'
-  #      - "${DOCKER_PORT}"
-  #    depends_on:
-  #      - postgres
-  #      - redis
-  #    command: ["/sbin/setuser", "app", "bundle", "exec", "rails", "hydra:server"]
+version: '3.8'
+
+x-app: &app
+  build:
+    context: .
+    target: hyrax-base
+    cache_from:
+      - ghcr.io/csuscholarworks/scholarworks/base:latest
+      - ghcr.io/csuscholarworks/scholarworks/web:latest
+  image: ghcr.io/csuscholarworks/scholarworks:${TAG:-latest}
+  env_file:
+    - .env
+  # NOTE: all common env variables moved to .env
+  volumes:
+    - node_modules:/app/samvera/hyrax-webapp/node_modules:cached
+    - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
+    - assets:/app/samvera/hyrax-webapp/public/assets:cached
+    - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
+    - .:/app/samvera/hyrax-webapp
+  networks:
+    internal:
+
+volumes:
+  assets:
+  cache:
+  db:
+  fcrepo:
+  node_modules:
   redis:
-    image: 'redis:3.2-alpine'
-    command: redis-server
+  solr:
+  uploads:
+  zk:
+  zoo:
+
+networks:
+  internal:
+
+services:
+  zoo:
+    image: zookeeper:3.6.2
     ports:
-      - "6379:6379"
+      - 2181:2181
+      - 7001:7000
+    environment:
+      - ZOO_MY_ID=1
+      - ZOO_4LW_COMMANDS_WHITELIST=mntr,srvr,ruok,conf
+      - ZOO_SERVERS=server.1=zoo:2888:3888;2181
     volumes:
-      - 'redis:/var/lib/redis/data'
-  postgres:
-    image: postgres
+      - zoo:/data
+      - zk:/datalog
+    networks:
+      internal:
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
+      interval: "10s"
+      timeout: "8s"
+  solr:
+    image: hyku/solr:8
+    build:
+      context: ./solr
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      - OOM=script
+    user: root
+    command: bash -c "
+      chown -R 8983:8983 /var/solr
+      && ./bin/solr zk cp file:/var/security.json zk:/security.json
+      && runuser -u solr -- solr-foreground"
+    ports:
+      - "8983:8983"
+    volumes:
+      - solr:/var/solr
+    networks:
+      internal:
+    healthcheck:
+      test: curl -sf http://$$SOLR_ADMIN_USER:$$SOLR_ADMIN_PASSWORD@solr:8983/solr/admin/cores?action=STATUS || exit 1
+      start_period: 30s
+      interval: 20s
+      timeout: 5s
+      retries: 6
+    depends_on:
+      zoo:
+        condition: service_healthy
+
+  fcrepo:
+    image: ghcr.io/samvera/fcrepo4:4.7.5
+    volumes:
+      - fcrepo:/data:cached
     env_file:
       - .env
     ports:
-      - "5432:5432"
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
+    networks:
+      internal:
+
+  db:
+    image: postgres:11.1
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${DATABASE}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USER}
     volumes:
-      - 'postgres:/var/lib/postgresql/data'
-volumes:
-    redis:
-    postgres:
+      - db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      internal:
+
+  web:
+    <<: *app
+    ################################################################################
+    ## Note on commands: by default the commands don't run bundle.  That is to
+    ## reduce boot times.  However, when the application is in active
+    ## development, we might be adjusting the Gemfile and Gemfile.lock.  That
+    ## means you'll want to be regularly running bundle.
+    ##
+    ## With the following line, uncommented during active development, we'll
+    ## run bundle then boot the web-server.
+    ##
+    command: sh -l -c "bundle && bundle exec puma -v -b tcp://0.0.0.0:3000"
+    ##
+    ## Similar to the above, except we will bundle and then tell the container
+    ## to wait.  You'll then need to bash into the web container and start the
+    ## web server (e.g. with `bundle exec puma -v -b tcp://0.0.0.0:3000`). This
+    ## allows you to add byebug in your code, bash into the web container, and
+    ## interact with the breakpoints.
+    ##
+    # command: sh -l -c "bundle && tail -f /dev/null"
+    depends_on:
+      db:
+        condition: service_started
+      solr:
+        condition: service_started
+      fcrepo:
+        condition: service_started
+      redis:
+        condition: service_started
+      zoo:
+        condition: service_started
+      check_volumes:
+        condition: service_started
+      chrome:
+        condition: service_started
+      worker:
+        condition: service_started
+      initialize_app:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+
+  worker:
+    <<: *app
+    ################################################################################
+    ## Note on commands: by default the commands don't run bundle.  That is to
+    ## reduce boot times.  However, when the application is in active
+    ## development, we might be adjusting the Gemfile and Gemfile.lock.  That
+    ## means you'll want to be regularly running bundle.
+    ##
+    ## With the following line, uncommented during active development, we'll
+    ## run bundle then run sidekiq.
+    command: sh -l -c "bundle && bundle exec sidekiq"
+    ##
+    ## Similar to the above, except we will bundle and then tell the container
+    ## to wait.  You'll then need to bash into the worker container and start
+    ## sidekiq (e.g. with `bundle exec sidekiq`. This allows you to add byebug
+    ## in your code, bash into the worker container, and interact with the
+    ## breakpoints.
+    # command: sh -l -c "bundle && tail -f /dev/null"
+    build:
+      context: .
+      target: hyrax-worker
+      cache_from:
+        - ghcr.io/csuscholarworks/scholarworks:${TAG:-latest}
+        - ghcr.io/csuscholarworks/scholarworks/worker:${TAG:-latest}
+    image: ghcr.io/csuscholarworks/scholarworks/worker:${TAG:-latest}
+    depends_on:
+      db:
+        condition: service_started
+      solr:
+        condition: service_started
+      fcrepo:
+        condition: service_started
+      redis:
+        condition: service_started
+      zoo:
+        condition: service_started
+      check_volumes:
+        condition: service_completed_successfully
+      initialize_app:
+        condition: service_completed_successfully
+
+  # Do not recurse through all of tmp. derivitives will make booting
+  # very slow and eventually just time out as data grows
+  check_volumes:
+    <<: *app
+    user: root
+    entrypoint: ["sh", "-x", "-c"]
+    command:
+      - >
+        chown -R app:app /app/samvera/hyrax-webapp/public/uploads &&
+        chown -R app:app /app/samvera/hyrax-webapp/public/assets &&
+        chown -R app:app /app/samvera/hyrax-webapp/tmp/cache
+
+  initialize_app:
+    <<: *app
+    environment:
+      - CONFDIR=/app/samvera/hyrax-webapp/solr/config
+    entrypoint: ["sh", "-c"]
+    command:
+      - >
+        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
+        solrcloud-assign-configset.sh &&
+        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+        db-migrate-seed.sh
+    depends_on:
+      db:
+        condition: service_started
+      solr:
+        condition: service_healthy
+      fcrepo:
+        condition: service_started
+      redis:
+        condition: service_started
+
+  redis:
+    image: redis:5
+    command: redis-server
+    volumes:
+      - redis:/data
+    networks:
+      internal:
+
+  chrome:
+    image: selenium/standalone-chrome:3.141
+    networks:
+      internal:
