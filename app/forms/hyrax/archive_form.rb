@@ -3,32 +3,34 @@
 module Hyrax
   class ArchiveForm < Hyrax::CsuForm
     self.model_class = Archive
-    self.required_fields += %i[title
-                               creator
-                               description]
+    self.required_fields += %i[title]
     def primary_terms
       %i[title
          alternative_title
+         creator
+         contributor
          description
          description_note
-         creator
-         interviewee
-         interviewer
          subject
          geographical_area
          date_created
          identifier
          rights_statement
+         rights_note
          rights_holder
          language
          publisher
          repository
          source
+         sponsor
+         funding_code
          is_part_of
+         digital_project
          has_finding_aid
          related_url
          work_type
          format
+         file_format
          extent
          institution]
     end

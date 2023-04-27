@@ -61,7 +61,7 @@ en:
           granting_institution: Granting Institution
           handle: Handle
           has_model_ssim: Collection
-          identifier: Other Identifier
+          identifier: Identifier
           internal_note: Private Note
           isbn: ISBN
           issn: ISSN
@@ -79,7 +79,7 @@ en:
           publisher: Publisher
           related_url: Related URL
           resource_type: Resource Type
-          rights_note: Rights Statement
+          rights_note: Rights Note
           series: Series
           sponsor: Sponsor
           statement_of_responsibility: Statement of Responsibility
@@ -94,7 +94,7 @@ en:
           date_copyright: Date Copyright
           date_submitted: Date Submitted
           embargo_terms: Embargo Terms
-          geographical_area: Geographical Area
+          geographical_area: Location
           identifier_uri: Identifier URI
           investigator: Investigator
           publication_status: Publication Status
@@ -196,13 +196,19 @@ en:
         department: "The department within the university to which the creator(s) of the work is affiliated.  If your department is not represented in this list, please email your <a href='https://scholarworks.calstate.edu/about'>ScholarWorks administrator</a>."
         description: "Description of the work. Examples include abstracts of a paper, a summary of a report or dataset, or any additional notes describing the content of the work."
         description_note: "Additional information describing the resource."
+        digital_project: "Use to indicate the digital project (collection or exhibit) this resource is part of."
         doi: "The unique Digital Object Identifier (DOI) identifying the work."
         edition: "The number of the work's edition, if known."
         editor: "A person who is in charge of and determines the final content of a text, particularly a newspaper or journal.  Enter the editor's name exactly as it appears on the work (e.g., Jerome C. Baxter)."
         extent: "The duration of the work; e.g., number of pages, length of video, file size."
+        format: "Use for the format/medium of the original resource."
+        geographical_area: "Spatial characteristics of described resource, such as a country, city, region, address or other geographical term."
         granting_institution: "The CSU campus granting the degree."
+        has_finding_aid: "Use to indicate and link finding aid for the resource."
         identifier: "A numeric or alphanumeric string or a URL that identifies the work in a particular context."
+        institution: "The institution responsible for the resource."
         internal_note: "Note that will NOT be displayed to the public."
+        is_part_of: "A related resource in which the described resource is physically or logically included."
         isbn: "The International Standard Book Number (ISBN) of the work."
         issn: "The International Standard Serial Number (ISSN) for the periodical to which this work belongs."
         issue: "The issue number, if applicable."
@@ -217,14 +223,19 @@ en:
         publication_title: "Journal title, if the work is an article; book title, if this is a book chapter; or other parent publication title."
         publisher: "The institution responsible for publishing this work; e.g., Routledge. Do not use abbreviations."
         related_url: "A link to a website or other specific content (audio, video, PDF document) related to the work. An example is the URL of a research project from which the work was derived."
+        repository: "Primary term to use for repositories."
         resource_type: "The type of content being uploaded."
-        rights_note: "The underlying rights status of the work."
+        rights_holder: "A person or organization owning or managing rights over the resource."
+        rights_statement: "Information about rights held in and over the described resource."
+        rights_note: "Information about rights held in and over the described resource."
+        source: "Identifying information for a resource from which the item is derived. Do not use for characteristics of the source."
         sponsor: "A person or organization sponsoring some aspect of a resource, e.g., funding for research, or the granting agency. Include grant ID if applicable, e.g. National Science Foundation (NSF 1829670)."
         series: "If the work is part of a series, provide the name of the series."
         subject: "LCSH headings describing what the work is about. Start typing to choose from FAST controlled vocabulary."
         title: "The main title of the work; e.g., Places to see in San Francisco.  You can use <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case' target='_blank'>sentence case</a> or <a href='https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case' target='_blank'>title case</a> capitalization. Want to try a <a href='https://titlecaseconverter.com/' target='_blank'>title case converter</a>?"
         time_period: "The temporal extent reflected in the resource."
         volume: "The volume number, if applicable."
+        work_type: "[DUBLIN CORE TYPE]"
     labels:
       defaults: *work_fields
   sword:
