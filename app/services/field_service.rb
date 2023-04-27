@@ -31,6 +31,7 @@ class FieldService
        external_modified_date
        external_system
        external_url
+       file_format
        handle
        identifier
        internal_note
