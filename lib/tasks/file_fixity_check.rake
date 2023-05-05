@@ -6,7 +6,7 @@
 #
 
 # this method is adapted from Hyrax::FileSetFixityCheckService
-def run_the_fixity_check(file_set_id)
+def file_set_fixity_check(file_set_id)
   files = FileSet.find(file_set_id).files
 
   files.each do |file|
@@ -23,11 +23,11 @@ end
 namespace :calstate do
   desc 'Run a fixity check on a single file'
   task :file_fixity_check, [:file_set_id] => [:environment] do |_t, args|
-    run_the_fixity_check(args[:file_set_id])
+    file_set_fixity_check(args[:file_set_id])
   end
 
   desc 'Run a fixity check on all files'
   task all_files_fixity_check: :environment do
-    FileSet.all.map { |file_set| run_the_fixity_check(file_set.id) }
+    FileSet.all.map { |file_set| file_set_fixity_check(file_set.id) }
   end
 end
