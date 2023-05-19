@@ -48,6 +48,8 @@ else
   # Show the current checked-out tag
   echo "Now on tag: $(git describe --tags --abbrev=0)"
 
+  echo "Running bundler"
+  bundle install
   echo "Running migrations and assets"
   bundle exec rails db:migrate
   bundle exec rails assets:precompile
