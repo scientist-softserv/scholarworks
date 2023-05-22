@@ -70,7 +70,7 @@ module ScholarworksBehavior
         end
       end
 
-      self.college = colleges
+      self.college = colleges unless colleges.empty?
     end
   end
 end
