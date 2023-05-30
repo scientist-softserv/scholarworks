@@ -204,7 +204,6 @@ class FieldService
        depositor
        edition
        embargo_release_date
-       embargo_terms
        external_id
        external_system
        external_modified_date
