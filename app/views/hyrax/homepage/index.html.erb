@@ -6,7 +6,13 @@
   <div class="csu-home-container">
     <div class="csu-home-jumbotron">
       <div class="csu-search-wrapper">
-        <h1>CSU Digital Archives</h1>
+        <div class="csu-archives-inst">
+          California State University
+        </div>
+        <h1><%= t('hyrax.product_name') %></h1>
+        <p>Search digitized photographs, letters, oral histories & more.</p>
+      </div>
+      <div class="csu-archives-search">
         <form class="nav-search-form" id="search-form-header" role="search" action="/catalog" accept-charset="UTF-8" method="get">
           <input type="hidden" name="search_field" id="search_field" value="all_fields">
           <div class="input-group nav-search-text">
@@ -23,11 +29,12 @@
     </div>
   </div>
 </div>
+
 <div id="csu-home-lower">
   <div id="csu-home-submissions">
     <div class="csu-home-container">
       <div class="csu-recent-submissions service-item">
-        <h2 class="csu-home-feature">Recent submissions</h2>
+        <h2 class="csu-home-feature">Featured collections</h2>
         <ul class="csu-documents csu-documents-home">
           <% @recent_documents.each do |document| %>
             <li>
