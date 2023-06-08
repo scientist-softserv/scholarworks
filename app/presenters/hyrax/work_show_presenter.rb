@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: To accommodate campus in displaying featured link
+#
 module Hyrax
   class WorkShowPresenter
     include ModelProxy

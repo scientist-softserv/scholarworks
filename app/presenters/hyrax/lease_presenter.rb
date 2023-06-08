@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: To accommodate campus
+#
 module Hyrax
   # Presents leased objects
   class LeasePresenter

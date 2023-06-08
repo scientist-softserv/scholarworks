@@ -1,3 +1,6 @@
+#
+# unarchive_complete_email
+#
 class GlacierMailer < ApplicationMailer
   default from: "library@calstate.edu"
 

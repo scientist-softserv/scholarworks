@@ -1,4 +1,8 @@
-
+#
+# based class for all work indexer class.
+# Index name of creator (not email, institution, nor ORCID) for searching.
+# Index discipline ID and its ancestor IDs so search can pick up all its descendents for a given discipline.
+#
 class CsuIndexer < Hyrax::WorkIndexer
   # This indexes the default metadata. You can remove it if you want to
   # provide your own metadata and indexing.

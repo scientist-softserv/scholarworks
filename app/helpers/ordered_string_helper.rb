@@ -1,3 +1,7 @@
+#
+# Serialize and deserialize of any array elements to reserve the order entered in the front end.
+# creator, editor, advisor, and committee member use this service.
+#
 module OrderedStringHelper
   # defaults
   TOKEN_DELIMITER = '|'.freeze

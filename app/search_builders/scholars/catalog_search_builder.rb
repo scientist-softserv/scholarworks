@@ -1,6 +1,8 @@
 # frozen_string_literal: true
-
-# builds searches for search result page
+#
+# Inherit from CatalogSearchBuilder to include blacklight advanced search and range limit.
+# Builds searches for search result page
+#
 class Scholars::CatalogSearchBuilder < Hyrax::CatalogSearchBuilder
   include Blacklight::Solr::SearchBuilderBehavior
   include BlacklightAdvancedSearch::AdvancedSearchBuilder

@@ -1,3 +1,6 @@
+#
+# OVERRIDE class from hydra-derivatives v3.7.0
+#
 require_relative '../processors/pdf_processor'
 
 module Hydra

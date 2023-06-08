@@ -1,3 +1,6 @@
+#
+# Controller to handle aws Glacier download
+#
 class GlacierSnsDownloadRequestsController < ApplicationController
   def create
     download_request = current_user.glacier_sns_download_requests.create(s3_key: params[:s3_key])

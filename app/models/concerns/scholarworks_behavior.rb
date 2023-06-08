@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #
 # Base behavior for shared metadata across all models
 #

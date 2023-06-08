@@ -1,3 +1,6 @@
+#
+# AWS Glacier download call
+#
 class GlacierSnsDownloadRequest < ApplicationRecord
   belongs_to :user
   validates :user, :s3_key, presence: true

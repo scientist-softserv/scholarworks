@@ -1,6 +1,13 @@
 # frozen_string_literal: true
+#
+# OVERRIDE class from Blacklight v6.25.0
+# Customization:
+# Only check for current_user instead of current_or_guest.
+# Prevent route error in the front end as it generates the more facet link as it sets to 'advanced'
+#
 # Filters added to this controller apply to all controllers in the hosting application
 # as this module is mixed-in to the application controller in the hosting app on installation.
+#
 module Blacklight::Controller
   extend ActiveSupport::Concern
   extend Deprecation

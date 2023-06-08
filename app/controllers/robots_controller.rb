@@ -1,11 +1,7 @@
-
 #
-# robots.txt controller
+# robots.txt controller to send back server-specific robots.txt content.
 #
 class RobotsController < ActionController::Base
-  #
-  # Send back server-specific robots.txt content
-  #
   def index
     content = if ENV['SCHOLARWORKS_HOST'] == 'scholarworks.calstate.edu'
                 'Sitemap: https://scholarworks.calstate.edu/sitemap/sitemap.xml'

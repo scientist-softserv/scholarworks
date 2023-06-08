@@ -1,3 +1,6 @@
+#
+# To register a work handle
+#
 module Hyrax
   module Actors
     class HandleActor < Hyrax::Actors::AbstractActor

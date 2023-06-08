@@ -1,3 +1,6 @@
+#
+# Specific to scholarworks to handle default URL, sign in/out path, exception handling.
+#
 class ApplicationController < ActionController::Base
   helper Openseadragon::OpenseadragonHelper
   include Blacklight::Controller

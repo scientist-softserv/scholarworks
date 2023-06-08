@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+#
 # All models inherit from Hyrax::BasicMetadata, which includes:
 #
 # based_near               ::RDF::Vocab::FOAF.based_near
@@ -20,7 +20,6 @@
 # rights_statement         ::RDF::Vocab::EDM.rights
 # source                   ::RDF::Vocab::DC.source
 # subject                  ::RDF::Vocab::DC11.subject
-
 #
 # Shared metadata across all models
 #

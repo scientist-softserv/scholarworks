@@ -1,3 +1,10 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization:
+# Add badge & campus visibility.
+# Handle catalog title separately.
+# Use pipe instead of // as separator for title
+#
 module HyraxHelper
   include ::BlacklightHelper
   include Hyrax::BlacklightOverride

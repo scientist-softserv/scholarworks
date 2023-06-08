@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Archive`
+#
+# Fields to show in Archive form
+#
 module Hyrax
   class ArchiveForm < Hyrax::CsuForm
     self.model_class = Archive

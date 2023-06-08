@@ -1,7 +1,6 @@
 # frozen_string_literal: true
-
 #
-# Collection
+# Generated code for collection
 #
 class Collection < ActiveFedora::Base
   include FormattingFields

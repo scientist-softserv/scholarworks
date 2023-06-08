@@ -1,3 +1,6 @@
+#
+# OVERRIDE class from Blacklight_advanced_search v6.4.1
+#
 module BlacklightAdvancedSearch::CatalogHelperOverride
   # Special display for facet limits that include adv search inclusive
   # or limits.

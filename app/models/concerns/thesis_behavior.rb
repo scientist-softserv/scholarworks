@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #
 # Shared behavior for Thesis & Project
 #

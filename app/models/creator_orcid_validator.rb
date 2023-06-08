@@ -1,3 +1,6 @@
+#
+# ORCID validation for the front end.
+#
 class CreatorOrcidValidator < ActiveModel::Validator
   def validate(record)
     return if record.creator_orcid.blank?

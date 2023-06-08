@@ -1,7 +1,6 @@
 # frozen_string_literal: true
-
 #
-# Abstract class for work-based controllers
+# Based class for work-based controllers
 #
 class WorksController < ApplicationController
   include Hyrax::WorksControllerBehavior
