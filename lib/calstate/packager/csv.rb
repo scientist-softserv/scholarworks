@@ -11,8 +11,9 @@ module CalState
       #
       # @param campus [String]  campus slug
       #
-      def initialize(campus)
+      def initialize(campus, admin_set)
         super campus
+        @admin_set = admin_set
       end
 
       #
@@ -47,6 +48,9 @@ module CalState
               files += search_files(file_map, file)
             end
           end
+
+          # set admin_set from command line
+          record['admin_set_id'] = @admin_set
           x += 1
 
           next if @transaction.completed?(x)

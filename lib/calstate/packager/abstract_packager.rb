@@ -337,6 +337,7 @@ module CalState
         collections.each do |coll|
           @log.info "Adding work (#{id}) to collection (#{coll})"
           collection = Collection.find(coll)
+          collection.reindex_extent = Hyrax::Adapters::NestingIndexAdapter::LIMITED_REINDEX
           collection.add_member_objects(id)
         end
       end
