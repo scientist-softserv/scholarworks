@@ -38,6 +38,15 @@ class SystemService
   #
   def self.archive?
     return models[0] == 'archive'
+  #
+  #
+  #
+  # Is this a production server?
+  #
+  # Can't use environment for this since our staging systems are also 'prod'
+  #
+  def self.production?
+    %w[scholarworks.calstate.edu archives.calstate.edu].include? ENV['SCHOLARWORKS_HOST']
   end
 
   #
