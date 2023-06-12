@@ -34,12 +34,20 @@ class SystemService
   #
   # archive?
   #
-  # @return true if it's an archive system
+  # @return [Boolean]  true if it's an archive system
   #
   def self.archive?
-    return models[0] == 'archive'
+    models[0] == 'archive'
+  end
+
   #
+  # Google Analytics ID
   #
+  # @return [String]
+  def self.google_analytics_id
+    config['google_analytics_id']
+  end
+
   #
   # Is this a production server?
   #
