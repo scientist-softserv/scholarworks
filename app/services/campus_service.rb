@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #
 # Provides essential methods for getting the normalized campus name
 #

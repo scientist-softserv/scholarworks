@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from hydra-access-controls v11.0.7
+# Customization: Custom permission such as shibboleth, campus, manager, admin.
+#
 class Ability
   include Hydra::Ability
   include Hyrax::Ability

@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Thesis`
+#
+# Fields to show in Thesis form for managers
+#
 module Hyrax
   class ThesisFormManagers < ThesisForm
     def primary_terms

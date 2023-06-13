@@ -1,3 +1,6 @@
+#
+# OVERRIDE class from Blacklight_range_limit v7.0.1
+#
 # Meant to be applied on top of a controller that implements
 # Blacklight::SolrHelper. Will inject range limiting behaviors
 # to solr parameters creation.

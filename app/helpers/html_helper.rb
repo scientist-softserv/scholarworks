@@ -1,5 +1,7 @@
 # frozen_string_literal: true
-
+#
+# Utilities to clean, decode, sanitize HTML
+#
 require 'htmlentities'
 
 #

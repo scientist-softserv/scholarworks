@@ -1,3 +1,6 @@
+#
+# Define queue
+#
 class ApplicationJob < ActiveJob::Base
   # Example of specified sidekiq queue namespace
   # See config/environments/production for more options

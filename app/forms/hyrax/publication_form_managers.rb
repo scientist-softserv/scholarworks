@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Publication`
+#
+# Fields to show in Publication form for managers
+#
 module Hyrax
   class PublicationFormManagers < PublicationForm
     def primary_terms

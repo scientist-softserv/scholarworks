@@ -1,7 +1,7 @@
+#
+# Collection visibility configurations
+#
 module WillowSword
-  #
-  # Collection visibility configurations
-  #
   class CampusConfig
     #
     # New collection visibility config

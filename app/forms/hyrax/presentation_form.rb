@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Presentation`
+#
+# Fields to show in Presentation form
+#
 module Hyrax
   class PresentationForm < Hyrax::CsuForm
     self.model_class = ::Presentation

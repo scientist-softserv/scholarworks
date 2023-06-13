@@ -1,7 +1,6 @@
 # frozen_string_literal: true
-
 #
-# Publication
+# Publication model
 #
 class Publication < ActiveFedora::Base
   include BasicFields

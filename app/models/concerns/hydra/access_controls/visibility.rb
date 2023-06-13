@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from hydra-access-controls v11.0.7
+# Customization: Add campus permission and visibility
+#
 module Hydra::AccessControls
   module Visibility
     extend ActiveSupport::Concern

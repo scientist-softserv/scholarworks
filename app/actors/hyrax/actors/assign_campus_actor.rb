@@ -1,3 +1,6 @@
+#
+# Assign campus for a work
+#
 module Hyrax
   module Actors
     #

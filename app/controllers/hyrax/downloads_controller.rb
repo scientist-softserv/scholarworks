@@ -1,3 +1,7 @@
+#
+# Changed download to be inline instead of attachment.
+# Modify authorize_download! to check for authorized image or use default image.
+#
 module Hyrax
   class DownloadsController < ApplicationController
     include Hydra::Controller::DownloadBehavior

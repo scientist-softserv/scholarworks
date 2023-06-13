@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Publication`
+#
+# Fields to show in Publication form
+#
 module Hyrax
   class PublicationForm < Hyrax::CsuForm
     self.model_class = ::Publication

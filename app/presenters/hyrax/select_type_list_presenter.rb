@@ -1,4 +1,7 @@
-
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: To accommodate campus so we can have campus-specific labels
+#
 module Hyrax
   # Presents the list of work type options that a user may choose from when deciding to
   # create a new work

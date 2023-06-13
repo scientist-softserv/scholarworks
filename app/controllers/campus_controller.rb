@@ -1,3 +1,6 @@
+#
+# Campus page to display collections and recent works to a specific campus
+#
 class CampusController < ApplicationController
   include Blacklight::SearchContext
   include Blacklight::SearchHelper

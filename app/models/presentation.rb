@@ -1,7 +1,6 @@
 # frozen_string_literal: true
-
 #
-# Presentation
+# Presentation model
 #
 class Presentation < ActiveFedora::Base
   include BasicFields
