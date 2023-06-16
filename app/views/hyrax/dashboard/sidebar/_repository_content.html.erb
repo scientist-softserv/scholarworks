@@ -13,7 +13,7 @@
     <span class="fa fa-file" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.works') %></span>
   <% end %>
 
-  <% if (current_user.admin? || current_user.manager?) && current_user.campus_slug && SystemService.name == 'ScholarWorks' %>
+  <% if (current_user.admin? || current_user.manager?) && current_user.campus_slug && !SystemService.archive? %>
     <%= menu.nav_link('/metadata/' + current_user.campus_slug + '.zip') do %>
       <span class="fa fa-file-zip-o" aria-hidden="true"></span> <span class="sidebar-action-text">Metadata</span>
     <% end %>
