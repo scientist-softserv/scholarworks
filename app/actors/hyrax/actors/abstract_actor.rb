@@ -1,3 +1,6 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+#
 module Hyrax
   module Actors
     ##

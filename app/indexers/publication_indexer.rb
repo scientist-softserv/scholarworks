@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Publication`
+#
+# Indexer for Publication work
+#
 class PublicationIndexer < ::CsuIndexer
   def generate_solr_document
     super

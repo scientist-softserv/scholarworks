@@ -1,7 +1,6 @@
 # frozen_string_literal: true
-
 #
-# Open Educational Resource
+# Open Educational Resource model
 #
 class EducationalResource < ActiveFedora::Base
   include BasicFields

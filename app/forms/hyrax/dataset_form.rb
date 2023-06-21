@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Dataset`
+#
+# Fields to show in DataSet form
+#
 module Hyrax
   class DatasetForm < Hyrax::CsuForm
     self.model_class = ::Dataset

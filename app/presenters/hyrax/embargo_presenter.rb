@@ -1,5 +1,8 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Presents embargoed objects
+#
 module Hyrax
-  # Presents embargoed objects
   class EmbargoPresenter
     include ModelProxy
     attr_accessor :solr_document

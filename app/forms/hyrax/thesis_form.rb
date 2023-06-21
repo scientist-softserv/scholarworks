@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Thesis`
+#
+# Fields to show in Thesis form
+#
 module Hyrax
   class ThesisForm < Hyrax::CsuForm
     self.model_class = ::Thesis

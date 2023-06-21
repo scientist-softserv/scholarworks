@@ -1,7 +1,6 @@
 # frozen_string_literal: true
-
 #
-# Project
+# Project model
 #
 class Project < ActiveFedora::Base
   include BasicFields

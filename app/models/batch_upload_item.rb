@@ -1,6 +1,10 @@
 # This stands in for an object to be created from the BatchUploadForm.
 # It should never actually be persisted in the repository.
 # The properties on this form should be copied to a real work type.
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Combine all multivalues of description into a single one for the front end
+#
 class BatchUploadItem < ActiveFedora::Base
   include Hyrax::WorkBehavior
   # This must come after the WorkBehavior because it finalizes the metadata
@@ -14,7 +18,6 @@ class BatchUploadItem < ActiveFedora::Base
     []
   end
 
-  # this method is to combined all multivalues of this field into a single one for the front end
   def descriptions
     combined_val = ''
     description.each do |d|

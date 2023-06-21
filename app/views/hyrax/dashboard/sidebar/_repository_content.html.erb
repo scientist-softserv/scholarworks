@@ -1,3 +1,8 @@
+<%#
+  # OVERRIDE class from Hyrax v2.9.6
+  # Customization: Added campus metadata, bulkrax import and export for admin user
+  # %>
+
   <li class="h5"><%= t('hyrax.admin.sidebar.repository_objects') %></li>
 
   <%= menu.nav_link(hyrax.my_collections_path, also_active_for: hyrax.dashboard_collections_path) do %>
@@ -8,7 +13,7 @@
     <span class="fa fa-file" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.works') %></span>
   <% end %>
 
-  <% if (current_user.admin? || current_user.manager?) && current_user.campus_slug && SystemService.name == 'ScholarWorks' %>
+  <% if (current_user.admin? || current_user.manager?) && current_user.campus_slug && !SystemService.archive? %>
     <%= menu.nav_link('/metadata/' + current_user.campus_slug + '.zip') do %>
       <span class="fa fa-file-zip-o" aria-hidden="true"></span> <span class="sidebar-action-text">Metadata</span>
     <% end %>

@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+#
+# Inherit from blacklight to mix in blacklight advanced search
+#
 class SearchBuilder < Blacklight::SearchBuilder
   include Blacklight::Solr::SearchBuilderBehavior
   include BlacklightAdvancedSearch::AdvancedSearchBuilder

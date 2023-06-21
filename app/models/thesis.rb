@@ -1,7 +1,6 @@
 # frozen_string_literal: true
-
 #
-# Thesis
+# Thesis model
 #
 class Thesis < ActiveFedora::Base
   include BasicFields

@@ -1,4 +1,7 @@
-module Hyrax 
+#
+# Special rendering to display name, institution, and ORCID for composite person type for scholarworks work
+#
+module Hyrax
   module Renderers
     module PersonAttribute
       extend ActiveSupport::Concern

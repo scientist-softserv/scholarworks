@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Change method to 'post' because of overly long URI
+#
 module Hyrax
   module Collections
     class PermissionsService

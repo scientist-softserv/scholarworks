@@ -1,7 +1,6 @@
 # frozen_string_literal: true
-
 #
-# Dataset
+# Dataset model
 #
 class Dataset < ActiveFedora::Base
   include BasicFields

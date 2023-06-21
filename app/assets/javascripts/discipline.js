@@ -1,3 +1,6 @@
+/*
+ * Handlers for parent and children tree hierarchy relationship of discipline
+ */
 
 scholarworks.discipline = {
 

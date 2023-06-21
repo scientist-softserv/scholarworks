@@ -1,8 +1,7 @@
-
+#
+# Shared presenter for CSU fields
+#
 module Hyrax
-  #
-  # Shared presenter for CSU fields
-  #
   class CsuPresenter < Hyrax::WorkShowPresenter
     delegate *FieldService.all, to: :solr_document
     delegate :description_formatted, to: :solr_document

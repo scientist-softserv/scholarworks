@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+#
+# Inclue Blacklight::Solr::Document and include all scholarworks specific things.
+#
 class SolrDocument
   include Blacklight::Solr::Document
   include BlacklightOaiProvider::SolrDocument

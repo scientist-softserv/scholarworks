@@ -1,9 +1,9 @@
 #frozen_string_literal: true
+#
+# Provides tools for interpreting form input as a visibility.
+#
+# @since 3.0.0
 module Hyrax
- ##
- # Provides tools for interpreting form input as a visibility.
- #
- # @since 3.0.0
  class VisibilityIntention
    PUBLIC          = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
    PRIVATE         = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE

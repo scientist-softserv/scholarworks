@@ -1,4 +1,7 @@
-module Hyrax 
+#
+# Special rendering to display discipline and its descendents in work detail page.
+#
+module Hyrax
   module Renderers
     class DisciplineAttributeRenderer < FacetedAttributeRenderer
       def li_value(value)

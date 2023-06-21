@@ -1,4 +1,8 @@
-module Hyrax 
+#
+# Special rendering to display archive person which which will
+# display name, role, and identifier in work detail page.
+#
+module Hyrax
   module Renderers
     class ArchivePersonLinkAttributeRenderer < FacetedAttributeRenderer
 

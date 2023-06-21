@@ -1,4 +1,9 @@
-/* these functions are used by composite person.
+/*
+ * Handlers for frontend to deal with composite person, date, submit button, tinymce
+ */
+
+/*
+ * these functions are used by composite person.
 */
 
 /*

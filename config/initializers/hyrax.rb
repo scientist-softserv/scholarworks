@@ -46,7 +46,8 @@ Hyrax.config do |config|
   config.realtime_notifications = false
 
   # Google Analytics tracking ID to gather usage statistics
-  config.google_analytics_id = 'UA-178645232-1'
+  # note: we use the system config for this instead!
+  # config.google_analytics_id = ''
 
   # Date you wish to start collecting Google Analytic statistics for
   # Leaving it blank will set the start date to when ever the file was uploaded by
