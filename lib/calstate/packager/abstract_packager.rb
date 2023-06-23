@@ -165,12 +165,19 @@ module CalState
         attach_files(work, files) unless files.empty?
 
         unless params['collection'].blank?
-          add_to_collection(work, params['collection'])
+          @log.info "Adding work (#{id}) to collections (#{params['collection'].join(', ')})"
+          Packager.add_to_collection(work, params['collection'])
         end
 
         @log.info 'Adding manager group to work.'
         work = Packager.add_manager_group(work, @campus_slug)
         work.save
+
+        @log.info 'Adding manager group to files.'
+        work.file_sets.each do |file_set|
+          Packager.add_manager_group(file_set, @campus_slug)
+          file_set.save
+        end
 
         @log.info 'Registering work with Handle service.'
         HandleRegisterJob.perform_now(work)
@@ -286,7 +293,7 @@ module CalState
       # Upload and attach files to Hyrax
       #
       # @param work [ActiveFedora::Base]  work
-      # @param files [Array]              file locations
+      # @param files [Array<String>]              file locations
       #
       def attach_files(work, files)
         @log.info 'Attaching files.'
@@ -300,11 +307,15 @@ module CalState
           return false
         end
 
-        files.each do |file_path|
-          next if file_path.blank?
+        files.each do |file|
+          next if file.blank?
 
-          file = File.open(file_path)
-          uploaded_file = Hyrax::UploadedFile.create(file: file)
+          uploaded_file = if file.is_a? Hyrax::UploadedFile
+                            file
+                          else
+                            file_obj = File.open(file)
+                            Hyrax::UploadedFile.create(file: file_obj)
+                          end
           uploaded_file.save
           uploaded_files.append uploaded_file
         end
@@ -320,21 +331,6 @@ module CalState
       #
       def remove_files(work)
         work.file_sets.each(&:destroy!)
-      end
-
-      #
-      # Add work to collection
-      #
-      # @param work [ActiveFedora::Base]  work
-      # @param collections [Array]        collection id's
-      #
-      def add_to_collection(work, collections)
-        id = work.id
-        collections.each do |coll|
-          @log.info "Adding work (#{id}) to collection (#{coll})"
-          collection = Collection.find(coll)
-          collection.add_member_objects(id)
-        end
       end
 
       #

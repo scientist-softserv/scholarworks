@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
 #
-# Open Educational Resource
+# Open Educational Resource model
 #
 class EducationalResource < ActiveFedora::Base
-  include CsuFields
+  include BasicFields
   include ScholarworksFields
   include FormattingFields
   include Hyrax::WorkBehavior
@@ -18,7 +17,7 @@ class EducationalResource < ActiveFedora::Base
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include Hyrax::BasicMetadata
-  include CsuBehavior
+  include BasicBehavior
   include FormattingBehavior
   include ScholarworksBehavior
 

@@ -1,4 +1,8 @@
 # frozen_string_literal: true
+#
+# OVERRIDE class from Blacklight v6.25.0
+# Customization: recalculate the discipline facets from the filter
+#
 module Blacklight::Solr
   class Repository < Blacklight::AbstractRepository
     ##

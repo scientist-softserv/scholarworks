@@ -1,4 +1,8 @@
 # Converts UploadedFiles into FileSets and attaches them to works.
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Set campus attribute for file using work's campus
+#
 class AttachFilesToWorkJob < Hyrax::ApplicationJob
   queue_as Hyrax.config.ingest_queue_name
 

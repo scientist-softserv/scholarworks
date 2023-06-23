@@ -1,3 +1,6 @@
+#
+# To accommodate campus
+#
 class CampusPermissionBadge < Hyrax::PermissionBadge
   private
 

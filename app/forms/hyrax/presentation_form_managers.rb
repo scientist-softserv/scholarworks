@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Presentation`
+#
+# Fields to show in Presentation form for managers
+#
 module Hyrax
   class PresentationFormManagers < PresentationForm
     def primary_terms

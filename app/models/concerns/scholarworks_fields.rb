@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #
 # Shared metadata across ScholarWorks models
 #
@@ -91,10 +90,6 @@ module ScholarworksFields
     end
 
     property :publication_title, predicate: ::RDF::Vocab::DC.relation do |index|
-      index.as :stored_searchable
-    end
-
-    property :sponsor, predicate: ::RDF::Vocab::MARCRelators.spn do |index|
       index.as :stored_searchable
     end
 

@@ -1,5 +1,7 @@
 require 'calstate/metadata'
-
+#
+# XML crosswalk for creating a work or fileset
+#
 module WillowSword
   class CrosswalkFromDspace
     attr_reader :dc, :metadata, :model, :mapped_metadata, :files_metadata,

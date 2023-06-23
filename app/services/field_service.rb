@@ -31,6 +31,7 @@ class FieldService
        external_modified_date
        external_system
        external_url
+       file_format
        handle
        identifier
        internal_note
@@ -100,8 +101,6 @@ class FieldService
        identifier_uri
        investigator
        publication_status
-       rights_statement
-       rights_uri
        time_period]
   end
 
@@ -109,7 +108,9 @@ class FieldService
   # Digital Archives fields
   #
   def self.archives
-    %i[format
+    %i[digital_project
+       format
+       funding_code
        geographical_area
        has_finding_aid
        institution
@@ -203,7 +204,6 @@ class FieldService
        depositor
        edition
        embargo_release_date
-       embargo_terms
        external_id
        external_system
        external_modified_date
@@ -371,13 +371,13 @@ class FieldService
   #
   # Convert simple fields XML to hash of params
   #
-  # @param doc [Nokogiri::XML]  node or document with simple xml record
+  # @param node [Nokogiri::XML]  record node from Nokogiri XML (don't just pass in the whole document!)
   #
   # @return [Hash]
   #
-  def self.xml_to_params(doc)
+  def self.xml_to_params(node)
     params = {}
-    doc.xpath('field').each do |field|
+    node.xpath('field').each do |field|
       next unless field.text.present?
 
       field_name = field.attr('name')

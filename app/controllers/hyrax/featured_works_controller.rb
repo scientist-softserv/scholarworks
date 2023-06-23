@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Using campus from the work to get feature_work based on such campus.
+#
 module Hyrax
   class FeaturedWorksController < ApplicationController
     def create

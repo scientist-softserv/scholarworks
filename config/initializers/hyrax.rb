@@ -46,7 +46,8 @@ Hyrax.config do |config|
   config.realtime_notifications = false
 
   # Google Analytics tracking ID to gather usage statistics
-  config.google_analytics_id = 'UA-178645232-1'
+  # note: we use the system config for this instead!
+  # config.google_analytics_id = ''
 
   # Date you wish to start collecting Google Analytic statistics for
   # Leaving it blank will set the start date to when ever the file was uploaded by
@@ -83,7 +84,8 @@ Hyrax.config do |config|
   # config.redis_namespace = "hyrax"
 
   # Path to the file characterization tool
-  config.fits_path = "/app/fits/fits.sh"
+  config.fits_path = ENV['FITS_PATH'] || "/usr/local/fits/fits.sh"
+
   #config.fits_path = "/usr/local/bin/fits"
 
   # Path to the file derivatives creation tool

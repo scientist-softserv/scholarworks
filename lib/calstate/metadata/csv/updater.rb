@@ -50,7 +50,7 @@ module CalState
         # @param record [Hash]  record from the CSV file
         #
         def update_record(record)
-          doc = ActiveFedora::Base.find(record['id'].to_s)
+          work = ActiveFedora::Base.find(record['id'].to_s)
 
           changes = {}
           record.xpath('change').each do |change|
@@ -59,8 +59,11 @@ module CalState
             changes[field] = value
           end
 
-          doc.update(changes)
-          doc.save
+          work.update(changes.except('collection'))
+          work.save
+
+          # add to collection
+          Packager.add_to_collection(work, changes['collection']) if changes['collection']
 
           # mark as processed
           record['complete'] = 'true'

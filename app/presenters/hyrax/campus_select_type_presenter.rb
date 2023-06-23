@@ -1,8 +1,7 @@
-
+#
+# Custom type selector presenter so we can have campus-specific labels
+#
 module Hyrax
-  #
-  # Custom type selector presenter so we can have campus-specific labels
-  #
   class CampusSelectTypePresenter < SelectTypePresenter
     def initialize(concern, campus)
       @concern = concern

@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: store title as sortable field and store collection as facetable
+#
 module Hyrax
   class CollectionIndexer < Hydra::PCDM::CollectionIndexer
     include Hyrax::IndexesThumbnails

@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #
 # Base behavior for shared metadata across all models
 #
@@ -70,7 +69,7 @@ module ScholarworksBehavior
         end
       end
 
-      self.college = colleges
+      self.college = colleges unless colleges.empty?
     end
   end
 end

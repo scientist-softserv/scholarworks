@@ -1,5 +1,11 @@
 # frozen_string_literal: true
-
+#
+# OVERRIDE class from Blacklight v6.25.0
+# Customization:
+# Only name from composite person.
+# Map internal types to oai-pmh types.
+# Keep internal type as dc:genre.
+#
 require 'builder'
 
 ##

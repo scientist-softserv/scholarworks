@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Sort on collection title
+#
 module Hyrax
   module Collections
     # Responsible for retrieving collection members

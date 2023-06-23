@@ -1,3 +1,6 @@
+#
+# User model
+#
 class User < ApplicationRecord
   include Hydra::User
   include Hydra::RoleManagement::UserRoles

@@ -1,3 +1,6 @@
+#
+# Based form for all scholarworks forms
+#
 module Hyrax
   class CsuForm < Hyrax::Forms::WorkForm
     # all fields

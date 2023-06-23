@@ -1,6 +1,7 @@
-# customization:
-# return up to 99 collections, sorted by collection title
-
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Return up to 99 collections, sorted by collection title
+#
 class Hyrax::HomepageController < ApplicationController
   # Adds Hydra behaviors into the application controller
   include Blacklight::SearchContext

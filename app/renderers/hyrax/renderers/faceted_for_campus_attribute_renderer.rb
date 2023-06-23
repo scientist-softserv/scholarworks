@@ -1,4 +1,7 @@
-module Hyrax 
+#
+# Special rendering to display URL for campus facet
+#
+module Hyrax
   module Renderers
     class FacetedForCampusAttributeRenderer < FacetedAttributeRenderer
       def search_path(value)

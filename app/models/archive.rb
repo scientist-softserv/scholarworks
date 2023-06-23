@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
 #
 # Archive model
 #
 class Archive < ActiveFedora::Base
-  include CsuFields
+  include BasicFields
   include FormattingFields
   include Hyrax::WorkBehavior
   include Hydra::AccessControls::CampusVisibility
@@ -12,7 +11,15 @@ class Archive < ActiveFedora::Base
   self.indexer = ArchiveIndexer
   validates :title, presence: { message: 'Your work must have a title.' }
 
+  property :digital_project, predicate: ::RDF::URI.new('http://opaquenamespace.org/ns/set') do |index|
+    index.as :stored_searchable
+  end
+
   property :format, predicate: ::RDF::Vocab::DC.format do |index|
+    index.as :stored_searchable
+  end
+
+  property :funding_code, predicate: ::RDF::URI.new('http://id.loc.gov/vocabulary/mnotetype/fundinfo') do |index|
     index.as :stored_searchable
   end
 
@@ -20,7 +27,7 @@ class Archive < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :has_finding_aid, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#hasFindingAid') do |index|
+  property :has_finding_aid, predicate: ::RDF::URI.new('http://lod.xdams.org/reload/oad/has_findingAid') do |index|
     index.as :stored_searchable
   end
 
@@ -55,7 +62,7 @@ class Archive < ActiveFedora::Base
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include Hyrax::BasicMetadata
-  include CsuBehavior
+  include BasicBehavior
   include FormattingBehavior
 
   #

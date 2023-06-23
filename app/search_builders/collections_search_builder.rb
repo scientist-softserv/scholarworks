@@ -1,4 +1,6 @@
-# Added to allow all top level of user collections
+#
+# Allow a way to search all top level of user collections
+#
 class CollectionsSearchBuilder < Blacklight::SearchBuilder
   include Hyrax::SearchFilters
 

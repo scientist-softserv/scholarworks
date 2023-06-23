@@ -28,3 +28,5 @@ models:
   - publication
   - dataset
   - educational_resource
+
+google_analytics_id: 'G-3GBP412H1C'
