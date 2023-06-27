@@ -30,7 +30,7 @@ module CalState
         file_map = if @metadata_only
                      {}
                    else
-                     file_map(base_path + '/files')
+                     file_map(base_path)
                    end
 
         csv = CalState::Metadata::Csv::Reader.new(path, tab_sep)
