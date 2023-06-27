@@ -453,12 +453,18 @@ module CalState
       #
       # Create a new Hyrax work
       #
-      # @param params [Hash]  record attributes
+      # @param record_params [Hash]  record attributes
       #
       # @return [ActiveFedora::Base] the work
       #
-      def create_new_work(params)
+      def create_new_work(record_params)
         @log.info 'Creating new work.'
+
+        # remove empty params
+        params = {}
+        record_params.each do |field, value|
+          params[field] = value unless value.blank?
+        end
 
         # depositor
         depositor = User.find_by_user_key(@depositor)
