@@ -1,8 +1,5 @@
 
 campus: 'Dominguez Hills'
-depositor: admin@calstate.edu
-input_dir: /data/exported/
-admin_set_id: 'bg257j096'
 exit_on_error: false
 default_model: Archive
 default_type: Image

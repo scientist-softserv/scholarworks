@@ -1,8 +1,5 @@
 
 campus: 'Humboldt'
-depositor: admin@calstate.edu
-input_dir: /data/exported/
-admin_set_id: 9880vq965
 exit_on_error: false
 
 # Bibliography
