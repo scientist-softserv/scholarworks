@@ -1,6 +1,3 @@
 
 campus: 'Fresno'
-depositor: admin@calstate.edu
-input_dir: /data/exported/
-admin_set_id: 'v118rd525'
 exit_on_error: false

@@ -1,6 +1,3 @@
 
 campus: 'East Bay'
-depositor: admin@calstate.edu
-input_dir: /data/exported/
-admin_set_id: 'cr56n096b'
 exit_on_error: false

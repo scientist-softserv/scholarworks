@@ -1,8 +1,5 @@
 
 campus: 'Northridge'
-depositor: admin@calstate.edu
-input_dir: /data/exported/
-admin_set_id: 'nv9353847'
 exit_on_error: false
 default_model: Archive
 separator: ';'

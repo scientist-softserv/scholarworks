@@ -9,11 +9,12 @@ module CalState
       #
       # New Islandora packager
       #
-      # @param campus [String]      campus slug
-      # @param type [String]        work type (e.g., Thesis)
+      # @param admin_set [String]  admin set ID
+      # @param campus [String]     campus slug
+      # @param depositor [String]  depositor
       #
-      def initialize(campus, type)
-        super(campus)
+      def initialize(admin_set, campus, depositor)
+        super admin_set, campus, depositor
 
         @type = type
         @visibility = @config['visibility'] ||= 'open'
@@ -26,7 +27,6 @@ module CalState
         @log.info 'Visibility ' + @visibility
 
         # set working directories
-        @input_dir = @config['input_dir']
         @complete_dir = initialize_directory(@input_dir + '_complete')
         @error_dir = initialize_directory(@input_dir + '_error')
       end
@@ -170,9 +170,6 @@ module CalState
       def prepare_params(dom)
         params = collect_params(dom)
         params['visibility'] = @visibility
-        params['admin_set_id'] = @config['admin_set_id']
-        params['campus'] = [@campus]
-
         params
       end
 
