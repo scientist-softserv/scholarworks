@@ -7,16 +7,6 @@ module CalState
     #
     class Csv < AbstractPackager
       #
-      # New Csv packager
-      #
-      # @param campus [String]  campus slug
-      #
-      def initialize(campus, admin_set)
-        super campus
-        @admin_set = admin_set
-      end
-
-      #
       # Process all items
       #
       # @param path [String]            full path to csv file
@@ -49,8 +39,6 @@ module CalState
             end
           end
 
-          # set admin_set from command line
-          record['admin_set_id'] = @admin_set
           x += 1
 
           next if @transaction.completed?(x)
