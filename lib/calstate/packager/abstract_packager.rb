@@ -59,7 +59,7 @@ module CalState
       # @param value [Integer]
       #
       def throttle=(value)
-        @throttle = value.is_a?(Integer) ? value : 0
+        @throttle = value.to_i
       end
 
       protected
