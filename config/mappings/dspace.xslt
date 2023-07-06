@@ -255,7 +255,7 @@
   </xsl:template>
 
   <xsl:template match="dim:field[@mdschema='dc' and @element='rights' and @qualifier='uri']">
-    <field name="rights_uri">
+    <field name="rights_note">
       <xsl:value-of select="text()"/>
     </field>
   </xsl:template>

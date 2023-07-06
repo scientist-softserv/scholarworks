@@ -1,7 +1,4 @@
 
 campus: 'Long Beach'
-depositor: admin@calstate.edu
-input_dir: /data/csulb/exported/
-admin_set_id: 'rj4304528'
 exit_on_error: true
 
