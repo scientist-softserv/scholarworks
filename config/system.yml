@@ -3,9 +3,7 @@ facets:
     limit: 5
   campus:
     limit: 10
-  department:
-    limit: 5
-  degree_level:
+  accrual_method:
     limit: 5
   date_issued_year:
     range: true
@@ -22,11 +20,6 @@ advanced_search:
   - handle
   
 models:
-  - thesis
-  - project
-  - presentation
-  - publication
-  - dataset
-  - educational_resource
+  - archive
 
-google_analytics_id: 'G-3GBP412H1C'
+handle_suffix_system: 'arch.'
