@@ -1,16 +1,10 @@
 @media (min-width: 767px) {
-  #csu-home-top {
-    background-image: image-url("archives/bg.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 450px;
-  }
+    #csu-home-top {
+        background-image: image-url("home/bg.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 }
-.csu-archives-inst {
-  font-family: 'Arial', san-serif;
-  text-transform: uppercase;
-  color: #fff;
-}
-.csu-archives-search {
-  margin-top: 18px;
+.view-type {
+    display: none;
 }

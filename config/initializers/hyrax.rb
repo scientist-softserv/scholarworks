@@ -72,7 +72,7 @@ Hyrax.config do |config|
   # config.enable_noids = true
 
   # Template for your repository's NOID IDs
-  config.noid_template = "dig-.reeddeeddk"
+  # config.noid_template = ".reeddeeddk"
 
   # Use the database-backed minter class
   # config.noid_minter_class = ActiveFedora::Noid::Minter::Db

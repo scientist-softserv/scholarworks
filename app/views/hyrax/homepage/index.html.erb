@@ -10,13 +10,8 @@
   <div class="csu-home-container">
     <div class="csu-home-jumbotron">
       <div class="csu-search-wrapper">
-        <div class="csu-archives-inst">
-          California State University
-        </div>
-        <h1><%= t('hyrax.product_name') %></h1>
-        <p>Search digitized photographs, letters, oral histories & more.</p>
-      </div>
-      <div class="csu-archives-search">
+        <h1>ScholarWorks</h1>
+        <p class="csu-home-tagline">Scholarship from the California State University on a shared, open platform.</p>
         <form class="nav-search-form" id="search-form-header" role="search" action="/catalog" accept-charset="UTF-8" method="get">
           <input type="hidden" name="search_field" id="search_field" value="all_fields">
           <div class="input-group nav-search-text">
@@ -30,15 +25,214 @@
           </div>
         </form>
       </div>
+      <div class="home-share-work">
+        <% if signed_in? %>
+          <% if @presenter.create_many_work_types? %>
+            <%= link_to '#',
+              class: "btn btn-primary btn-lg",
+              data: { behavior: 'select-work', target: '#worktypes-to-create', 'create-type' => 'single' } do %>
+              <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+            <% end %>
+          <% else # simple link to the first work type %>
+            <%= link_to new_polymorphic_path([main_app, @presenter.first_work_type]),
+                  class: 'btn btn-primary btn-lg' do %>
+              <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= link_to hyrax.my_works_path,
+            class: "btn btn-primary btn-lg" do %>
+            <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+          <% end %>
+        <% end %>
+        <p class="terms-of-use"><%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path %></p>
+      </div>
+    </div>
+  </div>
+  <div class="csu-home-collections csu-home-dark-bg">
+    <div class="csu-home-container">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="csu-home-format">
+            <div class="csu-home-format-icon" aria-hidden="true">
+              <%= link_to image_tag("home/type-etd.png", alt: "Dissertations & Theses"), "catalog?f[has_model_ssim][]=Thesis" %>
+            </div>
+            <div class="csu-home-format-name">
+              <%= link_to "Dissertations & Theses", "catalog?f[has_model_ssim][]=Thesis" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="csu-home-format">
+            <div class="csu-home-format-icon" aria-hidden="true">
+              <%= link_to image_tag("home/type-pubs.png", alt: "Faculty Publications"), "catalog?f[has_model_ssim][]=Publication" %>
+            </div>
+            <div class="csu-home-format-name">
+              <%= link_to "Faculty Publications", "catalog?f[has_model_ssim][]=Publication" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="csu-home-format">
+            <div class="csu-home-format-icon" aria-hidden="true">
+              <%= link_to image_tag("home/type-research.png", alt: "Research Datasets"), "catalog?f[has_model_ssim][]=Dataset" %>
+            </div>
+            <div class="csu-home-format-name">
+              <%= link_to "Research Datasets", "catalog?f[has_model_ssim][]=Dataset" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="csu-home-format">
+            <div class="csu-home-format-icon" aria-hidden="true">
+              <%= link_to image_tag("home/type-oer.png", alt: "Open Educational Resources"), "catalog?f[has_model_ssim][]=EducationalResource" %>
+            </div>
+            <div class="csu-home-format-name">
+              <%= link_to "Open Educational Resources", "catalog?f[has_model_ssim][]=EducationalResource" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="csu-home-divider csu-home-dark-bg">
+    <div class="csu-home-divider-inner">
+      <%= image_tag("home/divider-light.png", alt: "") %>
     </div>
   </div>
 </div>
-
 <div id="csu-home-lower">
+  <div id="csu-home-campuses">
+    <div class="csu-home-container">
+      <h2 class="csu-home-feature">Browse by campus</h2>
+      <div class="row csu-home-campus-list">
+        <div class="col-md-4">
+          <div class="csu-home-cali">
+            <%= image_tag("home/california.png", alt: "") %>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-sm-4">
+              <ul>
+                <li><%= link_to "Bakersfield", "catalog?f[campus_sim][]=Bakersfield" %></li>
+                <li><%= link_to "Channel Islands", "catalog?f[campus_sim][]=Channel Islands" %></li>
+                <li><%= link_to "Chico", "catalog?f[campus_sim][]=Chico" %></li>
+                <li><%= link_to "Dominguez Hills", "catalog?f[campus_sim][]=Dominguez Hills" %></li>
+                <li><%= link_to "East Bay", "catalog?f[campus_sim][]=East Bay" %></li>
+                <li><%= link_to "Fresno", "catalog?f[campus_sim][]=Fresno" %></li>
+                <li><%= link_to "Fullerton", "catalog?f[campus_sim][]=Fullerton" %></li>
+                <li><%= link_to "Humboldt", "catalog?f[campus_sim][]=Humboldt" %></li>
+                <li><%= link_to "Long Beach", "catalog?f[campus_sim][]=Long Beach" %></li>
+                <li><%= link_to "Los Angeles", "catalog?f[campus_sim][]=Los Angeles" %></li>
+                <li><%= link_to "Maritime", "catalog?f[campus_sim][]=Maritime" %></li>
+                <li><a href="https://digitalcommons.csumb.edu/" target="_blank" class="external">Monterey Bay</a></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <ul>
+                <li><%= link_to "Moss Landing", "catalog?f[campus_sim][]=Moss Landing" %></li>
+                <li><%= link_to "Northridge", "catalog?f[campus_sim][]=Northridge" %></li>
+                <li><%= link_to "Pomona", "catalog?f[campus_sim][]=Pomona" %></li>
+                <li><%= link_to "Sacramento", "catalog?f[campus_sim][]=Sacramento" %></li>
+                <li><a href="https://scholarworks.lib.csusb.edu/" target="_blank" class="external">San Bernardino</a></li>
+                <li><%= link_to "San Diego", "catalog?f[campus_sim][]=San Diego" %></li>
+                <li><%= link_to "San Francisco", "catalog?f[campus_sim][]=San Francisco" %></li>
+                <li><a href="https://scholarworks.sjsu.edu/" target="_blank" class="external">San Jose</a></li>
+                <li><a href="https://digitalcommons.calpoly.edu/" target="_blank" class="external">San Luis Obispo</a></li>
+                <li><%= link_to "San Marcos", "catalog?f[campus_sim][]=San Marcos" %></li>
+                <li><%= link_to "Sonoma", "catalog?f[campus_sim][]=Sonoma" %></li>
+                <li><%= link_to "Stanislaus", "catalog?f[campus_sim][]=Stanislaus" %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="csu-home-promo">
+    <div class="csu-home-container">
+      <h2 class="csu-home-feature">Why upload your work to ScholarWorks?</h2>
+      <div class="csu-home-promo-features">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="service-item">
+              <div class="service-image">
+                <%= image_tag("home/feature-visibility.png", alt: "") %>
+              </div>
+              <div class="service-content">
+                <h3 class="service-title">Greater visibility</h3>
+                <p>Freely share your work alongside CSU peers for a global audience. Increase your readership, citation counts, and impact on your field.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-item">
+              <div class="service-image">
+                <%= image_tag("home/feature-link.png", alt: "") %>
+              </div>
+              <div class="service-content">
+                <h3 class="service-title">Persistent URL</h3>
+                <p>Go ahead and bookmark that link. You and others will always be able to find it again.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-item">
+              <div class="service-image">
+                <%= image_tag("home/feature-preserve.png", alt: "") %>
+              </div>
+              <div class="service-content">
+                <h3 class="service-title">Long-term preservation</h3>
+                <p>ScholarWorks is maintained by experts in the CSU Libraries who are committed to consistent access as systems and standards change over time.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="csu-home-stats">
+    <div class="csu-home-container">
+      <p class="csu-home-feature-lead">Check out</p>
+      <h2>Our numbers</h2>
+      <div class="csu-home-counts">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="csu-home-count-number">107,631</div>
+            <div class="csu-home-count-type">Items submitted</div>
+          </div>
+          <div class="col-md-3">
+            <div class="csu-home-count-number">41,011,102</div>
+            <div class="csu-home-count-type">Total views</div>
+          </div>
+          <div class="col-md-3">
+            <div class="csu-home-count-number">9,425,115</div>
+            <div class="csu-home-count-type">Views last year</div>
+          </div>
+          <div class="col-md-3">
+            <div class="csu-home-count-number">500</div>
+            <div class="csu-home-count-type">Collections</div>
+          </div>
+        </div>
+      </div>
+      <div class="csu-home-move">
+        <p>We're currently migrating content from our old system to this new platform. <a href="/about">Learn more</a>.</p>
+      </div>
+    </div>
+    <div class="csu-home-divider">
+      <div class="csu-home-divider-inner">
+        <%= image_tag("home/divider-light.png", alt: "") %>
+      </div>
+    </div>
+  </div>
+
   <div id="csu-home-submissions">
     <div class="csu-home-container">
       <div class="csu-recent-submissions service-item">
-        <h2 class="csu-home-feature">Featured collections</h2>
+        <h2 class="csu-home-feature">Recent submissions</h2>
         <ul class="csu-documents csu-documents-home">
           <% @recent_documents.each do |document| %>
             <li>
@@ -52,3 +246,12 @@
 </div>
 
 <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+      $('.csu-home-count-number').counterUp({
+          delay: 30,
+          time: 1500
+      });
+  });
+</script>

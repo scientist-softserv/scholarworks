@@ -18,7 +18,6 @@
  *= require calstate.scss
  *= require ada.css
  *= require system.scss
- *= require 'bulkrax/application'
  *= require_self
  
  *= require 'blacklight_advanced_search'

@@ -35,8 +35,6 @@ en:
           publisher_sim: Publisher
           resource_type_sim: Resource Type
           subject_sim: Subject
-          # @testing
-          accrual_method_sim: Has File
         show: &work_fields
           admin_set: Administrative Set
           advisor: Advisor
@@ -107,8 +105,6 @@ en:
           rights_statement: Rights Statement
           rights_uri: Rights URI
           time_period: Time Period
-          # @testing
-          accrual_method: Has File
           # @archive
           format: Format
           has_finding_aid: Finding Aid
