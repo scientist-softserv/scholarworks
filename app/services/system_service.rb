@@ -44,8 +44,18 @@ class SystemService
   # Google Analytics ID
   #
   # @return [String]
+  #
   def self.google_analytics_id
-    config['google_analytics_id']
+    config['google_analytics_id'].to_s
+  end
+
+  #
+  # System identifier for Handle suffix
+  #
+  # @return [String]
+  #
+  def self.handle_suffix_system
+    config['handle_suffix_system'].to_s
   end
 
   #
