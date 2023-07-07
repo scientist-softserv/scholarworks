@@ -33,7 +33,7 @@ class HandleService < ActiveJob::Base
     handle_client = HandleSystem::Client.new(handle_server, hs_admin, private_key)
 
     prefix = ENV['HS_PREFIX']
-    suffix = resource.id
+    suffix = SystemService.handle_suffix_system + resource.id
     handle = prefix + '/' + suffix
 
     logger.info "Registering #{suffix} to Handle"
