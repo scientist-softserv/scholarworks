@@ -21,3 +21,5 @@ advanced_search:
   
 models:
   - archive
+
+handle_suffix_system: 'arch.'
