@@ -14,8 +14,14 @@ namespace :calstate do
     CalState::Metadata.models.each do |model|
       model.where(campus: campus_name).each do |work|
         puts "#{work.id} (#{work.class.name})"
+
         fileset = work.file_sets.first
-        CreateDerivativesJob.perform_now(fileset, fileset.original_file.id)
+        next if fileset.nil?
+
+        file_id = fileset&.original_file&.id
+        next if file_id.nil?
+
+        CharacterizeJob.perform_now(fileset, file_id)
       end
     end
   end
