@@ -3,7 +3,7 @@
 require 'calstate/packager'
 
 # Usage:
-# bundle exec rake packager:zenodo[cc08hg00q,fullerton, scholarworks@calstate.edu]
+# bundle exec rake packager:zenodo[cc08hg00q,fullerton,scholarworks@calstate.edu]
 #
 namespace :packager do
   desc 'Migrate Zenodo packages to Hyrax'
@@ -13,7 +13,7 @@ namespace :packager do
     depositor = args[:depositor] or raise 'No depositor provided.'
     throttle = args[:throttle] ||= nil
 
-    packager = CalState::Packager::Zenodo.new(campus, admin_set, depositor)
+    packager = CalState::Packager::Zenodo.new(admin_set, campus, depositor)
     packager.throttle = throttle
     packager.process_items
   end
