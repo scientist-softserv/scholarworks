@@ -52,6 +52,12 @@ module CalState
 
           hits = get_record(id)
           hits.each do |hit|
+            # no files, no mas
+            unless hit['files'].is_a?(Array)
+              File.write("#{@input_dir}/embargoed.txt", "#{id}\n", mode: 'a')
+              next
+            end
+
             # convert to xml
             to_xml = hit['metadata'].to_xml(root: 'record')
             xml = Nokogiri::XML(to_xml.to_s)
@@ -150,6 +156,10 @@ module CalState
         uri = URI(url)
         response = Net::HTTP.get(uri)
         res_hash = JSON.parse(response)
+
+        return [{}] unless res_hash.is_a?(Hash)
+        return [{}] unless res_hash['hits'].is_a?(Hash)
+
         res_hash['hits']['hits']
       end
     end
