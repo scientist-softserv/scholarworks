@@ -28,12 +28,32 @@
     </field>
   </xsl:template>
 
+  <xsl:template match="thesis">
+    <xsl:variable name="affiliation" select="university" />
+    <xsl:for-each select="supervisors/supervisor">
+      <field name="committee_member">
+        <xsl:value-of select="name" /><xsl:text>::::::</xsl:text><xsl:value-of select="$affiliation"/>
+      </field>
+    </xsl:for-each>
+  </xsl:template>
+
   <!-- creator -->
   <xsl:template match="creator">
     <field name="creator">
       <xsl:value-of select="name"/>
-      <xsl:if test="affiliation">
-        <xsl:text>::::::</xsl:text><xsl:value-of select="affiliation"/>
+      <xsl:if test="affiliation or orcid">
+        <xsl:text>::::::</xsl:text>
+        <xsl:choose>
+          <xsl:when test="affiliation">
+            <xsl:value-of select="affiliation" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>:::</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="orcid">
+          <xsl:value-of select="orcid" />
+        </xsl:if>
       </xsl:if>
     </field>
   </xsl:template>
@@ -113,6 +133,22 @@
   <!-- title -->
   <xsl:template match="title">
     <field name="title">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <!-- keywords -->
+  <xsl:template match="keywords">
+    <xsl:for-each select="keyword">
+      <field name="keyword">
+        <xsl:value-of select="text()"/>
+      </field>
+    </xsl:for-each>
+  </xsl:template>
+
+  <!-- date -->
+  <xsl:template match="publication-date">
+    <field name="date_issued">
       <xsl:value-of select="text()"/>
     </field>
   </xsl:template>
