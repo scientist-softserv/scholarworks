@@ -7,6 +7,7 @@ module Hyrax
   class DatasetForm < Hyrax::CsuForm
     self.model_class = ::Dataset
     self.required_fields += %i[title
+                               creator
                                description
                                methods_of_collection
                                date_range]
