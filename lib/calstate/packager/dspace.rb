@@ -247,7 +247,7 @@ module CalState
       # @return [String]
       #
       def xslt_file
-        campus_file = "#{Rails.root}/config/packager/xslt/#{@campus}.xslt"
+        campus_file = "#{Rails.root}/config/packager/xslt/#{@campus_slug}.xslt"
         return campus_file if File.exist?(campus_file)
 
         "#{Rails.root}/config/mappings/dspace.xslt"
