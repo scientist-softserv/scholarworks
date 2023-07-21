@@ -153,6 +153,13 @@
     </field>
   </xsl:template>
 
+  <!-- embargo -->
+  <xsl:template match="embargo_date">
+    <field name="embargo_release_date">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
   <!-- remove any other non-matching element -->
   <xsl:template match="text()"/>
 
