@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-
-# Added to allow all top level of user collections
+#
+# Inherit from blacklight SearchBuilder to build searches for search result page of specific campus
+#
 class CampusSearchBuilder < Blacklight::SearchBuilder
   include Hydra::AccessControlsEnforcement
   include Hyrax::FilterByType

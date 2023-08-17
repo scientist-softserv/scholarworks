@@ -609,23 +609,18 @@
         </field>
       </xsl:if>
 
-      <!-- degree level -->
-      <xsl:if test="@type">
-        <field name="degree_level">
-          <xsl:value-of select="@type" />
-        </field>
-      </xsl:if>
-
       <!-- resource type -->
       <xsl:if test="@type">
-        <xsl:choose>
-          <xsl:when test="@type = 'doctoral'">
-            <xsl:text>Dissertation</xsl:text>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:text>Masters Thesis</xsl:text>
-          </xsl:otherwise>
-        </xsl:choose>
+        <field name="resource_type">
+          <xsl:choose>
+            <xsl:when test="@type = 'doctoral'">
+              <xsl:text>Dissertation</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>Masters Thesis</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
+        </field>
       </xsl:if>
 
       <!-- date issued -->
@@ -694,7 +689,8 @@
 
     <xsl:if test="string-length($pText) > 0">
       <xsl:variable name="vNextItem" select="substring-before(concat($pText, $pSlitter), $pSlitter)"/>
-      <xsl:element name="{$pElementName}">
+      <xsl:element name="field">
+        <xsl:attribute name="name"><xsl:value-of select="$pElementName" /></xsl:attribute>
         <xsl:value-of select="$vNextItem"/>
       </xsl:element>
       <xsl:call-template name="split">

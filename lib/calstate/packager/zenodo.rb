@@ -11,30 +11,28 @@ module CalState
       #
       # New Zenodo packager
       #
-      # @param campus [String]      campus slug
+      # @param admin_set [String]  admin set ID
+      # @param campus [String]     campus slug
+      # @param depositor [String]  depositor
       #
-      def initialize(campus)
-        super
+      def initialize(admin_set, campus, depositor)
+        super admin_set, campus, depositor
 
         @query_url = 'https://zenodo.org/api/records/?q=doi:"QUERY_PARAMETER"'
         @xslt = "#{Rails.root}/config/mappings/zenodo.xslt"
-        @input_dir = @config['input_dir']
         @default_resource_type = @config['default_type']
       end
 
       #
       # Process all items
       #
-      # @param throttle [String]  seconds to throttle between records
-      #
-      def process_items(throttle)
+      def process_items
         return unless File.directory?(@input_dir)
 
         input_file = File.join(@input_dir, @config['input_file'])
         valid_input = File.file?(input_file) ? true : false
         return unless valid_input
 
-        @throttle = throttle.to_i
         @log.info "Using input file #{input_file}"
         create_work_and_files(input_file)
       end
@@ -54,6 +52,12 @@ module CalState
 
           hits = get_record(id)
           hits.each do |hit|
+            # no files, no mas
+            unless hit['files'].is_a?(Array)
+              File.write("#{@input_dir}/embargoed.txt", "#{id}\n", mode: 'a')
+              next
+            end
+
             # convert to xml
             to_xml = hit['metadata'].to_xml(root: 'record')
             xml = Nokogiri::XML(to_xml.to_s)
@@ -152,6 +156,10 @@ module CalState
         uri = URI(url)
         response = Net::HTTP.get(uri)
         res_hash = JSON.parse(response)
+
+        return [{}] unless res_hash.is_a?(Hash)
+        return [{}] unless res_hash['hits'].is_a?(Hash)
+
         res_hash['hits']['hits']
       end
     end

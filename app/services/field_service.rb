@@ -199,12 +199,12 @@ class FieldService
   #
   def self.single_fields
     # model is a utility field in csv import
-    %w[date_accessioned
+    %w[admin_set_id
+       date_accessioned
        degree_level
        depositor
        edition
        embargo_release_date
-       embargo_terms
        external_id
        external_system
        external_modified_date

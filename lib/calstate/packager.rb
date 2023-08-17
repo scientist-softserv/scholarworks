@@ -19,37 +19,32 @@ module CalState
   #
   module Packager
     #
-    # Add the manager group to the work
+    # Add the manager group to the record (work or file)
     #
     # @param work [ActiveRecord::Base]  Fedora record
     # @param campus [String]            campus slug
     #
     # @return [ActiveRecord::Base]
     #
-    def self.add_manager_group(work, campus)
+    def self.add_manager_group(record, campus)
       group = 'managers-' + campus
-      work.edit_groups = [group]
-      work
+      record.edit_groups = [group]
+      record
     end
 
     #
-    # Add individual managers to the work
+    # Add work to collection
     #
-    # @param work [ActiveRecord::Base]  Fedora record
-    # @param admin_set_id [String]      admin set identifier
+    # @param work [ActiveFedora::Base]  work
+    # @param collections [Array]        collection id's
     #
-    # @return [ActiveRecord::Base]
-    #
-    def self.add_managers(work, admin_set_id)
-      permission = Hyrax::PermissionTemplate.find_by!(source_id: admin_set_id)
-      return work if permission.nil?
-
-      managers = permission.agent_ids_for(agent_type: 'user', access: 'manage')
-      return work if managers.nil?
-
-      work.edit_users = managers
-      work.edit_users = work.edit_users.dup
-      work
+    def self.add_to_collection(work, collections)
+      id = work.id
+      collections.each do |coll|
+        collection = Collection.find(coll)
+        collection.reindex_extent = Hyrax::Adapters::NestingIndexAdapter::LIMITED_REINDEX
+        collection.add_member_objects(id)
+      end
     end
 
     #

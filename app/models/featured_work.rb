@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Make sure featured works to specific campus
+#
 class FeaturedWork < ActiveRecord::Base
   FEATURE_LIMIT = 5
   validate :count_within_limit, on: :create

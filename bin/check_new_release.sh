@@ -20,8 +20,8 @@ else
   echo "Usage: ./check_new_release.sh (dev|prod). Argument not recognized"
   exit 1
 fi
-echo $LATEST_TAG
-exit 1
+echo "Latest tag is ${LATEST_TAG}"
+
 # Check if the tag exists
 if [ -z "$LATEST_TAG" ]; then
   echo "Error: No release tags found."
@@ -48,6 +48,8 @@ else
   # Show the current checked-out tag
   echo "Now on tag: $(git describe --tags --abbrev=0)"
 
+  echo "Running bundler"
+  bundle install
   echo "Running migrations and assets"
   bundle exec rails db:migrate
   bundle exec rails assets:precompile

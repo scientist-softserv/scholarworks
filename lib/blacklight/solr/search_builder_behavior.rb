@@ -1,4 +1,10 @@
 # frozen_string_literal: true
+#
+# OVERRIDE class from Blacklight v6.25.0
+# Customization:
+# Use just name for facet search for createor, contributor, editor, and committee_member.
+# Use discipine_search_ids_teim when search for discpline to get count for all its descendents.
+#
 module Blacklight::Solr
   module SearchBuilderBehavior
     extend ActiveSupport::Concern

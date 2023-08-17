@@ -12,14 +12,6 @@ module CalState
     # Packager
     #
     class AbstractPackager
-
-      #
-      # Optional time to sleep between each package run
-      #
-      # @return [Integer]
-      #
-      attr_accessor :throttle
-
       #
       # Metadata only
       #
@@ -28,23 +20,22 @@ module CalState
       attr_accessor :metadata_only
 
       #
-      # Depositor
-      #
-      # @return [String]
-      #
-      attr_accessor :depositor
-
-      #
       # New packager
       #
-      # @param campus [String]  campus slug
+      # @param admin_set [String]  admin set ID
+      # @param campus [String]     campus slug
+      # @param depositor [String]  depositor
       #
-      def initialize(campus)
+      def initialize(admin_set, campus, depositor)
         @campus_slug = campus
+        @admin_set = admin_set
+        @depositor = depositor
+
         @campus = CampusService.get_name_from_slug(@campus_slug)
         @fix_params = false
         @metadata_only = false
         @exit_on_error = false
+
         @throttle = 0
         @throttle_on_error = 60
         @log = Packager::Log.new
@@ -53,13 +44,22 @@ module CalState
         @admin_set_check = []
 
         # campus config
-        config_file = 'config/packager/' + campus + '.yml'
+        config_file = "config/packager/#{campus}.yml"
         @config = OpenStruct.new(YAML.ext_load_file(config_file))
 
-        @depositor = @config['depositor']
+        @input_dir = @config['input_dir'] ||= '/data/import'
         @default_model = @config['default_model']
         @metadata_only = true if @config['metadata_only'] == 'true'
         @exit_on_error = true if @config['exit_on_error'] == 'true'
+      end
+
+      #
+      # Set throttle
+      #
+      # @param value [Integer]
+      #
+      def throttle=(value)
+        @throttle = value.to_i
       end
 
       protected
@@ -79,7 +79,7 @@ module CalState
           # record the time it took
           end_time = Time.now.minus_with_coercion(start_time)
           total_time = Time.at(end_time.to_i.abs).utc.strftime('%H:%M:%S')
-          @log.info 'Total time: ' + total_time
+          @log.info "Total time: #{total_time}"
           @log.info 'DONE!'.green
 
         rescue Net::ReadTimeout => e
@@ -165,12 +165,19 @@ module CalState
         attach_files(work, files) unless files.empty?
 
         unless params['collection'].blank?
-          add_to_collection(work, params['collection'])
+          @log.info "Adding work (#{id}) to collections (#{params['collection'].join(', ')})"
+          Packager.add_to_collection(work, params['collection'])
         end
 
         @log.info 'Adding manager group to work.'
         work = Packager.add_manager_group(work, @campus_slug)
         work.save
+
+        @log.info 'Adding manager group to files.'
+        work.file_sets.each do |file_set|
+          Packager.add_manager_group(file_set, @campus_slug)
+          file_set.save
+        end
 
         @log.info 'Registering work with Handle service.'
         HandleRegisterJob.perform_now(work)
@@ -187,7 +194,7 @@ module CalState
         works = find_work(match_field, match_value)
 
         if works.empty?
-          @log.info 'Creating a new work for: ' + match_value
+          @log.info "Creating a new work for: #{match_value}"
           create_work(params, [])
         else
           work = works.first
@@ -327,21 +334,6 @@ module CalState
       end
 
       #
-      # Add work to collection
-      #
-      # @param work [ActiveFedora::Base]  work
-      # @param collections [Array]        collection id's
-      #
-      def add_to_collection(work, collections)
-        id = work.id
-        collections.each do |coll|
-          @log.info "Adding work (#{id}) to collection (#{coll})"
-          collection = Collection.find(coll)
-          collection.add_member_objects(id)
-        end
-      end
-
-      #
       # Transform source XML to simple field XML
       #
       # @param xml [Nokogiri::XML::Document]  source XML document
@@ -367,7 +359,7 @@ module CalState
         if date.length < 7 && /\d/.match(date)
           date_parsed = nil
           date_parsed = date[0..3] if date.length > 3
-          date_parsed += '-' + date[4..5] if date.length == 6
+          date_parsed += "-#{date[4..5]}" if date.length == 6
           date_parsed
         else
           Date.parse(date, '%Y-%m-%d').to_s
@@ -452,25 +444,32 @@ module CalState
         elsif @default_model.present?
           @default_model
         else
-          raise MetadataError, 'Could not find model for: ' + resource_type
+          raise MetadataError, "Could not find model for: #{resource_type}"
         end
       end
-
-      private
 
       #
       # Create a new Hyrax work
       #
-      # @param params [Hash]  record attributes
+      # @param record_params [Hash]  record attributes
       #
       # @return [ActiveFedora::Base] the work
       #
-      def create_new_work(params)
+      def create_new_work(record_params)
         @log.info 'Creating new work.'
+
+        # remove empty params
+        params = {}
+        record_params.each do |field, value|
+          params[field] = value unless value.blank?
+        end
+
+        # admin set
+        params['admin_set_id'] = @admin_set
 
         # depositor
         depositor = User.find_by_user_key(@depositor)
-        raise MetadataError, 'User ' + @depositor + ' not found.' if depositor.nil?
+        raise MetadataError, "User #{@depositor} not found." if depositor.nil?
 
         begin
           params = ensure_required_metadata(params)
@@ -488,8 +487,8 @@ module CalState
 
         id = Noid::Rails::Service.new.minter.mint
 
-        @log.info 'Creating a new ' + model + ' with id: ' + id
-        @log.info 'Title: ' + params['title'].first
+        @log.info "Creating a new #{model} with id: #{id}"
+        @log.info "Title: #{params['title'].first}"
 
         object = Kernel.const_get(model)
         work = object.new(id: id)
@@ -525,10 +524,7 @@ module CalState
         end
 
         # campus
-        if params['campus'].blank? && @config['campus']
-          params['campus'] = [@config['campus']]
-        end
-
+        params['campus'] = [@campus] if params['campus'].blank? && @campus
         raise MetadataError, 'No campus supplied in params.' if params['campus'].blank?
 
         params['campus'].each do |campus|

@@ -1,8 +1,6 @@
 
 campus: 'Fullerton'
 input_file: "zenodo.txt"
-depositor: admin@calstate.edu
 input_dir: /home/ec2-user/data/import/zenodo/fullerton
-admin_set_id: 'cc08hg00q'
 exit_on_error: true
 default_type: Doctoral Project

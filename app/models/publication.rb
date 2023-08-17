@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
 #
-# Publication
+# Publication model
 #
 class Publication < ActiveFedora::Base
-  include CsuFields
+  include BasicFields
   include ScholarworksFields
   include FormattingFields
   include Hyrax::WorkBehavior
@@ -39,7 +38,7 @@ class Publication < ActiveFedora::Base
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include Hyrax::BasicMetadata
-  include CsuBehavior
+  include BasicBehavior
   include FormattingBehavior
   include ScholarworksBehavior
 

@@ -7,15 +7,6 @@ module CalState
     #
     class Csv < AbstractPackager
       #
-      # New Csv packager
-      #
-      # @param campus [String]  campus slug
-      #
-      def initialize(campus)
-        super campus
-      end
-
-      #
       # Process all items
       #
       # @param path [String]            full path to csv file
@@ -29,7 +20,7 @@ module CalState
         file_map = if @metadata_only
                      {}
                    else
-                     file_map(base_path + '/files')
+                     file_map(base_path)
                    end
 
         csv = CalState::Metadata::Csv::Reader.new(path, tab_sep)
@@ -47,6 +38,7 @@ module CalState
               files += search_files(file_map, file)
             end
           end
+
           x += 1
 
           next if @transaction.completed?(x)

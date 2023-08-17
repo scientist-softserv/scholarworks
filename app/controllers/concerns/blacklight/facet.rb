@@ -1,8 +1,11 @@
 # frozen_string_literal: true
+#
+# OVERRIDE class from Blacklight v6.25.0
+# Customization: Add facet_field_names_for_range to accommodate facet range
+#
 module Blacklight
   # These are methods that are used at both the view helper and controller layers
   # They are only dependent on `blacklight_config` and `@response`
-  #
   module Facet
     delegate :facet_configuration_for_field, to: :blacklight_config
 

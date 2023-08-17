@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #
 # Methods for setting and getting formatted fields (title and description)
 #

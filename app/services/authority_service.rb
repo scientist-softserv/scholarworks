@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #
 # Abstract class for campus-specific authorities
 #

@@ -1,6 +1,6 @@
 require 'securerandom'
-
-#  Upload file to aws Glacier
+#
+# Upload file to aws Glacier service
 #
 class GlacierUploadService < ActiveJob::Base
   # @param [ActiveFedora::FileSet] the file set containing file to be uploaded

@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
 #
 # Archive model
 #
 class Archive < ActiveFedora::Base
-  include CsuFields
+  include BasicFields
   include FormattingFields
   include Hyrax::WorkBehavior
   include Hydra::AccessControls::CampusVisibility
@@ -63,7 +62,7 @@ class Archive < ActiveFedora::Base
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include Hyrax::BasicMetadata
-  include CsuBehavior
+  include BasicBehavior
   include FormattingBehavior
 
   #

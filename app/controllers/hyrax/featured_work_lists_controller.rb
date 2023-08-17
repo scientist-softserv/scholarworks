@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Modify feature work list to take campus argument so it's specific to campus.
+#
 module Hyrax
   class FeaturedWorkListsController < ApplicationController
     def create

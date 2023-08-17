@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work EducationalResource`
+#
+# Fields to show in EducationalResource form for managers
+#
 module Hyrax
   # Generated form for EducationalResource
   class EducationalResourceFormManagers < Hyrax::CsuForm

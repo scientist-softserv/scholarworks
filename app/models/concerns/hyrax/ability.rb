@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: admin_set_with_deposit? & user_is_depositor?
+#
 module Hyrax
   module Ability
     extend ActiveSupport::Concern

@@ -25,11 +25,21 @@ class CompositeElement
       @values << ''
       @values << ''
     else
-      fields.each do | field |
+      fields.each do |field|
         @fields << field
       end
     end
   end
+
+  #
+  # Composite element attribute
+  #
+  # @return [String|nil]
+  #
+  def get(attr)
+    @fields.include?(attr) ? @values[@fields.index(attr)] : nil
+  end
+
 
   #
   # Populate the element from Hyrax data
@@ -46,17 +56,9 @@ class CompositeElement
   end
 
   #
-  # Composite element attribute
-  #
-  # @return [String|nil]
-  #
-  def get(attr)
-    @fields.include?(attr) ? @values[@fields.index(attr)] : nil
-  end
-  #
   # Populate the CompositeElement from Excel data
   #
-  # @param person_string [String]  data containing (single) person info
+  # @param element_string [String]  data containing (single) person info
   #
   # @return [self]
   #
@@ -64,18 +66,18 @@ class CompositeElement
     element_string = ensure_string(element_string)
     subfields = element_string.split(CompositeElement.export_separator)
 
-    num_fields = @fields.length()
+    num_fields = @fields.length
     subfields.each_with_index do |value, i|
       break if i >= num_fields
 
-      if @fields[i] == EMAIL
-        @values[i] = value if is_email?(value)
-      elsif @fields[i] == INSTITUTION
-        @values[i] = value if is_institution?(value)
-      elsif @fields[i] == EMAIL
-        @values[i] = value if is_email?(value)
-      else
-        @values[i] = value
+      if i.zero?
+        @values[@fields.find_index(NAME)] = value
+      elsif email?(value)
+        @values[@fields.find_index(EMAIL)] = value
+      elsif orcid?(value)
+        @values[@fields.find_index(ORCID)] = value
+      elsif institution?(value)
+        @values[@fields.find_index(INSTITUTION)] = value
       end
     end
 
@@ -134,7 +136,7 @@ class CompositeElement
   #
   # @return [Boolean]
   #
-  def is_email?(email)
+  def email?(email)
     email =~ URI::MailTo::EMAIL_REGEXP
   end
 
@@ -145,7 +147,7 @@ class CompositeElement
   #
   # @return [Boolean]   false if value contains @ or digit, true otherwise
   #
-  def is_institution?(inst)
+  def institution?(inst)
     return false if inst.include?('@')
     return false if inst.scan(/D/).count.positive?
 
@@ -159,7 +161,7 @@ class CompositeElement
   #
   # @return [Boolean]
   #
-  def is_orcid?(orcid)
+  def orcid?(orcid)
     CreatorOrcidValidator.match([orcid])
   end
 

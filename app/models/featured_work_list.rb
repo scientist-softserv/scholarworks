@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Make sure featured work list to specific campus
+#
 class FeaturedWorkList
   include ActiveModel::Model
 

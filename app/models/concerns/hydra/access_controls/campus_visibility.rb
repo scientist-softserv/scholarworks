@@ -1,3 +1,6 @@
+#
+# Add campus visibility
+#
 module Hydra
   module AccessControls
     module CampusVisibility

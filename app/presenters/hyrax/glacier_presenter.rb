@@ -1,3 +1,6 @@
+#
+# Refactor from file_set_presenter so we don't need to import this whole file just to include it
+#
 module Hyrax
   module GlacierPresenter
     include ModelProxy

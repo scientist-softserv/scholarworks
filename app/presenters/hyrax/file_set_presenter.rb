@@ -1,6 +1,7 @@
-# Imported from hyrax 2.5.1 to display the glacier uploads
-# TODO: refactor Glacier presenter to a concern,
-# so we don't need to import this whole file just to include it
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: To display the glacier uploads
+#
 module Hyrax
   class FileSetPresenter
     include ModelProxy

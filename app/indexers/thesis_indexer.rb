@@ -1,5 +1,8 @@
 # Generated via
 #  `rails generate hyrax:work Thesis`
+#
+# Indexer for Thesis work
+#
 class ThesisIndexer < ::CsuIndexer
   def generate_solr_document
     super

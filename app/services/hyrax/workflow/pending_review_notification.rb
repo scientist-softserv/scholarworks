@@ -1,5 +1,8 @@
 # frozen_string_literal: true
-
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Change subject and message
+#
 module Hyrax
   module Workflow
     class PendingReviewNotification < AbstractNotification

@@ -1,3 +1,7 @@
+#
+# OVERRIDE class from Hyrax v2.9.6
+# Customization: Change action according to Hyrax original commit
+#
 class FileSetAttachedEventJob < ContentEventJob
   # Log the event to the fileset's and its container's streams
   def log_event(repo_object)
