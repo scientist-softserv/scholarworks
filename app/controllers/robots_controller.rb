@@ -4,10 +4,13 @@
 class RobotsController < ActionController::Base
   def index
     content = if SystemService.production?
-                "Sitemap: https://#{ENV['SCHOLARWORKS_HOST']}/sitemap/sitemap.xml"
+                ['User-agent: GPTBot',
+                 'Disallow: /',
+                 "Sitemap: https://#{ENV['SCHOLARWORKS_HOST']}/sitemap/sitemap.xml"]
               else
-                "User-agent: * \n Disallow: /"
+                ['User-agent: *',
+                 'Disallow: /']
               end
-    render plain: content
+    render plain: content.join("\n")
   end
 end
