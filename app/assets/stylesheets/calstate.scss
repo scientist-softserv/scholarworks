@@ -644,6 +644,9 @@ footer a, footer a:hover, footer a:visited {
 
 /* dashboard */
 
+.fileupload-buttonbar button[data-toggle="browse-everything"] {
+  display: none;
+}
 button[data-behavior="add-registered-users"] {
   display: none;
 }

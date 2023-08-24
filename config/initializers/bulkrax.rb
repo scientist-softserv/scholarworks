@@ -58,7 +58,6 @@ Bulkrax.setup do |config|
   #    config.fill_in_blank_source_identifiers = ->(parser, index) { "b-#{parser.importer.id}-#{index}"}
   # or use a uuid
   #    config.fill_in_blank_source_identifiers = ->(parser, index) { SecureRandom.uuid }
-  config.fill_in_blank_source_identifiers = ->(parser, index) { Noid::Rails::Service.new.minter.mint }
 
   # Properties that should not be used in imports/exports. They are reserved for use by Hyrax.
   # config.reserved_properties += ['my_field']
@@ -69,36 +68,32 @@ Bulkrax.setup do |config|
   # Defaults: 'rights_statement' and 'license'
   # config.qa_controlled_properties += ['my_field']
 
-  # default work type is required at least for bulkrax version 4.3
-  # for archive, it makes sense to have default model.
-  config.default_work_type = 'Archive'
-  # for scholarworks, the import spreadsheet should have a column "model" and have the right model like Publication, Thesis, etc
-
-  fields = if SystemService::archive?
-             FieldService.archives_fields
-           else
-             FieldService.scholarworks_fields
-           end
-
   %w[Bulkrax::CsvParser Bulkrax::BagitParser].each do |parser|
-    config.field_mappings[parser] = {
-      'parents' => {
-        from: ['parents'],
-        related_parents_field_mapping: true,
-        join: true
-      },
-      'children' => {
-        from: ['children'],
-        related_children_field_mapping: true,
-        join: true
-      },
-      'id' => {
-        from: ['source_identifier'],
-        source_identifier: true
+    config.field_mappings = {
+      parser => {
+        'parents' => {
+          from: ['parents'],
+          related_parents_field_mapping: true,
+          join: true
+        },
+        'children' => {
+          from: ['children'],
+          related_children_field_mapping: true,
+          join: true
+        },
+        'id' => {
+          from: ['source_identifier'],
+          source_identifier: true
+        }
       }
     }
-     
-    # this is really for export
+
+    fields = if SystemService::archive?
+               FieldService.archives_fields
+             else
+               FieldService.scholarworks_fields
+             end
+
     fields.each do |field|
       config.field_mappings[parser][field] = {
         from: [field],
