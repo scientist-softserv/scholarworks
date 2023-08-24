@@ -9,15 +9,16 @@ module CalState
       #
       # New DSpace packager
       #
-      # @param campus [String]  campus slug
+      # @param admin_set [String]  admin set ID
+      # @param campus [String]     campus slug
+      # @param depositor [String]  depositor
       #
-      def initialize(campus)
-        super(campus)
+      def initialize(admin_set, campus, depositor)
+        super admin_set, campus, depositor
 
-        @log.info 'Campus: ' + @campus
+        @log.info "Campus: #{@campus}"
 
         # set working directories
-        @input_dir = @config['input_dir']
         @output_dir = initialize_directory(File.join(@input_dir, 'unpacked'))
         @complete_dir = initialize_directory(File.join(@input_dir, 'complete'))
         @error_dir = initialize_directory(File.join(@input_dir, 'error'))
@@ -45,7 +46,7 @@ module CalState
       # @param source_file [String]  the .zip file to process
       #
       def process_package(source_file)
-        @log.info "\n\nProcessing " + source_file
+        @log.info "\n\nProcessing #{source_file}"
 
         # unzip package and set file working directory
         zip_file = File.join(@input_dir, source_file)
@@ -56,7 +57,7 @@ module CalState
 
         # make sure we actually have a mets file
         mets_file = File.join(file_dir, 'mets.xml')
-        raise 'No METS file found in ' + file_dir unless File.exist?(mets_file)
+        raise "No METS file found in #{file_dir}" unless File.exist?(mets_file)
 
         # parse it
         dom = Nokogiri::XML(File.open(mets_file))
@@ -128,10 +129,6 @@ module CalState
           params = FieldService.xml_to_params(record)
         end
 
-        # set defaults
-        params['campus'] = [@campus]
-        params['admin_set_id'] = @config['admin_set_id']
-
         # set visibility
         if params.key?('embargo_release_date')
           # indefinite embargo, just make it private
@@ -175,7 +172,7 @@ module CalState
           file_id = fptr.parent.parent.parent.parent.parent.attr('ID')
           next if file_id.nil?
 
-          flocat_xpath = "//mets:file[@ADMID='" + file_id + "']/mets:FLocat"
+          flocat_xpath = "//mets:file[@ADMID='#{file_id}']/mets:FLocat"
           file_location = dom.at_xpath(flocat_xpath, mets_ns)
 
           # the name of the file in the aip package and its original name
@@ -207,10 +204,10 @@ module CalState
       def rename_file(file_dir, orig_filename, aip_filename, type)
         @log.info "Renaming #{type} #{aip_filename} -> #{orig_filename}"
 
-        File.rename(file_dir + '/' + aip_filename,
-                    file_dir + '/' + orig_filename)
+        File.rename("#{file_dir}/#{aip_filename}",
+                    "#{file_dir}/#{orig_filename}")
 
-        file_dir + '/' + orig_filename
+        "#{file_dir}/#{orig_filename}"
       end
 
       #
@@ -222,10 +219,10 @@ module CalState
       # @return [String|nil] the full path of the directory created, nil if not found
       #
       def unzip_package(zip_file)
-        @log.info 'Unzipping ' + zip_file
+        @log.info "Unzipping #{zip_file}"
 
         unless File.exist?(zip_file)
-          @log.error zip_file + ' not found.'
+          @log.error "#{zip_file} not found."
           return nil
         end
 
@@ -250,7 +247,7 @@ module CalState
       # @return [String]
       #
       def xslt_file
-        campus_file = "#{Rails.root}/config/packager/xslt/#{@campus}.xslt"
+        campus_file = "#{Rails.root}/config/packager/xslt/#{@campus_slug}.xslt"
         return campus_file if File.exist?(campus_file)
 
         "#{Rails.root}/config/mappings/dspace.xslt"

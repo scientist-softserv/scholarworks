@@ -28,6 +28,6 @@ namespace :calstate do
 
   desc 'Run a fixity check on all files'
   task all_files_fixity_check: :environment do
-    FileSet.all.map { |file_set| file_set_fixity_check(file_set.id) }
+    FileSet.find_each { |file_set| file_set_fixity_check(file_set.id) }
   end
 end

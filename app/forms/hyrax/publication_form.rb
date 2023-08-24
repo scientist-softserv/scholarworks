@@ -8,6 +8,7 @@ module Hyrax
     self.model_class = ::Publication
     self.required_fields += %i[resource_type
                                title
+                               creator
                                description
                                date_issued]
     def primary_terms

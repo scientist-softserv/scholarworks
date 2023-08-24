@@ -13,10 +13,12 @@ module CalState
       #
       # New Harvest packager
       #
-      # @param campus [String]      campus slug
+      # @param admin_set [String]  admin set ID
+      # @param campus [String]     campus slug
+      # @param depositor [String]  depositor
       #
-      def initialize(campus)
-        super(campus)
+      def initialize(admin_set, campus, depositor)
+        super admin_set, campus, depositor
 
         @metadata_only = true
         @fix_params = true
@@ -89,8 +91,6 @@ module CalState
       #
       def collect_params(record)
         params = FieldService.xml_to_params(record)
-        params['campus'] = [@campus]
-        params['admin_set_id'] = @config['admin_set_id']
         params['external_system'] = @config['external_system']
 
         unless params['date_issued'].blank?

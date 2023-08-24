@@ -24,6 +24,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :rememberable, :trackable, :timeoutable, :omniauthable, omniauth_providers: [:shibboleth]
 
   def self.from_omniauth(auth)
+    raise 'Single sign-on not working for this campus.' if auth.info.campus.empty?
+
     where(uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.display_name = auth.info.name
