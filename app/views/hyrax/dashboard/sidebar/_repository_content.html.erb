@@ -19,7 +19,7 @@
     <% end %>
   <% end %>
 
-  <% if Object.const_defined?('Bulkrax') %>
+  <% if Object.const_defined?('Bulkrax') && SystemService.archive? %>
     <%= menu.nav_link(bulkrax.importers_path) do %>
       <span class="fa fa-cloud-upload" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('bulkrax.admin.sidebar.importers') %></span>
     <% end %>
