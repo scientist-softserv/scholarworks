@@ -22,3 +22,12 @@
 #   app_secret: YOUR_AWS_S3_SECRET # explicitly here, or left out to use system-configured
 #   region: YOUR_AWS_S3_REGION     # defaults.
 #   See https://aws.amazon.com/blogs/security/a-new-and-standardized-way-to-manage-credentials-in-the-aws-sdks/
+
+# browse every config needs to have date expired_on to allow add cloud files from amazon s3 bucket
+expires_in: 10-11-2023
+
+s3:
+  bucket: 'scholarworks-external-data'
+  app_key: <%= ENV['AWS_ACCESS_KEY'] %>
+  app_secret: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  region: <%= ENV['AWS_REGION'] %>
