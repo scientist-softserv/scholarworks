@@ -10,9 +10,10 @@ module Hyrax
 
     private
 
-    def translate(key)
+    def translate(key, default = nil)
       defaults = []
       defaults << :"hyrax.select_type.#{object_name}.#{@campus}.#{key}"
+      defaults << default
       defaults << :"hyrax.select_type.#{object_name}.#{key}"
       defaults << :"hyrax.select_type.#{key}"
       defaults << ''

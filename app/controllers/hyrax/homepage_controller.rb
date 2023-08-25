@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Hyrax v2.9.6
+# OVERRIDE class from Hyrax v3.6.0
 # Customization: Return up to 99 collections, sorted by collection title
 #
 class Hyrax::HomepageController < ApplicationController
@@ -53,6 +53,6 @@ class Hyrax::HomepageController < ApplicationController
   end
 
   def sort_field
-    "#{Solrizer.solr_name('system_create', :stored_sortable, type: :date)} desc"
+    "#{'system_create_dtsi'} desc"
   end
 end

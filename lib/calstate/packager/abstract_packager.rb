@@ -406,7 +406,7 @@ module CalState
       # @param match_value [String]  value to look-up existing work on
       #
       def find_work(match_field, match_value)
-        query = { Solrizer.solr_name(match_field) => match_value }
+        query = { match_field + 'tesim' => match_value }
         ActiveFedora::Base.where(query)
       end
 

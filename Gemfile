@@ -20,15 +20,18 @@ gem 'devise-guests', '~> 0.6'
 gem 'handle-system-rest'
 gem 'hydra-derivatives', '~>3.6'
 gem 'hydra-role-management'
-gem 'hyrax', '2.9.6'
+gem 'hyrax', '3.6'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'omniauth-shibboleth'
 gem 'pg', '~> 0.18'
 gem 'rails', '~> 5.2'
-gem 'redis', '~> 3.0'
-gem 'riiif', '~> 1.1'
-gem 'rsolr', '>= 1.0'
+# hyrax36 - changed from 3.0 to 4.0
+gem 'redis', '~> 4.0'
+# hyrax36 - changed from 1.1 to 2.1
+gem 'riiif', '~> 2.1'
+# hyrax36 - changed from >= 1.0 to '>= 1.0', '< 3'
+gem 'rsolr', '>= 1.0', '< 3'
 gem 'rubocop'
 gem 'ruby-vips', '~> 2.0'
 gem 'rubyzip'
@@ -42,13 +45,20 @@ gem 'uglifier', '>= 1.3.0'
 gem 'willow_sword', github: 'csuscholarworks/willow_sword', tag: 'v1.0'
 gem 'yaml_extend'
 
+# hyrax36
+gem 'bootstrap-sass', '~> 3.0'
+gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
+# hyrax36
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'capybara', '~> 2.13'
+  # hyrax36 - changed from 2.13 to 2.15
+  gem 'capybara', '~> 2.15'
   gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'factory_bot_rails'
   gem 'fcrepo_wrapper'
-  gem 'puma'
+  # hyrax36 - added , '~> 3.11'
+  gem 'puma', '~> 3.11'
   gem 'rspec-rails'
   gem 'selenium-webdriver'
   gem 'solr_wrapper', '>= 0.3'
