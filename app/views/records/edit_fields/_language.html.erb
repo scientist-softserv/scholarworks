@@ -2,9 +2,8 @@
   # OVERRIDE class from Hyrax v2.9.6
   #
 %>
-<%= f.input :language, as: :multi_value,
-  input_html: {
-  class: 'form-control',
-  data: { 'autocomplete-url' => "/authorities/search/loc/iso639-2",
-    'autocomplete' => :language }
-  }, required: f.object.required?(:language) %>
+<% language_options = LanguagesService.select_all_options %>
+<%= f.input :language, as: :multi_value_select,
+    collection: language_options,
+    include_blank: true,
+    input_html: { class: 'form-control' } %>
