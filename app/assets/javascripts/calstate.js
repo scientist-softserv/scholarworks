@@ -622,7 +622,8 @@ scholarworks.is_required_field_complete = function() {
     completed = completed && $('#agreement').is(":checked");
     if (scholarworks.is_work_new()) {
         // editor only checks upload file for new work
-        completed = completed && $('input[name="uploaded_files[]"]').length;
+	let uploaded_files = $('input[name="uploaded_files[]"]').length == 0 ? false : true;
+        completed = completed && uploaded_files;
     }
     if (completed) {
         $('#with_files_submit').removeProp('disabled');

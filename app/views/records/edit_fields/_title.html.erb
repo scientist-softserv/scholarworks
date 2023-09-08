@@ -26,9 +26,6 @@
 
       // need to add event handler in case user blank out text in
       // tinymce of required field because hydra editor doesn't know about it
-      $('input[name="<%= model_type %>[visibility]"]').each(function () {
-        $(this).on('click', scholarworks.is_required_field_complete);
-      });
       $('.hyrax_work_form_tab').each(function () {
           $(this).on('click', scholarworks.tab_click_handler);
       });
