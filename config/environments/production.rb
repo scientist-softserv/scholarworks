@@ -68,8 +68,8 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: ENV['SCHOLARWORKS_HOST'] }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: 'smtp-rr.calstate.edu',
-    port: '25',
+    address: '172.31.47.206',
+    port: '2525',
     enable_starttls_auto: true,
     openssl_verify_mode: 'none'
   }
