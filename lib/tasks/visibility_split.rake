@@ -27,6 +27,12 @@ namespace :calstate do
       begin
         work = ActiveFedora::Base.find(record['id'])
 
+        # permanently restricted records should be skipped
+        if work.visibility == 'restricted' && work.embargo_release_date.blank?
+          print "restricted, skipping!\n"
+          next
+        end
+
         # ensure files have correct visibility
         # (some migrated ones were not set correctly)
         VisibilityCopyJob.perform_now(work)
