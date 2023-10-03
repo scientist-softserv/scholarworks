@@ -8,7 +8,10 @@ module Scholarworks
       after_action :track_view, only: :show
 
       def track_view
-        work_type = self.class
+        #work_type = self.class
+        return unless session["stats_work_view_#{params[:id]}"].nil?
+
+        session["stats_work_view_#{params[:id]}"] = true
         stats_work_view = StatsWorkView.new(work_id: params[:id],
                                             ip_address: request.remote_ip,
                                             created_at: DateTime.now,

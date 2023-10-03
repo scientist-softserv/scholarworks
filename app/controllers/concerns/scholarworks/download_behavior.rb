@@ -12,6 +12,9 @@ module Scholarworks
         # ignore thumbnail download of the file in the work detail page
         return if request.url.end_with?('file=thumbnail')
 
+        return unless session["stats_file_download_#{params[:id]}"].nil?
+
+        session["stats_file_download_#{params[:id]}"] = true
         f_obj = ActiveFedora::Base.find(params['id'])
         stats_file_download = StatsFileDownload.new(file_id: params[:id],
                                                     work_id: f_obj.parent.id,
