@@ -24,6 +24,10 @@
           remove_linebreaks: true
       });
 
+      // register add and remove handler for all composite elements that have these classes
+      $('.element_add').on('click', scholarworks.element_add);
+      $('.element_remove').on('click', scholarworks.element_remove);
+
       // need to add event handler in case user blank out text in
       // tinymce of required field because hydra editor doesn't know about it
       $('.hyrax_work_form_tab').each(function () {
