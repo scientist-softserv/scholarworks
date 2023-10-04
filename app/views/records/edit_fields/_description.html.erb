@@ -31,7 +31,10 @@
   </script>
 <% end %>
 
-<%# since we only can have one form at a time so description by itself is sufficient but just to be on the safe side prepending it with scholarworks %>
+<%# since we only can have one form at a time so description by itself is sufficient but just to be on the safe side
+    prepending it with scholarworks
+%>
+
 <div id="description_content" class="form-group managed <%= model_type %>_<%= key %> <% if f.object.required?(key) %>required<% end %>">
   <label class="control-label <% if f.object.required?(key) %> required <% end %>">
     <%= t('simple_form.labels.defaults.description') %>

@@ -66,6 +66,7 @@ en:
           has_model_ssim: Collection
           identifier: Identifier
           internal_note: Private Note
+          is_abstract: Abstract only
           isbn: ISBN
           issn: ISSN
           issue: Issue / Number
@@ -211,6 +212,7 @@ en:
         identifier: "A numeric or alphanumeric string or a URL that identifies the work in a particular context."
         institution: "The institution responsible for the resource."
         internal_note: "Note that will NOT be displayed to the public."
+        is_abstract: "This submission is only an abstract and won't include any files."
         is_part_of: "A related resource in which the described resource is physically or logically included."
         isbn: "The International Standard Book Number (ISBN) of the work."
         issn: "The International Standard Serial Number (ISSN) for the periodical to which this work belongs."

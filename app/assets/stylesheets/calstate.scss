@@ -668,6 +668,14 @@ div.string {
 a[data-create-type="batch"] {
   display: none;
 }
+.csu-abstract-only {
+  margin: 1em;
+  padding: 1em;
+  border: 1px solid #ccc;
+}
+.csu-abstract-only label {
+  font-weight: normal;
+}
 
 /* campus landing page */
 
