@@ -1,4 +1,4 @@
-<% degree_name_options = DegreeNamesService.select_all_options %>
+<% degree_name_options = DegreeNamesService.new(controller).select_all_options %>
 <%= f.input :degree_name, as: :multi_value_select,
     collection: degree_name_options,
     include_blank: true,

@@ -2,7 +2,7 @@
   # OVERRIDE class from Hyrax v2.9.6
   #
 %>
-<% language_options = LanguagesService.select_all_options %>
+<% language_options = LanguagesService.new(controller).select_all_options %>
 <%= f.input :language, as: :multi_value_select,
     collection: language_options,
     include_blank: true,
