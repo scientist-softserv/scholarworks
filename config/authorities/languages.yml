@@ -1,0 +1,363 @@
+terms:
+  - id: English
+    term: English
+  - id: Spanish
+    term: Spanish
+  - id: French
+    term: French
+  - id: Abkhazian
+    term: Abkhazian
+  - id: Afar
+    term: Afar
+  - id: Afrikaans
+    term: Afrikaans
+  - id: Akan
+    term: Akan
+  - id: Albanian
+    term: Albanian
+  - id: Amharic
+    term: Amharic
+  - id: Arabic
+    term: Arabic
+  - id: Aragonese
+    term: Aragonese
+  - id: Armenian
+    term: Armenian
+  - id: Assamese
+    term: Assamese
+  - id: Avaric
+    term: Avaric
+  - id: Avestan
+    term: Avestan
+  - id: Aymara
+    term: Aymara
+  - id: Azerbaijani
+    term: Azerbaijani
+  - id: Bambara
+    term: Bambara
+  - id: Bashkir
+    term: Bashkir
+  - id: Basque
+    term: Basque
+  - id: Belarusian
+    term: Belarusian
+  - id: Bengali
+    term: Bengali
+  - id: Bislama
+    term: Bislama
+  - id: Bosnian
+    term: Bosnian
+  - id: Breton
+    term: Breton
+  - id: Bulgarian
+    term: Bulgarian
+  - id: Burmese
+    term: Burmese
+  - id: Catalan
+    term: Catalan
+  - id: Chamorro
+    term: Chamorro
+  - id: Chechen
+    term: Chechen
+  - id: Chichewa
+    term: Chichewa
+  - id: Chinese
+    term: Chinese
+  - id: Church Slavonic
+    term: Church Slavonic
+  - id: Chuvash
+    term: Chuvash
+  - id: Cornish
+    term: Cornish
+  - id: Cornish
+    term: Cornish
+  - id: Cree
+    term: Cree
+  - id: Croatian
+    term: Croatian
+  - id: Czech
+    term: Czech
+  - id: Danish
+    term: Danish
+  - id: Divehi
+    term: Divehi
+  - id: Dutch
+    term: Dutch
+  - id: Dzongkha
+    term: Dzongkha
+  - id: Esperanto
+    term: Esperanto
+  - id: Estonian
+    term: Estonian
+  - id: Ewe
+    term: Ewe
+  - id: Faroese
+    term: Faroese
+  - id: Fijian
+    term: Fijian
+  - id: Finnish
+    term: Finnish
+  - id: Western Frisian
+    term: Western Frisian
+  - id: Fulah
+    term: Fulah
+  - id: Gaelic
+    term: Gaelic
+  - id: Galician
+    term: Galician
+  - id: Ganda
+    term: Ganda
+  - id: Georgian
+    term: Georgian
+  - id: German
+    term: German
+  - id: Greek
+    term: Greek
+  - id: Kalaallisut
+    term: Kalaallisut
+  - id: Guarani
+    term: Guarani
+  - id: Gujarati
+    term: Gujarati
+  - id: Haitian
+    term: Haitian
+  - id: Hausa
+    term: Hausa
+  - id: Hebrew
+    term: Hebrew
+  - id: Herero
+    term: Herero
+  - id: Hindi
+    term: Hindi
+  - id: Hiri Motu
+    term: Hiri Motu
+  - id: Hungarian
+    term: Hungarian
+  - id: Icelandic
+    term: Icelandic
+  - id: Ido
+    term: Ido
+  - id: Igbo
+    term: Igbo
+  - id: Indonesian
+    term: Indonesian
+  - id: Inuktitut
+    term: Inuktitut
+  - id: Inupiaq
+    term: Inupiaq
+  - id: Irish
+    term: Irish
+  - id: Italian
+    term: Italian
+  - id: Japanese
+    term: Japanese
+  - id: Javanese
+    term: Javanese
+  - id: Kannada
+    term: Kannada
+  - id: Kanuri
+    term: Kanuri
+  - id: Kashmiri
+    term: Kashmiri
+  - id: Kazakh
+    term: Kazakh
+  - id: Central Khmer
+    term: Central Khmer
+  - id: Kikuyu
+    term: Kikuyu
+  - id: Kinyarwanda
+    term: Kinyarwanda
+  - id: Kirghiz
+    term: Kirghiz
+  - id: Komi
+    term: Komi
+  - id: Kongo
+    term: Kongo
+  - id: Korean
+    term: Korean
+  - id: Kuanyama
+    term: Kuanyama
+  - id: Kurdish
+    term: Kurdish
+  - id: Lao
+    term: Lao
+  - id: Latin
+    term: Latin
+  - id: Latvian
+    term: Latvian
+  - id: Limburgan
+    term: Limburgan
+  - id: Lingala
+    term: Lingala
+  - id: Lithuanian
+    term: Lithuanian
+  - id: Luba-Katanga
+    term: Luba-Katanga
+  - id: Luxembourgish
+    term: Luxembourgish
+  - id: Macedonian
+    term: Macedonian
+  - id: Malagasy
+    term: Malagasy
+  - id: Malay
+    term: Malay
+  - id: Malayalam
+    term: Malayalam
+  - id: Maltese
+    term: Maltese
+  - id: Manx
+    term: Manx
+  - id: Maori
+    term: Maori
+  - id: Marathi
+    term: Marathi
+  - id: Marshallese
+    term: Marshallese
+  - id: Mongolian
+    term: Mongolian
+  - id: Nauru
+    term: Nauru
+  - id: Navajo
+    term: Navajo
+  - id: North Ndebele
+    term: North Ndebele
+  - id: South Ndebele
+    term: South Ndebele
+  - id: Ndonga
+    term: Ndonga
+  - id: Nepali
+    term: Nepali
+  - id: Norwegian
+    term: Norwegian
+  - id: Norwegian Bokmål
+    term: Norwegian Bokmål
+  - id: Norwegian Nynorsk
+    term: orwegian Nynorsk
+  - id: Sichuan Yi
+    term: Sichuan Yi
+  - id: Occitan
+    term: Occitan
+  - id: Ojibwa
+    term: Ojibwa
+  - id: Oriya
+    term: Oriya
+  - id: Oromo
+    term: Oromo
+  - id: Ossetian
+    term: Ossetian
+  - id: Pali
+    term: Pali
+  - id: Pashto
+    term: Pashto
+  - id: Persian
+    term: Persian
+  - id: Polish
+    term: Polish
+  - id: Portuguese
+    term: Portuguese
+  - id: Punjabi
+    term: Punjabi
+  - id: Quechua
+    term: Quechua
+  - id: Romanian
+    term: Romanian
+  - id: Romansh
+    term: Romansh
+  - id: Rundi
+    term: Rundi
+  - id: Russian
+    term: Russian
+  - id: Northern Sami
+    term: Northern Sami
+  - id: Samoan
+    term: Samoan
+  - id: Sango
+    term: Sango
+  - id: Sanskrit
+    term: Sanskrit
+  - id: Sardinian
+    term: Sardinian
+  - id: Serbian
+    term: Serbian
+  - id: Shona
+    term: Shona
+  - id: Sindhi
+    term: Sindhi
+  - id: Sinhala
+    term: Sinhala
+  - id: Slovak
+    term: Slovak
+  - id: Slovenian
+    term: Slovenian
+  - id: Somali
+    term: Somali
+  - id: Southern Sotho
+    term: Southern Sotho
+  - id: Sundanese
+    term: Sundanese
+  - id: Swahili
+    term: Swahili
+  - id: Swati
+    term: Swati
+  - id: Swedish
+    term: Swedish
+  - id: Tagalog
+    term: Tagalog
+  - id: Tahitian
+    term: Tahitian
+  - id: Tajik
+    term: Tajik
+  - id: Tamil
+    term: Tamil
+  - id: Tatar
+    term: Tatar
+  - id: Telugu
+    term: Telugu
+  - id: Thai
+    term: Thai
+  - id: Tibetan
+    term: Tibetan
+  - id: Tigrinya
+    term: Tigrinya
+  - id: Tonga
+    term: Tonga
+  - id: Tsonga
+    term: Tsonga
+  - id: Tswana
+    term: Tswana
+  - id: Turkish
+    term: Turkish
+  - id: Turkmen
+    term: Turkmen
+  - id: Twi
+    term: Twi
+  - id: Uighur
+    term: Uighur
+  - id: Ukrainian
+    term: Ukrainian
+  - id: Urdu
+    term: Urdu
+  - id: Uzbek
+    term: Uzbek
+  - id: Venda
+    term: Venda
+  - id: Vietnamese
+    term: Vietnamese
+  - id: Volapük
+    term: Volapük
+  - id: Walloon
+    term: Walloon
+  - id: Welsh
+    term: Welsh
+  - id: Wolof
+    term: Wolof
+  - id: Xhosa
+    term: Xhosa
+  - id: Yiddish
+    term: Yiddish
+  - id: Yoruba
+    term: Yoruba
+  - id: Zhuang
+    term: Zhuang
+  - id: Zulu
+    term: Zulu

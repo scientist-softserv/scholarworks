@@ -216,7 +216,7 @@ en:
         issn: "The International Standard Serial Number (ISSN) for the periodical to which this work belongs."
         issue: "The issue number, if applicable."
         keyword: "Enter words or phrases to describe what the work is about. Examples can include things like 20th century Art, Victorian Literature, Rabbits."
-        language: "The language(s) of the work. Start typing to select from the list of languages."
+        language: "The language(s) of the work. Select from the list of languages."
         license: "Licensing and distribution information governing access to the work. Select from the provided drop-down list."
         meeting_name: "Name of the meeting at which the presentation was given."
         methods_of_collection: "The process by which the data was created or captured, including any code, software, equipment, or protocols used. Generally, methods are descriptive and protocols are prescriptive. The methods describe what was done when collecting data, and protocols are a set of procedures or prescribed actions."
