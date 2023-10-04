@@ -194,7 +194,7 @@ en:
         date_issued: "Date of publication."
         date_last_modified: "Date the dataset was last edited, changed, or modified."
         date_range: "Dates the collection of data started and completed."
-        degree_name: "Enter degree name in capital letters with a period after each letter (e.g., M.A. or M.S.)"
+        degree_name: "Select degree name from the list"
         degree_program: "The name of the program that awarded the degree."
         department: "The department within the university to which the creator(s) of the work is affiliated.  If your department is not represented in this list, please email your <a href='https://scholarworks.calstate.edu/about'>ScholarWorks administrator</a>."
         description: "Description of the work. Examples include abstracts of a paper, a summary of a report or dataset, or any additional notes describing the content of the work."
