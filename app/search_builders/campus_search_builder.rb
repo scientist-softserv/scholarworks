@@ -29,7 +29,7 @@ class CampusSearchBuilder < Blacklight::SearchBuilder
   # when searching for campus we only want the top level so parent_id must be blank
   def filter_by_campus(solr_parameters)
     solr_parameters[:fq] += [ActiveFedora::SolrQueryBuilder.construct_query(campus_tesim: campus)] unless campus.blank?
-    sort_value = @only_works ? "#{Solrizer.solr_name('system_create', :stored_sortable, type: :date)} desc" : "title_ssi asc"
+    sort_value = @only_works ? "#{'system_create_dtsi'} desc" : "title_ssi asc"
     solr_parameters[:sort] ||= sort_value
   end
 
