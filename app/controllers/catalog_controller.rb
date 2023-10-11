@@ -71,7 +71,8 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('all_fields', label: 'All Fields') do |field|
-      all_names = config.show_fields.values.map(&:field).join(' ')
+      # get rid of creator_tesim since we only want to search for creator_name_tesim
+      all_names = config.show_fields.values.map(&:field).join(' ').sub('creator_tesim', '')
       title_name = solr_name('title', :stored_searchable)
       field.solr_parameters = {
         qt: 'search',
