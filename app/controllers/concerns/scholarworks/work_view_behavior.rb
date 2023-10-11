@@ -8,9 +8,11 @@ module Scholarworks
       after_action :track_view, only: :show
 
       def track_view
-        #work_type = self.class
+        # ignore bots, other weird requests & multiple views during same session
+        return if UserAgent.is_bad?(request)
         return unless session["stats_work_view_#{params[:id]}"].nil?
 
+        # track visit in session and database
         session["stats_work_view_#{params[:id]}"] = true
         stats_work_view = StatsWorkView.new(work_id: params[:id],
                                             ip_address: request.remote_ip,

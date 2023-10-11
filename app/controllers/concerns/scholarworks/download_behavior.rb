@@ -12,8 +12,11 @@ module Scholarworks
         # ignore thumbnail download of the file in the work detail page
         return if request.url.end_with?('file=thumbnail')
 
+        # ignore bots, other weird requests & multiple downloads during same session
+        return if UserAgent.is_bad?(request)
         return unless session["stats_file_download_#{params[:id]}"].nil?
 
+        # track visit in session and database
         session["stats_file_download_#{params[:id]}"] = true
         f_obj = ActiveFedora::Base.find(params['id'])
         stats_file_download = StatsFileDownload.new(file_id: params[:id],
