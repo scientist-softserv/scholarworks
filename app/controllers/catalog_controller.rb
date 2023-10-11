@@ -86,7 +86,8 @@ class CatalogController < ApplicationController
 
     SystemService.advanced_search.each do |solr_field|
       config.add_search_field(solr_field) do |field|
-        solr_name = solr_name(solr_field, :stored_searchable)
+        # if solr_field is creator, use creator_name_tesim instead
+        solr_name = solr_field == 'creator' ? 'creator_name_tesim' : solr_name(solr_field, :stored_searchable)
         field.solr_local_parameters = {
           qf: solr_name,
           pf: solr_name
