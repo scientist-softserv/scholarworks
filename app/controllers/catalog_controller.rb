@@ -64,20 +64,18 @@ class CatalogController < ApplicationController
     # handler defaults, or have no facets.
     config.add_facet_fields_to_solr_request!
 
-    # fields to search
-
-    FieldService.search_fields.each do |field|
+    # solr fields to be displayed in the show (single result) view
+    #   The ordering of the field names is the order of the display
+    FieldService.show_fields.each do |field|
       config.add_show_field solr_name(field, :stored_searchable)
     end
 
     config.add_search_field('all_fields', label: 'All Fields') do |field|
-      # get rid of creator_tesim since we only want to search for creator_name_tesim
-      all_names = config.show_fields.values.map(&:field).join(' ').sub('creator_tesim', '')
       title_name = solr_name('title', :stored_searchable)
       field.solr_parameters = {
         qt: 'search',
         rows: 10,
-        qf: "#{all_names} file_format_tesim all_text_timv handle_sim id",
+        qf: "#{FieldService.search_fields}",
         pf: title_name.to_s
       }
     end
