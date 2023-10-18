@@ -536,7 +536,7 @@ module CalState
           if @config['default_type'].blank?
             raise MetadataError, 'No resource_type supplied in params'
           else
-            params['resource_type'] = @config['default_type']
+            params['resource_type'] = [@config['default_type']]
           end
         end
 
