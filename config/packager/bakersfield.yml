@@ -1,3 +1,4 @@
 
 campus: "Bakersfield"
 exit_on_error: true
+default_model: Archive
