@@ -21,6 +21,7 @@ module Scholarworks
         f_obj = ActiveFedora::Base.find(params['id'])
         stats_file_download = StatsFileDownload.new(file_id: params[:id],
                                                     work_id: f_obj.parent.id,
+                                                    campus: f_obj.parent.campus.first,
                                                     ip_address: request.remote_ip,
                                                     created_at: DateTime.now,
                                                     user_agent: request.headers['User-Agent'])
