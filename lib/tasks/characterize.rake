@@ -4,12 +4,15 @@ require 'calstate/metadata'
 
 # Usage
 # bundle exec rake calstate:characterize[northridge]
+# bundle exec rake calstate:characterize[northridge,abc123456]
 # bundle exec rake calstate:characterize['id:abc123456']
 
 namespace :calstate do
   desc 'Rerun characterize on a work or campus.'
-  task :characterize, %i[campus] => [:environment] do |_t, args|
+  task :characterize, %i[campus skip_to] => [:environment] do |_t, args|
     campus = args[:campus] or raise 'Must provide campus name or id.'
+    skip_to = (args[:skip_to] or nil)
+    skip = true
 
     # work supplied
     if campus.include?('id:') && campus.length > 4
@@ -20,6 +23,15 @@ namespace :calstate do
       campus_name = CampusService.get_name_from_slug(campus)
       CalState::Metadata.models.each do |model|
         model.where(campus: campus_name).each do |work|
+
+          unless skip_to.nil?
+            skip = false if work.id == skip_to
+            if skip
+              puts work.id
+              next
+            end
+          end
+
           run_characterize(work)
         end
       end
