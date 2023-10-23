@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Hyrax v2.9.6
+# OVERRIDE class from Hyrax v3.6.0
 # Customization: Change action according to Hyrax original commit
 #
 class FileSetAttachedEventJob < ContentEventJob
@@ -33,6 +33,11 @@ class FileSetAttachedEventJob < ContentEventJob
   end
 
   def curation_concern
-    repo_object.in_works.first
+    case repo_object
+    when ActiveFedora::Base
+      repo_object.in_works.first
+    else
+      Hyrax.query_service.find_parents(resource: repo_object).first
+    end
   end
 end
