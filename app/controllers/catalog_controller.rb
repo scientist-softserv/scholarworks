@@ -43,21 +43,21 @@ class CatalogController < ApplicationController
     config.view.slideshow.partials = [:index]
 
     # solr field configuration for document/show views
-    config.index.title_field = solr_name('title', :stored_searchable)
-    config.index.display_type_field = solr_name('has_model', :symbol)
+    config.index.title_field = 'title_tesim'
+    config.index.display_type_field = 'has_model_ssim'
     config.index.thumbnail_field = 'thumbnail_path_ss'
 
     # facets
 
     SystemService.facets.each do |field, attr|
-      solr_field = solr_name(field, :facetable)
+      solr_field = "#{field}_sim"
       attr[:label] = 'blacklight.search.fields.facet.' + solr_field
       config.add_facet_field(solr_field, attr)
     end
 
     # The generic_type isn't displayed on the facet list
     # It's used to give a label to the filter that comes from the user profile
-    config.add_facet_field solr_name('generic_type', :facetable), if: false
+    config.add_facet_field 'generic_type_sim', if: false
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -67,17 +67,16 @@ class CatalogController < ApplicationController
     # fields to search
 
     FieldService.search_fields.each do |field|
-      config.add_show_field solr_name(field, :stored_searchable)
+      config.add_show_field "#{field}_tesim"
     end
 
     config.add_search_field('all_fields', label: 'All Fields') do |field|
       all_names = config.show_fields.values.map(&:field).join(' ')
-      title_name = solr_name('title', :stored_searchable)
       field.solr_parameters = {
         qt: 'search',
         rows: 10,
         qf: "#{all_names} file_format_tesim all_text_timv handle_sim id",
-        pf: title_name.to_s
+        pf: 'title_tesim'
       }
     end
 
@@ -85,7 +84,7 @@ class CatalogController < ApplicationController
 
     SystemService.advanced_search.each do |solr_field|
       config.add_search_field(solr_field) do |field|
-        solr_name = solr_name(solr_field, :stored_searchable)
+        solr_name = "#{solr_field}_tesim"
         field.solr_local_parameters = {
           qf: solr_name,
           pf: solr_name
