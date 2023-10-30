@@ -15,8 +15,8 @@ module StatsService
     agent_value = String.new
 
     if agent.is_a?(ActionDispatch::Request)
-      return true if request.is_crawler?
-      agent_value = request.user_agent
+      return true if agent.is_crawler?
+      agent_value = agent.user_agent
     elsif agent.is_a?(String)
       return true if CrawlerDetect.is_crawler?(agent)
       agent_value = agent
