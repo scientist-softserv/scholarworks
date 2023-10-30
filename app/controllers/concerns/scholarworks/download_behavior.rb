@@ -13,7 +13,7 @@ module Scholarworks
         return if request.url.end_with?('file=thumbnail')
 
         # ignore bots, other weird requests & multiple downloads during same session
-        return if UserAgent.is_bad?(request)
+        return if StatsService.bad_user_agent?(request)
         return unless session["stats_file_download_#{params[:id]}"].nil?
 
         # track visit in session and database

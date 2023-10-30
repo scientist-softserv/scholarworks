@@ -9,7 +9,7 @@ module Scholarworks
 
       def track_view
         # ignore bots, other weird requests & multiple views during same session
-        return if UserAgent.is_bad?(request)
+        return if StatsService.bad_user_agent?(request)
         return unless session["stats_work_view_#{params[:id]}"].nil?
 
         # track visit in session and database

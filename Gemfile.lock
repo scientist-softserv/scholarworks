@@ -603,6 +603,11 @@ GEM
       rails (>= 5.0.0)
     marcel (1.0.2)
     matrix (0.4.2)
+    maxmind-db (1.1.1)
+    maxmind-geoip2 (1.1.0)
+      connection_pool (~> 2.2)
+      http (>= 4.3, < 6.0)
+      maxmind-db (~> 1.1)
     memoist (0.16.2)
     method_source (1.0.0)
     mime-types (3.4.1)
@@ -1025,6 +1030,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   listen (>= 3.0.5, < 3.2)
+  maxmind-geoip2
   omniauth-shibboleth
   passenger (>= 5.0.25)
   pg (~> 0.18)
