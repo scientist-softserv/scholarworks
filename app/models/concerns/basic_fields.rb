@@ -30,10 +30,6 @@ module BasicFields
 
   included do
 
-    property :alternative_title, predicate: ::RDF::Vocab::DC.alternative do |index|
-      index.as :stored_searchable
-    end
-
     property :campus, predicate: ::RDF::Vocab::DC.publisher do |index|
       index.as :stored_searchable, :facetable
     end
