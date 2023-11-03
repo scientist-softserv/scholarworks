@@ -142,7 +142,7 @@ module Hyrax
     #   4.0.0. The deprecation time horizon for the presenter methods themselves
     #   is 5.0.0.
     def editor?
-      current_ability.can?(:edit, solr_document)
+      current_ability.can?(:edit, self)
     end
 
     def tweeter
@@ -318,7 +318,7 @@ module Hyrax
     end
 
     def graph
-      GraphExporter.new(solr_document, request).fetch
+      GraphExporter.new(solr_document, hostname: request.host).fetch
     end
 
     # @return [Array<String>] member_of_collection_ids with current_ability access
