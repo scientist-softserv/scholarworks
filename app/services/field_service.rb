@@ -20,7 +20,6 @@ class FieldService
        campus
        contributor
        creator
-       creator_name
        date_issued
        date_issued_year
        description
@@ -155,7 +154,7 @@ class FieldService
   # @return [Array] symbols
   #
   def self.all
-    basic + scholarworks + deprecated + archives
+    basic + scholarworks + deprecated + archives + %i[creator_name]
   end
 
   #
@@ -273,14 +272,34 @@ class FieldService
   end
 
   #
+  # Fields to show
+  #
+  # @return [Array] string
+  #
+  def self.show_fields
+    fields.map &:to_s
+  end
+
+  #
   # Fields to search
   #
   # @return  [Array] string
   #
   def self.search_fields
-    fields.map &:to_s
+    s_fields = []
+    text_fields = fields.map &:to_s
+    # Handle person fields later
+    text_fields = text_fields - person_fields
+    text_fields.each do |field|
+      s_fields << "#{field}_tesim"
+    end
+    # For person fields, only use name instead of the whole field
+    person_fields.each do |field|
+      s_fields << "#{field}_name_tesim"
+    end
+    # extra fields
+    s_fields.join(' ') + ' file_format_tesim all_text_timv handle_sim id'
   end
-
   #
   # OAI-PMH mapping of internal fields to dc fields
   #
