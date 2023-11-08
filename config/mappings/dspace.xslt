@@ -70,7 +70,7 @@
   </xsl:template>
 
   <xsl:template match="dim:field[@mdschema='dc' and @element='coverage' and @qualifier='spatial']">
-    <field name="subject" modifier="geographical_area">
+    <field name="geographical_area">
       <xsl:value-of select="text()"/>
     </field>
   </xsl:template>

@@ -16,10 +16,4 @@
     </field>
   </xsl:template>
 
-  <xsl:template match="dim:field[@mdschema='dc' and @element='contributor' and @qualifier='editor']">
-    <field name="contributor">
-      <xsl:value-of select="text()"/><xsl:text> (editor)</xsl:text>
-    </field>
-  </xsl:template>
-
 </xsl:stylesheet>

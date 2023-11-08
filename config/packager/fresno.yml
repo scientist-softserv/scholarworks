@@ -1,3 +1,4 @@
 
 campus: 'Fresno'
 exit_on_error: false
+default_model: Archive
