@@ -54,6 +54,7 @@ class ApplicationController < ActionController::Base
     no_access = %w[ActionController::InvalidAuthenticityToken
                    CanCan::AccessDenied]
     not_valid = %w[I18n::InvalidLocale]
+    no_method_error = %w[NoMethodError]
 
     # let's find out if it's one of the above
     class_name = exception.class.to_s
@@ -67,6 +68,9 @@ class ApplicationController < ActionController::Base
     elsif not_valid.include?(class_name)
       error_code = 422
       error_label = 'REJECTED'
+    elseif no_method_error.include?(class_name)
+      error_code = 500
+      error_label = 500
     end
 
     # for common errors: just log the reason, ip address & path in a separate log file
