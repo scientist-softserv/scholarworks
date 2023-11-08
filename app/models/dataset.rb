@@ -26,13 +26,17 @@ class Dataset < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :date_range, predicate: ::RDF::Vocab::SCHEMA.temporalCoverage
+  property :date_range, predicate: ::RDF::Vocab::SCHEMA.temporalCoverage do |index|
+    index.as :stored_searchable
+  end
 
   property :date_last_modified, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#dateLastModified') do |index|
     index.as :stored_searchable
   end
 
-  property :methods_of_collection, predicate: ::RDF::Vocab::BIBO.shortDescription
+  property :methods_of_collection, predicate: ::RDF::Vocab::BIBO.shortDescription do |index|
+    index.as :stored_searchable
+  end
 
   # @deprecated
   property :investigator, predicate: ::RDF::Vocab::MARCRelators.org do |index|
