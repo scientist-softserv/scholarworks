@@ -1,3 +1,6 @@
 
 campus: 'San Francisco'
-exit_on_error: true
+exit_on_error: false
+default_model: Archive
+default_type: Other
+

@@ -1,0 +1,5 @@
+
+campus: 'Chancellor'
+exit_on_error: false
+default_model: EducationalResource
+default_type: 'Course Material'

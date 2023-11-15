@@ -1,5 +1,5 @@
 
-campus: Sacramento
+campus: 'Sacramento'
 output_dir: /home/ec2-user/data/harvest/sacramento
 external_system: Sac State Scholars
 url: https://scholars.csus.edu/view/oai/01CALS_USL/request

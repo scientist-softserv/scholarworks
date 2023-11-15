@@ -1,4 +1,3 @@
 
 campus: 'Los Angeles'
-admin_set_id: 'zk51vg76b'
-separator: '|'
+exit_on_error: false

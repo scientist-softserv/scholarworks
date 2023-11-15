@@ -1,4 +1,5 @@
 
-campus: "Bakersfield"
-exit_on_error: true
+campus: 'Bakersfield'
+exit_on_error: false
 default_model: Archive
+default_type: Other
