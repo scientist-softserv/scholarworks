@@ -434,11 +434,13 @@ module CalState
       #
       # Get model from supplied resource type
       #
-      # @param resource_type [String]
+      # @param resource_types [Array]
       #
       # @return [String]
       #
-      def get_model_from_type(resource_type)
+      def get_model_from_type(resource_types)
+        resource_type = resource_types.first
+
         if @type_map.key?(resource_type)
           @type_map[resource_type]
         elsif @default_model.present?
@@ -451,18 +453,12 @@ module CalState
       #
       # Create a new Hyrax work
       #
-      # @param record_params [Hash]  record attributes
+      # @param params [Hash]  record attributes
       #
       # @return [ActiveFedora::Base] the work
       #
-      def create_new_work(record_params)
+      def create_new_work(params)
         @log.info 'Creating new work.'
-
-        # remove empty params
-        params = {}
-        record_params.each do |field, value|
-          params[field] = value unless value.blank?
-        end
 
         # admin set
         params['admin_set_id'] = @admin_set
@@ -478,9 +474,8 @@ module CalState
         end
 
         # get model
-        resource_type = params['resource_type'].first
         model = if params['model'].blank?
-                  get_model_from_type(resource_type)
+                  get_model_from_type(params['resource_type'])
                 else
                   params['model']
                 end
@@ -501,11 +496,19 @@ module CalState
       #
       # Ensure we have the needed metadata for a work
       #
-      # @param params [Hash]
+      # @param record_params [Hash]
       #
       # @return [Hash]
       #
-      def ensure_required_metadata(params)
+      def ensure_required_metadata(record_params)
+        params = {}
+
+        # remove empty params and ensure multi-valued ones are actually multi-valued
+        record_params.each do |field, value|
+          value = [value] if !value.is_a?(Array) && !FieldService.single_fields.include?(field)
+          params[field] = value unless value.blank?
+        end
+
         # title
         raise MetadataError, 'No title set in params.' if params['title'].blank?
 
