@@ -20,6 +20,7 @@ namespace :calstate do
       begin
         print "\n#{id} . . . "
         work = ActiveFedora::Base.find(id)
+        work.file_sets.each(&:destroy!)
         work.destroy
         print 'deleted.'
       rescue ActiveFedora::ObjectNotFoundError
@@ -43,6 +44,8 @@ namespace :calstate do
         work.visibility = 'restricted'
         work.save
       end
+
+      puts "\n"
     end
   end
 end
