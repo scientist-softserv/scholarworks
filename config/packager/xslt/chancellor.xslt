@@ -24,4 +24,41 @@
       </xsl:choose>
     </field>
   </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='course' and @qualifier='number']">
+    <field name="identifier">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='course']">
+    <field name="related_url">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='audience']">
+    <field name="description_note">
+      <xsl:text>Audience: </xsl:text><xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='accessibility']">
+    <field name="description_note">
+      <xsl:text>Accessibility: </xsl:text><xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='college']">
+    <field name="college">
+      <xsl:text>Accessibility: </xsl:text><xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='contributor' and @qualifier='role']">
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='description' and @qualifier='repository']">
+  </xsl:template>
+
 </xsl:stylesheet>
