@@ -1,6 +1,5 @@
 
 campus: 'Fullerton'
-input_file: "zenodo.txt"
-input_dir: /home/ec2-user/data/import/zenodo/fullerton
-exit_on_error: true
-default_type: Doctoral Project
+exit_on_error: false
+default_model: Archive
+default_type: Other

@@ -144,6 +144,7 @@ scholarworks.composite_element =  {
                 let id = $(this).data('element-num')
                 $('#' + elem_type + '_orcid_error' + id).removeClass('d_none').attr('aria-hidden', 'false');
                 has_valid_orcid = false;
+		        $(this).focus();
                 return false;
             }
         });
@@ -181,9 +182,9 @@ scholarworks.composite_element =  {
     element_change : function(elem_type, subtypes, elem_required) {
         //console.log('element_change add focusout on orcid element');
         $('.composite_orcid').focusout(function() {
-            scholarworks.toggle_submit(scholarworks.composite_element.valid_orcid());
+            scholarworks.is_required_field_complete();
         });
-        scholarworks.toggle_submit(scholarworks.composite_element.valid_orcid());
+	    scholarworks.is_required_field_complete();
     },
 
     // to be used after add and remove action
@@ -251,18 +252,6 @@ scholarworks.composite_element =  {
         });
     }
 };
-
-// mainly used for orcid validation since itself is not a required field
-scholarworks.toggle_submit  = function(enable) {
-    if (enable) {
-        $('#required-metadata').addClass('complete').removeClass('incomplete');
-        $('#with_files_submit').removeProp('disabled');
-    }
-    else {
-        $('#required-metadata').removeClass('complete').addClass('incomplete');
-        $('#with_files_submit').prop('disabled', true);
-    }
-  }
 
 scholarworks.element_add = function() {
     let elem_type = $(this).data('element-type');
@@ -363,10 +352,23 @@ scholarworks.element_remove = function() {
         console.log('element_remove: fail to eval elem count');
     }
 }
-
 // only one save_handler for submit button event handler
 scholarworks.save_handler = function(event) {
     //console.log('inside save handler');
+    // need to check for required parameters again in case editor had checked for all its required parameters
+    // but not our required parameters which it doesn't monitor
+    if (!scholarworks.is_required_field_complete()) {
+       event.preventDefault();
+       return;
+    }
+
+    // if it's just an abstract work, remove dummy file element
+    if ($('#dummy_file').length) {
+        $('#dummy_file').remove();
+	    // change the id of the upload file warning so editor allow submission
+        $('#required-files').attr('id', 'required-files-warning');
+    }
+
     // serialize all composite elements
     scholarworks.composite_element.serialize();
 }
@@ -597,30 +599,68 @@ scholarworks.update_tinymcearea = function(e) {
 }
 
 scholarworks.is_required_field_complete = function() {
-    let completed = $('#agreement').is(":checked") && !($('input[name="uploaded_files[]"]').val() == undefined);
-    //console.log('scholarworks.is_required_field_complete completed ' + completed + ' agreement ' + $('#agreement').is(":checked") + ' uploaded file ' + !($('input[name="uploaded_files[]"]').val() == undefined));
+    // validate orcid fields
+    let completed = scholarworks.composite_element.valid_orcid();
     // now check for the rest of required inputs
-    let required_fields_completed = true;
-    $('#metadata').find(':input[required]').each(function () {
-	//console.log('is_required_field_complete id ' + $(this).attr('id') + ' value [' + $(this).val() + ']');
-        if ($(this).val() == null || $(this).val().length < 1) {
-            required_fields_completed = false;
-            return false;
-        }
-    });
-    if (required_fields_completed) {
+    if (completed) {
+        $('#metadata').find(':input[required]').each(function () {
+            if ($(this).val() == null || $(this).val().length < 1) {
+                completed = false;
+                return false;
+            }
+        });
+    }
+    // turn on/off warning of required inputs
+    if (completed) {
         $('#required-metadata').addClass('complete').removeClass('incomplete');
     }
     else {
         $('#required-metadata').removeClass('complete').addClass('incomplete');
     }
 
-    if ($('#agreement').is(":checked") && !($('input[name="uploaded_files[]"]').val() == undefined) && required_fields_completed) {
-        //console.log('is_required_field_complete completed');
+    // now check agreement box and upload file
+    completed = completed && $('#agreement').is(":checked");
+    if (scholarworks.is_work_new()) {
+        // editor only checks upload file for new work
+	let uploaded_files = $('input[name="uploaded_files[]"]').length == 0 ? false : true;
+        completed = completed && uploaded_files;
+    }
+    if (completed) {
         $('#with_files_submit').removeProp('disabled');
     }
     else {
-        //console.log('is_required_field_complete not completed');
         $('#with_files_submit').prop('disabled', true);
     }
+    return completed;
+}
+
+scholarworks.tab_click_handler = function(e) {
+    // we need a wrapper since we want to ignore the return of scholarworks.is_required_field_complete
+    // a return of false would prevent user from clicking on any tab with class of hyrax_work_form_tab
+    scholarworks.is_required_field_complete();
+}
+
+scholarworks.is_abstract_change = function(e) {
+    if ($('#is_abstract').is(":checked")) {
+	    if (!$('#dummy_file').length) {
+	        // need to insert dummy file to fool the hydra-editor
+	        $('#fileupload').prepend('<input id="dummy_file" type="hidden" name="uploaded_files[]" value="0">');
+	    }
+        $('#required-files').addClass('d_none')
+    }
+    else {
+	    $('#dummy_file').remove();
+        if ($('input[name="uploaded_files[]"]').length > 0) {
+            $('#required-files').removeClass('incomplete d_none').addClass('complete');
+        }
+        else {
+            $('#required-files').removeClass('complete d_none').addClass('incomplete');
+        }
+    }
+    scholarworks.is_required_field_complete();
+}
+
+scholarworks.is_work_new = function() {
+    // this is how editor test if work is new
+    return $('form').attr('id').startsWith('new');
 }

@@ -2,12 +2,17 @@
 <% if model_type == 'collection' %>
   <%= f.input key, as: :multi_value, input_html: { class: 'form-control' }, required: f.object.required?(key) %>
 <% else %>
+  <% if SystemService::archive? %>
+    <% subtypes = 'name role identifier' %>
+  <% else %>
+    <% subtypes = 'name email institution orcid' %>
+  <% end %>
   <%= render "shared/composite_element",
              f: f,
              model_type: model_type,
              composite_element: f.object.contributor,
              elem_type: key,
              elem_type_text: key,
-             subtypes: 'name email institution orcid',
-             help_block_str: t('simple_form.hints.defaults.contributor') %>
+             subtypes: subtypes,
+             help_block_str: t('simple_form.hints.defaults.creator') %>
 <% end %>

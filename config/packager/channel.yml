@@ -1,5 +1,5 @@
 
-campus: "Channel Islands"
+campus: 'Channel Islands'
 exit_on_error: false
-metadata_only: true
+default_model: Archive
 default_type: Other

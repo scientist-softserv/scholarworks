@@ -38,7 +38,7 @@ class WorkFormService
              elsif !current_user.campus.nil?
                current_user.campus_name
              end
-    campus_class = campus.sub(' ', '')
+    campus_class = campus.gsub(' ', '')
 
     # form object variations
     main_form = curation_concern.model_name.name + 'Form'

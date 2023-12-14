@@ -1,0 +1,2 @@
+class StatsFileDownload < ApplicationRecord
+end

@@ -17,6 +17,7 @@ module Bravado
 
     config.active_job.queue_adapter = :sidekiq
     config.eager_load_paths << Rails.root.join('lib')
+    config.middleware.use Rack::CrawlerDetect
     Rails.application.routes.default_url_options[:host] = ENV['SCHOLARWORKS_HOST']
 
     config.to_prepare do

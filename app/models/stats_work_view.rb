@@ -1,0 +1,2 @@
+class StatsWorkView < ApplicationRecord
+end

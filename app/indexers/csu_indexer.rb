@@ -16,18 +16,19 @@ class CsuIndexer < Hyrax::WorkIndexer
     super.tap do |solr_doc|
       # add a discipline text search only field and person sim
       generate_discipline_search_ids(solr_doc, solr_doc['discipline_tesim'])
-      generate_name(solr_doc, object.creator, 'creator')
+      generate_composite_person_fields(solr_doc, object.creator, 'creator')
     end
   end
 
   protected
 
-  def generate_name(solr_doc, person, person_type)
+  def generate_composite_person_fields(solr_doc, person, person_type)
     names = []
     person.each do |p|
       person = CompositeElement.new.from_hyrax(p)
       names << person.get(CompositeElement::NAME)
     end
+    solr_doc[person_type + '_name_tesim'] = names
     solr_doc[person_type + '_name_sim'] = names
   end
 

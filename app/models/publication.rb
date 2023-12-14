@@ -14,26 +14,34 @@ class Publication < ActiveFedora::Base
   # restrict which works can be added as a child.
   # self.valid_child_concerns = []
 
-  property :edition, predicate: ::RDF::Vocab::BIBO.edition, multiple: false
+  property :edition, predicate: ::RDF::Vocab::BIBO.edition, multiple: false do |index|
+    index.as :stored_searchable
+  end
 
   property :editor, predicate: ::RDF::Vocab::MARCRelators.edt do |index|
     index.as :stored_searchable
   end
 
-  property :issue, predicate: ::RDF::Vocab::BIBO.issue, multiple: false
+  property :issue, predicate: ::RDF::Vocab::BIBO.issue, multiple: false do |index|
+    index.as :stored_searchable
+  end
 
   # @depricated
   property :publication_title, predicate: ::RDF::URI.new('http://purl.org/net/nknouf/ns/bibtex#hasJournal') do |index|
     index.as :stored_searchable, :facetable
   end
 
-  property :pages, predicate: ::RDF::Vocab::BIBO.pages, multiple: false
+  property :pages, predicate: ::RDF::Vocab::BIBO.pages, multiple: false do |index|
+    index.as :stored_searchable
+  end
 
   property :series, predicate: ::RDF::URI.new('http://purl.org/net/nknouf/ns/bibtex#hasSeries') do |index|
     index.as :stored_searchable
   end
 
-  property :volume, predicate: ::RDF::Vocab::BIBO.volume, multiple: false
+  property :volume, predicate: ::RDF::Vocab::BIBO.volume, multiple: false do |index|
+    index.as :stored_searchable
+  end
 
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)

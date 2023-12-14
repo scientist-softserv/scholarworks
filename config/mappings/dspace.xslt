@@ -70,7 +70,7 @@
   </xsl:template>
 
   <xsl:template match="dim:field[@mdschema='dc' and @element='coverage' and @qualifier='spatial']">
-    <field name="subject" modifier="geographical_area">
+    <field name="geographical_area">
       <xsl:value-of select="text()"/>
     </field>
   </xsl:template>
@@ -338,11 +338,13 @@
       <xsl:when test="$type = 'conference program'">Program</xsl:when>
       <xsl:when test="$type = 'conference paper or proceedings'">Conference Proceeding</xsl:when>
       <xsl:when test="$type = 'conference program'">Program</xsl:when>
+      <xsl:when test="$type = 'course material'">Course Material</xsl:when>
       <xsl:when test="$type = 'course materials'">Course Material</xsl:when>
       <xsl:when test="$type = 'dataset'">Dataset</xsl:when>
       <xsl:when test="$type = 'dissertation'">Dissertation</xsl:when>
       <xsl:when test="$type = 'doctoral project'">Doctoral Project</xsl:when>
       <xsl:when test="$type = 'exercise'">Course Material</xsl:when>
+      <xsl:when test="$type = 'etextbook'">Textbook</xsl:when>
       <xsl:when test="$type = 'flyer'">Poster</xsl:when>
       <xsl:when test="$type = 'graduate project'">Graduate Project</xsl:when>
       <xsl:when test="$type = 'graph'">Dataset</xsl:when>
@@ -357,7 +359,9 @@
       <xsl:when test="$type = 'liner notes'">Article</xsl:when>
       <xsl:when test="$type = 'masters thesis'">Masters Thesis</xsl:when>
       <xsl:when test="$type = 'monograph'">Book</xsl:when>
+      <xsl:when test="$type = 'online course'">Course Material</xsl:when>
       <xsl:when test="$type = 'online course module'">Course Material</xsl:when>
+      <xsl:when test="$type = 'online textbook'">Textbook</xsl:when>
       <xsl:when test="$type = 'open textbook'">Textbook</xsl:when>
       <xsl:when test="$type = 'oral presentation'">Presentation</xsl:when>
       <xsl:when test="$type = 'paper'">Article</xsl:when>
@@ -388,6 +392,7 @@
       <xsl:when test="$type = 'table'">Dataset</xsl:when>
       <xsl:when test="$type = 'technical report'">Report</xsl:when>
       <xsl:when test="$type = 'text'">Article</xsl:when>
+      <xsl:when test="$type = 'textbook'">Textbook</xsl:when>
       <xsl:when test="$type = 'thesis'">Masters Thesis</xsl:when>
       <xsl:when test="$type = 'tutorial'">Course Material</xsl:when>
       <xsl:when test="$type = 'working paper'">Article</xsl:when>

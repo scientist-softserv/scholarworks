@@ -1,0 +1,113 @@
+terms:
+  - id: B.Arch
+    term: Bachelor of Architecture (B.Arch)
+    active: true
+  - id: B.A.
+    term: Bachelor of Arts (B.A.)
+    active: true
+  - id: B.F.A
+    term: Bachelor of Fine Arts (B.F.A)
+    active: true
+  - id: B.L.A.
+    term: Bachelor of Landscape Architecture (B.L.A.)
+    active: true
+  - id: B.M.
+    term: Bachelor of Music (B.M.)
+    active: true
+  - id: B.S.
+    term: Bachelor of Science (B.S.)
+    active: true
+  - id: D.Aud.
+    term: Doctor of Audiology (D.Aud.)
+    active: true
+  - id: Ed.D.
+    term: Doctor of Education (Ed.D.)
+    active: true
+  - id: D.N.P.
+    term: Doctor of Nursing Practice (D.N.P.)
+    active: true
+  - id: Ph.D.
+    term: Doctor of Philosophy (Ph.D.)
+    active: true
+  - id: D.P.T.
+    term: Doctor of Physical Therapy (D.P.T.)
+    active: true
+  - id: Ed.S.
+    term: Educational Specialist (Ed.S.)
+    active: true
+  - id: M.Ag.Ed.
+    term: Master of Agricultural Education (M.Ag.Ed.)
+    active: true
+  - id: M.Arch.
+    term: Master of Architecture (M.Arch.)
+    active: true
+  - id: M.A.R.A.
+    term: Master of Archives & Record Administration (M.A.R.A.)
+    active: true
+  - id: M.A.
+    term: Master of Arts (M.A.)
+    active: true
+  - id: M.Bt.
+    term: Master of Biotechnology (M.Bt.)
+    active: true
+  - id: M.B.A.
+    term: Master of Business Administration (M.B.A.)
+    active: true
+  - id: M.C.R.P.
+    term: Master of City & Regional Planning (M.C.R.P.)
+    active: true
+  - id: M.C.P.
+    term: Master of City Planning (M.C.P.)
+    active: true
+  - id: M.Des.
+    term: Master of Design (M.Des.)
+    active: true
+  - id: M.Eng.
+    term: Master of Engineering (M.Eng.)
+    active: true
+  - id: M.F.A.
+    term: Master of Fine Arts (M.F.A.)
+    active: true
+  - id: M.I.A.
+    term: Master of Interior Architecture (M.I.A.)
+    active: true
+  - id: M.L.A.
+    term: Master of Landscape Architecture (M.L.A.)
+    active: true
+  - id: M.L.I.S.
+    term: Master of Library & Information Science (M.L.I.S.)
+    active: true
+  - id: M.M.
+    term: Master of Music (M.M.)
+    active: true
+  - id: M.P.Acc.
+    term: Master of Public Accounting (M.P.Acc.)
+    active: true
+  - id: M.P.A.
+    term: Master of Public Administration (M.P.A.)
+    active: true
+  - id: M.P.H.
+    term: Master of Public Health (M.P.H.)
+    active: true
+  - id: M.P.P.
+    term: Master of Public Policy (M.P.P.)
+    active: true
+  - id: M.P.P.A.
+    term: Master of Public Policy & Administration (M.P.P.A.)
+    active: true
+  - id: M.S.
+    term: Master of Science (M.S.)
+    active: true
+  - id: M.S.W.
+    term: Master of Social Work (M.S.W.)
+    active: true
+  - id: M.A.T.
+    term: Master of Teaching (M.A.T.)
+    active: true
+  - id: M.U.R.P.
+    term: Master of Urban & Regional Planning (M.U.R.P.)
+    active: true
+  - id: M.U.P.
+    term: Master of Urban Planning (M.U.P.)
+    active: true
+    

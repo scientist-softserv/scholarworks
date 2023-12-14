@@ -15,11 +15,12 @@ namespace :calstate do
     options = { headers: true, encoding: 'bom|utf-8' }
 
     CSV.read(source, options).each do |row|
-      id = row['id']
+      id = row['id'].squish
 
       begin
         print "\n#{id} . . . "
         work = ActiveFedora::Base.find(id)
+        work.file_sets.each(&:destroy!)
         work.destroy
         print 'deleted.'
       rescue ActiveFedora::ObjectNotFoundError
@@ -44,5 +45,7 @@ namespace :calstate do
         work.save
       end
     end
+
+    puts "\n"
   end
 end
