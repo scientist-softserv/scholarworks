@@ -66,7 +66,7 @@ class CatalogController < ApplicationController
 
     # fields to search
 
-    FieldService.search_fields.each do |field|
+    FieldService.show_fields.each do |field|
       config.add_show_field "#{field}_tesim"
     end
 
