@@ -2,32 +2,26 @@
   # OVERRIDE file from Hyrax v3.6.0
   # Customization: Add hyrax_work_form_tab class to handle event when user switch tabs.
 %>
-<% unless defined?(tabs) %>
-  <% Deprecation.warn(self, "Passing the tabs local param to the _guts4form partial will be required in Hyrax 3.0.  " \
-                            "Consider removing overriding view partials and customizing the tab list " \
-                            "by overriding the new form_tabs_for(form:) helper.") %>
-  <% tabs = form_tabs_for(form: f.object) # default tab order %>
-<% end %>
 <div class="row">
   <div class="col-xs-12 col-sm-8">
     <div class="panel panel-default tabs" role="main">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <% tabs.each_with_index do | tab, i | %>
+        <% (tabs - ['share']).each_with_index do | tab, i | %>
           <% if i == 0 %>
             <li role="presentation" class="active">
           <% else %>
             <li role="presentation">
           <% end %>
           <a class="hyrax_work_form_tab" href="#<%= tab %>" aria-controls="<%= tab %>" role="tab" data-toggle="tab">
-                <%= t("hyrax.works.form.tab.#{tab}") %>
-              </a>
-            </li>
+            <%= form_tab_label_for(form: f.object, tab: tab) %>
+          </a>
+          </li>
         <% end %>
 
         <li role="presentation" id="tab-share" class="hidden">
           <a href="#share" aria-controls="share" role="tab" data-toggle="tab">
-            <%= t("hyrax.works.form.tab.share") %>
+            <%= form_tab_label_for(form: f.object, tab: 'share') %>
           </a>
         </li>
       </ul>
@@ -40,24 +34,25 @@
           <% else %>
             <div role="tabpanel" class="tab-pane" id="<%= tab %>">
           <% end %>
-            <div class="form-tab-content">
-              <% # metadata_tab is sometimes provided %>
-              <%= yield "#{tab}_tab".to_sym if content_for? "#{tab}_tab".to_sym %>
-              <%= render "form_#{tab}", f: f %>
-            </div>
+          <div class="form-tab-content">
+            <% # metadata_tab is sometimes provided %>
+            <%= yield "#{tab}_tab".to_sym if content_for? "#{tab}_tab".to_sym %>
+            <%= render "form_#{tab}", f: f %>
+          </div>
           </div>
         <% end %>
 
         <div role="tabpanel" class="tab-pane" id="share" data-param-key="<%= f.object.model_name.param_key %>">
-            <div class="form-tab-content">
-              <%= render "form_share", f: f %>
-            </div>
+          <div class="form-tab-content">
+            <%= render "form_share", f: f %>
+          </div>
+        </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="savewidget" class="col-xs-12 col-sm-4 fixedsticky" role="complementary">
-    <%= render 'form_progress', f: f %>
+    <div id="savewidget" class="col-xs-12 col-sm-4 fixedsticky" role="complementary">
+      <%= render 'form_progress', f: f %>
+    </div>
   </div>
 </div>
