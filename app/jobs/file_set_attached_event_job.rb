@@ -1,6 +1,6 @@
 #
-# OVERRIDE class from Hyrax v3.6.0
-# Customization: Change action according to Hyrax original commit
+# OVERRIDE class from hyrax v3.6.0
+# Customization: Add Glacier upload service
 #
 class FileSetAttachedEventJob < ContentEventJob
   # Log the event to the fileset's and its container's streams
@@ -10,8 +10,17 @@ class FileSetAttachedEventJob < ContentEventJob
   end
 
   def action
-    #this is updated from Hyrax in original commit
+
+
+
+    ### CUSTOMIZATION: Add Glacier upload
+
     GlacierUploadService.upload(repo_object)
+
+    ### END CUSTOMIZATION
+
+
+
   end
 
   private

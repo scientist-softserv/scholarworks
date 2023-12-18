@@ -1,10 +1,7 @@
-<%#
-  # OVERRIDE class from Hyrax v2.9.6
-  # Customization:
-  # Add hyrax_work_form_tab class to handle event when user switch tabs.
-  # We will yield to content_for for each tab, e.g. :files_tab
-  # Not passing tabs local param to this partial is deprecated and the tabs param will be required in Hyrax 3.0
-  # %>
+<%
+  # OVERRIDE file from Hyrax v3.6.0
+  # Customization: Add hyrax_work_form_tab class to handle event when user switch tabs.
+%>
 <% unless defined?(tabs) %>
   <% Deprecation.warn(self, "Passing the tabs local param to the _guts4form partial will be required in Hyrax 3.0.  " \
                             "Consider removing overriding view partials and customizing the tab list " \

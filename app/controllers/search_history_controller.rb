@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
+# OVERRIDE class from blacklight v6.25.0
 # Customization: To include ViewHelperOverride, RangeLimitHelper, and RenderConstraintsOverride
-# OVERRIDE class from Blacklight v6.25.0
 #
 class SearchHistoryController < ApplicationController
   include Blacklight::SearchHistory

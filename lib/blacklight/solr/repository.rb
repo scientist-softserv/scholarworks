@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# OVERRIDE class from Blacklight v6.25.0
+# OVERRIDE class from blacklight v6.25.0
 # Customization: recalculate the discipline facets from the filter
 #
 module Blacklight::Solr
@@ -61,12 +61,30 @@ module Blacklight::Solr
     # @return [Blacklight::Solr::Response] the solr response object
     def send_and_receive(path, solr_params = {})
       benchmark("Solr fetch", level: :debug) do
-        # always use http post
+
+
+
+        ### CUSTOMIZATION: always use http post
+
         blacklight_config.http_method = :post
+
+        ### END CUSTOMIZATION
+
+
 
         key = blacklight_config.http_method == :post ? :data : :params
         res = connection.send_and_receive(path, {key=>solr_params.to_hash, method: blacklight_config.http_method})
+
+
+
+        ### CUSTOMIZATION: recalculate discipline filter
+
         DisciplineService::recalculate_discipline_filter(res)
+
+        ### END CUSTOMIZATION
+
+
+
         solr_response = blacklight_config.response_model.new(res, solr_params, document_model: blacklight_config.document_model, blacklight_config: blacklight_config)
 
         Blacklight.logger.debug("Solr query: #{blacklight_config.http_method} #{path} #{solr_params.to_hash.inspect}")

@@ -2,7 +2,7 @@
 # It should never actually be persisted in the repository.
 # The properties on this form should be copied to a real work type.
 #
-# OVERRIDE class from Hyrax v2.9.6
+# OVERRIDE class from hyrax v2.9.6
 # Customization: Combine all multivalues of description into a single one for the front end
 #
 class BatchUploadItem < ActiveFedora::Base

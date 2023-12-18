@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# OVERRIDE class from Blacklight v6.25.0
+# OVERRIDE class from blacklight v6.25.0
 # Customization:
 # Only check for current_user instead of current_or_guest.
 # Prevent route error in the front end as it generates the more facet link as it sets to 'advanced'

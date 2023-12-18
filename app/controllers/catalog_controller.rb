@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
-# OVERRIDE class from Blacklight v6.25.0
-# Customization: To support blacklight advanced search and date range.
+# OVERRIDE class from blacklight v6.25.0
+# Customization: Blacklight advanced search, date range & use of FieldService
 #
 class CatalogController < ApplicationController
   include BlacklightAdvancedSearch::Controller

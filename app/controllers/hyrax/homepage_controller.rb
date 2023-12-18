@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Hyrax v3.6.0
+# OVERRIDE class from hyrax v3.6.0
 # Customization: Return up to 99 collections, sorted by collection title
 #
 class Hyrax::HomepageController < ApplicationController

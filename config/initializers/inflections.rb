@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Hyrax v2.9.6
+# OVERRIDE class from hyrax v2.9.6
 #
 # Be sure to restart your server when you modify this file.
 

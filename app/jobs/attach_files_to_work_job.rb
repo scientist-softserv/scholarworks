@@ -1,6 +1,6 @@
 # Converts UploadedFiles into FileSets and attaches them to works.
 #
-# OVERRIDE class from Hyrax v2.9.6
+# OVERRIDE class from hyrax v2.9.6
 # Customization: Set campus attribute for file using work's campus
 #
 class AttachFilesToWorkJob < Hyrax::ApplicationJob
@@ -20,12 +20,15 @@ class AttachFilesToWorkJob < Hyrax::ApplicationJob
       actor = Hyrax::Actors::FileSetActor.new(FileSet.create, user)
       uploaded_file.update(file_set_uri: actor.file_set.uri)
 
-      ### CUSTOMIZATION
-      # Set file's campus from work's campus
+
+
+      ### CUSTOMIZATION: set file's campus from work's campus
 
       actor.file_set.campus = work.campus
 
       ### END CUSTOMIZATION
+
+
 
       actor.file_set.permissions_attributes = work_permissions
       actor.create_metadata(metadata)

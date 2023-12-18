@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Hyrax v3.6.0
+# OVERRIDE class from hyrax v3.6.0
 # Customization: store title as sortable field and store collection as facetable
 #
 module Hyrax
@@ -16,16 +16,18 @@ module Hyrax
       super.tap do |solr_doc|
         # Makes Collections show under the "Collections" tab
         solr_doc['generic_type_sim'] = ["Collection"]
-        ### CUSTOMIZATION ###
-        # Index the size of the collection in bytes
-        solr_doc['bytes_lts'] = object.bytes
-        ### END #############
         solr_doc['visibility_ssi'] = object.visibility
 
-        ### CUSTOMIZATION ###
-        # index title in a sortable field
+
+        ### CUSTOMIZATION: index the size of the collection in bytes
+        #                  index title in a sortable field
+
+        solr_doc['bytes_lts'] = object.bytes
         solr_doc['title_ssi'] = object.title.first
-        ### END #############
+
+        ### END CUSTOMIZATION
+
+
 
         object.in_collections.each do |col|
           (solr_doc['member_of_collection_ids_ssim'] ||= []) << col.id

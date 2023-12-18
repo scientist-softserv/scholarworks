@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Hyrax v2.9.6
+# OVERRIDE class from hyrax v2.9.6
 # Customization: Provide a way to interpret visibility from the user for embargo and lease.
 #
 module Hyrax

@@ -1,6 +1,6 @@
 #
-# Changed download to be inline instead of attachment.
-# Modify authorize_download! to check for authorized image or use default image.
+# OVERRIDE class from hyrax v3.6.0
+# Customization: Changed download to be inline and add DownloadBehavior
 #
 module Hyrax
   class DownloadsController < ApplicationController
@@ -30,12 +30,22 @@ module Hyrax
     private
 
       # Override the Hydra::Controller::DownloadBehavior#content_options so that
-      # we have inline rather than an 'attachement'
-      def content_options
-        super.merge(disposition: 'inline')
-      end
+    # we have an attachement rather than 'inline'
+    def content_options
 
-      # Override this method if you want to change the options sent when downloading
+
+
+      ### CUSTOMIZATION: change (back) to inline
+
+      super.merge(disposition: 'inline')
+
+      ### END CUSTOMIZATION
+
+
+      
+    end
+
+    # Override this method if you want to change the options sent when downloading
       # a derivative file
       def derivative_download_options
         { type: mime_type_for(file), disposition: 'inline' }

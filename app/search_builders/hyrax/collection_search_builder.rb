@@ -1,4 +1,8 @@
 # frozen_string_literal: true
+#
+# OVERRIDE class from hyrax v3.6.0
+# Customization: Change action according to Hyrax original commit
+
 module Hyrax
   # Our parent class is the generated SearchBuilder descending from Blacklight::SearchBuilder
   # It includes Blacklight::Solr::SearchBuilderBehavior, Hydra::AccessControlsEnforcement, Hyrax::SearchFilters
@@ -8,9 +12,6 @@ module Hyrax
   # @note the default_processor_chain defined by Blacklight::Solr::SearchBuilderBehavior provides many possible points of override
   #
   # Allows :deposit as a valid type
-  #
-  # OVERRIDE class from Hyrax v3.6.0
-  # Customization: Change action according to Hyrax original commit
   #
   class CollectionSearchBuilder < ::SearchBuilder
     include FilterByType
@@ -23,19 +24,19 @@ module Hyrax
     end
 
     # @return [String] Solr field name indicating default sort order
-    #       x
-    #       # Set file's campus from work's campus
-    #
-    #       actor.file_set.campus = work.campus
-    #
-    #       ### END CUSTOMIZATION
     def sort_field
+
+
+
       ### CUSTOMIZATION
       # Used to be title_si, not sure why title_ssi would sort title asc for collection
 
       "title_ssi"
 
       ### END CUSTOMIZATION
+
+
+
     end
 
     # This overrides the models in FilterByType

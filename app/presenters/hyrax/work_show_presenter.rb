@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Hyrax v3.6.0
+# OVERRIDE class from hyrax v3.6.0
 # Customization: To accommodate campus in displaying featured link
 #
 module Hyrax

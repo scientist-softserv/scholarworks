@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Hyrax v3.6.0
+# OVERRIDE class from blacklight_advanced_search v6.4.1
 # Customization: Add checking for nil to prevent exception 
 #
 require 'parslet'
@@ -57,10 +57,19 @@ module BlacklightAdvancedSearch
       field_def = search_field_def_for_key(blacklight_params[:search_field]) ||
         default_search_field
 
-      # Customization: when a collection is added under an existing collection,
-      #                field_def is nil so we need to check to make sure it's not nil
       # If the individual field has advanced_parse_q suppressed, punt
+
+
+
+      ### CUSTOMIZATION:
+      # when a collection is added under an existing collection,
+      # field_def is nil so we need to check to make sure it's not nil
+
       return if field_def.nil? || field_def[:advanced_parse] == false
+
+      ### END CUSTOMIZATION
+
+
 
       solr_direct_params = field_def[:solr_parameters] || {}
       solr_local_params = field_def[:solr_local_parameters] || {}
