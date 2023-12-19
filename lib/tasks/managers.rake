@@ -16,19 +16,17 @@ namespace :calstate do
     campus_name = CampusService.get_name_from_slug(campus)
     query = record == 'all' ? { campus: campus_name } : { id: record }
 
-    x = 0
-
     CalState::Metadata.models.each do |model|
       model.where(query).each do |work|
-        next if work.edit_groups.include? 'managers-' + campus
-
-        x += 1
-
         puts "Updating work #{work.id}"
-
+        
         begin
           work = CalState::Packager.add_manager_group(work, campus)
           work.save
+          work.file_sets.each do |file_set|
+            Packager.add_manager_group(file_set, campus)
+            file_set.save
+          end
         rescue ActiveFedora::ConstraintError => e
           puts 'ERROR: ' + e.message
         end
