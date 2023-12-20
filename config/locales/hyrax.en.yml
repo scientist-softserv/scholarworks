@@ -27,6 +27,7 @@ en:
           department_sim: Department
           discipline_sim: Discipline
           editor_sim: Editor
+          file_type_sim: File Type
           format_sim: Format
           granting_institution_sim: Granting Institution
           has_model_ssim: Collection

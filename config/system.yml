@@ -11,6 +11,8 @@ facets:
     range: true
     include_in_advanced_search: false
     sort: 'index'
+  file_type:
+    limit: 4
 
 advanced_search:
   - title

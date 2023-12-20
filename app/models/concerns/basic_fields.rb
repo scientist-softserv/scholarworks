@@ -97,5 +97,9 @@ module BasicFields
     property :rights_note, predicate: ::RDF::Vocab::EBUCore.rightsExpression do |index|
       index.as :stored_searchable
     end
+
+    property :file_type, predicate: ::RDF::URI.new('http://library.calstate.edu/ns#fileType') do |index|
+      index.as :stored_searchable, :facetable
+    end
   end
 end
