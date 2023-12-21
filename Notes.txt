@@ -1,2 +1,0 @@
-- bundle exec rake hyrax:collections:update_collection_type_global_ids
-- bundle exec rake hyrax:migrate:add_collection_type_and_permissions_to_collections
