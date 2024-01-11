@@ -290,6 +290,13 @@
         </field>
       </xsl:if>
 
+      <!-- doi -->
+      <xsl:if test="./@epdcx:attributeName='DOI'">
+        <field name="doi">
+          <xsl:value-of select="epdcx:valueString" />
+        </field>
+      </xsl:if>
+
       <!-- identifier -->
       <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/identifier'">
         <field name="identifier">

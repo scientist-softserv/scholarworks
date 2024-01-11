@@ -16,30 +16,16 @@ namespace :calstate do
 
     reader = MaxMind::GeoIP2::Reader.new(database: geo_database)
 
-    StatsWorkView.where(latitude: nil).each do |view|
-      add_geo_data(reader, view)
+    [StatsWorkView, StatsFileDownload].each do |stats_type|
+      stats_type.where(latitude: nil).each do |stat|
+        geo = reader.city(stat.ip_address)
+
+        stat.country = geo.country.iso_code
+        stat.city = geo.city.name
+        stat.latitude = geo.location.latitude
+        stat.longitude = geo.location.longitude
+        stat.save
+      end
     end
-
-    StatsFileDownload.where(latitude: nil).each do |download|
-      add_geo_data(reader, download)
-    end
-  end
-
-  #
-  # Add geo data to usage stats
-  #
-  # @param reader [MaxMind::GeoIP2::Reader]
-  # @param stat [StatsWorkView or StatsFileDownload]
-  #
-  # @return [Boolean]  on success
-  #
-  def add_geo_data(reader, stat)
-    geo = reader.city(stat.ip_address)
-
-    stat.country = geo.country.iso_code
-    stat.city = geo.city.name
-    stat.latitude = geo.location.latitude
-    stat.longitude = geo.location.longitude
-    stat.save
   end
 end

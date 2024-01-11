@@ -37,3 +37,9 @@ rr171x20k: # stanislaus
   visibility_during_embargo: restricted
   visibility_after_embargo: open
   default_type: Masters Thesis
+
+cc08hg00q: # fullerton
+  visibility: open
+  visibility_during_embargo: restricted
+  visibility_after_embargo: open
+  default_type: Masters Thesis

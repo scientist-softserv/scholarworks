@@ -11,6 +11,7 @@ namespace :calstate do
   task :metadata_export, %i[campus] => [:environment] do |_t, args|
     campus = args[:campus] or raise 'No campus provided.'
     csv_dir = '/home/ec2-user/data/exported'
+    zip_dir = '/data/exports/metadata'
 
     campuses = if campus == 'all'
                  CampusService.all_campus_slugs
@@ -18,9 +19,17 @@ namespace :calstate do
                  [campus]
                end
 
+    puts "Writing CSV files."
+
     campuses.each do |campus|
+      print campus + ': '
       csv_writer = CalState::Metadata::Csv::Writer.new(csv_dir, campus)
+
       csv_writer.write_all
+      print "exported"
+
+      csv_writer.zip_all(zip_dir)
+      print ", zipped.\n"
     end
   end
 end
