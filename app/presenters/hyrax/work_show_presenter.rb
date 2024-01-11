@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # OVERRIDE class from hyrax v3.6.0
 # Customization: To accommodate campus in displaying featured link
@@ -121,7 +122,7 @@ module Hyrax
     end
 
     def link_name
-      current_ability.can?(:read, id) ? to_s : 'Private' 
+      current_ability.can?(:read, id) ? to_s : 'Private'
     end
 
     def export_as_nt
@@ -168,7 +169,18 @@ module Hyrax
     end
 
     def display_feature_link?
+
+
+
+      ## CUSTOMIZATION
+      # Campus-specific featured work
+
       work_featurable? && FeaturedWork.can_create_another?(solr_document.campus) && !featured?
+
+      ## END CUSTOMIZATION
+
+
+      
     end
 
     def display_unfeature_link?
@@ -264,7 +276,7 @@ module Hyrax
 
     private
 
-      # list of item ids to display is based on ordered_ids
+    # list of item ids to display is based on ordered_ids
     def authorized_item_ids(filter_unreadable: Flipflop.hide_private_items?)
       @member_item_list_ids ||=
         filter_unreadable ? ordered_ids.reject { |id| !current_ability.can?(:read, id) } : ordered_ids
