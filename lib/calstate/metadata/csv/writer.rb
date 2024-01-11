@@ -33,6 +33,20 @@ module CalState
         end
 
         #
+        # Add csv files to zip
+        #
+        def zip_all(destination)
+          zip_file_path = "#{destination}/#{@campus_slug}.zip"
+          zip_file = File.new(zip_file_path, 'w')
+
+          Zip::File.open(zip_file.path, Zip::File::CREATE) do |zip|
+            csv_files.each do |file_name|
+              zip.add(file_name, "#{@csv_dir}/#{file_name}")
+            end
+          end
+        end
+
+        #
         # Write out file for specified model
         #
         # @param model_name [String]  the model name
@@ -145,7 +159,7 @@ module CalState
         #
         # Convert Solr hash keys to field names without suffix
         #
-        # @param doc [Hash]          Solr document
+        # @param doc [Hash]  Solr document
         #
         # @return [Hash]
         #
@@ -164,6 +178,22 @@ module CalState
           end
 
           final
+        end
+
+        #
+        # Gather the export files for a campus
+        #
+        # @return [Array]
+        #
+        def csv_files
+          files = []
+
+          Dir["#{@csv_dir}/#{@campus_slug}_*.csv"].each do |path|
+            file = path.split('/').pop
+            files.append file
+          end
+
+          files
         end
       end
     end
