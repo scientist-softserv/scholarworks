@@ -202,6 +202,7 @@ module CalState
       # @return [String]  the new file name
       #
       def rename_file(file_dir, orig_filename, aip_filename, type)
+        orig_filename.gsub!(/[\x00\/\\:\*\?\"<>\|]/, '_')
         @log.info "Renaming #{type} #{aip_filename} -> #{orig_filename}"
 
         File.rename("#{file_dir}/#{aip_filename}",
