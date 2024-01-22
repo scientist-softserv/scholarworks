@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
-# OVERRIDE class from Blacklight v6.25.0
-# Customization: To support blacklight advanced search and date range.
+# OVERRIDE class from blacklight v6.25.0
+# Customization: Blacklight advanced search, date range & use of FieldService
 #
 class CatalogController < ApplicationController
   include BlacklightAdvancedSearch::Controller
@@ -43,39 +43,41 @@ class CatalogController < ApplicationController
     config.view.slideshow.partials = [:index]
 
     # solr field configuration for document/show views
-    config.index.title_field = solr_name('title', :stored_searchable)
-    config.index.display_type_field = solr_name('has_model', :symbol)
+    config.index.title_field = 'title_tesim'
+    config.index.display_type_field = 'has_model_ssim'
     config.index.thumbnail_field = 'thumbnail_path_ss'
 
     # facets
 
     SystemService.facets.each do |field, attr|
-      solr_field = solr_name(field, :facetable)
+      solr_field = "#{field}_sim"
       attr[:label] = 'blacklight.search.fields.facet.' + solr_field
       config.add_facet_field(solr_field, attr)
     end
 
     # The generic_type isn't displayed on the facet list
     # It's used to give a label to the filter that comes from the user profile
-    config.add_facet_field solr_name('generic_type', :facetable), if: false
+    config.add_facet_field 'generic_type_sim', if: false
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.
     config.add_facet_fields_to_solr_request!
 
-    # solr fields to be displayed in the show (single result) view
-    #   The ordering of the field names is the order of the display
+    # fields to show
+
     FieldService.show_fields.each do |field|
-      config.add_show_field solr_name(field, :stored_searchable)
+      config.add_show_field "#{field}_tesim"
     end
+
+    # fields to search
 
     config.add_search_field('all_fields', label: 'All Fields') do |field|
       title_name = solr_name('title', :stored_searchable)
       field.solr_parameters = {
         qt: 'search',
         rows: 10,
-        qf: "#{FieldService.search_fields}",
+        qf: "#{FieldService.search_fields.join(' ')}",
         pf: title_name.to_s
       }
     end
@@ -84,8 +86,7 @@ class CatalogController < ApplicationController
 
     SystemService.advanced_search.each do |solr_field|
       config.add_search_field(solr_field) do |field|
-        # if solr_field is creator, use creator_name_tesim instead
-        solr_name = solr_field == 'creator' ? 'creator_name_tesim' : solr_name(solr_field, :stored_searchable)
+        solr_name = "#{solr_field}_tesim"
         field.solr_local_parameters = {
           qf: solr_name,
           pf: solr_name

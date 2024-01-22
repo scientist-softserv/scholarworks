@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# OVERRIDE class from Blacklight v6.25.0
+# OVERRIDE class from blacklight v6.25.0
 # Customization:
 # Use just name for facet search for createor, contributor, editor, and committee_member.
 # Use discipine_search_ids_teim when search for discpline to get count for all its descendents.
@@ -101,7 +101,17 @@ module Blacklight::Solr
         f_request_params = blacklight_params[:f]
 
         f_request_params.each_pair do |facet_field, value_list|
+
+
+
+          ### CUSTOMIZATION: facet field substitution
+
           facet_field = facet_field_substitution(facet_field)
+
+          ### END CUSTOMIZATION
+
+
+
           Array(value_list).reject(&:blank?).each do |value|
             solr_parameters.append_filter_query facet_value_to_fq_string(facet_field, value)
           end
@@ -329,11 +339,15 @@ module Blacklight::Solr
       blacklight_config.facet_paginator_class.request_keys
     end
 
+
+
+    ### CUSTOMIZATION: facet field substitution
+
     def facet_field_substitution(field)
       facet_field = field
       if field == 'creator_sim'
         facet_field = 'creator_name_sim'
-      elsif field == 'contributor_sim'    
+      elsif field == 'contributor_sim'
         facet_field = 'contributor_name_sim'
       elsif field == 'editor_sim'
         facet_field = 'editor_name_sim'
@@ -344,7 +358,12 @@ module Blacklight::Solr
       elsif field == 'discipline_sim'
         facet_field = 'discipline_search_ids_teim'
       end
-      return facet_field           
-    end                                     
+      return facet_field
+    end
+
+    ### END CUSTOMIZATION
+
+
+
   end
 end

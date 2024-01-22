@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# OVERRIDE class from Blacklight v6.25.0
+# OVERRIDE class from blacklight v6.25.0
 # Customization: Add facet_field_names_for_range to accommodate facet range
 #
 module Blacklight
@@ -23,12 +23,20 @@ module Blacklight
       fields.map { |field| facet_by_field_name(field) }.compact
     end
 
+
+
+    ### CUSTOMIZATION: facet field names for range to accommodate facet range
+
     def facet_field_names_for_range
       @facet_field_names_for_range ||= begin
         blacklight_config.facet_fields.select { |_k, v| v.range }.values.map(&:field)
       end
     end
-    
+
+    ### END CUSTOMIZATION
+
+
+
     def facet_field_names
       blacklight_config.facet_fields.values.map(&:field)
     end

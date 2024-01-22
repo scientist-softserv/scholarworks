@@ -1,9 +1,8 @@
-<%#
-  # OVERRIDE class from Hyrax v2.9.6
-  # Customization:
-  # Determine whether to show relationships or not
+<%
+  # OVERRIDE file from Hyrax v3.6.0
+  # Customization: Determine whether to show relationships or not
   # based on hyrax/base/_relationships_parent_rows.html.erb
-  # %>
+%>
 <%
   show = 0
   show += presenter.grouped_presenters(except: presenter.presenter_types).count

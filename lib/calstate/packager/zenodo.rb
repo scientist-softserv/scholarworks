@@ -134,7 +134,7 @@ module CalState
       # @return [Boolean]
       #
       def work_already_exists?(id)
-        query = { Solrizer.solr_name('doi') => id }
+        query = { 'doi_tesim' => id }
         work = ActiveFedora::Base.where(query)
 
         return false if work.blank?

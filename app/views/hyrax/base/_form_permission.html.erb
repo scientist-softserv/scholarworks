@@ -1,11 +1,11 @@
-<%#
-  # OVERRIDE class from Hyrax v2.9.6
-  # Customization: Add visibility
-  # %>
+<%
+  # OVERRIDE file from Hyrax v3.6.0
+  # Customization: Add campus visibility
+%>
 <% # This is used by works and by FileSet and the layout (col-6 vs col-12) is different for both %>
-<% if f.object.embargo_release_date %>
+<% if embargo_enforced?(f.object) %>
   <%= render 'form_permission_under_embargo', f: f %>
-<% elsif f.object.lease_expiration_date %>
+<% elsif lease_enforced?(f.object) %>
   <%= render 'form_permission_under_lease', f: f %>
 <% else %>
   <fieldset class="set-access-controls">
@@ -18,10 +18,20 @@
         <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC %>
         <%= visibility_badge(Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC) %>
       </label>
+
+
+
+      <!-- CUSTOMIZATION -->
+
       <label class="radio">
         <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS %>
         <%= visibility_badge(Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS) %>
       </label>
+
+      <!-- END CUSTOMIZATION -->
+
+
+
       <label class="radio">
         <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED %>
         <%= visibility_badge(Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED) %>

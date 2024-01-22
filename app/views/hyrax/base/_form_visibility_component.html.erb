@@ -1,10 +1,19 @@
-<% if f.object.embargo_release_date %>
+<%
+  # OVERRIDE file from Hyrax v3.6.0
+  # Customization: Add campus visibility
+%>
+
+<% if embargo_enforced?(f.object) %>
   <%= render 'form_permission_under_embargo', f: f %>
-<% elsif f.object.lease_expiration_date %>
+<% elsif lease_enforced?(f.object) %>
   <%= render 'form_permission_under_lease', f: f %>
 <% else %>
   <fieldset>
-    <legend class="legend-save-work">Visibility</legend>
+    <% if local_assigns[:save_work] %>
+      <legend class="legend-save-work"><%= t('.visibility') %></legend>
+    <% else %>
+      <legend><%= t('.visibility') %><%= raw(t('.subtitle_html')) %></legend>
+    <% end %>
     <ul class="visibility">
       <li class="radio">
         <label>
@@ -25,6 +34,11 @@
           <%= t('hyrax.visibility.authenticated.note_html', institution: institution_name) %>
         </label>
       </li>
+
+
+
+      <!-- CUSTOMIZATION -->
+
       <li class="radio">
         <label>
           <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_CAMPUS %>
@@ -33,6 +47,11 @@
           <%= t('hyrax.visibility.campus.note_html', institution: institution_name) %>
         </label>
       </li>
+
+      <!-- END CUSTOMIZATION -->
+
+
+
       <li class="radio">
         <label>
           <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO, data: { 'target': '#collapseEmbargo' } %>

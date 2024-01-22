@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# OVERRIDE class from Blacklight v6.25.0
+# OVERRIDE class from blacklight v6.25.0
 # Customization:
 # Only name from composite person.
 # Map internal types to oai-pmh types.

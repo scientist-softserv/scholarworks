@@ -27,7 +27,7 @@ class SolrDocument
 
   # defer field definition to field service
   def method_missing(m, *args, &block)
-    return self[Solrizer.solr_name(m.to_s)] if FieldService.all.include?(m)
+    return self[m.to_s + '_tesim'] if FieldService.all.include?(m)
 
     Rails.logger.warn 'Missing field: ' + m.inspect
     super
@@ -48,7 +48,7 @@ class SolrDocument
     title = self['title_formatted_ssm']
     return title unless title.blank?
 
-    self[Solrizer.solr_name('title')]
+    self['title_tesim']
   end
 
   #
@@ -62,11 +62,11 @@ class SolrDocument
     description = self['description_formatted_ssm']
     return description unless description.blank?
 
-    self[Solrizer.solr_name('description')]
+    self['description_tesim']
   end
 
   def description_short(length = 200)
-    desc = self[Solrizer.solr_name('description')]
+    desc = self['description_tesim']
     return '' if desc.blank?
     return '' unless desc.count.positive?
 

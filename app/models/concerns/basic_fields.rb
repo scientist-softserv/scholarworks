@@ -1,25 +1,37 @@
 # frozen_string_literal: true
 #
-# All models inherit from Hyrax::BasicMetadata, which includes:
+# All models inherit from Hyrax::CoreMetadata, which includes:
 #
-# based_near               ::RDF::Vocab::FOAF.based_near
-# bibliographic_citation   ::RDF::Vocab::DC.bibliographicCitation
-# creator                  ::RDF::Vocab::DC11.creator
-# contributor              ::RDF::Vocab::DC11.contributor
-# date_created             ::RDF::Vocab::DC.created
-# description              ::RDF::Vocab::DC11.description
-# identifier               ::RDF::Vocab::DC.identifier
-# import_url               ::RDF::URI.new('http://scholarsphere.psu.edu/ns#importUrl')
-# language                 ::RDF::Vocab::DC11.language
-# keyword                  ::RDF::Vocab::DC11.relation
-# license                  ::RDF::Vocab::DC.rights
-# publisher                ::RDF::Vocab::DC11.publisher
-# related_url              ::RDF::RDFS.seeAlso
-# relative_path            ::RDF::URI.new('http://scholarsphere.psu.edu/ns#relativePath')
-# resource_type            ::RDF::Vocab::DC.type
-# rights_statement         ::RDF::Vocab::EDM.rights
-# source                   ::RDF::Vocab::DC.source
-# subject                  ::RDF::Vocab::DC11.subject
+# date_uploaded:	        ::RDF::Vocab::DC.dateSubmitted, multiple: false
+# date_modified:	        ::RDF::Vocab::DC.modified, multiple: false
+# depositor:	            ::RDF::URI.new('http://id.loc.gov/vocabulary/relators/dpt'), multiple: false
+# title:	                ::RDF::Vocab::DC.title
+#
+# And also Hyrax::BasicMetadata, which includes:
+#
+# abstract	              ::RDF::Vocab::DC.abstract
+# access_right	          ::RDF::Vocab::DC.accessRights
+# alternative_title	      ::RDF::Vocab::DC.alternative
+# based_near	            ::RDF::Vocab::FOAF.based_near, class_name: Hyrax::ControlledVocabularies::Location
+# bibliographic_citation	::RDF::Vocab::DC.bibliographicCitation
+# contributor	            ::RDF::Vocab::DC11.contributor
+# creator	                ::RDF::Vocab::DC11.creator
+# date_created	          ::RDF::Vocab::DC.created
+# description	            ::RDF::Vocab::DC11.description
+# identifier	            ::RDF::Vocab::DC.identifier
+# import_url	            ::RDF::URI.new('http://scholarsphere.psu.edu/ns#importUrl'), multiple: false
+# keyword	                ::RDF::Vocab::SCHEMA.keywords
+# label	                  ActiveFedora::RDF::Fcrepo::Model.downloadFilename, multiple: false
+# language	              ::RDF::Vocab::DC11.language
+# license	                ::RDF::Vocab::DC.license
+# publisher	              ::RDF::Vocab::DC11.publisher
+# related_url	            ::RDF::RDFS.seeAlso
+# relative_path	          ::RDF::URI.new('http://scholarsphere.psu.edu/ns#relativePath'), multiple: false
+# resource_type	          ::RDF::Vocab::DC.type
+# rights_notes	          ::RDF::URI.new('http://purl.org/dc/elements/1.1/rights')
+# rights_statement	      ::RDF::Vocab::EDM.rights
+# source	                ::RDF::Vocab::DC.source
+# subject	                ::RDF::Vocab::DC11.subject
 #
 # Shared metadata across all models
 #
@@ -29,10 +41,6 @@ module BasicFields
   extend ActiveSupport::Concern
 
   included do
-
-    property :alternative_title, predicate: ::RDF::Vocab::DC.alternative do |index|
-      index.as :stored_searchable
-    end
 
     property :campus, predicate: ::RDF::Vocab::DC.publisher do |index|
       index.as :stored_searchable, :facetable
@@ -80,10 +88,6 @@ module BasicFields
 
     property :internal_note, predicate: ::RDF::URI.new('http://library.calstate.edu/scholarworks/ns#internalNote') do |index|
       index.as :stored_searchable
-    end
-
-    property :license, predicate: ::RDF::Vocab::DC.license do |index|
-      index.as :stored_searchable, :facetable
     end
 
     property :provenance, predicate: ::RDF::Vocab::DC.provenance do |index|
