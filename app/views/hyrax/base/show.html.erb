@@ -16,80 +16,91 @@
       </div>
     </div>
 
-    <div class="row">
-      <%= render 'workflow_actions_widget', presenter: @presenter %>
-      <% if @presenter.iiif_viewer? %>
-        <div class="col-sm-12">
-          <%= render 'representative_media', presenter: @presenter, viewer: true %>
-        </div>
-      <% end %>
-
-      <!-- sidebar -->
-      <div class="col-sm-3 text-center">
-        <%= render 'download', presenter: @presenter %>
-        <%= render 'download_remote', presenter: @presenter %>
-        <%= render 'citations', presenter: @presenter %>
-        <%= render 'social_media' %>
+    <div class="csu-workflow-actions">
+      <div class="row">
+        <%= render 'workflow_actions_widget', presenter: @presenter %>
       </div>
+    </div>
 
-      <!-- main section -->
-      <div class="col-sm-9">
-
-        <!-- item type -->
-        <div class="csu-item-type">
-          <%= @presenter.resource_type.first %>
-        </div>
-
-        <!-- title -->
-        <div class="csu-item-title">
-          <h1><%= @presenter.title_formatted.first.html_safe %></h1>
-        </div>
-
-        <!-- publication date -->
-        <div class="csu-item-date">
-            <%#= @presenter.date_submitted.first if @presenter.date_submitted.presence %>
-        </div>
-
-        <div class="row">
-          <div class="col-md-9">
-
-            <!-- description -->
-            <div class="csu-item-description">
-              <% unless @presenter.description_formatted.nil? %>
-                <% @presenter.description_formatted.each do |description| %>
-                  <%= iconify_auto_link(description.html_safe) %>
-                <% end %>
-              <% end %>
-            </div>
-
-            <!-- other metadata -->
-            <div class="csu-item-metadata">
-              <%= render 'metadata', presenter: @presenter %>
-            </div>
-
-            <!-- relationships -->
-            <div class="csu-item-relationship">
-              <%= render 'relationships', presenter: @presenter %>
-            </div>
-          </div>
-
-          <div class="col-md-3">
-            <!-- campus logo -->
-            <%= render 'campus_logo', presenter: @presenter %>
-          </div>
-        </div>
-
-        <!-- files -->
-        <% unless @presenter.external_url %>
-          <div class="csu-item-files">
-            <%= render 'items', presenter: @presenter %>
+    <div class="csu-iiif-viewer">
+      <div class="row">
+        <% if @presenter.iiif_viewer? %>
+          <div class="col-sm-12">
+            <%= render 'representative_media', presenter: @presenter, viewer: true %>
           </div>
         <% end %>
       </div>
+    </div>
 
-      <%# TODO: we may consider adding these partials in the future %>
-      <%# = render 'sharing_with', presenter: @presenter %>
-      <%# = render 'user_activity', presenter: @presenter %>
+    <div class="csu-record">
+      <div class="row">
+        <!-- sidebar -->
+        <div class="col-sm-3 text-center">
+          <%= render 'download', presenter: @presenter %>
+          <%= render 'download_remote', presenter: @presenter %>
+          <%= render 'citations', presenter: @presenter %>
+          <%= render 'social_media' %>
+        </div>
+
+        <!-- main section -->
+        <div class="col-sm-9">
+
+          <!-- item type -->
+          <div class="csu-item-type">
+            <%= @presenter.resource_type.first %>
+          </div>
+
+          <!-- title -->
+          <div class="csu-item-title">
+            <h1><%= @presenter.title_formatted.first.html_safe %></h1>
+          </div>
+
+          <!-- publication date -->
+          <div class="csu-item-date">
+              <%#= @presenter.date_submitted.first if @presenter.date_submitted.presence %>
+          </div>
+
+          <div class="row">
+            <div class="col-md-9">
+
+              <!-- description -->
+              <div class="csu-item-description">
+                <% unless @presenter.description_formatted.nil? %>
+                  <% @presenter.description_formatted.each do |description| %>
+                    <%= iconify_auto_link(description.html_safe) %>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <!-- other metadata -->
+              <div class="csu-item-metadata">
+                <%= render 'metadata', presenter: @presenter %>
+              </div>
+
+              <!-- relationships -->
+              <div class="csu-item-relationship">
+                <%= render 'relationships', presenter: @presenter %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <!-- campus logo -->
+              <%= render 'campus_logo', presenter: @presenter %>
+            </div>
+          </div>
+
+          <!-- files -->
+          <% unless @presenter.external_url %>
+            <div class="csu-item-files">
+              <%= render 'items', presenter: @presenter %>
+            </div>
+          <% end %>
+        </div>
+
+        <%# TODO: we may consider adding these partials in the future %>
+        <%# = render 'sharing_with', presenter: @presenter %>
+        <%# = render 'user_activity', presenter: @presenter %>
+      </div>
     </div>
   </div>
 </div>

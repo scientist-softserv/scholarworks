@@ -209,14 +209,25 @@ Hyrax.config do |config|
   # Use the Hyrax provided RIIIF server
   config.iiif_image_server = true
 
-  # Set default dimensions for files
-  config.iiif_image_size_default = 100
+  # Returns a URL that resolves to an image provided by a IIIF image server
+  config.iiif_image_url_builder = lambda do |file_id, base_url, size, format|
+    Riiif::Engine.routes.url_helpers.image_url(file_id, host: base_url, size: size)
+  end
 
   # Returns a URL that resolves to an info.json file provided by a IIIF image server
-  config.iiif_image_url_builder = lambda do |file_id, base_url, size, format|
+  config.iiif_info_url_builder = lambda do |file_id, base_url|
     uri = Riiif::Engine.routes.url_helpers.info_url(file_id, host: base_url)
     uri.sub(%r{/info\.json\Z}, '')
   end
+
+  # Returns a URL that indicates your IIIF image server compliance level
+  config.iiif_image_compliance_level_uri = 'http://iiif.io/api/image/2/level2.json'
+
+  # Returns a IIIF image size default
+  config.iiif_image_size_default = '600,'
+
+  # Fields to display in the IIIF metadata section; default is the required fields
+  config.iiif_metadata_fields = Hyrax::Forms::WorkForm.required_fields
 
   # If browse-everything has been configured, load the configs.  Otherwise, set to nil.
   begin
