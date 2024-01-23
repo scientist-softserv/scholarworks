@@ -32,7 +32,20 @@ module Hyrax
     # @param [ActionDispatch::Request] request the http request context. Used so
     #                                  the GraphExporter knows what URLs to draw.
     def initialize(solr_document, current_ability, request = nil)
+
+
+
+      # CUSTOMIZATION
+      # Reverted back to Hyrax 2.9.6 code here to avoid:
+      #   @solr_document = Hyrax::SolrDocument::OrderedMembers.decorate(solr_document)
+      # since this keeps throwing an error, @todo figure out why OrderedMembers doesn't work
+
       @solr_document = solr_document
+
+      # END CUSTOMIZATION
+
+
+
       @current_ability = current_ability
       @request = request
     end
