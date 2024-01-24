@@ -1,7 +1,9 @@
 ---
 value_map:
   department:
+    01CALS_USL___11700: AA VP Undergrad Studies
     01CALS_USL___10000: Academic Affairs
+    01CALS_USL___D_10000: Academic Affairs
     01CALS_USL___10100: Academic Excellence
     01CALS_USL___PC_42600: Academic and Admin IT Services
     01CALS_USL___20204: Accounting
@@ -22,26 +24,29 @@ value_map:
     01CALS_USL___39200: Coll of SSIS Deans Ofc
     01CALS_USL___21200: College of Business Administration-Dean
     01CALS_USL___20200: College of Business Administration-Faculty
+    01CALS_USL___24600: College of Education
     01CALS_USL___22200: College of Engineering & Computer Science
+    01CALS_USL___24800: Comm Council Center
     01CALS_USL___27900: Comm Sciences & Disorders
     01CALS_USL___15200: Communication Studies Department
+    01CALS_USL___13900: Community Engagement Center
     01CALS_USL___22700: Computer Science Department
     01CALS_USL___23400: Construction Management Department
     01CALS_USL___27500: Criminal Justice Division
     01CALS_USL___32500: Department of Biological Sciences
     01CALS_USL___16900: Department of Design
+    01CALS_USL___28200: Department of Physical Therapy
     01CALS_USL___29300: Department of Public Health
     01CALS_USL___27700: Department of Recreation, Park & Tourism Administration
     01CALS_USL___15000: Department of World Languages and Literatures
+    01CALS_USL___D_46900: Div of Inclusive Excellence
     01CALS_USL___27800: Division of Social Work
     01CALS_USL___26300: Doctorate in Educational Leadership
-    01CALS_USL___28200: Doctorate of Physical Therapy
     01CALS_USL___37700: Economics Department
     01CALS_USL___23000: Electrical Engineering
     01CALS_USL___15100: English Department
     01CALS_USL___37800: Environmental Studies Department
     01CALS_USL___37900: Ethnic Studies Department
-    01CALS_USL___13402: Externally Sponsored Projects
     01CALS_USL___10201: Faculty Success
     01CALS_USL___38099: Fam Cnsmr Sci-Out of State EE
     01CALS_USL___38000: Family & Consumer Sciences
@@ -64,13 +69,16 @@ value_map:
     01CALS_USL___34200: Mathematics/Statistics Department
     01CALS_USL___23100: Mechanical Engineering Department
     01CALS_USL___19000: Music Department
+    01CALS_USL___19099: Music-Out of State EE
     01CALS_USL___13000: Office of Graduate Studies - Degree Services
+    01CALS_USL___46700: Office of the President
     01CALS_USL___15300: Philosophy Department
     01CALS_USL___34900: Physics and Astronomy Department
     01CALS_USL___38300: Political Science
     01CALS_USL___38600: Psychology Department
     01CALS_USL___38500: Public Policy & Administration Graduate Program
     01CALS_USL___27799: Rec Parks Tour-Out of State EE
+    01CALS_USL___13400: Research Innovation Econ Dev
     01CALS_USL___29800: School of Nursing
     01CALS_USL___40900: Sociology Department
     01CALS_USL___20203: Strategy and Entrepreneurship
@@ -78,5 +86,5 @@ value_map:
     01CALS_USL___16800: Theatre & Dance Department
     01CALS_USL___26000: Undergraduate Studies in Education
     01CALS_USL___41600: University Library
-    01CALS_USL___38900: Women's Studies Program
-    01CALS_USL___15800: Writing Center
+    01CALS_USL___38900: Women's and Gender Studies
+    01CALS_USL___15800: Writing Program Office
