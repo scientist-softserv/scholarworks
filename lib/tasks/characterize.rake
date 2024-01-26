@@ -21,19 +21,19 @@ namespace :calstate do
     else
       # campus supplied
       campus_name = CampusService.get_name_from_slug(campus)
-      CalState::Metadata.models.each do |model|
-        model.where(campus: campus_name).each do |work|
 
-          unless skip_to.nil?
-            skip = false if work.id == skip_to
-            if skip
-              puts work.id
-              next
-            end
-          end
-
-          run_characterize(work)
+      # solr reader is faster than built-in models, especially when skipping
+      solr = CalState::Metadata::Solr::Reader.new(campus: campus_name)
+      solr.records.each do |record|
+        # skip to specific record if told to do so
+        unless skip_to.nil?
+          skip = false if record['id'] == skip_to
+          next if skip
         end
+
+        # now fetch actual work and run characterization
+        work = ActiveFedora::Base.find(record['id'])
+        run_characterize(work)
       end
     end
   end
