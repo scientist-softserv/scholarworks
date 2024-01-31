@@ -31,21 +31,20 @@ module CalState
       #
       # Write the mapping to the appropriate campus file
       #
-      # @param doc [JSON]  solr record
+      # @param doc [CalState::Metadata::Solr::Record]  solr record
       #
       def write_to_file(doc)
-        handle = doc['handle_tesim']&.first.to_s
+        handle = doc.get('handle').first.to_s
         return if handle.blank?
         return if handle.include?('20.500.12680')
 
-        campus = doc['campus_tesim']&.first.to_s
+        campus = doc.get('campus').first.to_s
         return if campus.blank?
 
-        url = get_url(doc)
         campus_filename = campus.underscore.sub(' ', '_')
 
         File.open(@path + '/' + campus_filename + '.conf', 'a') do |f|
-          f.puts get_rewrite_rule(handle, url)
+          f.puts get_rewrite_rule(handle, doc.url)
         end
       end
 

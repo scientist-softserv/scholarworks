@@ -94,20 +94,18 @@ module CalState
             csv << column_names
 
             solr = CalState::Metadata::Solr::Reader.new(campus: @campus_name, models: [model_name])
-
             solr.records.each do |doc|
               begin
-                doc = convert_to_model(doc)
-                values = [prep_number_for_excel(doc['id']), # not in attributes
-                          prep_values(doc['campus'].first), # move to front
-                          prep_number_for_excel(doc['isPartOf'].first), # move to front
-                          prep_values(doc['visibility']), # not in attributes
-                          prep_date_for_excel(doc['embargo_release_date']), # not in attributes
-                          prep_values(doc['visibility_during_embargo']), # not in attributes
-                          prep_values(doc['visibility_after_embargo']), # not in attributes
-                          prep_values(doc['depositor']), # move to front
-                          prep_values(doc['title_formatted']), # use formatted
-                          prep_values(doc['description_formatted'])] # use formatted
+                values = [prep_number_for_excel(doc.get('id')), # not in attributes
+                          prep_values(doc.get('campus').first), # move to front
+                          prep_number_for_excel(doc.get('isPartOf').first), # move to front
+                          prep_values(doc.get('visibility')), # not in attributes
+                          prep_date_for_excel(doc.get('embargo_release_date')), # not in attributes
+                          prep_values(doc.get('visibility_during_embargo')), # not in attributes
+                          prep_values(doc.get('visibility_after_embargo')), # not in attributes
+                          prep_values(doc.get('depositor')), # move to front
+                          prep_values(doc.get('title_formatted')), # use formatted
+                          prep_values(doc.get('description_formatted'))] # use formatted
                 values.push(*get_attr_values(doc, attribute_names))
                 csv << values
               rescue ActiveFedora::ConstraintError => e
@@ -143,9 +141,9 @@ module CalState
           values = []
 
           attribute_names.each do |attr|
-            value = nil
-            if doc.key?(attr)
-              value = prep_values(doc[attr])
+            value = doc.get(attr)
+            unless value.nil?
+              value = prep_values(value)
               value = prep_person(value) if person_field?(attr)
               value = prep_date_for_excel(value) if date_field?(attr)
               value = prep_number_for_excel(value) if identifier_field?(attr)
@@ -154,30 +152,6 @@ module CalState
           end
 
           values
-        end
-
-        #
-        # Convert Solr hash keys to field names without suffix
-        #
-        # @param doc [Hash]  Solr document
-        #
-        # @return [Hash]
-        #
-        def convert_to_model(doc)
-          final = {}
-
-          doc.each do |field, value|
-            attr = if field.include?('_')
-                     parts = field.split('_')
-                     parts.pop
-                     parts.join('_')
-                   else
-                     field
-                   end
-            final[attr] = value
-          end
-
-          final
         end
 
         #

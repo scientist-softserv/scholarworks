@@ -27,12 +27,12 @@ namespace :calstate do
       solr.records.each do |record|
         # skip to specific record if told to do so
         unless skip_to.nil?
-          skip = false if record['id'] == skip_to
+          skip = false if record.get('id') == skip_to
           next if skip
         end
 
         # now fetch actual work and run characterization
-        work = ActiveFedora::Base.find(record['id'])
+        work = ActiveFedora::Base.find(record.get('id'))
         run_characterize(work)
       end
     end
