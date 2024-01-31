@@ -202,6 +202,7 @@ class FieldService
   #
   def self.single_fields
     # model is a utility field in csv import
+    # file_size is from FileSet
     %w[admin_set_id
        date_accessioned
        degree_level
@@ -212,6 +213,7 @@ class FieldService
        external_system
        external_modified_date
        external_url
+       file_size
        id
        issue
        meeting_name

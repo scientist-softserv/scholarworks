@@ -14,7 +14,7 @@ namespace :calstate do
     puts 'Found ' + expired_embargoes.count.to_s + ' expired embargoes.'
 
     expired_embargoes.each do |doc|
-      id = doc['id']
+      id = doc.get('id')
 
       # make sure we have a work
       work = ActiveFedora::Base.find(id)

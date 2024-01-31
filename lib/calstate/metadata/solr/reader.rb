@@ -30,7 +30,7 @@ module CalState
         #
         # All (including suppressed) works
         #
-        # @return [Array] of solr documents
+        # @return [Array<CalState::Metadata::Solr::Record>]
         #
         def records
           @query.include_suppressed
@@ -40,7 +40,7 @@ module CalState
         #
         # All unsuppressed works
         #
-        # @return [Array] of solr documents
+        # @return [Array<CalState::Metadata::Solr::Record>]
         #
         def public_records
           @query.limit_to_open_records
@@ -50,7 +50,7 @@ module CalState
         #
         # Works that have private visibility
         #
-        # @return [Array] of solr documents
+        # @return [Array<CalState::Metadata::Solr::Record>]
         #
         def restricted_records
           @query.limit_to_restricted_records
@@ -60,7 +60,7 @@ module CalState
         #
         # Works that have an expired embargo
         #
-        # @return [Array] of solr documents
+        # @return [Array<CalState::Metadata::Solr::Record>]
         #
         def records_with_expired_embargoes
           @query.add 'embargo_release_date_dtsi:[* TO NOW]'
@@ -104,7 +104,7 @@ module CalState
         #
         # @param query [Query]  solr query
         #
-        # @return [Array] of solr documents
+        # @return [Array<CalState::Metadata::Solr::Record>]
         #
         def fetch_all(query)
           start = 0

@@ -2,4 +2,5 @@
 
 require_relative 'solr/query'
 require_relative 'solr/reader'
+require_relative 'solr/record'
 require_relative 'solr/results'

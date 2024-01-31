@@ -36,7 +36,7 @@ module CalState
       #
       # Write out batches of sitemap files
       #
-      # @param batches [Array]  groups of Solr docs
+      # @param batches [Array<Array<CalState::Metadata::Solr::Record>>]  groups of Solr records
       #
       # @return [Array] list of sitemap files
       #
@@ -49,8 +49,8 @@ module CalState
             xml.urlset('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9') {
               batch.each do |doc|
                 xml.url {
-                  xml.loc get_url(doc)
-                  xml.lastmod doc['system_modified_dtsi']
+                  xml.loc doc.url
+                  xml.lastmod doc.get('system_modified')
                   xml.changefreq 'monthly'
                 }
               end
