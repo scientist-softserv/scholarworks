@@ -9,11 +9,11 @@ module Scholarworks
 
       def track_view
         # ignore bots, other weird requests & multiple views during same session
-        return if StatsService.bad_user_agent?(request)
-        return unless session["stats_work_view_#{params[:id]}"].nil?
+        return if StatsService.bad_user_agent?(request) || params[:id].nil?
 
-        # track visit in session and database
-        session["stats_work_view_#{params[:id]}"] = true
+        stats = StatsWorkView.check_active(request.remote_ip, params[:id])
+        return unless stats.empty?
+
         curation_concern = @curation_concern ? @curation_concern : _curation_concern_type.find(params[:id])
         stats_work_view = StatsWorkView.new(work_id: params[:id],
                                             ip_address: request.remote_ip,
