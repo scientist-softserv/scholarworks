@@ -75,7 +75,7 @@ module CalState
       protected
 
       def on_create(params, files, **args)
-        create_or_update_work(params, 'external_id', params['external_id'] )
+        create_or_update_work(params, 'external_id_tesim', params['external_id'] )
       end
 
       def on_error(error, record, files, **args)
