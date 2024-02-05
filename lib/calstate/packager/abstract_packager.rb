@@ -402,11 +402,11 @@ module CalState
       #
       # Find a work
       #
-      # @param match_field [String]  field to look-up existing work on
+      # @param match_field [String]  full solr field name to look-up existing work
       # @param match_value [String]  value to look-up existing work on
       #
       def find_work(match_field, match_value)
-        query = { match_field + 'tesim' => match_value }
+        query = { match_field => match_value }
         ActiveFedora::Base.where(query)
       end
 

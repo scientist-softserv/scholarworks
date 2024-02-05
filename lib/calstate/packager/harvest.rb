@@ -60,7 +60,7 @@ module CalState
             end
 
             if params['action']&.first == 'delete'
-              delete_work('external_id', params['external_id'])
+              delete_work('external_id_tesim', params['external_id'])
               next
             end
 
