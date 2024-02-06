@@ -11,6 +11,10 @@ module Scholarworks
         # ignore bots, other weird requests & multiple views during same session
         return if StatsService.bad_user_agent?(request) || params[:id].nil?
 
+        # we shouldn't record stat for new and edit actions
+        return if request.env['HTTP_REFERER'].end_with?('new') ||
+                  request.env['HTTP_REFERER'].end_with?('edit')
+
         stats = StatsWorkView.check_active(request.remote_ip, params[:id])
         return unless stats.empty?
 
