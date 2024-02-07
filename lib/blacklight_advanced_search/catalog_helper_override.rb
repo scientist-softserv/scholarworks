@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Blacklight_advanced_search v6.4.1
+# OVERRIDE class from blacklight_advanced_search v6.4.1
 #
 module BlacklightAdvancedSearch::CatalogHelperOverride
   # Special display for facet limits that include adv search inclusive
@@ -11,9 +11,19 @@ module BlacklightAdvancedSearch::CatalogHelperOverride
 
   def remove_advanced_facet_param(field, value, my_params = params)
     my_params = Blacklight::SearchState.new(my_params, blacklight_config).to_h
+
+
+
+    ### CUSTOMIZATION:
     # just override this so it doesn't complain about no route error in the
     # front end as it generates the remote facet link as it sets to 'advanced'
+
     my_params['controller'] = 'catalog'
+
+    ### END CUSTOMIZATION
+    
+
+
     if (my_params[:f_inclusive] &&
         my_params[:f_inclusive][field] &&
         my_params[:f_inclusive][field].include?(value))

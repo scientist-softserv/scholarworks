@@ -15,6 +15,8 @@ class FieldService
   #
   # Fields shared by all models
   #
+  # @return [Array<Symbol>]
+  #
   def self.basic
     %i[alternative_title
        campus
@@ -50,7 +52,7 @@ class FieldService
   #
   # ScholarWorks fields
   #
-  # @return [Array] symbols
+  # @return [Array<Symbol>]
   #
   def self.scholarworks
     %i[advisor
@@ -89,7 +91,7 @@ class FieldService
   #
   # Fields to remove after new schema in place
   #
-  # @return [Array] symbols
+  # @return [Array<Symbol>]
   #
   def self.deprecated
     %i[abstract
@@ -106,6 +108,8 @@ class FieldService
 
   #
   # Digital Archives fields
+  #
+  # @return [Array<Symbol>]
   #
   def self.archives
     %i[digital_project
@@ -125,7 +129,7 @@ class FieldService
   #
   # All public fields
   #
-  # @return [Array] symbols
+  # @return [Array<Symbol>]
   #
   def self.fields
     basic + scholarworks + archives
@@ -134,7 +138,7 @@ class FieldService
   #
   # All ScholarWorks fields
   #
-  # @return [Array] symbols
+  # @return [Array<Symbol>]
   #
   def self.scholarworks_fields
     basic + scholarworks
@@ -143,7 +147,7 @@ class FieldService
   #
   # All Digital Archives fields
   #
-  # @return [Array] symbols
+  # @return [Array<Symbol>]
   #
   def self.archives_fields
     basic + archives
@@ -152,7 +156,7 @@ class FieldService
   #
   # All public fields, including deprecated ones
   #
-  # @return [Array] symbols
+  # @return [Array<Symbol>]
   #
   def self.all
     basic + scholarworks + deprecated + archives + %i[creator_name]
@@ -161,7 +165,7 @@ class FieldService
   #
   # Fedora internal-use fields
   #
-  # @return [Array] string
+  # @return [Array<String>]
   #
   def self.fedora
     %w[arkivo_checksum
@@ -183,7 +187,7 @@ class FieldService
   #
   # All internal Fields
   #
-  # @return [Array] string
+  # @return [Array<String>]
   #
   def self.internal_fields
     fedora + %w[date_issued_year
@@ -195,10 +199,11 @@ class FieldService
   #
   # Fields that have single values
   #
-  # @return [Array] string
+  # @return [Array<String>]
   #
   def self.single_fields
     # model is a utility field in csv import
+    # file_size is from FileSet
     %w[admin_set_id
        date_accessioned
        degree_level
@@ -209,6 +214,7 @@ class FieldService
        external_system
        external_modified_date
        external_url
+       file_size
        id
        issue
        meeting_name
@@ -224,7 +230,7 @@ class FieldService
   #
   # Fields for visibility, so not in work attributes
   #
-  # @return [Array] string
+  # @return [Array<String>]
   #
   def self.visibility_fields
     %w[embargo_release_date
@@ -236,7 +242,7 @@ class FieldService
   #
   # Fields with person objects
   #
-  # @return [Array] string
+  # @return [Array<String>]
   #
   def self.person_fields
     %w[advisor
@@ -249,7 +255,7 @@ class FieldService
   #
   # Fields that contain date values
   #
-  # @return [Array] string
+  # @return [Array<String>]
   #
   def self.date_fields
     %w[date_issued
@@ -262,7 +268,7 @@ class FieldService
   #
   # Identifier fields that look like numbers but should not be treated as such
   #
-  # @return [Array] string
+  # @return [Array<String>]
   #
   def self.identifier_fields
     %w[admin_set_id
@@ -275,7 +281,7 @@ class FieldService
   #
   # Fields to show
   #
-  # @return [Array] string
+  # @return [Array<String>]
   #
   def self.show_fields
     fields.map &:to_s
@@ -284,22 +290,25 @@ class FieldService
   #
   # Fields to search
   #
-  # @return  [Array] string
+  # @return  [Array<String>]
   #
   def self.search_fields
     s_fields = []
     text_fields = fields.map &:to_s
-    # Handle person fields later
+
+    # handle person fields later
     text_fields = text_fields - person_fields
     text_fields.each do |field|
       s_fields << "#{field}_tesim"
     end
-    # For person fields, only use name instead of the whole field
+
+    # for person fields, only use name instead of the whole field
     person_fields.each do |field|
       s_fields << "#{field}_name_tesim"
     end
+
     # extra fields
-    s_fields.join(' ') + ' file_format_tesim all_text_timv handle_sim id'
+    s_fields + %w[file_format_tesim all_text_timv handle_sim id']
   end
   #
   # OAI-PMH mapping of internal fields to dc fields

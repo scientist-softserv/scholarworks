@@ -1,5 +1,5 @@
 # Tell RIIIF to get files via HTTP (not from the local disk)
-Riiif::Image.file_resolver = Riiif::HTTPFileResolver.new
+Riiif::Image.file_resolver = Riiif::HttpFileResolver.new
 
 
 # In order to return the info.json endpoint, we have to have the full height and width of

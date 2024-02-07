@@ -33,6 +33,23 @@ module CalState
     end
 
     #
+    # Add the manager group to work and file
+    #
+    # @param work [ActiveRecord::Base]
+    # @param campus [String]            campus slug
+    #
+    # @return [ActiveRecord::Base]
+    #
+    def self.add_manager_group_to_work(work, campus)
+      work = add_manager_group(work, campus)
+      work.save
+      work.file_sets.each do |file_set|
+        add_manager_group(file_set, campus)
+        file_set.save
+      end
+    end
+
+    #
     # Add work to collection
     #
     # @param work [ActiveFedora::Base]  work

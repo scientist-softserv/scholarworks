@@ -1,7 +1,8 @@
-<%#
-  # OVERRIDE class from Hyrax v2.9.6
-  # Customization: Customize on hitlist for scholarworks to have thumbnails, model type, title, and short description
-  # %>
+<%
+  # OVERRIDE file from hyrax v3.6.0
+  # Customization: Customize search results to have thumbnails, model type, title & short description
+%>
+
 <li id="document_<%= document.to_param %>" class="document <%= render_document_class document %>" itemscope itemtype="<%= document.itemtype %>">
   <div class="row search-result-wrapper">
     <div class="col-md-2">

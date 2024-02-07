@@ -9,11 +9,6 @@ module ScholarworksFields
 
   included do
 
-    # @deprecated
-    property :abstract, predicate: ::RDF::Vocab::DC.abstract do |index|
-      index.as :stored_searchable
-    end
-
     property :advisor, predicate: ::RDF::Vocab::MARCRelators.ths do |index|
       index.as :stored_searchable
     end

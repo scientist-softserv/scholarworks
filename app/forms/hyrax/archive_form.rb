@@ -15,6 +15,7 @@ module Hyrax
          description
          description_note
          subject
+         keyword
          geographical_area
          date_created
          identifier

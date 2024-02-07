@@ -6,6 +6,12 @@ cr56n096b: # east bay
   visibility_after_embargo: open
   default_type: Masters Thesis
 
+02870v844: # fullerton
+  visibility: open
+  visibility_during_embargo: restricted
+  visibility_after_embargo: open
+  default_type: Masters Thesis
+
 zk51vg76b: # los angeles
   visibility: campus
   visibility_during_embargo: restricted
@@ -33,6 +39,12 @@ rr171x20k: # stanislaus
 # test
 
 4b29b635b: # northridge
+  visibility: open
+  visibility_during_embargo: restricted
+  visibility_after_embargo: open
+  default_type: Masters Thesis
+
+cc08hg00q: # fullerton
   visibility: open
   visibility_during_embargo: restricted
   visibility_after_embargo: open

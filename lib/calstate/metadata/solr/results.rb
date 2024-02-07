@@ -13,7 +13,7 @@ module CalState
         # @return [Integer] number of records
         attr_reader :total
 
-        # @return [Array<JSON>] solr documents
+        # @return [Array<CalState::Metadata::Solr::Record>] solr documents
         attr_reader :records
 
         # @return [Hash] facets
@@ -51,12 +51,12 @@ module CalState
         #
         # @param json [JSON]
         #
-        # @return [Array]
+        # @return [Array<CalState::Metadata::Solr::Record>]
         #
         def extract_docs(json)
           records = []
           json['response']['docs'].each do |doc|
-            records.push doc
+            records.push Record.new(doc)
           end
 
           records

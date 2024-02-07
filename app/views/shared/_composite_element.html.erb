@@ -65,9 +65,9 @@
        aria-live="polite">
     <% composite_element.each_with_index do |name, index| %>
       <% if index > 0 %>
-        <div id=<%= "#{elem_type}_divider#{index}" %> class="row divider <%= elem_type %>_divider"></div>
+        <div id="<%= "#{elem_type}_divider#{index}" %>" class="row divider <%= elem_type %>_divider"></div>
       <% end %>
-      <div id=<%= "#{elem_type}_div#{index}" %> class="row <%= elem_type %>_div flex_center">
+      <div id="<%= "#{elem_type}_div#{index}" %>" class="row <%= elem_type %>_div flex_center">
         <input type="hidden"
                name="<%= model_type %>[<%= elem_type %>][]"
                id="<%= elem_type %><%= index %>"

@@ -1,13 +1,23 @@
-<%#
-  # OVERRIDE class from devise v4.8.1
-  # Customization: Using UID instead of email and have Shibboleth sign in option
-  # %>
+<%
+  # OVERRIDE file from devise v4.9.3
+  # Customization: Using UID instead of email and facilitate CSS for Shibboleth option
+%>
 <h2>Log in</h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
     <%= f.label :email %><br />
+
+
+
+    <!-- CUSTOMIZATION -->
+
     <%= f.email_field :uid, autofocus: true, autocomplete: "email" %>
+
+    <!-- END CUSTOMIZATION -->
+
+
+
   </div>
 
   <div class="field">
@@ -27,6 +37,12 @@
   </div>
 <% end %>
 
+
+
+<!-- CUSTOMIZATION -->
+
 <div class="csu-login-options">
   <%= render "devise/shared/links" %>
 </div>
+
+<!-- END CUSTOMIZATION -->

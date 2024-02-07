@@ -1,5 +1,5 @@
 #
-# OVERRIDE class from Hyrax v2.9.6
+# OVERRIDE class from hyrax v2.9.6
 # Customization:  Change subject and message
 #
 module Hyrax

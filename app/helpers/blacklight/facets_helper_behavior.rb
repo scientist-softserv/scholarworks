@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# OVERRIDE class from Blacklight v6.25.0
+# OVERRIDE class from blacklight v6.25.0
 # Customization: Making all the range facet to use partial facet_limit
 #
 module Blacklight::FacetsHelperBehavior

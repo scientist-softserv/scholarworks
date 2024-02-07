@@ -12,20 +12,23 @@ namespace :calstate do
   task :visibility_split, %i[input] => [:environment] do |_t, args|
     input = args[:input] ||= ''
 
-    # find restricted results from file, otherwise solr
-    results = if input.include?('/')
-                CSV.open(input, { headers: true })
-              else
-                campus = input.empty? ? nil : CampusService.get_name_from_slug(input)
-                reader = CalState::Metadata::Solr::Reader.new(campus: campus)
-                reader.restricted_records
-              end
+    results = []
 
-    results.each do |record|
-      print "Processing work #{record['id']} . . . "
+    # find restricted results from file, otherwise solr
+    if input.include?('/')
+      rows = CSV.open(input, { headers: true })
+      rows.each { |row| results.append row }
+    else
+      campus = input.empty? ? nil : CampusService.get_name_from_slug(input)
+      reader = CalState::Metadata::Solr::Reader.new(campus: campus)
+      reader.restricted_records.each { |record| results.append record.get('id') }
+    end
+
+    results.each do |id|
+      print "Processing work #{id} . . . "
 
       begin
-        work = ActiveFedora::Base.find(record['id'])
+        work = ActiveFedora::Base.find(id)
 
         # permanently restricted records should be skipped
         if work.visibility == 'restricted' && work.embargo_release_date.blank?
