@@ -10,18 +10,13 @@ class FileSetAttachedEventJob < ContentEventJob
   end
 
   def action
-    #this is updated from Hyrax in original commit
-    file_type = FileService.type(repo_object[:title].first)
-    # need to get an object, seems like what pass in is just a copy reference
-    object = ActiveFedora::Base.find(curation_concern.id)
-    if (object.file_type.empty?)
-      object.file_type = [file_type]
-    else
-      # this doesn't work
-      # object.file_type << file_type
-      object.file_type = curation_concern.file_type + [file_type]
-    end
-    object.save
+
+
+
+    ### CUSTOMIZATION
+    # File facet and Glacier upload tasks
+
+    FileService.add_file_type(curation_concern.id)
     GlacierUploadService.upload(repo_object)
 
     ### END CUSTOMIZATION

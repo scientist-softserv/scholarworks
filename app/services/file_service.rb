@@ -5,9 +5,28 @@
 #
 class FileService
   #
-  # get file type
+  # Extract and assign file type from files to work field for faceting
   #
-  # @return String
+  # @param work [String]
+  #
+  def self.add_file_type(work_id)
+    # get the work itself since we'll need to update it
+    work = ActiveFedora::Base.find(work_id)
+    file_type = self.type(work.title.first)
+
+    if (work.file_type.empty?)
+      work.file_type = [file_type]
+    else
+      work.file_type = work.file_type + [file_type]
+    end
+
+    work.save
+  end
+
+  #
+  # Get file type
+  #
+  # @return String or nil
   #s
   def self.type(file_name)
     extension = file_name[file_name.rindex('.')+1, file_name.size]
