@@ -78,10 +78,6 @@ module BasicFields
       index.as :stored_searchable
     end
 
-    property :file_format, predicate: ::RDF::Vocab::DC.FileFormat do |index|
-      index.as :stored_searchable, :facetable
-    end
-
     property :handle, predicate: ::RDF::Vocab::PREMIS.ContentLocation do |index|
       index.as :stored_searchable
     end
