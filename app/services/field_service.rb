@@ -32,7 +32,7 @@ class FieldService
        external_modified_date
        external_system
        external_url
-       file_format
+       file_type
        handle
        identifier
        internal_note
@@ -112,6 +112,7 @@ class FieldService
   #
   def self.archives
     %i[digital_project
+       file_format
        format
        funding_code
        geographical_area
@@ -307,7 +308,7 @@ class FieldService
     end
 
     # extra fields
-    s_fields + %w[file_format_tesim all_text_timv handle_sim id']
+    s_fields + %w[all_text_timv handle_sim id']
   end
   #
   # OAI-PMH mapping of internal fields to dc fields

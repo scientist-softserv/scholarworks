@@ -13,8 +13,10 @@ class FileSetAttachedEventJob < ContentEventJob
 
 
 
-    ### CUSTOMIZATION: Add Glacier upload
+    ### CUSTOMIZATION
+    # File facet and Glacier upload tasks
 
+    FileService.add_file_type(curation_concern.id)
     GlacierUploadService.upload(repo_object)
 
     ### END CUSTOMIZATION
