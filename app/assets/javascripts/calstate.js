@@ -81,7 +81,7 @@ scholarworks.composite_element =  {
                 continue;
             }
 
-            let sub_value = (sub_values_arr.length >= 1 && sub_values_arr[i] ? sub_values_arr[i] : '');
+            let sub_value = (sub_values_arr.length >= 1 && sub_values_arr[i] ? sub_values_arr[i] : '').replaceAll("'", "&#39;");
             let required = (i == 0 ? elem_required : false);
             //console.log('calling function ' + subtypes_arr[i] + ' value [' + sub_value + '] required ' + required);
             ret_elem += this[subtypes_arr[i]](sub_value, elem_type, elem_num, required);
