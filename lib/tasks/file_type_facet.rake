@@ -7,7 +7,7 @@ require 'calstate/metadata'
 # bundle exec rake calstate:file_type_facet
 
 namespace :calstate do
-  desc 'Populate file type into work from attached files
+  desc 'Populate file type into work from attached files'
   task file_type_facet: :environment do
 
     CalState::Metadata.models.each do |model|
@@ -23,6 +23,7 @@ namespace :calstate do
         end
         work.update(changes)
         work.save
+        puts work.id
       end
     end
   end
