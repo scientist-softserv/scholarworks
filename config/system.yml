@@ -1,8 +1,10 @@
 facets:
-  resource_type:
-    limit: 5
   campus:
     limit: 10
+  resource_type:
+    limit: 5
+  file_type:
+    limit: 5
   department:
     limit: 5
   degree_level:
