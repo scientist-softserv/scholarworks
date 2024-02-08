@@ -88,7 +88,13 @@ module BasicBehavior
       return match[0] unless match.nil?
 
       # date in another format, use chronic
-      date = Chronic.parse(date_issued, context: 'past')
+      date = nil
+      begin
+        date = Chronic.parse(date_issued, context: 'past')
+      rescue
+        Rails.logger.warn "Chronic fatal error parsing `#{date_issued}`."
+      end
+
       now = Date.today
       format = '%Y-%m-%d'
 
