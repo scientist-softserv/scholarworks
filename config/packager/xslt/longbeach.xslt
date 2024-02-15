@@ -16,4 +16,16 @@
     </field>
   </xsl:template>
 
+  <xsl:template match="dim:field[@mdschema='dc' and @element='contributor' and @qualifier='department']">
+    <field name="source">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='description' and @qualifier='department']">
+    <field name="source">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
 </xsl:stylesheet>

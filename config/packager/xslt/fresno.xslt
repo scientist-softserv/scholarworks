@@ -5,8 +5,20 @@
   <xsl:import href="config/mappings/dspace.xslt" />
 
   <xsl:template match="dim:field[@mdschema='dc'][@element='relation'][@qualifier='hasversion']">
-    <field name="identifier_uri">
+    <field name="identifier">
       <xsl:value-of select="text()" />
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='identifier' and @qualifier='isbn']">
+    <field name="identifier">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='identifier' and @qualifier='issn']">
+    <field name="identifier">
+      <xsl:value-of select="text()"/>
     </field>
   </xsl:template>
 
@@ -28,5 +40,10 @@
     </field>
   </xsl:template>
 
+  <xsl:template match="dim:field[@mdschema='dc' and @element='contributor' and @qualifier='editor']">
+    <field name="contributor">
+      <xsl:value-of select="text()"/><xsl:text>:::Editor</xsl:text>
+    </field>
+  </xsl:template>
 
 </xsl:stylesheet>

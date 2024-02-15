@@ -22,4 +22,28 @@
     </field>
   </xsl:template>
 
+  <xsl:template match="dim:field[@mdschema='dc' and @element='identifier' and @qualifier='issn']">
+    <field name="identifier">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='identifier' and @qualifier='isbn']">
+    <field name="identifier">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='advisor']">
+    <field name="contributor">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
+  <xsl:template match="dim:field[@mdschema='dc' and @element='contributor' and @qualifier='advisor']">
+    <field name="contributor">
+      <xsl:value-of select="text()"/>
+    </field>
+  </xsl:template>
+
 </xsl:stylesheet>
