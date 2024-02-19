@@ -13,10 +13,12 @@
 <!-- authors -->
 <% if SystemService::archive? %>
   <%= presenter.attribute_to_html(:creator, render_as: :archive_person_link, html_dl: true) %>
+  <%= presenter.attribute_to_html(:contributor, render_as: :archive_person_link, html_dl: true) %>
 <% else %>
   <%= presenter.attribute_to_html(:creator, render_as: :person_link, html_dl: true) %>
+  <%= presenter.attribute_to_html(:contributor, render_as: :person_link, html_dl: true) %>
 <% end %>
-<%= presenter.attribute_to_html(:contributor, render_as: :person_link, html_dl: true) %>
+
 <%= presenter.attribute_to_html(:editor, render_as: :person_link, html_dl: true) %>
 <%= presenter.attribute_to_html(:investigator, html_dl: true) %>
 <%= presenter.attribute_to_html(:sponsor, html_dl: true) %>

@@ -8,7 +8,8 @@ module Hyrax
     self.model_class = Archive
     self.required_fields += %i[title]
     def primary_terms
-      %i[title
+      %i[resource_type
+         title
          alternative_title
          creator
          contributor
