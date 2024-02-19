@@ -18,7 +18,7 @@ namespace :packager do
     throttle = args[:throttle] ||= 0
     metadata_only = args[:metadata_only] ||= false
 
-    packager = CalState::Packager::Csv.new(campus, admin_set, depositor)
+    packager = CalState::Packager::Csv.new(admin_set, campus, depositor)
     packager.metadata_only = metadata_only == 'true'
     packager.throttle = throttle
     packager.process_items(file)
