@@ -76,5 +76,34 @@ module CalState
       Dir.mkdir(dir) unless Dir.exist?(dir)
       dir
     end
+
+    #
+    # Update visibility on work and files
+    #
+    # @param work [ActiveFedora::Base]   Fedora work
+    # @param work_visibility [String]    visibility for work
+    # @param file_visibility [String]    [optional] visibility for file
+    #
+    # @return [FalseClass]
+    #
+    def self.update_visibility(work, work_visibility, file_visibility = nil?)
+      # this is ugly, but couldn't find a more efficient way to do this,
+      # especially for campus visibility which behaves differently
+
+      if work_visibility != file_visibility && file_visibility.present?
+        # set work to file visibility so files can inherit from that
+        work.visibility = file_visibility
+        work.save
+        VisibilityCopyJob.perform_now(work)
+
+        # then set work to work visibility
+        work.visibility = work_visibility
+        work.save
+      else
+        work.visibility = work_visibility
+        work.save
+        VisibilityCopyJob.perform_now(work)
+      end
+    end
   end
 end

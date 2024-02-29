@@ -136,6 +136,14 @@ module CalState
         final
       end
 
+      #
+      # Get a file from our file mapping
+      #
+      # @param file_map [Hash]  searchable file mapping
+      # @param id [String]      file_name
+      #
+      # @return [Array] of absolute file paths
+      #
       def search_files(file_map, id)
         files = []
         file_map.each do |file, path|
@@ -145,6 +153,14 @@ module CalState
         files
       end
 
+      #
+      # Create mapping hash of file_name => absolute path to file
+      #
+      # Recursively looks though directory for files
+      #
+      # @param path [String]  path to directory where to look
+      #
+      # @return [Hash]
       def file_map(path)
         file_map = {}
 
