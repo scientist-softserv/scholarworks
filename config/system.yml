@@ -3,8 +3,6 @@ facets:
     limit: 10
   resource_type:
     limit: 5
-  file_type:
-    limit: 5
   department:
     limit: 5
   degree_level:
@@ -13,8 +11,6 @@ facets:
     range: true
     include_in_advanced_search: false
     sort: 'index'
-  file_type:
-    limit: 4
 
 advanced_search:
   - title
