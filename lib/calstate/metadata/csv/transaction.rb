@@ -61,7 +61,7 @@ module CalState
                 new_records.each do |id, new_record|
                   next unless old_records.key?(id)
 
-                  record = get_record(id, old_records[id], new_record)
+                  record = record_changes(id, old_records[id], new_record)
 
                   next if  record[:changes].empty?
 
@@ -99,12 +99,15 @@ module CalState
         #
         # @return [Hash]
         #
-        def get_record(id, old_record, new_record)
+        def record_changes(id, old_record, new_record)
           record = {
             id: id,
             changes: []
           }
           new_record.each do |field, value|
+            next if field.nil?
+            next if field.empty?
+            next if value.nil? && old_record[field].nil?
             next if are_same?(field, old_record[field], value)
 
             change = {
