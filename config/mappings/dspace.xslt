@@ -3,6 +3,7 @@
                 xmlns:dim="http://www.dspace.org/xmlns/dspace/dim"
                 xmlns:mets="http://www.loc.gov/METS/"
                 version="1.0">
+  <xsl:import href="config/mappings/language.xslt" />
 
   <!-- records -->
   <xsl:template match="/">
@@ -202,7 +203,9 @@
 
   <xsl:template match="dim:field[@mdschema='dc' and @element='language']">
     <field name="language">
-      <xsl:value-of select="text()"/>
+      <xsl:call-template name="language">
+        <xsl:with-param name="value"><xsl:value-of select="text()"/></xsl:with-param>
+      </xsl:call-template>
     </field>
   </xsl:template>
 
