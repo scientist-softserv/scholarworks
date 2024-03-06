@@ -1,12 +1,12 @@
 terms:
-  - id: B.Arch
-    term: Bachelor of Architecture (B.Arch)
+  - id: B.Arch.
+    term: Bachelor of Architecture (B.Arch.)
     active: true
   - id: B.A.
     term: Bachelor of Arts (B.A.)
     active: true
-  - id: B.F.A
-    term: Bachelor of Fine Arts (B.F.A)
+  - id: B.F.A.
+    term: Bachelor of Fine Arts (B.F.A.)
     active: true
   - id: B.L.A.
     term: Bachelor of Landscape Architecture (B.L.A.)
