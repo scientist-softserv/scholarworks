@@ -270,8 +270,29 @@
   <!-- degree name -->
   <xsl:template match="esploro:etd/esploro:degree.name">
     <field name="degree_name">
-      <xsl:value-of select="text()"/>
+      <xsl:choose>
+        <xsl:when test="text() = 'Doctor of Philosophy (PhD)'">Ph.D.</xsl:when>
+        <xsl:when test="text() = 'Doctor of Physical Therapy (DPT)'">D.P.T.</xsl:when>
+        <xsl:when test="text() = 'Doctorate of Education (EdD)'">Ed.D.</xsl:when>
+        <xsl:when test="text() = 'Master of Arts (MA)'">M.A.</xsl:when>
+        <xsl:when test="text() = 'Master of Business Administration (MBA)'">M.B.A</xsl:when>
+        <xsl:when test="text() = 'Master of Education (MSEd)'">M.A.</xsl:when>
+        <xsl:when test="text() = 'Master of Engineering (ME)'">M.Eng.</xsl:when>
+        <xsl:when test="text() = 'Master of Fine Arts (MFA)'">M.F.A.</xsl:when>
+        <xsl:when test="text() = 'Master of Music (MM)'">M.M.</xsl:when>
+        <xsl:when test="text() = 'Master of Policy Administration (MPA)'">M.P.A.</xsl:when>
+        <xsl:when test="text() = 'Master of Public Health (MPH)'">M.P.H.</xsl:when>
+        <xsl:when test="text() = 'Master of Public Policy and Administration (MPPA)'">M.P.P.A.</xsl:when>
+        <xsl:when test="text() = 'Master of Science (MS)'">M.S.</xsl:when>
+        <xsl:when test="text() = 'Master of Social Work (MSW)'">M.S.W.</xsl:when>
+        <xsl:when test="text() = 'MSBA'">M.S.</xsl:when>
+        <xsl:when test="text() = 'Specialist in Education (EdS)'">Ed.S.</xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="text()" />
+        </xsl:otherwise>
+      </xsl:choose>
     </field>
+
   </xsl:template>
 
   <!-- degree program -->
