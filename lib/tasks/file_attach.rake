@@ -10,19 +10,10 @@ namespace :calstate do
     id = args[:id]
     filename = args[:file]
     email = args[:depositor]
-    is_s3 = false
 
     # we supplied an s3 file path, so download file first
-    if filename.include?('s3://')
-      is_s3 = true
-      filename.gsub!('s3://', '')
-      file_parts = filename.split('/')
-      bucket = file_parts.shift
-      raise "Your s3_path `#{filename}` appears to be malformed." if bucket.nil?
-      remote_file = file_parts.join('/')
-      filename = '/home/ec2-user/data/import/' + remote_file
-      Aws::S3::Resource.new.bucket(bucket).object(remote_file).download_file(filename)
-    end
+    is_s3 = filename.include?('s3://')
+    filename = Packager.download_s3_file(filename) if is_s3
 
     # make sure we have a work
     work = ActiveFedora::Base.find(id)
@@ -47,6 +38,6 @@ namespace :calstate do
     end
 
     # remove downloaded s3 file
-    File.delete(filename) if is_s3 && File.exists?(filename)
+    File.delete(filename) if is_s3
   end
 end
