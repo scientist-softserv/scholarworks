@@ -460,8 +460,24 @@ module CalState
         params['admin_set_id'] = @admin_set
 
         # depositor
-        depositor = User.find_by_user_key(@depositor)
-        raise MetadataError, "User #{@depositor} not found." if depositor.nil?
+        if params['depositor'].blank?
+          depositor = User.find_by_user_key(@depositor)
+          raise MetadataError, "User #{@depositor} not found." if depositor.nil?
+        else
+          if params['depositor'].include?('@')
+            depositor = User.find_by_user_key(params['depositor'])
+            raise MetadataError, "User #{depositor} not found." if depositor.nil?
+          else
+            # we supplied a name rather than an email address or uid
+            campus = CampusService.get_org_from_slug(@campus_slug)
+            users = User.where(display_name: params['depositor'], campus: campus)
+            raise MetadataError, "User #{params['depositor']} not found." if users.count.zero?
+            raise MetadataError, "Found #{users.count} users for depositor `#{params['depositor']}`." if users.count > 1
+
+            depositor = users.first
+          end
+          params['depositor'] = "" # need to blank this or else Hyrax complains
+        end
 
         begin
           params = ensure_required_metadata(params)
