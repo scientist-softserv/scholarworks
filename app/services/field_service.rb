@@ -206,6 +206,8 @@ class FieldService
     # file_size is from FileSet
     %w[admin_set_id
        date_accessioned
+       date_modified
+       date_uploaded
        degree_level
        depositor
        edition
