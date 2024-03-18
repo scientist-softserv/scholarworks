@@ -62,6 +62,16 @@ module CalState
           work.update(changes.except('collection'))
           work.save
 
+          # embargo changes
+          if changes['embargo_release_date'] || changes['visibility_during_embargo'] || changes['visibility_after_embargo']
+            work.apply_embargo(work.embargo_release_date, work.visibility_during_embargo, work.visibility_after_embargo)
+            work.save
+            work.file_sets.each do |file|
+              file.apply_embargo(work.embargo_release_date, work.visibility_during_embargo, work.visibility_after_embargo)
+              file.save
+            end
+          end
+
           # add to collection
           Packager.add_to_collection(work, changes['collection']) if changes['collection']
 
