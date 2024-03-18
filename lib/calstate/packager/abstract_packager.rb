@@ -38,6 +38,7 @@ module CalState
 
         @throttle = 0
         @throttle_on_error = 60
+        @s3_dir = nil
         @log = Packager::Log.new
         @errors = 0
         @type_map = CalState::Metadata.model_type_map
@@ -61,6 +62,17 @@ module CalState
       def throttle=(value)
         @throttle = value.to_i
       end
+
+      #
+      # S3 directory where files live
+      #
+      # @param dir [String]   S3 path including bucket
+      #
+      def s3_dir=(dir)
+        @s3_dir = dir.gsub('s3://', '')
+        @s3_dir += '/' unless @s3_dir[-1] == '/'
+      end
+
 
       protected
 
@@ -281,6 +293,13 @@ module CalState
         files.each do |file|
           next if file.blank?
 
+          # we supplied an s3 file path, so download file first
+          unless @s3_dir.nil?
+            @log.info "Downloading file `#{file}` from S3"
+            file = Packager.download_s3_file(@s3_dir + file)
+          end
+
+          # upload to hyrax
           uploaded_file = if file.is_a? Hyrax::UploadedFile
                             file
                           else
@@ -289,6 +308,12 @@ module CalState
                           end
           uploaded_file.save
           uploaded_files.append uploaded_file
+
+          # delete downloaded s3 file
+          unless @s3_dir.nil?
+            @log.info "Deleting temp S3 file."
+            File.delete(file)
+          end
         end
 
         @log.info 'Attaching file(s) to work job.'
@@ -435,8 +460,24 @@ module CalState
         params['admin_set_id'] = @admin_set
 
         # depositor
-        depositor = User.find_by_user_key(@depositor)
-        raise MetadataError, "User #{@depositor} not found." if depositor.nil?
+        if params['depositor'].blank?
+          depositor = User.find_by_user_key(@depositor)
+          raise MetadataError, "User #{@depositor} not found." if depositor.nil?
+        else
+          if params['depositor'].include?('@')
+            depositor = User.find_by_user_key(params['depositor'])
+            raise MetadataError, "User #{depositor} not found." if depositor.nil?
+          else
+            # we supplied a name rather than an email address or uid
+            campus = CampusService.get_org_from_slug(@campus_slug)
+            users = User.where(display_name: params['depositor'], campus: campus)
+            raise MetadataError, "User #{params['depositor']} not found." if users.count.zero?
+            raise MetadataError, "Found #{users.count} users for depositor `#{params['depositor']}`." if users.count > 1
+
+            depositor = users.first
+          end
+          params['depositor'] = "" # need to blank this or else Hyrax complains
+        end
 
         begin
           params = ensure_required_metadata(params)

@@ -245,6 +245,16 @@ module CampusService
     find(:slug, campus_id, :name)
   end
 
+  # Get campus org code from short code
+  #
+  # @param [String] campus_id short campus code, e.g., 'losangeles'
+  #
+  # @return [String] the campus org code, e.g., 'calstatela'
+  #
+  def self.get_org_from_slug(campus_id)
+    find(:slug, campus_id, :org)
+  end
+
   #
   # Get campus slug from controller
   #

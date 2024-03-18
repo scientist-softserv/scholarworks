@@ -13,6 +13,7 @@ module CalState
       #
       def process_items(path)
         @log.info 'Processing all items.'
+        @log.info 'S3 dir: ' + @s3_dir unless @s3_dir.nil?
 
         x = 0
         base_path = File.dirname(path)
@@ -35,7 +36,11 @@ module CalState
           files = []
           if record.key?('files')
             record['files'].each do |file|
-              files += search_files(file_map, file)
+              if @s3_dir.nil?
+                files += search_files(file_map, file)
+              else
+                files.append file
+              end
             end
           end
 

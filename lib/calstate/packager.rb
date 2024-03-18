@@ -105,5 +105,27 @@ module CalState
         VisibilityCopyJob.perform_now(work)
       end
     end
+
+    #
+    # Download an S3 File to local tmp dir
+    #
+    # @param s3_file [String]       path to s3 location
+    # @param download_dir [String]  [optional] tmp path on local server to download the file
+    #
+    # @return [String] full path to local location of file
+    #
+    def self.download_s3_file(s3_file, download_dir = '/home/ec2-user/data/tmp/')
+      filepath = s3_file.gsub('s3://', '')
+      file_parts = filepath.split('/')
+      bucket = file_parts.shift
+      raise "Your s3_path `#{s3_file}` appears to be malformed." if bucket.nil?
+      remote_path = file_parts.join('/')
+      download_file = download_dir + file_parts.pop
+      if Aws::S3::Resource.new.bucket(bucket).object(remote_path).download_file(download_file)
+        download_file
+      else
+        raise "Could not download `#{s3_file}` to #{download_dir}"
+      end
+    end
   end
 end
