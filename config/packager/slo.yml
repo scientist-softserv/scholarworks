@@ -1,0 +1,6 @@
+
+campus: 'San Luis Obispo'
+exit_on_error: false
+default_model: Archive
+default_type: Other
+
