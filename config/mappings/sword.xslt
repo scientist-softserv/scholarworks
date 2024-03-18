@@ -3,6 +3,8 @@
                 xmlns:epdcx="http://purl.org/eprint/epdcx/2006-11-16/"
                 xmlns:pq="http://www.etdadmin.com/ns/etdsword"
                 version="1.0">
+  <xsl:import href="config/mappings/language.xslt" />
+
   <xsl:template match="/">
     <record>
       <xsl:call-template name="standard" />
@@ -41,12 +43,16 @@
       <!-- language -->
       <xsl:if test="./@epdcx:propertyURI='http://purl.org/dc/elements/1.1/language' and ./@epdcx:vesURI='http://purl.org/dc/terms/RFC3066'">
         <field name="language">
-          <xsl:value-of select="epdcx:valueString" />
+          <xsl:call-template name="language">
+            <xsl:with-param name="value"><xsl:value-of select="epdcx:valueString" /></xsl:with-param>
+          </xsl:call-template>
         </field>
       </xsl:if>
       <xsl:if test="./@epdcx:attributeName='recordLanguage'">
         <field name="language">
-          <xsl:value-of select="epdcx:valueString" />
+          <xsl:call-template name="language">
+            <xsl:with-param name="value"><xsl:value-of select="epdcx:valueString" /></xsl:with-param>
+          </xsl:call-template>
         </field>
       </xsl:if>
 

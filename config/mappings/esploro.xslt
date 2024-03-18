@@ -3,6 +3,8 @@
                 xmlns:oai="http://www.openarchives.org/OAI/2.0/"
                 xmlns:esploro="http://www.loc.gov/MARC21/slim"
                 version="1.0">
+  <xsl:import href="config/mappings/language.xslt" />
+
   <!-- records -->
   <xsl:template match="/">
     <records>
@@ -232,22 +234,9 @@
   <!-- language -->
   <xsl:template match="esploro:language">
     <field name="language">
-      <xsl:choose>
-        <xsl:when test="text() = 'ara'">Aramaic</xsl:when>
-        <xsl:when test="text() = 'cat'">Catalan</xsl:when>
-        <xsl:when test="text() = 'chi'">Chinese</xsl:when>
-        <xsl:when test="text() = 'eng'">English</xsl:when>
-        <xsl:when test="text() = 'fre'">French</xsl:when>
-        <xsl:when test="text() = 'ger'">German</xsl:when>
-        <xsl:when test="text() = 'gre'">Greek</xsl:when>
-        <xsl:when test="text() = 'ita'">Italian</xsl:when>
-        <xsl:when test="text() = 'jpn'">Japanese</xsl:when>
-        <xsl:when test="text() = 'kor'">Korean</xsl:when>
-        <xsl:when test="text() = 'por'">Polish</xsl:when>
-        <xsl:when test="text() = 'por'">Portuguese</xsl:when>
-        <xsl:when test="text() = 'rus'">Russian</xsl:when>
-        <xsl:when test="text() = 'spa'">Spanish</xsl:when>
-      </xsl:choose>
+      <xsl:call-template name="language">
+        <xsl:with-param name="value" select="text()" />
+      </xsl:call-template>
     </field>
   </xsl:template>
 
