@@ -12,13 +12,11 @@
     $(function() {
       tinymce.init({
           plugins: 'autolink link tabfocus paste lists advlist',
-          <% if f.object.required?(key) %>
           setup: function (editor) {
                    editor.on('blur', function (e) {
                        scholarworks.update_tinymcearea(e);
                    });
                },
-          <% end %>
           selector: 'textarea.description_tinymce',
           menubar: false,
           statusbar: false,
