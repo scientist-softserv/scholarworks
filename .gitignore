@@ -34,3 +34,4 @@ importer.sh
 .generators
 .idea
 .ruby-version
+*~undo-tree~

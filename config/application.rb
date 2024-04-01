@@ -22,6 +22,19 @@ module Bravado
 
     config.to_prepare do
       Hyrax::CurationConcern.actor_factory.insert_after Hyrax::Actors::DefaultAdminSetActor, Hyrax::Actors::AssignCampusActor
+
+      # Allows us to use decorator files
+      Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")).sort.each do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+
+      Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*_decorator*.rb")).sort.each do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+
+      # metaprogramming makes decorating hard
+      c = '../lib/wings/orm_converter.rb'
+      Rails.configuration.cache_classes ? require(c) : load(c)
     end
   end
 end
