@@ -33,7 +33,7 @@ module Bravado
       end
 
       # metaprogramming makes decorating hard
-      c = '../lib/wings/orm_converter.rb'
+      c = File.join(File.dirname(__FILE__), '../lib/wings/orm_converter.rb')
       Rails.configuration.cache_classes ? require(c) : load(c)
     end
   end
