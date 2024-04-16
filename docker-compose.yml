@@ -5,9 +5,9 @@ x-app: &app
     context: .
     target: hyrax-base
     cache_from:
-      - ghcr.io/csuscholarworks/scholarworks/base:latest
-      - ghcr.io/csuscholarworks/scholarworks/web:latest
-  image: ghcr.io/csuscholarworks/scholarworks:${TAG:-latest}
+      - ghcr.io/scientist-softserv/scholarworks/base:latest
+      - ghcr.io/scientist-softserv/scholarworks/web:latest
+  image: ghcr.io/scientist-softserv/scholarworks:${TAG:-latest}
   env_file:
     - .env
   # NOTE: all common env variables moved to .env
@@ -176,9 +176,9 @@ services:
       context: .
       target: hyrax-worker
       cache_from:
-        - ghcr.io/csuscholarworks/scholarworks:${TAG:-latest}
-        - ghcr.io/csuscholarworks/scholarworks/worker:${TAG:-latest}
-    image: ghcr.io/csuscholarworks/scholarworks/worker:${TAG:-latest}
+        - ghcr.io/scientist-softserv/scholarworks:${TAG:-latest}
+        - ghcr.io/scientist-softserv/scholarworks/worker:${TAG:-latest}
+    image: ghcr.io/scientist-softserv/scholarworks/worker:${TAG:-latest}
     depends_on:
       db:
         condition: service_started
